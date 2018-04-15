@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class SearchRecordDatabaseManager {
 	private String selectSearchRecordSQL = "select * from search_record ";
-	private String deleteSearchRecordSQL = "delete from search_record where user_id = ?";
+	private String deleteSearchRecordSQL = "delete from search_record where user_id = ? and search_word = ? and search_time = ?";
 	private SearchRecord searchRecord;
 	
 	private Connection con = null;
@@ -45,9 +45,7 @@ public class SearchRecordDatabaseManager {
 				 searchRecord.setSearchWord(result.getString("search_word"));
 				 searchRecord.setSearchTime(result.getString("search_time"));
 				 searchRecords.add(searchRecord);
-				
 		     }
-			 System.out.println(searchRecords);
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());
@@ -57,10 +55,12 @@ public class SearchRecordDatabaseManager {
 		}
 	}
 	//刪除指定搜尋資料
-	public void deleteSearchRecordTable(String text_note_id) {
+	public void deleteSearchRecordTable(SearchRecord searchRecord) {
 		try {
 			pst = con.prepareStatement(deleteSearchRecordSQL);
-			pst.setString(1,text_note_id);
+			pst.setString(1,searchRecord.getUserID());
+			pst.setString(2,searchRecord.getSearchWord());
+			pst.setString(3,searchRecord.getSearchTime());
 			pst.executeUpdate();
 		}
 		catch(SQLException x){

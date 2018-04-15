@@ -223,36 +223,23 @@
 					<section class="content">
 						<div class="box box-primary" >
 							<div class="box-header">
+								<ul class = "list-group">
 									<li class="list-group-item list-group-body">
 										<div class="row">
 											<div class="col-xs-1 text-left">
 												<input name="checkAll" type="checkbox" onclick="check_all(this,'checkboxItem')" />
 											</div>
-											<div class="col-xs-8">搜尋關鍵字</div>
-											<div class="col-xs-3">搜尋時間</div>
+											<div class="col-xs-7"><strong>搜尋關鍵字</strong></div>
+											<div class="col-xs-3"><strong>搜尋時間</strong></div>
+											<div class="col-xs-1">
+												<button type="button" data-toggle="modal" data-target="#deleteModal2"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除選取"></i></button>
+											</div>
 										</div>
 									</li>
+								</ul>
 							</div>
 							<div class="box-body" style="height: 480px;" id="searchList">
 								<ul class="list-group" id="SearcRecordList">
-									<li class="list-group-item">
-										<div class="row">
-											<div class="col-xs-1 text-left">
-												<input name="checkboxItem" type="checkbox"/>
-											</div>
-											<div class="col-xs-8" style="">...</div>
-											<div class="col-xs-3" style="">...</div>
-										</div>
-									</li>
-									<li class="list-group-item">
-										<div class="row">
-											<div class="col-xs-1 text-left">
-												<input name="checkboxItem" type="checkbox" />
-											</div>
-											<div class="col-xs-8" style="">...</div>
-											<div class="col-xs-3" style="">...</div>
-										</div>
-									</li>
 								</ul>
 							</div>
 							
@@ -318,29 +305,47 @@
 	<!-- AdminLTE for demo purposes -->
 	<script src="../../dist/js/demo.js" type="text/javascript"></script>
 	<!-- SearchRecord -->
-	<script src="../../dist/js/SearchRecord.js"></script>
-	
-	
+	<script src="../../dist/js/SearchRecord.js" type="text/javascript"></script>
 	
 	<!--DeleteModal1-->
 	<div class="modal fade" id="deleteModal1" tabindex="-1" role="dialog"
 		aria-labelledby="deleteModalLabel1" aria-hidden="true">
-		<
+		
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<!-- <div class="modal-header" style="background-color: #3c8dbc;">
-              <h2 class="modal-title" id="deleteModalLabel" style="text-align: center;"><b></b></h2>
-            </div> -->
 				<div class="modal-body">
 					<h3>
 						<b>確定要刪除嗎?</b>
+					</h3>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">取消</button>
+					<button id="deleteListButton1" type="button"
+						class="btn btn-primary" data-dismiss="modal">確定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<!--DeleteModal2-->
+	<div class="modal fade" id="deleteModal2" tabindex="-1" role="dialog"
+		aria-labelledby="deleteModalLabel2" aria-hidden="true">
+		
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h3>
+						<b>確定要刪除所選取的項目嗎?</b>
 					</h3>
 					<!--<input id="named" type="text" name="listName" placeholder="Named a ListName!">-->
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">取消</button>
-					<button id="deleteListButton1" type="button"
+					<button id="deleteListButton2" type="button"
 						class="btn btn-primary" data-dismiss="modal">確定</button>
 				</div>
 			</div>
