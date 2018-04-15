@@ -6,11 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class SearchRecordDatabaseManager {
-	private String selectTextNoteSQL = "select * from text_note ";
-	private String deleteTextNoteSQL = "delete from text_note where text_note_id = ?";
-	
+	private String selectSearchRecordSQL = "select * from search_record ";
+	private String deleteSearchRecordSQL = "delete from search_record where user_id = ?";
+	private SearchRecord searchRecord;
 	
 	private Connection con = null;
 	private Statement stat = null;
@@ -28,12 +29,47 @@ public class SearchRecordDatabaseManager {
 			System.out.println("DriverClassNotFound"+e.toString());
 		}
 		catch(SQLException x){
-			System.out.println("Exception"+x.toString());
+			System.out.println("Exception" + x.toString());
 		}
 	}
-	
-	
-	
+	//選取要呈現的搜尋紀錄
+	public void selectSearchRecordTable(ArrayList<SearchRecord> searchRecords) {
+		
+		try {
+			stat = con.createStatement();
+			result = stat.executeQuery(selectSearchRecordSQL);
+			 while(result.next()) 
+		     { 	
+				 searchRecord = new SearchRecord();
+				 searchRecord.setUserID(result.getString("user_id"));
+				 searchRecord.setSearchWord(result.getString("search_word"));
+				 searchRecord.setSearchTime(result.getString("search_time"));
+				 searchRecords.add(searchRecord);
+				
+		     }
+			 System.out.println(searchRecords);
+		}
+			 catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	//刪除指定搜尋資料
+	public void deleteSearchRecordTable(String text_note_id) {
+		try {
+			pst = con.prepareStatement(deleteSearchRecordSQL);
+			pst.setString(1,text_note_id);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("Exception delete"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
 	
 	public void Close() {
 		try {

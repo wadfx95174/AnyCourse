@@ -57,7 +57,7 @@ $(document).ready(function() {
     e.preventDefault();
     $("#videoListID_"+checkID).remove();
   });
-  //刪除unit
+  //刪除unitVideo
   $("#deleteListButton2").click(function(e){
     e.preventDefault();
     $("#videoItem_"+checkID).remove();
