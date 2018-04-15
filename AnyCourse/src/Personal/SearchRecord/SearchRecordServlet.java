@@ -1,4 +1,4 @@
-package SearchRecord;
+package Personal.SearchRecord;
 
 import java.io.*;
 import java.util.ArrayList;

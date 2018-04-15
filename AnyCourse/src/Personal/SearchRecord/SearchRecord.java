@@ -1,4 +1,4 @@
-package SearchRecord;
+package Personal.SearchRecord;
 
 public class SearchRecord {
 	
