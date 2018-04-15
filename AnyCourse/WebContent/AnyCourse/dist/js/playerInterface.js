@@ -37,9 +37,4 @@ $(document).ready(function(){
       connectWith: ".connectedSortable"
     }).disableSelection();
     });
-
-
-
-
-    
 });
