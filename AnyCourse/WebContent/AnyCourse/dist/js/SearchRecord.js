@@ -12,13 +12,7 @@ $(document).ready(function() {
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/SearchRecordServlet.do',
 		method : 'GET',
-//		data : {
-//			"user_id" : user_id,
-//			"search_word" : search_word,
-//			"search_time" : search_time
-//		},
 		success:function(result){
-//    		var json = JSON.parse(result);
     		for(var i = 0 ;i < result.length;i++){
     			$('#SearcRecordList').append('<li class="list-group-item">'
 						+'<div class="row">'
