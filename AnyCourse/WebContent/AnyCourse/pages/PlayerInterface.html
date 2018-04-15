@@ -41,10 +41,8 @@
 <!-- bootstrap wysihtml5 - text editor -->
 <link href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"
 	rel="stylesheet" type="text/css" />
-
-
-<link href="../dist/css/playerInterface.css" rel="stylesheet"
-	type="text/css" />
+<link href="../dist/css/playerInterface.css" rel="stylesheet" type="text/css" />
+<link href="../dist/css/videoInput.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="skin-blue">
 	<div class="wrapper">
@@ -207,11 +205,20 @@
 				<div class="row">
 					<section class="col-md-7 connectedSortable ui-sortable">
 						<div class="embed-responsive embed-responsive-16by9">
-							<iframe class="embed-responsive-item"
-								src="http://140.112.161.119/vod/100S103/100S103_CT01V01.mp4
-                           "
-								frameborder="0" allowfullscreen> </iframe>
+							<!--<iframe class="embed-responsive-item"
+								src="http://140.112.161.119/vod/100S103/100S103_CT01V01.mp4"
+								frameborder="0" allowfullscreen> </iframe>-->
+								
+								
+								
+								
+								<video controls="" name="media" id = "myvideo" ><source src="http://140.112.161.119/vod/100S103/100S103_CT01V01.mp4" type="video/mp4"></video>
 						</div>
+						<div>
+                        	<input id="Jw-player-progress" type="range" value="0" min="0" max="100">
+                        	<progress id = "prog" value="50" max="100"></progress>
+                        	<label for="Jw-player-progress">duration</label>       
+                     	</div>
 						<div style="float: left;">
 							<h3 style="margin-top: 10px;">
 								<strong>導涵式概論</strong>
@@ -289,207 +296,162 @@
 							<!-- /.box -->
 					</section>
 					<section class="col-md-5 connectedSortable ui-sortable">
-						<div class="box box-primary">
-							<div class="box-header ui-sortable-handle">
-								<i class="fa fa-tags"></i>
-								<h3 class="box-title">
-									<strong>個人標籤</strong>
-								</h3>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<ul class="list-group connectedSortable"
-									" style="margin-bottom: 5px;" id="keyLabel1">
-									<li class="list-group-item">重點A
-										<ul class="list-group-submenu">
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item">刪除</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item primary">編輯</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item info">分享</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item lightBlue">使用</li></a>
-										</ul>
-									</li>
-									<li class="list-group-item">重點B
-										<ul class="list-group-submenu">
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item">刪除</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item primary">編輯</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item info">分享</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item lightBlue">使用</li></a>
-										</ul>
-									</li>
-									<li class="list-group-item">重點C
-										<ul class="list-group-submenu">
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item">刪除</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item primary">編輯</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item info">分享</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item lightBlue">使用</li></a>
-										</ul>
-									</li>
-									<li class="list-group-item">重點D
-										<ul class="list-group-submenu">
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item">刪除</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item primary">編輯</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item info">分享</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item lightBlue">使用</li></a>
-										</ul>
-									</li>
-								</ul>
-							</div>
-							<!-- /.box-body -->
-						</div>
-						<div class="box box-primary">
-							<div class="box-header ui-sortable-handle">
-								<i class="fa fa-tags"></i>
-								<h3 class="box-title">
-									<strong>暫存標籤</strong>
-								</h3>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<ul class="list-group connectedSortable"
-									style="margin-bottom: 5px;" id="keyLabel2">
-									<li class="list-group-item">重點E
-										<ul class="list-group-submenu">
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item">刪除</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item primary">添加</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item info">使用</li></a>
-										</ul>
-									</li>
-									<li class="list-group-item">重點F
-										<ul class="list-group-submenu">
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item">刪除</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item primary">添加</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item info">使用</li></a>
-										</ul>
-									</li>
-									<li class="list-group-item">重點G
-										<ul class="list-group-submenu">
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item">刪除</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item primary">添加</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item info">使用</li></a>
-										</ul>
-									</li>
-									<li class="list-group-item">重點H
-										<ul class="list-group-submenu">
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item">刪除</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item primary">添加</li></a>
-											<a href="#" style="color: #FFF"><li
-												class="list-group-submenu-item info">使用</li></a>
-										</ul>
-									</li>
-								</ul>
-							</div>
-							<!-- /.box-body -->
-						</div>
-						<h3 style="margin-top: 10px;">
-							<strong>推薦影片</strong>
-						</h3>
-						<div class="box box-primary">
-							<div class="box-header ui-sortable-handle">
-								<i class="fa fa-tags"></i>
-								<h3 class="box-title">
-									<strong>暫存標籤</strong>
-								</h3>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<div class="list-group" id="recommend">
-									<a href="PlayerInterface.html" class="list-group-item">
-										<div class="media">
-											<div class="col-xs-6 pull-left" style="padding-left: 0px;">
-												<div class="embed-responsive embed-responsive-16by9">
-													<iframe class="embed-responsive-item"
-														src="https://www.youtube.com/embed/B-AoHE6dPnk
-                                             "
-														frameborder="0" allowfullscreen> </iframe>
-												</div>
-											</div>
-											<div class="media-body">
-												<h3 class="media-heading">導涵式公式的推廣</h3>
-												<p>中央大學 王老師</p>
-												<p>讚數:216,165</p>
-											</div>
-										</div>
-									</a> <a href="PlayerInterface.html" class="list-group-item">
-										<div class="media">
-											<div class="col-xs-6 pull-left" style="padding-left: 0px;">
-												<div class="embed-responsive embed-responsive-16by9">
-													<iframe class="embed-responsive-item"
-														src="https://www.youtube.com/embed/B-AoHE6dPnk
-                                             "
-														frameborder="0" allowfullscreen> </iframe>
-												</div>
-											</div>
-											<div class="media-body">
-												<h3 class="media-heading">入門微積分(一)</h3>
-												<p>交通大學 陳老師</p>
-												<p>讚數:466,165</p>
-											</div>
-										</div>
-									</a> <a href="PlayerInterface.html" class="list-group-item">
-										<div class="media">
-											<div class="col-xs-6 pull-left" style="padding-left: 0px;">
-												<div class="embed-responsive embed-responsive-16by9">
-													<iframe class="embed-responsive-item"
-														src="https://www.youtube.com/embed/B-AoHE6dPnk
-                                             "
-														frameborder="0" allowfullscreen> </iframe>
-												</div>
-											</div>
-											<div class="media-body">
-												<h3 class="media-heading">數學涵式概述(一)</h3>
-												<p>交通大學 王老師</p>
-												<p>讚數:346,165</p>
-											</div>
-										</div>
-									</a> <a href="PlayerInterface.html" class="list-group-item">
-										<div class="media">
-											<div class="col-xs-6 pull-left" style="padding-left: 0px;">
-												<div class="embed-responsive embed-responsive-16by9">
-													<iframe class="embed-responsive-item"
-														src="https://www.youtube.com/embed/B-AoHE6dPnk
-                                             "
-														frameborder="0" allowfullscreen> </iframe>
-												</div>
-											</div>
-											<div class="media-body">
-												<h3 class="media-heading">數學涵式概述(二)</h3>
-												<p>交通大學 王老師</p>
-												<p>讚數:356,565</p>
-											</div>
-										</div>
-									</a>
-								</div>
-							</div>
-							<!--box-body-->
-						</div>
-					</section>
+                     <div class="box box-primary">
+                         <div class="box-header ui-sortable-handle">
+                           <i class="fa fa-tags"></i>
+                           <h3 class="box-title"><strong>個人標籤</strong></h3>
+                         </div><!-- /.box-header -->
+                         <div class="box-body">
+                           <ul class="list-group connectedSortable"" style="margin-bottom: 5px;" id="keyLabel1">
+                              <li class="list-group-item">
+                                 重點A
+                                 <ul class="list-group-submenu">
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item primary">編輯</li></a>
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>
+                                    <a href="#" class = "kl" id = "kl-1" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>
+                                 </ul>
+                              </li>
+                              <li class="list-group-item">
+                                 重點B
+                                 <ul class="list-group-submenu">
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item primary">編輯</li></a>
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>
+                                    <a href="#" class = "kl" id = "kl-2" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>
+                                 </ul>
+                              </li>
+                              <li class="list-group-item">
+                                 重點C
+                                 <ul class="list-group-submenu">
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item primary">編輯</li></a>
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>
+                                    <a href="#" class = "kl" id = "kl-3" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>
+                                 </ul>
+                              </li>
+                              <li class="list-group-item">
+                                 重點D
+                                 <ul class="list-group-submenu">
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item primary">編輯</li></a>
+                                    <a href="#" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>
+                                    <a href="#" class = "kl" id = "kl-4" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>
+                                 </ul>
+                              </li>
+                           </ul>
+                         </div><!-- /.box-body -->
+                     </div>
+                     <div class="box box-primary">
+                         <div class="box-header ui-sortable-handle">
+                           <i class="fa fa-tags"></i>
+                           <h3 class="box-title"><strong>暫存標籤</strong></h3>
+                         </div><!-- /.box-header -->
+                         <div class="box-body">
+                           <ul class="list-group connectedSortable" style="margin-bottom: 5px;" id="keyLabel2">
+                              <li class="list-group-item">
+                                 重點E
+                                 <ul class="list-group-submenu">
+                                    <a href="javascript:void(0)" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>
+                                    <a href="javascript:void(0)" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>
+                                    <a href="#" class = "kl" id = "kl-5" style="color: #FFF"><li class="list-group-submenu-item info">使用</li></a>
+                                 </ul>
+                              </li>
+                              <li class="list-group-item">
+                                 重點F
+                                 <ul class="list-group-submenu">
+                                    <a href="javascript:void(0)" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>
+                                    <a href="javascript:void(0)" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>
+                                    <a href="#" class = "kl" id = "kl-6" style="color: #FFF"><li class="list-group-submenu-item info">使用</li></a>
+                                 </ul>
+                              </li>
+                              <li class="list-group-item">
+                                 重點G
+                                 <ul class="list-group-submenu">
+                                    <a href="javascript:void(0)" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>
+                                    <a href="javascript:void(0)" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>
+                                    <a href="#" class = "kl" id = "kl-7" style="color: #FFF"><li class="list-group-submenu-item info">使用</li></a>
+                                 </ul>
+                              </li>
+                              <li class="list-group-item">
+                                 重點H
+                                 <ul class="list-group-submenu">
+                                    <a href="javascript:void(0)" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>
+                                    <a href="javascript:void(0)" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>
+                                    <a href="#" class = "kl" id = "kl-8" style="color: #FFF"><li class="list-group-submenu-item info">使用</li></a>
+                                 </ul>
+                              </li>
+                           </ul>
+                         </div><!-- /.box-body -->
+                     </div>
+                        <h3 style="margin-top:10px;"><strong>推薦影片</strong></h3>
+                     <div class="box box-primary">
+                        <div class="box-header ui-sortable-handle">
+                           <i class="fa fa-tags"></i>
+                           <h3 class="box-title"><strong>暫存標籤</strong></h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+                           <div class="list-group"  id="recommend">
+                              <a href="PlayerInterface.html" class="list-group-item">
+                                 <div class="media">
+                                    <div class="col-xs-6 pull-left" style="padding-left: 0px;">
+                                       <div class="embed-responsive embed-responsive-16by9">          
+                                          <img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">        
+                                       </div>
+                                    </div>
+                                    <div class="media-body">
+                                       <h3 class="media-heading">導涵式公式的推廣</h3>
+                                       <p>中央大學 王老師</p>
+                                       <p>讚數:216,165</p>
+                                    </div>
+                                 </div>
+                              </a>
+                              <a href="PlayerInterface.html" class="list-group-item">
+                                 <div class="media">
+                                    <div class="col-xs-6 pull-left" style="padding-left: 0px;">
+                                       <div class="embed-responsive embed-responsive-16by9">
+                                          <img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg"> 
+                                       </div>
+                                    </div>
+                                    <div class="media-body">
+                                       <h3 class="media-heading">入門微積分(一)</h3>
+                                       <p>交通大學 陳老師</p>
+                                       <p>讚數:466,165</p>
+                                    </div>
+                                 </div>
+                              </a>
+                              <a href="PlayerInterface.html" class="list-group-item">
+                                 <div class="media">
+                                    <div class="col-xs-6 pull-left" style="padding-left: 0px;">
+                                       <div class="embed-responsive embed-responsive-16by9">
+                                          <img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">     
+                                       </div>
+                                    </div>
+                                    <div class="media-body">
+                                       <h3 class="media-heading">數學涵式概述(一)</h3>
+                                       <p>交通大學 王老師</p>
+                                       <p>讚數:346,165</p>
+                                    </div>
+                                 </div>
+                              </a>
+                              <a href="PlayerInterface.html" class="list-group-item">
+                                 <div class="media">
+                                    <div class="col-xs-6 pull-left" style="padding-left: 0px;">
+                                       <div class="embed-responsive embed-responsive-16by9">
+                                          <img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
+                                       </div>
+                                    </div>
+                                    <div class="media-body">
+                                       <h3 class="media-heading">數學涵式概述(二)</h3>
+                                       <p>交通大學 王老師</p>
+                                       <p>讚數:356,565</p>
+                                    </div>
+                                 </div>
+                              </a>
+                           </div>
+                        </div><!--box-body-->
+                     </div>
+                  </section>
 				</div>
 			</section>
 		</div>
@@ -544,5 +506,6 @@
 	<!-- AdminLTE for demo purposes -->
 	<script src="../dist/js/demo.js" type="text/javascript"></script>
 	<script src="../dist/js/playerInterface.js" type="text/javascript"></script>
+	<script src="../dist/js/jwPlayer.js" type="text/javascript"></script>
 </body>
 </html>
