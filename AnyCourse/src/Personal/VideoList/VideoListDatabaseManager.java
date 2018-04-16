@@ -1,4 +1,4 @@
-package SearchRecord;
+package Personal.VideoList;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,9 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class SearchRecordDatabaseManager {
-	private String selectSearchRecordSQL = "select * from search_record ";
-	private String deleteSearchRecordSQL = "delete from search_record where user_id = ? and search_word = ? and search_time = ?";
+import Personal.SearchRecord.SearchRecord;
+
+public class VideoListDatabaseManager {
+
+	private String selectVideoListSQL = "select * from courselist ";
+	private String deleteVideoListSQL = "delete from courselist where user_id = ? and search_word = ? and search_time = ?";
+	private String insertVideoListSQL = "insert into courselist (text_note_id,unit_id,nick_name,text_note,share,share_time,likes) value(null,?,?,?,?,?,?)";
 	private SearchRecord searchRecord;
 	
 	private Connection con = null;
@@ -18,7 +22,7 @@ public class SearchRecordDatabaseManager {
 	private ResultSet result = null;
 	private PreparedStatement pst = null;
 	
-	public SearchRecordDatabaseManager() {
+	public VideoListDatabaseManager() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5"
@@ -90,4 +94,5 @@ public class SearchRecordDatabaseManager {
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
+
 }
