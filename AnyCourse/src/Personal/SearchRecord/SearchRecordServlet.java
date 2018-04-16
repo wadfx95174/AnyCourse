@@ -25,7 +25,7 @@ public class SearchRecordServlet extends HttpServlet{
 		
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(searchRecords));
-//		System.out.println(gson.toJson(searchRecords));
+		System.out.println(gson.toJson(searchRecords));
 	}
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

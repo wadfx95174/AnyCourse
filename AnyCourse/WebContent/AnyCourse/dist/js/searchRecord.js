@@ -12,7 +12,7 @@ $(document).ready(function() {
 	//取得資料庫的資料
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/SearchRecordServlet.do',
-		method : 'GET',
+		method : 'GET', 
 		success:function(result){
 			searchRecordArray = new Array(result.length);
     		for(var i = 0 ;i < result.length;i++){
