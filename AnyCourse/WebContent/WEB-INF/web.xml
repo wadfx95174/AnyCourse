@@ -14,7 +14,7 @@
 	</welcome-file-list>
 	<servlet>
 		<servlet-name>SearchRecordServlet</servlet-name>
-		<servlet-class>SearchRecord.SearchRecordServlet</servlet-class>
+		<servlet-class>Personal.SearchRecord.SearchRecordServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>SearchRecordServlet</servlet-name>
@@ -22,6 +22,6 @@
 	</servlet-mapping>
 	
 	<welcome-file-list>
-    	<welcome-file>SearchRecord.SearchRecordServlet</welcome-file>
+    	<welcome-file>Personal.SearchRecord.SearchRecordServlet</welcome-file>
 	</welcome-file-list>
 </web-app>
