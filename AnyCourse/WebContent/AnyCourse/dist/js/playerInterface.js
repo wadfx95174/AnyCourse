@@ -20,6 +20,7 @@ var video;
 //var keyLabels = [];
 
 var keyLabelArray;
+var maxIndex = 0;
 
 $(document).ready(function(){
     $("#editNote").click(function(){
@@ -30,9 +31,9 @@ $(document).ready(function(){
     });
 
     $( function() {
-    $( "#keyLabel1, #keyLabel2" ).sortable({
-//      connectWith: ".connectedSortable"
-    }).disableSelection();
+	    $( "#keyLabel1, #keyLabel2" ).sortable({
+	//      connectWith: ".connectedSortable"
+	    }).disableSelection();
     });
     
 //----------------------------------------------video----------------------------------------------//
@@ -44,80 +45,170 @@ $(document).ready(function(){
     ]; 
 	var pr = ['currentTime', 'duration', 'readyState','paused','muted','volume','ended'];  
 	var statelist = $('#statelist');
-    $("#play").click(function(){  
-        video.play(); //播放影片  
-		
-    });  
-  
-    $("#pause").click(function(){  
-        video.pause(); //停止播放  
-    }); 
 	
+    var $progress = $('.progress'),
+      $duration = $('.duration'),
+      $currentTime = $('.current-time');
+	
+//    $("#play").click(function(){  
+//        video.play(); //播放影片  
+//		
+//    });  
+//  
+//    $("#pause").click(function(){  
+//        video.pause(); //停止播放  
+//    }); 
+    
 	var t = setInterval(function(){  	//每100毫秒執行一次
 		if (video)
 		{
-			statelist.empty();  
-			var now=(video["currentTime"]/video["duration"])*618;
-			$(".now_position").css("left",now);
-			if(video.currentTime>5 && video.currentTime<5.2){
-				video.currentTime=10;
-			}
-			$("#Jw-player-progress").val(video["currentTime"]/video["duration"] * 100);
-            $("progress").val(video["currentTime"]/video["duration"] * 100);
-            
-			// $(".now_position").css("left","");
-	        $('#state').text(videoStateTexts[video.readyState]);  
-	        // for(x in pr){  
-	        //     statelist.append($('<li><storng>'+ pr[x]  + ' : ' + video[pr[x]] + '</strong></li>'));  
-	        // }  
+			var now=(video["currentTime"]/video["duration"] * 100);	//percent
+			$('.meter').css('width', now + '%');
 		}
-        
     },500);  
 	
-	$(".changeto").click(function(){
-		$go_track=$(this).attr("alt");
-		video.currentTime=$go_track;
-		//video[currentTime]=$go_track;
-	});
 	
-	//跳轉時間
-	// var clicking=false;
-	// $(".track_bar").mousedown(function(e){
-	// 	clicking=true;
-	// 	video.currentTime=(e.pageX*video["duration"])/618-100.5;
-	// });
-	// $(".track_bar").mouseup(function(e){
-	// 	clicking=false;
-	// });
-	// $(".track_bar").mousemove(function(e){
-	// 	if(clicking == false) return;
-	// 	video.currentTime=(e.pageX*video["duration"])/618-100.5;
-	// });
-	function jwPlayerCurrentTimeSeek(currentTime)
-	{
-		video.currentTime = currentTime;
-	}
-
-	// function jwPlayerSeeking()
-	// {
-	// 	if (video.seeking)jwPlayerActive = false;
-	// }
-
-	$("#Jw-player-progress").change(function (e) {
-        var value = e.target.value;
-        $("progress").val(value);
-        jwPlayerCurrentTimeSeek(value * video["duration"] /100);
-	});
-	// function jwPlayerCurrentTimeChange(currentTime)
-	// {
- //        $("progress").val(currentTime);
- //        jwPlayerCurrentTimeChange(currentTime * video["duration"] /100);
-	// }
 //----------------------------------------------video----------------------------------------------//
 	
 
 //----------------------------------------------keyLabel----------------------------------------------//    
 	//取得資料庫的資料    
+	
+
+    // On progress click, seek to a position.
+	// 點選progress, seek to 該位置
+    $progress.on('click', function(e){
+      var percent = ((e.pageX-$progress.offset().left)/$progress.width());
+      var seek = percent*video["duration"];
+      $('.meter').css('width', percent*100 + '%');
+      video.currentTime = seek;
+    });
+
+    // Set up the expand animation.
+    var animateUp = function(){
+      $(this).animate({
+        height:5,
+        duration:10
+      }, function(){
+        $progress.removeClass('open');
+        $progress.one('mouseenter', animateDown);
+      });
+    };
+
+    var animateDown = function(){
+      $(this).animate({
+        height:20,
+        duration:10
+      }, function(){
+        $progress.addClass('open');
+        $progress.one('mouseleave', animateUp);
+      });
+    };
+
+    $progress.one('mouseenter', animateDown);
+
+    // 設置個人重點標籤
+    function addToSelfKeyLabel(index)
+    {
+    	$('#keyLabel1').append('<li class="list-group-item">'
+				+ keyLabelArray[index].keyLabelName
+				+'<ul class="list-group-submenu">'
+				+'<a href="#" class = "self dkl" id = "self-dkl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>'
+				+'<a href="#" class = "self ekl" id = "self-ekl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">編輯</li></a>'
+				+'<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
+				+'<a href="#" class = "self ukl" id = "self-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
+				+'</ul>'
+				+'</li>');
+		addKeyLabelEvent();
+    }
+
+    // 設置暫存重點標籤
+    function addToTempKeyLabel(index)
+    {
+		$('#keyLabel2').append('<li class="list-group-item">'
+				+ keyLabelArray[index].keyLabelName
+				+'<ul class="list-group-submenu">'
+				+'<a href="javascript:void(0)" class = "temp dkl" id = "temp-dkl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>'
+				+'<a href="javascript:void(0)" class = "temp akl" id = "temp-akl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>'
+				+'<a href="#" class = "temp ukl" id = "temp-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
+				+'</ul>'
+				+'</li>');
+		addKeyLabelEvent();
+    }
+
+    // 設定重點標籤的事件
+    function addKeyLabelEvent()
+    {
+    	// 重點標籤 從右滑出
+    	$('.list-group-item').on('mouseover', function(event) {
+            event.preventDefault();
+            $(this).closest('li').addClass('open');
+        });
+    	
+        $('.list-group-item').on('mouseout', function(event) {
+            event.preventDefault();
+            $(this).closest('li').removeClass('open');
+        });
+        
+    	// 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
+    	$(".ukl").click(function()
+    	{
+    		video.currentTime=keyLabelArray[parseInt(this.getAttribute("id").split("-")[2])].beginTime;
+    	})
+    	// 點擊個人標籤刪除按鈕，送去資料庫刪除    --------------------*未完成
+    	$(".self.dkl").click(function()
+    	{
+    		var element = $(this).parent().parent();
+    		var index = parseInt(this.getAttribute("id").split("-")[2]);
+    		alert(index);
+    		$.ajax({
+    			url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+    			method : 'POST',
+    		    data : {
+    		    	"method" : "delete",
+//    		    	"user_id" : 1,  //id 1要改成session的id
+    		    	"keyLabelId" : keyLabelArray[index].keyLabelId
+    			},
+    			success:function(result){
+    				element.remove();
+    	    	},
+    			error:function(){alert('failed');}
+    		});
+    	})
+    	// 點擊添加按鈕，新增至個人重點標籤，上傳資料庫      *要改為資料庫傳回正確值
+    	$(".akl").click(function()
+    	{
+    		//	method 1: 移動
+    		//$('#keyLabel1').append($(this).parent().parent().detach());
+    		
+    		//	method 2: 添加
+    		var index = parseInt(this.getAttribute("id").split("-")[2]);
+    		
+    		//*
+//    		keyLabelArray[maxIndex] = keyLabelArray[index];
+//    		keyLabelArray[maxIndex].keyLabelId = ??;
+    		//*
+    		
+    		addToSelfKeyLabel(parseInt(this.getAttribute("id").split("-")[2]));
+    		$.ajax({
+    			url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+    			method : 'POST',
+    		    data : {
+    		    	"method" : "insert",
+    		    	"userId" : 1,  //id 1要改成session的id
+    		    	"keyLabelName" : keyLabelArray[index].keyLabelName,
+    		    	"beginTime" : keyLabelArray[index].beginTime,
+    		    	"endTime" : keyLabelArray[index].endTime,
+    		    	"unitId" : keyLabelArray[index].unitId
+    			},
+    			success:function(result){
+    	    		
+    	    	},
+    			error:function(){alert('failed');}
+    		});
+    	})
+    }
+    
     $.ajax({
 		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
 		method : 'GET', 
@@ -126,50 +217,32 @@ $(document).ready(function(){
 		},
 		success:function(result){
 			keyLabelArray = result;
-    		for(var i = 0 ;i < result.length;i++){
-    			// 把資料放到個人標籤
-    			if (keyLabelArray[i].userId == 1)	//id 1要改成session的id
+    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
+    			// 設置個人標籤
+    			if (keyLabelArray[maxIndex].userId == 1)	//id 1要改成session的id
 				{
-    				$('#keyLabel1').append('<li class="list-group-item">'
-    						+ result[i].keyLabelName
+    				addToSelfKeyLabel(maxIndex);
+				}
+    			// 設置交流區標籤
+    			else if (keyLabelArray[maxIndex].share == 1)
+				{
+    				$('#exchange').append('<li class="list-group-item">'
+    						+ keyLabelArray[maxIndex].keyLabelName
     						+'<ul class="list-group-submenu">'
-    						+'<a href="#" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>'
-    						+'<a href="#" style="color: #FFF"><li class="list-group-submenu-item primary">編輯</li></a>'
-    						+'<a href="#" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
-    						+'<a href="#" class = "kl" id = "kl-' + i + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
+    						+'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + i + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
     						+'</ul>'
     						+'</li>');
+    				addKeyLabelEvent();
+    				// 點選交流區的重點標籤，暫存區出現
+    				
 				}
-    			else
-				{
-    				$('#keyLabel2').append('<li class="list-group-item">'
-    						+ result[i].keyLabelName
-    						+'<ul class="list-group-submenu">'
-    						+'<a href="javascript:void(0)" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>'
-    						+'<a href="javascript:void(0)" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>'
-    						+'<a href="#" class = "kl" id = "kl-' + i + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
-    						+'</ul>'
-    						+'</li>');
-				}
-    			
-			}
-    		
-    		// 重點標籤 從右滑出
-    		$(function () {
-    		    $('.list-group-item').on('mouseover', function(event) {
-    		        event.preventDefault();
-    		        $(this).closest('li').addClass('open');
-    		    });
-    		      $('.list-group-item').on('mouseout', function(event) {
-    		        event.preventDefault();
-    		        $(this).closest('li').removeClass('open');
-    		    });
-    	    });
-    		// 點選重點標籤後，影片(currentTime)跳至該位置beginTime
-    		$(".kl").click(function()
-			{
-				video.currentTime=keyLabelArray[parseInt(this.getAttribute("id").split("-")[1])].beginTime;
-			})
+			} // end for
+    		$(".exchange").click(function()
+					{
+						var index = parseInt(this.getAttribute("id").split("-")[2]);
+						alert(index);
+						addToTempKeyLabel(index);
+					})
     	}, // end success
 		error:function(){alert('failed');}
 	});	// end ajax

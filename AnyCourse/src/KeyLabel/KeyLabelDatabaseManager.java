@@ -12,8 +12,10 @@ import com.google.gson.Gson;
 
 public class KeyLabelDatabaseManager
 {
-	private String selectUnitKeyLabelSQL = "select * from keylabel where unit_id = ? and share = 1";
-	private String selectPersonalKeyLabelSQL = "select * from keylabel where unit_id = ? and user_id = ? ";
+	private String selectUnitKeyLabelSQL = "select * from keylabel where unit_id = ?";
+	//private String selectPersonalKeyLabelSQL = "select * from keylabel where unit_id = ? and user_id = ? ";
+	private String insertKeyLabelSQL = "insert into keylabel value (null,?,?,?,?,?,?,?,?)";
+	private String deleteKeyLabelSQL = "delete from keylabel where keylabel_id = ?";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -65,37 +67,79 @@ public class KeyLabelDatabaseManager
 		return json;
 	}
 	
-	public String getUnitPersonalKeyLabel(int unit, int user) {
-
-		ArrayList<KeyLabel> outputList = new ArrayList<>(); 
-		try {
-			pst = con.prepareStatement(selectPersonalKeyLabelSQL);
-			pst.setInt(1, unit);
-			pst.setInt(2, user);
-			result = pst.executeQuery();
-			while(result.next()) 
-			{ 	
-				KeyLabel keyLabel = new KeyLabel();
-				keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
-				keyLabel.setUnitId(result.getInt("unit_id"));
-				keyLabel.setUserId(result.getString("user_id"));
-				keyLabel.setKeyLabelName(result.getString("keylabel_name"));
-				keyLabel.setBeginTime(result.getInt("begin_time"));
-				keyLabel.setEndTime(result.getInt("end_time"));
-				keyLabel.setShare(result.getInt("share"));
-				keyLabel.setShareTime(result.getString("share_time"));
-				keyLabel.setLikes(result.getInt("likes"));
-				outputList.add(keyLabel);
-			}
+//	public String getUnitPersonalKeyLabel(int unit, int user) {
+//
+//		ArrayList<KeyLabel> outputList = new ArrayList<>(); 
+//		try {
+//			pst = con.prepareStatement(selectPersonalKeyLabelSQL);
+//			pst.setInt(1, unit);
+//			pst.setInt(2, user);
+//			result = pst.executeQuery();
+//			while(result.next()) 
+//			{ 	
+//				KeyLabel keyLabel = new KeyLabel();
+//				keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
+//				keyLabel.setUnitId(result.getInt("unit_id"));
+//				keyLabel.setUserId(result.getString("user_id"));
+//				keyLabel.setKeyLabelName(result.getString("keylabel_name"));
+//				keyLabel.setBeginTime(result.getInt("begin_time"));
+//				keyLabel.setEndTime(result.getInt("end_time"));
+//				keyLabel.setShare(result.getInt("share"));
+//				keyLabel.setShareTime(result.getString("share_time"));
+//				keyLabel.setLikes(result.getInt("likes"));
+//				outputList.add(keyLabel);
+//			}
+//		}
+//			catch(SQLException x){
+//			System.out.println("Exception select"+x.toString());
+//		}
+//		finally {
+//			Close();
+//		}
+//		String json = new Gson().toJson(outputList);
+//		return json;
+//	}
+	
+	public void insertKeyLabel(KeyLabel keyLabel)
+	{
+		try
+		{
+			pst = con.prepareStatement(insertKeyLabelSQL, Statement.RETURN_GENERATED_KEYS);
+			pst.setInt(1, keyLabel.getUnitId());
+			pst.setString(2, keyLabel.getUserId());
+			pst.setString(3, keyLabel.getKeyLabelName());
+			pst.setInt(4, keyLabel.getBeginTime());
+			pst.setInt(5, keyLabel.getEndTime());
+			pst.setInt(6, 0);
+			pst.setString(7, null);
+			pst.setInt(8, 0);
+			pst.executeUpdate();
+//			ResultSet generatedKeys = pst.getGeneratedKeys();
+//			if (generatedKeys.next())
+//				return generatedKeys.getInt(1);
+			
+		} catch (final SQLException x)
+		{
+			System.out.println("Exception insert" + x.toString());
+		} finally
+		{
+			Close();
 		}
-			catch(SQLException x){
-			System.out.println("Exception select"+x.toString());
+	}
+	
+	public void deleteKeyLabel(int keyLabelId)
+	{
+		try {
+			pst = con.prepareStatement(deleteKeyLabelSQL);
+			pst.setInt(1,keyLabelId);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		String json = new Gson().toJson(outputList);
-		return json;
 	}
 	
 	public void Close() {

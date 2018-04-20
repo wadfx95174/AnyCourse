@@ -42,7 +42,9 @@
 <link href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"
 	rel="stylesheet" type="text/css" />
 <link href="../dist/css/playerInterface.css" rel="stylesheet" type="text/css" />
-<link href="../dist/css/videoInput.css" rel="stylesheet" type="text/css" />
+<!-- <link href="../dist/css/videoInput.css" rel="stylesheet" type="text/css" /> -->
+<link href="../dist/css/foundation.min.css" rel="stylesheet" type="text/css" />
+<link href="../dist/css/playerjs.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="skin-blue">
 	<div class="wrapper">
@@ -215,9 +217,12 @@
 								<video controls="" name="media" id = "myvideo" ><source src="http://140.112.161.119/vod/100S103/100S103_CT01V01.mp4" type="video/mp4"></video>
 						</div>
 						<div>
-                        	<input id="Jw-player-progress" type="range" value="0" min="0" max="100">
-                        	<progress id = "prog" value="50" max="100"></progress>
-                        	<label for="Jw-player-progress">duration</label>       
+							<div class="progress">
+							    <span class="meter">
+							    	<span class="current-time"></span>
+							    </span>
+							    <span class="duration"></span>
+							</div> 
                      	</div>
 						<div style="float: left;">
 							<h3 style="margin-top: 10px;">
@@ -283,7 +288,9 @@
 										<br>A <br>A <br>A <br>A <br>
 									</div>
 									<!-- /.tab-pane -->
-									<div class="tab-pane" id="exchange">The Europ</div>
+									<div class="tab-pane" id="exchange">
+										
+									</div>
 									<!-- /.tab-pane -->
 									<div class="tab-pane" id="forum">The European languages
 										are members of the same family. Their separate existence is a
@@ -506,6 +513,6 @@
 	<!-- AdminLTE for demo purposes -->
 	<script src="../dist/js/demo.js" type="text/javascript"></script>
 	<script src="../dist/js/playerInterface.js" type="text/javascript"></script>
-	<script src="../dist/js/jwPlayer.js" type="text/javascript"></script>
+	<script src="../dist/js/progress.js" type="text/javascript"></script>
 </body>
 </html>
