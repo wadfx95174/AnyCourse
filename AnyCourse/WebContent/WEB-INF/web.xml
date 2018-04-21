@@ -17,6 +17,10 @@
     <servlet-name>KeyLabelServlet</servlet-name>
     <servlet-class>KeyLabel.KeyLabelServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>LoginVerificationServlet</servlet-name>
+    <servlet-class>LoginVerification.LoginVerificationServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>SearchRecordServlet</servlet-name>
     <url-pattern>/SearchRecordServlet.do</url-pattern>
@@ -24,6 +28,10 @@
   <servlet-mapping>
     <servlet-name>KeyLabelServlet</servlet-name>
     <url-pattern>/KeyLabelServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LoginVerificationServlet</servlet-name>
+    <url-pattern>/AnyCourse/pages/examples/LoginVerificationServlet.do</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>Personal.SearchRecord.SearchRecordServlet</welcome-file>
