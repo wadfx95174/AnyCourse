@@ -1,8 +1,10 @@
+// 各欄位正確與否 :boolean 
 var nickNameCheck =false;
 var userIdCheck = false;
 var passwordCheck = false;
 var confirmPwCheck = false;
 var emailCheck = false;
+
 $(function () {
   $('input').iCheck({
     checkboxClass: 'icheckbox_square-blue',
@@ -10,15 +12,18 @@ $(function () {
     increaseArea: '20%' // optional
   });
 });
+
+//檢查"暱稱"欄位 
 $('#nickName').change(function nickName(){
  nickNameCheck = false;
     var reg = /^[0-9a-zA-Z\u3E00-\u9FA5]{1,16}$/;//1-16字節，可以中文
     var nickName = $("#nickName").val();
+    
     if (nickName == "") {
-		$("#nickNamePrompt").html("暱稱不能為空");
+		$("#nickNamePrompt").html("暱稱不能為空！");
 		return false;
 	} else if (!reg.test(nickName)) {
-		$("#nickNamePrompt").html("不合法的格式(1~16個字)")
+		$("#nickNamePrompt").html("不合法的格式！(1~16個字)")
 		return false;
 	} else {
 		$("#nickNamePrompt").html("");
@@ -26,24 +31,26 @@ $('#nickName').change(function nickName(){
 		return true;
 	}
 });
-  
+
+// 檢查"帳號"欄位 
 $('#userId').change(function userId() {
-      //reg1 = /^[a-zA-Z][a-zA-Z0-9]{3,15}$/;// 帳號是否合法(字母開頭，允許4-16字節)
-        
       userIdCheck = false;
-      var reg = /^[0-9a-zA-Z\u3E00-\u9FA5]{3,15}$/;//4-16字節
+      var reg = /^[0-9a-zA-Z\u3E00-\u9FA5]{2,15}$/;//3-16字節
       var userName = $("#userId").val();
+      
       if (userName == "") {
-          $("#userIdPrompt").html("帳號不能為空");
+          $("#userIdPrompt").html("帳號不能為空！");
           return false;
       } else if (!reg.test(userName)) {
-          $("#userIdPrompt").html("不合法的格式(4~16個英數組合)");
+          $("#userIdPrompt").html("不合法的格式！(3~16個英數組合)");
           return false;
       } else {
           var userFlag = false;
           $.ajaxSetup({
               async : false
           });
+          
+      // 檢查帳號是否已存在
 	  $.ajax({
               url : "http://localhost:8080/AnyCourse/AnyCourse/pages/examples/LoginVerificationServlet.do",
               data : {
@@ -52,7 +59,7 @@ $('#userId').change(function userId() {
               },
               success : function(data) {
                   if (data.userId != null) {
-                      $("#userIdPrompt").html("此帳號已存在");
+                      $("#userIdPrompt").html("此帳號已存在！");
                   } else {
                       $("#userIdPrompt").html("");
                       userIdCheck = true;
@@ -63,15 +70,17 @@ $('#userId').change(function userId() {
               {
             	  alert("fail");
               }
-          });
+          }); // end ajax
           return userFlag;
-      }
+      } // end else
 });
-  
+
+//檢查"密碼"欄位
 $('#password').change(function password(){
 	confirmPw();
 	passwordCheck = false;
     var userPwd = $('#password').val();
+    
     if (userPwd == "") {
         $("#passwordPrompt").html("密碼不能為空！");
         return false;
@@ -84,7 +93,8 @@ $('#password').change(function password(){
         return true;
     } 
 });
-  
+
+// 檢查"確認密碼"欄位
 $('#confirmPw').change(confirmPw);
 function confirmPw(){
 	confirmPwCheck = false;
@@ -92,6 +102,7 @@ function confirmPw(){
     var pwd=$.trim(a);
     var b=$('#confirmPw').val();
     var repwd=$.trim(b);
+    
     if (repwd == "") {
         $("#confirmPwPrompt").html("確認密碼不能為空！");
         return false;
@@ -104,7 +115,8 @@ function confirmPw(){
         return true;
     } 
 }
-  
+
+// 檢查"email"欄位
 $('#email').change(function email(){
 	emailCheck = false;
 	var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
@@ -113,7 +125,7 @@ $('#email').change(function email(){
         $("#emailPrompt").html("信箱不能為空！");
         return false;
   	} else if (!reg.test(email)) {
-  		$("#emailPrompt").html("不合法的信箱格式");
+  		$("#emailPrompt").html("不合法的信箱格式！");
   		return false;
   	} else {
   		$("#emailPrompt").html("");
@@ -122,30 +134,31 @@ $('#email').change(function email(){
   	}
 })
 
+// 檢查欄位是否填寫正確
 function checkInput(form){
 	if (!nickNameCheck)
 	{
-		alert("請再填寫一次暱稱");
+		alert("請再填寫一次暱稱！");
 		return false;
 	}
 	if (!userIdCheck)
 	{
-		alert("請再填寫一次帳號");
+		alert("請再填寫一次帳號！");
 		return false;
 	}
 	if (!passwordCheck)
 	{
-		alert("請再填寫一次密碼");
+		alert("請再填寫一次密碼！");
 		return false;
 	}
 	if (!confirmPwCheck)
 	{
-		alert("請再填寫一次確認密碼");
+		alert("請再填寫一次確認密碼！");
 		return false;
 	}
 	if (!emailCheck)
 	{
-		alert("請再填寫一次信箱");
+		alert("請再填寫一次信箱！");
 		return false;
 	}
 	return true;
