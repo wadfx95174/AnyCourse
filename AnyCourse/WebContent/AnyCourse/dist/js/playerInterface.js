@@ -37,7 +37,7 @@ $(document).ready(function(){
     });
     
 //----------------------------------------------video----------------------------------------------//
-    var video=$("#myvideo")[0];
+    video=$("#myvideo")[0];
 	var jwPlayerActive = false;
 	var videoStateTexts = [  
         'HAVE_NOTHING','HAVE_METADATA','HAVE_CURRENT_DATA',  
@@ -119,7 +119,6 @@ $(document).ready(function(){
 				+'<a href="#" class = "self ukl" id = "self-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
 				+'</ul>'
 				+'</li>');
-		addKeyLabelEvent();
     }
 
     // 設置暫存重點標籤
@@ -133,81 +132,77 @@ $(document).ready(function(){
 				+'<a href="#" class = "temp ukl" id = "temp-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
 				+'</ul>'
 				+'</li>');
-		addKeyLabelEvent();
     }
+    
+  //重點標籤 從右滑出
+    $(document).on('mouseover', '.list-group-item', function(event) {
+        event.preventDefault();
+        $(this).closest('li').addClass('open');
+    });
+
+    $(document).on('mouseout', '.list-group-item', function(event) {
+        event.preventDefault();
+        $(this).closest('li').removeClass('open');
+    });
 
     // 設定重點標籤的事件
-    function addKeyLabelEvent()
+    // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
+    $(document).on('click', '.ukl', function(event) 
     {
-    	// 重點標籤 從右滑出
-    	$('.list-group-item').on('mouseover', function(event) {
-            event.preventDefault();
-            $(this).closest('li').addClass('open');
-        });
-    	
-        $('.list-group-item').on('mouseout', function(event) {
-            event.preventDefault();
-            $(this).closest('li').removeClass('open');
-        });
-        
-    	// 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
-    	$(".ukl").click(function()
-    	{
-    		video.currentTime=keyLabelArray[parseInt(this.getAttribute("id").split("-")[2])].beginTime;
-    	})
-    	// 點擊個人標籤刪除按鈕，送去資料庫刪除    --------------------*未完成
-    	$(".self.dkl").click(function()
-    	{
-    		var element = $(this).parent().parent();
-    		var index = parseInt(this.getAttribute("id").split("-")[2]);
-    		alert(index);
-    		$.ajax({
-    			url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
-    			method : 'POST',
-    		    data : {
-    		    	"method" : "delete",
+    	video.currentTime=keyLabelArray[parseInt(this.getAttribute("id").split("-")[2])].beginTime;
+    })
+    // 點擊個人標籤刪除按鈕，送去資料庫刪除    --------------------*未完成
+    $(document).on('click', '.self.dkl', function(event) 
+    {
+    	var element = $(this).parent().parent();
+    	var index = parseInt(this.getAttribute("id").split("-")[2]);
+    	$.ajax({
+    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+    		method : 'POST',
+    	    data : {
+    	    	"method" : "delete",
 //    		    	"user_id" : 1,  //id 1要改成session的id
-    		    	"keyLabelId" : keyLabelArray[index].keyLabelId
-    			},
-    			success:function(result){
-    				element.remove();
-    	    	},
-    			error:function(){alert('failed');}
-    		});
-    	})
-    	// 點擊添加按鈕，新增至個人重點標籤，上傳資料庫      *要改為資料庫傳回正確值
-    	$(".akl").click(function()
-    	{
-    		//	method 1: 移動
-    		//$('#keyLabel1').append($(this).parent().parent().detach());
-    		
-    		//	method 2: 添加
-    		var index = parseInt(this.getAttribute("id").split("-")[2]);
-    		
-    		//*
+    	    	"keyLabelId" : keyLabelArray[index].keyLabelId
+    		},
+    		success:function(result){
+    			element.remove();
+        	},
+    		error:function(){alert('failed');}
+    	});
+    })
+    // 點擊添加按鈕，新增至個人重點標籤，上傳資料庫      *要改為資料庫傳回正確值
+    $(document).on('click', '.akl', function(event) 
+    {
+    	//	method 1: 移動
+    	//$('#keyLabel1').append($(this).parent().parent().detach());
+    	//	method 2: 添加
+    	var index = parseInt(this.getAttribute("id").split("-")[2]);
+    	
+    	//*
 //    		keyLabelArray[maxIndex] = keyLabelArray[index];
 //    		keyLabelArray[maxIndex].keyLabelId = ??;
-    		//*
-    		
-    		addToSelfKeyLabel(parseInt(this.getAttribute("id").split("-")[2]));
-    		$.ajax({
-    			url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
-    			method : 'POST',
-    		    data : {
-    		    	"method" : "insert",
-    		    	"userId" : 1,  //id 1要改成session的id
-    		    	"keyLabelName" : keyLabelArray[index].keyLabelName,
-    		    	"beginTime" : keyLabelArray[index].beginTime,
-    		    	"endTime" : keyLabelArray[index].endTime,
-    		    	"unitId" : keyLabelArray[index].unitId
-    			},
-    			success:function(result){
-    	    		
-    	    	},
-    			error:function(){alert('failed');}
-    		});
-    	})
-    }
+    	//*
+    	
+    	$.ajax({
+    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+    		method : 'POST',
+    	    data : {
+    	    	"method" : "insert",
+    	    	"userId" : 1,  //id 1要改成session的id
+    	    	"keyLabelName" : keyLabelArray[index].keyLabelName,
+    	    	"beginTime" : keyLabelArray[index].beginTime,
+    	    	"endTime" : keyLabelArray[index].endTime,
+    	    	"unitId" : keyLabelArray[index].unitId
+    		},
+    		dataType : 'json',
+    		cache: false,
+    		success:function(result){
+    			keyLabelArray[maxIndex] = result;
+        		addToSelfKeyLabel(maxIndex++);
+        	},
+    		error:function(){alert('failed');}
+    	});
+    })
     
     $.ajax({
 		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
@@ -229,18 +224,17 @@ $(document).ready(function(){
     				$('#exchange').append('<li class="list-group-item">'
     						+ keyLabelArray[maxIndex].keyLabelName
     						+'<ul class="list-group-submenu">'
-    						+'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + i + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
+    						+'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
     						+'</ul>'
     						+'</li>');
-    				addKeyLabelEvent();
-    				// 點選交流區的重點標籤，暫存區出現
     				
 				}
 			} // end for
-    		$(".exchange").click(function()
+    		
+    		// 點選交流區的重點標籤，暫存區出現
+    		$('.list-group-submenu').on('click', '.exchange', function(event) 
 					{
 						var index = parseInt(this.getAttribute("id").split("-")[2]);
-						alert(index);
 						addToTempKeyLabel(index);
 					})
     	}, // end success
@@ -249,3 +243,4 @@ $(document).ready(function(){
 
 //----------------------------------------------keyLabel----------------------------------------------//    
 });
+

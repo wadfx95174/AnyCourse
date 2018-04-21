@@ -100,7 +100,7 @@ public class KeyLabelDatabaseManager
 //		return json;
 //	}
 	
-	public void insertKeyLabel(KeyLabel keyLabel)
+	public int insertKeyLabel(KeyLabel keyLabel)
 	{
 		try
 		{
@@ -114,9 +114,9 @@ public class KeyLabelDatabaseManager
 			pst.setString(7, null);
 			pst.setInt(8, 0);
 			pst.executeUpdate();
-//			ResultSet generatedKeys = pst.getGeneratedKeys();
-//			if (generatedKeys.next())
-//				return generatedKeys.getInt(1);
+			ResultSet generatedKeys = pst.getGeneratedKeys();
+			if (generatedKeys.next())
+				return generatedKeys.getInt(1);
 			
 		} catch (final SQLException x)
 		{
@@ -125,6 +125,7 @@ public class KeyLabelDatabaseManager
 		{
 			Close();
 		}
+		return 0;
 	}
 	
 	public void deleteKeyLabel(int keyLabelId)

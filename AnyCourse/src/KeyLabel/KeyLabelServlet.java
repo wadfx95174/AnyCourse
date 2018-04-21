@@ -30,12 +30,17 @@ public class KeyLabelServlet extends HttpServlet {
 		String method = request.getParameter("method");
 		if (method.equals("insert"))
 		{
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
 			keyLabel.setUserId(request.getParameter("userId"));
 			keyLabel.setUnitId(Integer.parseInt(request.getParameter("unitId")));
 			keyLabel.setKeyLabelName(request.getParameter("keyLabelName"));
 			keyLabel.setBeginTime(Integer.parseInt(request.getParameter("beginTime")));
 			keyLabel.setEndTime(Integer.parseInt(request.getParameter("endTime")));
-			keyLabelDatebaseManager.insertKeyLabel(keyLabel);
+			keyLabel.setKeyLabelId(keyLabelDatebaseManager.insertKeyLabel(keyLabel));
+			Gson gson = new Gson();
+			String json = gson.toJson(keyLabel);
+			response.getWriter().write(json);
 		}
 		else if (method.equals("delete"))
 		{
