@@ -17,17 +17,30 @@ public class LoginVerificationServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
-		if (session.getAttribute("userId") == null)
+		String method = request.getParameter("method");
+		
+		if (method.equals("checkLogin"))
 		{
-			UserProfile userProfile = new UserProfile();
-			userProfile.setUserId(null);
-			String json = new Gson().toJson(userProfile);
-			response.getWriter().write(json);
+			if (session.getAttribute("userId") == null)
+			{
+				UserProfile userProfile = new UserProfile();
+				userProfile.setUserId(null);
+				String json = new Gson().toJson(userProfile);
+				response.getWriter().write(json);
+			}
+			else
+			{
+				UserProfile userProfile = new UserProfile();
+				userProfile.setUserId((String)session.getAttribute("userId"));
+				String json = new Gson().toJson(userProfile);
+				response.getWriter().write(json);
+			}
 		}
-		else
+		else if (method.equals("checkExist"))
 		{
+			String userId = request.getParameter("userId");
 			UserProfile userProfile = new UserProfile();
-			userProfile.setUserId((String)session.getAttribute("userId"));
+			userProfile.setUserId(manager.getUserId(userId));
 			String json = new Gson().toJson(userProfile);
 			response.getWriter().write(json);
 		}
@@ -35,8 +48,8 @@ public class LoginVerificationServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
+		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-//		UserProfile userProfile = new UserProfile();
 		HttpSession session = request.getSession();
 		String method = request.getParameter("method");
 		if (method.equals("login"))
@@ -56,7 +69,15 @@ public class LoginVerificationServlet extends HttpServlet {
 		}
 		else if (method.equals("register"))
 		{
-	
+			UserProfile userProfile = new UserProfile();
+			userProfile.setUserId(request.getParameter("Account"));
+			userProfile.setPassword(request.getParameter("Password"));
+			userProfile.setEmail(request.getParameter("Email"));
+			userProfile.setNickName(request.getParameter("Nickname"));
+			userProfile.addFavoriteCourse(request.getParameter("Preference"));
+			manager.createAccount(userProfile);
+			manager.insertFavoriteCourse(userProfile);
+			response.getWriter().println("註冊成功");
 		}
 	}
 

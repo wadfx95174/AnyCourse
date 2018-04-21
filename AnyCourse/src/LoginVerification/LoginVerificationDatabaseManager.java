@@ -6,17 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-
-import com.google.gson.Gson;
 
 public class LoginVerificationDatabaseManager
 {
 	private String selectPasswordSQL = "select password from account where user_id = ? or email = ?";
 	private String selectUserIdSQL = "select user_id from account where user_id = ? or email = ?";
-	//private String selectPersonalKeyLabelSQL = "select * from keylabel where unit_id = ? and user_id = ? ";
-//	private String insertKeyLabelSQL = "insert into keylabel value (null,?,?,?,?,?,?,?,?)";
-//	private String deleteKeyLabelSQL = "delete from keylabel where keylabel_id = ?";
+	private String insertAccountTableSQL = "insert into account value (?,null,?,null,?,?,null)";
+	private String insertFavoriteCourseSQL = "insert into favorite_course value(?,?)";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -75,80 +71,46 @@ public class LoginVerificationDatabaseManager
 		return null;
 	}
 	
-//	public String getUnitPersonalKeyLabel(int unit, int user) {
-//
-//		ArrayList<KeyLabel> outputList = new ArrayList<>(); 
-//		try {
-//			pst = con.prepareStatement(selectPersonalKeyLabelSQL);
-//			pst.setInt(1, unit);
-//			pst.setInt(2, user);
-//			result = pst.executeQuery();
-//			while(result.next()) 
-//			{ 	
-//				KeyLabel keyLabel = new KeyLabel();
-//				keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
-//				keyLabel.setUnitId(result.getInt("unit_id"));
-//				keyLabel.setUserId(result.getString("user_id"));
-//				keyLabel.setKeyLabelName(result.getString("keylabel_name"));
-//				keyLabel.setBeginTime(result.getInt("begin_time"));
-//				keyLabel.setEndTime(result.getInt("end_time"));
-//				keyLabel.setShare(result.getInt("share"));
-//				keyLabel.setShareTime(result.getString("share_time"));
-//				keyLabel.setLikes(result.getInt("likes"));
-//				outputList.add(keyLabel);
-//			}
-//		}
-//			catch(SQLException x){
-//			System.out.println("Exception select"+x.toString());
-//		}
-//		finally {
-//			Close();
-//		}
-//		String json = new Gson().toJson(outputList);
-//		return json;
-//	}
+	public void createAccount(UserProfile userProfile)
+	{
+		try
+		{
+			pst = con.prepareStatement(insertAccountTableSQL);
+			pst.setString(1, userProfile.getUserId());
+			pst.setString(2, userProfile.getPassword());
+			pst.setString(3, userProfile.getEmail());
+			pst.setString(4, userProfile.getNickName());
+			pst.executeUpdate();
+			
+		} catch (final SQLException x)
+		{
+			System.out.println("Exception insert" + x.toString());
+		} finally
+		{
+			Close();
+		}
+	}
 	
-//	public void insertKeyLabel(KeyLabel keyLabel)
-//	{
-//		try
-//		{
-//			pst = con.prepareStatement(insertKeyLabelSQL, Statement.RETURN_GENERATED_KEYS);
-//			pst.setInt(1, keyLabel.getUnitId());
-//			pst.setString(2, keyLabel.getUserId());
-//			pst.setString(3, keyLabel.getKeyLabelName());
-//			pst.setInt(4, keyLabel.getBeginTime());
-//			pst.setInt(5, keyLabel.getEndTime());
-//			pst.setInt(6, 0);
-//			pst.setString(7, null);
-//			pst.setInt(8, 0);
-//			pst.executeUpdate();
-////			ResultSet generatedKeys = pst.getGeneratedKeys();
-////			if (generatedKeys.next())
-////				return generatedKeys.getInt(1);
-//			
-//		} catch (final SQLException x)
-//		{
-//			System.out.println("Exception insert" + x.toString());
-//		} finally
-//		{
-//			Close();
-//		}
-//	}
-	
-//	public void deleteKeyLabel(int keyLabelId)
-//	{
-//		try {
-//			pst = con.prepareStatement(deleteKeyLabelSQL);
-//			pst.setInt(1,keyLabelId);
-//			pst.executeUpdate();
-//		}
-//		catch(SQLException x){
-//			System.out.println("Exception delete"+x.toString());
-//		}
-//		finally {
-//			Close();
-//		}
-//	}
+	public void insertFavoriteCourse(UserProfile userProfile)
+	{
+		try
+		{
+			pst = con.prepareStatement(insertFavoriteCourseSQL);
+			for (String str: userProfile.getFavoriteCourses())
+			{
+				pst.setString(1, userProfile.getUserId());
+				pst.setString(2, str);
+				pst.executeUpdate();
+			}
+			
+		} catch (final SQLException x)
+		{
+			System.out.println("Exception insert" + x.toString());
+		} finally
+		{
+			Close();
+		}
+	}
 	
 	public void Close() {
 		try {
@@ -172,18 +134,6 @@ public class LoginVerificationDatabaseManager
 	
 	public static void main(String []args)
 	{
-		LoginVerificationDatabaseManager lvdm = new LoginVerificationDatabaseManager();
-		
-//		ArrayList<KeyLabel> unitKeyLabel = kldm.getUnitKeyLabel(1);
-//		for (KeyLabel i:unitKeyLabel)
-//		{
-//			System.out.println(i);
-//		}
-//		System.out.println("unitPersonal:");
-//		ArrayList<KeyLabel> unitPersonalKeyLabel = kldm.getUnitPersonalKeyLabel(1, 1);
-//		for (KeyLabel i:unitPersonalKeyLabel)
-//		{
-//			System.out.println(i);
-//		}
+//		LoginVerificationDatabaseManager lvdm = new LoginVerificationDatabaseManager();
 	}
 }
