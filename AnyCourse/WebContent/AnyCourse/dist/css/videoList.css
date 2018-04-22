@@ -1,3 +1,12 @@
 .show-on-hover:hover > ul.dropdown-menu {
     display: block;    
 }
+#videoListUL > li {
+	cursor: pointer;
+}
+.dlg-no-close .ui-dialog-titlebar-close {
+	display: none;
+}
+#unit > a{
+	cursor: pointer;
+}

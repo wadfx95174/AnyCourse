@@ -43,6 +43,8 @@
 <link
 	href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"
 	rel="stylesheet" type="text/css" />
+	
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 <link href="../../dist/css/videoList.css" rel="stylesheet"
 	type="text/css" />
 </head>
@@ -224,115 +226,9 @@
 							</div>
 							<!-- /.box-header -->
 							<!-- box-body -->
-							<div class="box-body" style="height: 480px;" id="unit">
-								<ul class="todo-list ui-sortable">
-									<li id="videoItem_0"><span
-										class="handle ui-sortable-handle"> <i
-											class="fa fa-ellipsis-h"></i>
-									</span> <span class="pull-right"> <i class="fa fa-times"
-											data-toggle="modal" data-target="#deleteModal2"
-											onclick="getID(0)" style="cursor: pointer;"></i>
-									</span> <a href="../PlayerInterface.html" class="list-group-item">
-											<div class="media">
-												<div class="col-xs-4 pull-left" style="padding-left: 0px;">
-													<div class="embed-responsive embed-responsive-16by9">
-														<iframe class="embed-responsive-item"
-															src="https://www.youtube.com/embed/B-AoHE6dPnk
-                                                "
-															frameborder="0" allowfullscreen> </iframe>
-													</div>
-												</div>
-												<div class="media-body">
-													<h4 class="media-heading">
-														<b>課程名稱:導涵式公式的推廣</b>
-													</h4>
-													<p style="margin-bottom: 5px;">開課大學:中央大學</p>
-													<p style="margin-bottom: 5px;">授課教師:王老師</p>
-													<p style="margin-bottom: 5px;">課程簡介:.....</p>
-													<p style="margin-bottom: 5px;">讚數:216,165</p>
-												</div>
-											</div>
-									</a></li>
-									<li id="videoItem_1"><span
-										class="handle ui-sortable-handle"> <i
-											class="fa fa-ellipsis-h"></i>
-									</span> <span class="pull-right"> <i class="fa fa-times"
-											data-toggle="modal" data-target="#deleteModal2"
-											onclick="getID(1)" style="cursor: pointer;"></i>
-									</span> <a href="../PlayerInterface.html" class="list-group-item">
-											<div class="media">
-												<div class="col-xs-4 pull-left" style="padding-left: 0px;">
-													<div class="embed-responsive embed-responsive-16by9">
-														<iframe class="embed-responsive-item"
-															src="https://www.youtube.com/embed/B-AoHE6dPnk
-                                                "
-															frameborder="0" allowfullscreen> </iframe>
-													</div>
-												</div>
-												<div class="media-body">
-													<h4 class="media-heading">
-														<b>數學涵式 vs 物理運動(一)</b>
-													</h4>
-													<p style="margin-bottom: 5px;">開課大學:中央大學</p>
-													<p style="margin-bottom: 5px;">授課教師:王老師</p>
-													<p style="margin-bottom: 5px;">課程簡介:.....</p>
-													<p style="margin-bottom: 5px;">讚數:516,165</p>
-												</div>
-											</div>
-									</a></li>
-									<li id="videoItem_2"><span
-										class="handle ui-sortable-handle"> <i
-											class="fa fa-ellipsis-h"></i>
-									</span> <span class="pull-right"> <i class="fa fa-times"
-											data-toggle="modal" data-target="#deleteModal2"
-											onclick="getID(2)" style="cursor: pointer;"></i>
-									</span> <a href="../PlayerInterface.html" class="list-group-item">
-											<div class="media">
-												<div class="col-xs-4 pull-left" style="padding-left: 0px;">
-													<div class="embed-responsive embed-responsive-16by9">
-														<iframe class="embed-responsive-item"
-															src="https://www.youtube.com/embed/B-AoHE6dPnk
-                                                "
-															frameborder="0" allowfullscreen> </iframe>
-													</div>
-												</div>
-												<div class="media-body">
-													<h4 class="media-heading">
-														<b>入門微積分(一)</b>
-													</h4>
-													<p style="margin-bottom: 5px;">開課大學:交通大學</p>
-													<p style="margin-bottom: 5px;">授課教師:陳老師</p>
-													<p style="margin-bottom: 5px;">課程簡介:.....</p>
-													<p style="margin-bottom: 5px;">讚數:466,165</p>
-												</div>
-											</div>
-									</a></li>
-									<li id="videoItem_3"><span
-										class="handle ui-sortable-handle"> <i
-											class="fa fa-ellipsis-h"></i>
-									</span> <span class="pull-right"> <i class="fa fa-times"
-											data-toggle="modal" data-target="#deleteModal2"
-											onclick="getID(3)" style="cursor: pointer;"></i>
-									</span> <a href="../PlayerInterface.html" class="list-group-item">
-											<div class="media">
-												<div class="col-xs-4 pull-left" style="padding-left: 0px;">
-													<div class="embed-responsive embed-responsive-16by9">
-														<iframe class="embed-responsive-item"
-															src="https://www.youtube.com/embed/B-AoHE6dPnk"
-															frameborder="0" allowfullscreen> </iframe>
-													</div>
-												</div>
-												<div class="media-body">
-													<h4 class="media-heading">
-														<b>入門微積分(一)</b>
-													</h4>
-													<p style="margin-bottom: 5px;">開課大學:交通大學</p>
-													<p style="margin-bottom: 5px;">授課教師:陳老師</p>
-													<p style="margin-bottom: 5px;">課程簡介:.....</p>
-													<p style="margin-bottom: 5px;">讚數:466,165</p>
-												</div>
-											</div>
-									</a></li>
+							<div class="box-body">
+								<ul class="todo-list ui-sortable" style="height: 480px;" id="unit">
+									<!-- 顯示相對應的單元影片 -->
 								</ul>
 							</div>
 							<!-- /.box-body -->
@@ -348,9 +244,11 @@
 								</h3>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body" style="height: 445px;" id="list">
+							<div class="box-body" style="height: 465px;" id="list">
 								<ul class="todo-list ui-sortable" id="videoListUL">
 									<!--新增清單-->
+									
+									<!--/.新增清單-->
 								</ul>
 							</div>
 							<!-- /.box-body -->
@@ -518,6 +416,16 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	
+	<!-- 沒有輸入清單名稱 -->
+	<div id="unNewEdit" title="編輯錯誤">
+	  <p>請輸入新的清單名稱</p>
+	</div>
+	
+	<!-- 沒有輸入清單名稱 -->
+	<div id="unAdd" title="新增錯誤">
+	  <p>請輸入清單名稱</p>
 	</div>
 </body>
 </html>

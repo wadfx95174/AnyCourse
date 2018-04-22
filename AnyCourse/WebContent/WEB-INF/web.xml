@@ -14,6 +14,10 @@
     <servlet-class>Personal.SearchRecord.SearchRecordServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>VideoListServlet</servlet-name>
+    <servlet-class>Personal.VideoList.VideoListServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>KeyLabelServlet</servlet-name>
     <servlet-class>KeyLabel.KeyLabelServlet</servlet-class>
   </servlet>
@@ -28,6 +32,10 @@
   <servlet-mapping>
     <servlet-name>SearchRecordServlet</servlet-name>
     <url-pattern>/SearchRecordServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>VideoListServlet</servlet-name>
+    <url-pattern>/VideoListServlet.do</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>KeyLabelServlet</servlet-name>
