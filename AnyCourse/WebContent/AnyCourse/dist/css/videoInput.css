@@ -1,7 +1,7 @@
-input[type="range"]{
+/* input[type="range"]{
     position: absolute;
     top: 404px;
-}
+} */
 
 progress, input[type="range"] {
     width: 600px;

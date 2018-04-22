@@ -1,0 +1,35 @@
+
+ .progress {
+  border: none;
+  padding: 0;
+  height: 5px;
+  width: 100%;
+  z-index: 200;
+  text-align: right; }
+.progress .meter {
+ width: 0%;
+ text-align: right;
+ z-index: 1;
+ background: #3092b5; }
+.progress .current-time {
+ display: none;
+ color: #fff;
+ font-size: 12px;
+ padding-right: 5px; }
+.progress .duration {
+ display: none;
+ position: absolute;
+ top: 4px;
+ right: 5px;
+ font-size: 12px;
+ z-index: 0; }
+.progress.open .duration {
+ display: block; }
+.progress.open .current-time {
+ display: inline; }
+.keyLabelDiv {
+	background-color: red;
+	width:0%;
+	height:10px;
+	margin-top:-6px;
+}
