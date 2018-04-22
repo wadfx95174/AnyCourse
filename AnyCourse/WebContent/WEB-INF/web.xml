@@ -21,6 +21,10 @@
     <servlet-name>LoginVerificationServlet</servlet-name>
     <servlet-class>LoginVerification.LoginVerificationServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>PlayerInterfaceServlet</servlet-name>
+    <servlet-class>PlayerInterface.PlayerInterfaceServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>SearchRecordServlet</servlet-name>
     <url-pattern>/SearchRecordServlet.do</url-pattern>
@@ -32,6 +36,10 @@
   <servlet-mapping>
     <servlet-name>LoginVerificationServlet</servlet-name>
     <url-pattern>/AnyCourse/pages/examples/LoginVerificationServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PlayerInterfaceServlet</servlet-name>
+    <url-pattern>/PlayerInterfaceServlet.do</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>Personal.SearchRecord.SearchRecordServlet</welcome-file>
