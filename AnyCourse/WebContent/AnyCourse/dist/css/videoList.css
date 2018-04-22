@@ -6,4 +6,7 @@
 }
 .dlg-no-close .ui-dialog-titlebar-close {
 	display: none;
-	}
+}
+#unit > a{
+	cursor: pointer;
+}

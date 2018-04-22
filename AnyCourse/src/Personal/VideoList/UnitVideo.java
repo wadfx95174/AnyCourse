@@ -7,6 +7,7 @@ public class UnitVideo {
 	private String school_name;
 	private String teacher;
 	private String video_img_src;
+	private int videoType;//1:youtube。2:jwplayer
 	private int courselist_id;
 	private int oorder;
 	private int likes;
@@ -45,6 +46,9 @@ public class UnitVideo {
 	public void setVideoImgSrc(String video_img_src) {
 		this.video_img_src = video_img_src;
 	}
+	public void setVideoType(int videoType) {
+		this.videoType = videoType;
+	}
 	public String getUserID() {
 		return user_id;
 	}
@@ -74,5 +78,8 @@ public class UnitVideo {
 	}
 	public String getVideoImgSrc() {
 		return video_img_src;
+	}
+	public int getVideoType() {
+		return videoType;
 	}
 }
