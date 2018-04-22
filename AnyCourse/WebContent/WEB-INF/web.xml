@@ -22,6 +22,14 @@
 	</servlet-mapping>
 	
 	<welcome-file-list>
-    	<welcome-file>Personal.SearchRecord.SearchRecordServlet</welcome-file>
+    	<welcome-file>Personal.VideoList.VideoListServlet</welcome-file>
 	</welcome-file-list>
+	<servlet>
+		<servlet-name>VideoListServlet</servlet-name>
+		<servlet-class>Personal.VideoList.VideoListServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>VideoListServlet</servlet-name>
+		<url-pattern>/VideoListServlet.do</url-pattern>
+	</servlet-mapping>
 </web-app>

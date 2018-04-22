@@ -10,6 +10,7 @@ public class OutputFormat {
 	private String courseInfo;
 	private ArrayList<String> unitName;
 	private ArrayList<String> unitURL;
+//	private ArrayList<String> unitImgSrc;
 	private ArrayList<String> lectureName;
 	private ArrayList<String> lecture;
 	
@@ -42,6 +43,9 @@ public class OutputFormat {
 	public void setUnitURL(String unitURL) {
 		this.unitURL.add(unitURL);
 	}
+//	public void setUnitImgSrc(String unitImgSrc) {
+//		this.unitImgSrc.add(unitImgSrc);
+//	}
 	public void setLectureName(String lectureName) {
 		this.lectureName.add(lectureName);
 	}
@@ -70,6 +74,9 @@ public class OutputFormat {
 	public ArrayList<String> getUnitURL(){
 		return unitURL;
 	}
+//	public ArrayList<String> getUnitImgSrc(){
+//		return unitImgSrc;
+//	}
 	public ArrayList<String> getLectureName(){
 		return lectureName;
 	}

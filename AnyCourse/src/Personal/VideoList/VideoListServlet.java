@@ -15,16 +15,26 @@ public class VideoListServlet extends HttpServlet{
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type","text/html;charset=UTF-8");
 		
-		ArrayList<VideoList> videoLists = new ArrayList<VideoList>(); 
+		ArrayList<VideoList> videoLists = new ArrayList<VideoList>();
+		ArrayList<UnitVideo> unitVideos = new ArrayList<UnitVideo>();
 		VideoListDatabaseManager videoListDatebaseManager = new VideoListDatabaseManager();
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
+		if(request.getParameter("action").equals("0")) {
+			videoListDatebaseManager.selectCourseListTable(videoLists);
+			response.setContentType("application/json");
+			response.getWriter().write(gson.toJson(videoLists));
+		}
+		else if(request.getParameter("action").equals("1")) {
+			videoListDatebaseManager.selectCustomListVideoTable(unitVideos
+					,request.getParameter("school_name"),request.getParameter("list_name"));
+			response.setContentType("application/json");
+			response.getWriter().write(gson.toJson(unitVideos));
+		}
 		
-		videoListDatebaseManager.selectSearchRecordTable(videoLists);
 		
-		response.setContentType("application/json");
-		response.getWriter().write(gson.toJson(videoLists));
-//			System.out.println(gson.toJson(searchRecords));
+		
+//		System.out.println(gson.toJson(videoLists));
 	}
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,11 +44,35 @@ public class VideoListServlet extends HttpServlet{
 		VideoListDatabaseManager videoListDatebaseManager = new VideoListDatabaseManager();
 		VideoList videoList = new VideoList();
 		
-		videoList.setUserID(request.getParameter("user_id"));
-		videoList.setSearchWord(request.getParameter("search_word"));
-		videoList.setSearchTime(request.getParameter("search_time"));
-		
-		videoListDatebaseManager.deleteSearchRecordTable(videoList);
+		//0代表insert
+		if(request.getParameter("action").equals("0")) {
+			videoList.setCreator("1");
+			videoList.setListName(request.getParameter("list_name"));
+			videoList.setShare(0);
+			videoList.setLikes(0);
+			videoListDatebaseManager.insertCourseListTable(videoList);
+			
+		}
+		//1代表delete
+		else if(request.getParameter("action").equals("1")) {
+			videoList.setCourselistID(Integer.parseInt(request.getParameter("courselist_id")));
+			videoList.setListName(request.getParameter("list_name"));
+			videoList.setCreator(request.getParameter("creator"));
+			videoList.setUserID(request.getParameter("user_id"));
+			videoList.setOorder(Integer.parseInt(request.getParameter("oorder")));
+			videoListDatebaseManager.deleteCourseListTable(videoList);
+		}
+		//2代表update
+		else if(request.getParameter("action").equals("2")) {
+			
+//			System.out.println(request.getParameter("creator"));
+//			System.out.println(request.getParameter("courselist_id"));
+//			System.out.println(request.getParameter("list_name"));
+			videoList.setCreator(request.getParameter("creator"));
+			videoList.setCourselistID(Integer.parseInt(request.getParameter("courselist_id")));
+			videoList.setListName(request.getParameter("list_name"));
+			videoListDatebaseManager.updateCourseListTable(videoList);
+		}
 	}
 	
 

@@ -16,15 +16,15 @@ $(document).ready(function() {
 		success:function(result){
 			searchRecordArray = new Array(result.length);
     		for(var i = 0 ;i < result.length;i++){
-    			$('#SearcRecordList').append('<li class="list-group-item" id="searchRecordID_'+ i +'">'
+    			$('#SearcRecordList').append('<li class="list-group-item" id="searchRecordID_'+ (i+1) +'">'
 						+'<div class="row">'
 						+'<div class="col-xs-1 text-left">'
 						+'<input name="checkboxItem" type="checkbox"/>'
 						+'</div>'
-						+'<div class="col-xs-7" id="searchRecordWord_'+ i +'"><a href="#">' + result[i].search_word + '</a></div>'
-						+'<div class="col-xs-3" id="searchRecordTime_'+ i +'">' + result[i].search_time + '</div>'
+						+'<div class="col-xs-7" id="searchRecordWord_'+ (i+1) +'"><a href="#">' + result[i].search_word + '</a></div>'
+						+'<div class="col-xs-3" id="searchRecordTime_'+ (i+1) +'">' + result[i].search_time + '</div>'
 						+'<div class="col-xs-1">'
-						+'<button type="button" data-toggle="modal" data-target="#deleteModal1" onclick="setID('+i+')"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除"></i></button>'
+						+'<button type="button" data-toggle="modal" data-target="#deleteModal1" onclick="setID('+(i+1)+')"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除"></i></button>'
 						+'</div>'
 						+'</div></li>');
     			for(var j = 0 ; j < 3;j++){
@@ -33,9 +33,9 @@ $(document).ready(function() {
 			}
     		for(var i = 0 ;i < result.length;i++){
     			for(var j = 0 ; j < 3;j++){
-    				if(j == 0)searchRecordArray[i][j] = result[i].user_id;
-    				else if(j == 1)searchRecordArray[i][j] = result[i].search_word;
-    				else searchRecordArray[i][j] = result[i].search_time
+    				if(j == 0)searchRecordArray[(i+1)][j] = result[i].user_id;
+    				else if(j == 1)searchRecordArray[(i+1)][j] = result[i].search_word;
+    				else searchRecordArray[(i+1)][j] = result[i].search_time
 //    				console.log(searchRecordArray[i][j]);
     			}
     		}
