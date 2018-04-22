@@ -223,6 +223,8 @@
 							    </span>
 							    <span class="duration"></span>
 							</div> 
+							<div class="keyLabelDiv" data-toggle="tooltip" data-placement="bottom"></div>
+							<div class="controlPanel"><button data-toggle="modal" data-target="#klCreateModal">添加標籤</button></div>
                      	</div>
 						<div style="float: left;">
 							<h3 style="margin-top: 10px;">
@@ -267,7 +269,6 @@
 								</div>
 							</div>
 						</div>
-						<div>
 							<!-- Custom Tabs -->
 							<div class="nav-tabs-custom">
 								<ul class="nav nav-tabs">
@@ -395,8 +396,83 @@
 			</section>
 		</div>
 	</div>
-	<!-- /.content-wrapper -->
+	<!--DeleteModal-->
+	<div class="modal fade" id="klDeleteModal" tabindex="-1" role="dialog"
+		aria-labelledby="deleteModalLabel" aria-hidden="true">
+		
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h3>
+						<b>確定要刪除嗎?</b>
+					</h3>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">取消</button>
+					<button id="deleteKlButton" type="button"
+						class="btn btn-primary" data-dismiss="modal">確定</button>
+				</div>
+			</div>
+		</div>
 	</div>
+	
+	<!--CreateModal-->
+	<div class="modal fade" id="klCreateModal" tabindex="-1" role="dialog"
+		aria-labelledby="createModalLabel" aria-hidden="true">
+		
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h3>
+			            <label for="keyLabelName" class="col-form-label">標籤名稱:</label>
+			            <input type="text" class="form-control" id="cKeyLabelName">
+			            <br>
+			            <label for="beginTime" class="col-form-label">開始時間:</label>
+			            <input type="text" class="form-control" id="cBeginTime">
+			            <br>
+			            <label for="endTime" class="col-form-label">結束時間:</label>
+			            <input type="text" class="form-control" id="cEndTime">
+					</h3>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">取消</button>
+					<button id="createKlButton" type="button"
+						class="btn btn-primary" data-dismiss="modal">確定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--EditModal-->
+	<div class="modal fade" id="klEditModal" tabindex="-1" role="dialog"
+		aria-labelledby="EditModalLabel" aria-hidden="true">
+		
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h3>
+			            <label for="keyLabelName" class="col-form-label">標籤名稱:</label>
+			            <input type="text" class="form-control" id="eKeyLabelName">
+			            <br>
+			            <label for="beginTime" class="col-form-label">開始時間:</label>
+			            <input type="text" class="form-control" id="eBeginTime">
+			            <br>
+			            <label for="endTime" class="col-form-label">結束時間:</label>
+			            <input type="text" class="form-control" id="eEndTime">
+					</h3>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">取消</button>
+					<button id="editKlButton" type="button"
+						class="btn btn-primary" data-dismiss="modal">確定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.content-wrapper -->
 	<!-- ./wrapper -->
 	<!-- jQuery 2.1.3 -->
 	<script src="../plugins/jQuery/jQuery-2.1.3.min.js"></script>

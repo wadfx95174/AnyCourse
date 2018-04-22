@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 public class KeyLabelDatabaseManager
 {
 	private String selectUnitKeyLabelSQL = "select * from keylabel where unit_id = ?";
-	//private String selectPersonalKeyLabelSQL = "select * from keylabel where unit_id = ? and user_id = ? ";
+	private String updateKeyLabelSQL = "update keylabel set keylabel_name = ?, begin_time = ?, end_time = ?, where keylabel_id = ?";
 	private String insertKeyLabelSQL = "insert into keylabel value (null,?,?,?,?,?,?,?,?)";
 	private String deleteKeyLabelSQL = "delete from keylabel where keylabel_id = ?";
 	private Connection con = null;
@@ -128,6 +128,24 @@ public class KeyLabelDatabaseManager
 		return 0;
 	}
 	
+	public void updateKeyLabel(KeyLabel keyLabel)
+	{
+		try {
+			pst = con.prepareStatement(updateKeyLabelSQL);
+			pst.setString(1,keyLabel.getKeyLabelName());
+			pst.setInt(2,keyLabel.getBeginTime());
+			pst.setInt(3,keyLabel.getEndTime());
+			pst.setInt(4, keyLabel.getKeyLabelId());
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("Exception delete"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
 	public void deleteKeyLabel(int keyLabelId)
 	{
 		try {
@@ -163,10 +181,10 @@ public class KeyLabelDatabaseManager
 		}		
 	} 
 	
-	public static void main(String []args)
-	{
-		KeyLabelDatabaseManager kldm = new KeyLabelDatabaseManager();
-		
+//	public static void main(String []args)
+//	{
+//		KeyLabelDatabaseManager kldm = new KeyLabelDatabaseManager();
+//		
 //		ArrayList<KeyLabel> unitKeyLabel = kldm.getUnitKeyLabel(1);
 //		for (KeyLabel i:unitKeyLabel)
 //		{
@@ -178,5 +196,5 @@ public class KeyLabelDatabaseManager
 //		{
 //			System.out.println(i);
 //		}
-	}
+//	}
 }

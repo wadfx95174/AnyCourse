@@ -42,6 +42,14 @@ public class KeyLabelServlet extends HttpServlet {
 			String json = gson.toJson(keyLabel);
 			response.getWriter().write(json);
 		}
+		else if (method.equals("update"))
+		{
+			keyLabel.setKeyLabelName(request.getParameter("keyLabelName"));
+			keyLabel.setBeginTime(Integer.parseInt(request.getParameter("beginTime")));
+			keyLabel.setEndTime(Integer.parseInt(request.getParameter("endTime")));
+			keyLabel.setKeyLabelId(Integer.parseInt(request.getParameter("keyLabelId")));
+			keyLabelDatebaseManager.updateKeyLabel(keyLabel);
+		}
 		else if (method.equals("delete"))
 		{
 			keyLabelDatebaseManager.deleteKeyLabel(Integer.parseInt(request.getParameter("keyLabelId")));
