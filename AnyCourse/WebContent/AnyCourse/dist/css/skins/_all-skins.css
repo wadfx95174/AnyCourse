@@ -109,7 +109,7 @@
 .skin-blue .sidebar-form input[type="text"],
 .skin-blue .sidebar-form .btn {
   box-shadow: none;
-  background-color: #374850;
+  background-color: #d5eaf2;
   border: 1px solid transparent;
   height: 35px;
   -webkit-transition: all 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
@@ -285,7 +285,7 @@
 .skin-black .sidebar-form input[type="text"],
 .skin-black .sidebar-form .btn {
   box-shadow: none;
-  background-color: #3c3c3c;
+  background-color: #e8e8e8;
   border: 1px solid transparent;
   height: 35px;
   -webkit-transition: all 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
@@ -425,7 +425,7 @@
 .skin-green .sidebar-form input[type="text"],
 .skin-green .sidebar-form .btn {
   box-shadow: none;
-  background-color: #374850;
+  background-color: #bfefd9;
   border: 1px solid transparent;
   height: 35px;
   -webkit-transition: all 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
@@ -565,7 +565,7 @@
 .skin-red .sidebar-form input[type="text"],
 .skin-red .sidebar-form .btn {
   box-shadow: none;
-  background-color: #374850;
+  background-color: #ffcdc6;
   border: 1px solid transparent;
   height: 35px;
   -webkit-transition: all 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
@@ -705,7 +705,7 @@
 .skin-yellow .sidebar-form input[type="text"],
 .skin-yellow .sidebar-form .btn {
   box-shadow: none;
-  background-color: #374850;
+  background-color: #ffe8c4;
   border: 1px solid transparent;
   height: 35px;
   -webkit-transition: all 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
@@ -845,7 +845,7 @@
 .skin-purple .sidebar-form input[type="text"],
 .skin-purple .sidebar-form .btn {
   box-shadow: none;
-  background-color: #374850;
+  background-color: #dfdef9;
   border: 1px solid transparent;
   height: 35px;
   -webkit-transition: all 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
