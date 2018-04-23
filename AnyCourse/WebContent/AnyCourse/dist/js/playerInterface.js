@@ -12,7 +12,10 @@ $('#keyLabel2').slimScroll({
     height: '130px'
   });
 $('#recommend').slimScroll({
-    height: '612px'
+    height: '300px'
+  });
+$('#list').slimScroll({
+    height: '300px'
   });
 
 
