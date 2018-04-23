@@ -62,23 +62,24 @@
 				<a href="#" class="sidebar-toggle" data-toggle="offcanvas"
 					role="button"> <span class="sr-only">Toggle navigation</span>
 				</a>
+				<div class="col-xs-6">
+				<!-- search form -->
+				<form action="#" method="get" class="sidebar-form">
+					<div class="input-group">
+						<input type="text" name="q" class="form-control"
+							placeholder="Search..." /> <span class="input-group-btn">
+							<button type='submit' name='search' id='search-btn'
+								class="btn btn-flat">
+								<i class="fa fa-search"></i>
+							</button>
+						</span>
+					</div>
+				</form>
+				<!-- /.search form -->
+				</div>
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
-						<li>
-						<!-- search form -->
-							<form action="#" method="get" class="sidebar-form">
-								<div class="input-group">
-									<input type="text" name="q" class="form-control"
-										placeholder="Search..." /> <span class="input-group-btn">
-										<button type='submit' name='search' id='search-btn'
-											class="btn btn-flat">
-											<i class="fa fa-search"></i>
-										</button>
-									</span>
-								</div>
-							</form>
-							<!-- /.search form -->
-						</li>
+						
 						<!-- Notifications: style can be found in dropdown.less -->
 						<li class="dropdown notifications-menu"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown"> <i
@@ -221,10 +222,11 @@
 				<div class="row">
 					<div class="col-sm-6 col-md-4 col-lg-3 mt-4">
 						<div class="card" onclick="jumpToPlayerInterface(1,1)">
-							<div class="embed-responsive embed-responsive-16by9">
-                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
-                            </div>
+							
 							<div class="card-block" style="padding-top:0px;">
+								<div class="embed-responsive embed-responsive-16by9">
+	                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
+	                            </div>
 								<h4 class="card-title">微積分一</h4>
 								<div class="card-text">
 									SDSDsddddddddddddssssssssssssssssssssssssssssssssssssss
@@ -257,6 +259,7 @@
 					</div>
 				</div>
 			</section>
+			<section class="content"></section>
 			<!-- /.section content -->
 		</div>
 	</div>
