@@ -1,6 +1,6 @@
 
 $('#noteArea').slimScroll({
-    height: '150px'
+    height: '200px'
   });
 $('.tab-content').slimScroll({
     height: '300px'

@@ -45,6 +45,7 @@
 <!-- <link href="../dist/css/videoInput.css" rel="stylesheet" type="text/css" /> -->
 <link href="../dist/css/foundation.min.css" rel="stylesheet" type="text/css" />
 <link href="../dist/css/playerjs.css" rel="stylesheet" type="text/css" />
+<link href="../dist/css/note.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="skin-blue">
 	<div class="wrapper">
@@ -221,7 +222,7 @@
 							<div class="progress">
 							    <span class="meter">
 							    	<span class="current-time"></span>
-							    </span>
+							    </span> 
 							    <span class="duration"></span>
 							</div> 
 							<div class="keyLabelDiv" data-toggle="tooltip" data-placement="bottom"></div>
@@ -243,7 +244,7 @@
 								</h3>
 								<div class="box-tools pull-right">
 									<div class="btn-group">
-										<button class="btn btn-primary btn-flat" id="uploadPhoto">
+										<button class="btn btn-primary btn-flat" id="uploadPhoto" onclick="filechooser.click()">
 											<i class="fa fa-picture-o"></i>
 										</button>
 										<button class="btn btn-primary btn-flat" id="editNote">編輯</button>
@@ -254,15 +255,21 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body" id="noteArea">
-								A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>A<br>
+								<div>					 				
+								<textarea rows="7" cols="35" id="text_area" style="float:left"></textarea>
+							    </div> 
+								<div>
+									<div rows="6" cols="50" id="container" style="float:left">  
+										<input type="file" id="filechooser" style="display: none" />																		 
+									</div>											  			
+								</div>
 							</div>
 							<!-- /.box-body -->
 							<div id="noteFooter">
 								<div class="box-footer">
-									<div class="input-group">
-										<input class="form-control" placeholder="Note something...">
+									<div class="input-group">										
 										<div class="input-group-btn">
-											<button class="btn btn-primary" type="submit">確認</button>
+											<button class="btn btn-primary" type="submit" onclick="setText()">確認</button>
 											<button class="btn btn-primary" type="submit" id="cancelNote">取消</button>
 										</div>
 									</div>
@@ -467,9 +474,10 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> 
 	<!-- /.content-wrapper -->
 	<!-- ./wrapper -->
+	<script src="../dist/js/jquery-3.2.1.min.js" type="text/javascript"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<!-- jQuery 2.1.3 -->
 	<script src="../plugins/jQuery/jQuery-2.1.3.min.js"></script>
@@ -518,6 +526,6 @@
 	<script src="../dist/js/demo.js" type="text/javascript"></script>
 	<script src="../dist/js/playerInterface.js" type="text/javascript"></script>
 	<script src="../dist/js/progress.js" type="text/javascript"></script>
-	
+	<script src="../dist/js/note.js" type="text/javascript"></script>
 </body>
 </html>
