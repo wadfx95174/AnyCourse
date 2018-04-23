@@ -96,6 +96,17 @@ public class VideoListDatabaseManager {
 					unitVideo.setOorder(result.getInt("customlist_video.oorder"));
 					unitVideo.setLikes(result.getInt("unit.likes"));
 					unitVideo.setUnitID(result.getInt("customlist_video.unit_id"));
+					System.out.println(result.getString("unit.video_url"));
+					System.out.println(result.getString("unit.video_url").split("/")[2]);
+					if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
+//						System.out.println(result.getString("unit.video_url"));
+						unitVideo.setVideoType(1);//youtube
+					}
+					else {
+//						System.out.println(result.getString("unit.video_url"));
+						unitVideo.setVideoType(2);//jwplayer
+					}
+					System.out.println(unitVideo.getVideoType());
 					unitVideos.add(unitVideo);
 				}
 			} 

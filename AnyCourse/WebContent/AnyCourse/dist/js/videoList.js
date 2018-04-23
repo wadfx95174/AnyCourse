@@ -56,7 +56,7 @@ $(document).ready(function() {
 				  
 				  //點擊清單，顯示單元影片
 				  $("#videoListID_"+videoListID).on("click" , function(){
-					  console.log(checkID);
+					  
 					  $.ajax({
 							url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
 							method : 'GET',
@@ -72,6 +72,7 @@ $(document).ready(function() {
 								}); 
 								unitArray = new Array(resultUnit.length);
 								for(var k = 0 ;k < resultUnit.length;k++){
+									console.log(resultUnit[k].videoType);
 									$("#unit").append(
 											'<li id="videoItem_'+unitVideoID+'">'
 											+'<span class="handle ui-sortable-handle">' 
@@ -81,7 +82,7 @@ $(document).ready(function() {
 											+'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal2"'
 											+'onclick="getID('+unitVideoID+')" style="cursor: pointer;"></i>'
 											+'</span>'
-											+'<a href="../PlayerInterface.html" class="list-group-item">'
+											+'<a class="list-group-item" onclick="jumpToPlayerInterface('+ resultUnit[k].unit_id + ',' + resultUnit[k].videoType+')">'
 											+'<div class="media">'
 											+'<div class="col-xs-4 pull-left" style="padding-left: 0px;">'
 											+'<div class="embed-responsive embed-responsive-16by9">'
@@ -316,3 +317,8 @@ $(document).ready(function() {
 function getID(id){
     checkID = id;
   }
+
+function jumpToPlayerInterface(unit_id,type){
+    url = "../PlayerInterface.html?unit_id="+unit_id+"&type="+type;//此處拼接內容
+    window.location.href = url;
+}
