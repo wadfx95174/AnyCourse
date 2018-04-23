@@ -26,10 +26,28 @@ public class HomePage {
 	public void setSchoolName(String school_name) {
 		this.school_name = school_name;
 	}
+	public void setTeacher(String teacher) {
+		this.teacher = teacher;
+	}
 	public String getUserID() {
 		return user_id;
 	}
 	public int getUnitID() {
 		return unit_id;
+	}
+	public String getListName() {
+		return list_name;
+	}
+	public String getUnitName() {
+		return unit_name;
+	}
+	public String getSchoolName() {
+		return school_name;
+	}
+	public String getTeacher() {
+		return teacher;
+	}
+	public int getLikes() {
+		return likes;
 	}
 }
