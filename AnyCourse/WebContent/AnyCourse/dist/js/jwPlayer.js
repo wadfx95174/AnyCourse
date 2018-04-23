@@ -11,7 +11,6 @@ $(document).ready(function(){
 	   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
 	      return decodeURIComponent(name[1]);
    	}
-	alert(get('unit_id'));
 	$.ajax({
     	url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
     	method: 'GET',
