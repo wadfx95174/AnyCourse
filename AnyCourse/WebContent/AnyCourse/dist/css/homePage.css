@@ -1,8 +1,15 @@
 .cardWidth{
 	width:100%;
 }
+.card{
+	cursor:pointer;
+}
 
-
+.card-text{
+	width:100%;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
 
 
 /*******************************************/

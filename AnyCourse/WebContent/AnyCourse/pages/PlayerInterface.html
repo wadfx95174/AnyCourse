@@ -17,11 +17,11 @@
 <link
 	href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css"
 	rel="stylesheet" type="text/css" />
-<!-- Theme style -->
+<!-- Theme style --> 
 <link href="../dist/css/AdminLTE.css" rel="stylesheet" type="text/css" />
 <!-- AdminLTE Skins. Choose a skin from the css/skins 
          folder instead of downloading all of them to reduce the load. -->
-<link href="../dist/css/skins/_all-skins.min.css" rel="stylesheet"
+<link href="../dist/css/skins/_all-skins.css" rel="stylesheet"
 	type="text/css" />
 <!-- iCheck -->
 <link href="../plugins/iCheck/flat/blue.css" rel="stylesheet"
@@ -60,6 +60,21 @@
 				</a>
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
+						<li>
+						<!-- search form -->
+							<form action="#" method="get" class="sidebar-form">
+								<div class="input-group">
+									<input type="text" name="q" class="form-control"
+										placeholder="Search..." /> <span class="input-group-btn">
+										<button type='submit' name='search' id='search-btn'
+											class="btn btn-flat">
+											<i class="fa fa-search"></i>
+										</button>
+									</span>
+								</div>
+							</form>
+							<!-- /.search form -->
+						</li>
 						<!-- Notifications: style can be found in dropdown.less -->
 						<li class="dropdown notifications-menu"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown"> <i
@@ -132,19 +147,6 @@
 						<h4>小翔，您好!</h4>
 					</div>
 				</div>
-				<!-- search form -->
-				<form action="#" method="get" class="sidebar-form">
-					<div class="input-group">
-						<input type="text" name="q" class="form-control"
-							placeholder="Search..." /> <span class="input-group-btn">
-							<button type='submit' name='search' id='search-btn'
-								class="btn btn-flat">
-								<i class="fa fa-search"></i>
-							</button>
-						</span>
-					</div>
-				</form>
-				<!-- /.search form -->
 				<!-- sidebar menu: : style can be found in sidebar.less -->
 				<ul class="sidebar-menu">
 					<li class="header">功能列表</li>
@@ -255,14 +257,34 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body" id="noteArea">
-								<div>					 				
-								<textarea rows="7" cols="35" id="text_area" style="float:left"></textarea>
-							    </div> 
-								<div>
-									<div rows="6" cols="50" id="container" style="float:left">  
-										<input type="file" id="filechooser" style="display: none" />																		 
-									</div>											  			
+								<!-- Custom Tabs -->
+							<div class="nav-tabs-custom">
+								<ul class="nav nav-tabs">
+									<li class="active"><a href="#introduction"
+										data-toggle="tab" aria-expanded="true">課程簡介</a></li>
+									<li class=""><a href="#exchange" data-toggle="tab"
+										aria-expanded="false">交流區</a></li>
+									<li class=""><a href="#forum" data-toggle="tab"
+										aria-expanded="false">討論區</a></li>
+								</ul>
+								<div class="tab-content">
+									<!--Introduction & Exchange & Forum-->
+									<div class="tab-pane active" id="introduction">
+										
+									</div>
+									<!-- /.tab-pane -->
+									<div class="list-group tab-pane" id="exchange">
+										
+									</div>
+									<!-- /.tab-pane -->
+									<div class="tab-pane" id="forum">The European languages
+										are members of the same family. Their separate existence is a
+										myth.</div>
+									<!-- /.tab-pane -->
 								</div>
+								<!-- /.tab-content -->
+							</div>
+							<!-- nav-tabs-custom -->
 							</div>
 							<!-- /.box-body -->
 							<div id="noteFooter">
