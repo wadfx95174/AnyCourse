@@ -24,9 +24,20 @@ var element;		//存DOM元素
 
 $(document).ready(function(){
     $("#editNote").click(function(){
-        $("#noteFooter").slideToggle();
+//    	alert("AAA");
+//    	alert($("#text_area").attr("disabled"));
+    	if(typeof($("#text_area").attr("disabled")) === "string"){
+    		$("#text_area").removeAttr("disabled");
+    		$("#noteFooter").slideToggle();
+    	}
+    	else{
+//    		alert("OK");
+    		$("#text_area").attr("disabled","false");
+    		$("#noteFooter").slideToggle();
+    	}   	
     });
     $("#cancelNote").click(function(){
+    	$("#text_area").attr("disabled","false");
         $("#noteFooter").slideToggle();
     });
     $( function() {

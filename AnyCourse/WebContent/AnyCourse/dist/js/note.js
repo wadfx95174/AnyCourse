@@ -14,6 +14,7 @@
 		// 200 KB 对应的字节数
 		var maxsize = 200 * 1024;
 
+		
 			
 
 		filechooser.onchange = function() {
@@ -72,20 +73,24 @@
 					},
 					success : function(result) {
 //						alert(result.picture_note_id);
-						$('#container').append( 		    					
-			    				'<button id="myBtn_' + result.picture_note_id + '" onclick="getID(this.id)">'+
-									'<img id="previewer11" src="'+ result.picture_note_url + '" class = "min">'+
-								"</button>"	+"<br>" + 							
-								'<div id="myModal_' + result.picture_note_id + '" class="modal">' +
-								'<div class="modal-content" >' +
-								'<button id = "close_' + result.picture_note_id +'"  type="button" class="close" style="float:right">Close</button>'+
-								'<div style="height:600px;overflow:auto;">' +
-								'<img id="previewer1" src="'+ result.picture_note_url + '"class="max"> ' +
-								'</div>' +						
-								'<button id = "delete_' + result.picture_note_id +'"  type="button"  onclick ="deletePicture_note()" class="close" style="float:right">Delete</button>'+							
-							    '</div>' +		    				
-			    				'</div>'
-			    			);					    
+						$('#container').append( 	 
+								'<img id="picture_note_' +  result.picture_note_id + '" class="fs-gal" src="' + result.picture_note_url +'" alt="picture_note_' + result.picture_note_id + '" data-url="' + result.picture_note_url + '" />' 
+//								+ '<button id = "delete_' + result.picture_note_id +'"  type="button" onclick="getID(this.id)" onclick ="deletePicture_note()"  style="float:right">Delete</button>'
+								
+//			    				'<button id="myBtn_' + result.picture_note_id + '" onclick="getID(this.id)">'+
+//									'<img id="previewer11" src="'+ result.picture_note_url + '" class = "min">'+
+//								"</button>"	+"<br>" + 							
+//								'<div id="myModal_' + result.picture_note_id + '" class="modal">' +
+//								'<div class="modal-content" >' +
+//								'<button id = "close_' + result.picture_note_id +'"  type="button" class="close" style="float:right">Close</button>'+
+//								'<div style="height:600px;overflow:auto;">' +
+//								'<img id="previewer1" src="'+ result.picture_note_url + '"class="max"> ' +
+//								'</div>' +						
+//								'<button id = "delete_' + result.picture_note_id +'"  type="button"  onclick ="deletePicture_note()" class="close" style="float:right">Delete</button>'+							
+//							    '</div>' +		    				
+//			    				'</div>'
+			    			);	
+						
 					},
 					error: function (jqXHR, textStatus, errorThrown) {
 		                 /*弹出jqXHR对象的信息*/
@@ -152,48 +157,48 @@
 			});
 		});
 		
-		
-		var id = null;
-		
-		function getID(input){
-			id = null;
-			var modal = null;
-			var btn =  null;
-			var span =  null;
-			id = input.split('_')[1]; 
-						
-//			alert(id);
-			
-			modal = document.getElementById('myModal_'+id);
-
-    		// Get the button that opens the modal
-    		btn = document.getElementById("myBtn_"+id);
-    		// Get the <span> element that closes the modal
-    		
-    		span = document.getElementById("close_"+id);
-    		span2 = document.getElementById("delete_"+id);
-
-    		// When the user clicks the button, open the modal 
-    		
-    			modal.style.display = "block";
-    		
-    		span2.onclick = function() {
-    			deletePicture_note();
-        		modal.style.display = "none";
-        	}
-
-    		// When the user clicks on <span> (x), close the modal
-    		span.onclick = function() {
-    			modal.style.display = "none";
-    		}
-    		
-    		// When the user clicks anywhere outside of the modal, close it
-    		window.onclick = function(event) {
-    			if (event.target == modal) {
-    				modal.style.display = "none";
-    			}
-    		}	
-		}
+//		
+//		var id = null;
+//		
+//		function getID(input){
+//			id = null;
+//			var modal = null;
+//			var btn =  null;
+//			var span =  null;
+//			id = input.split('_')[1]; 
+//						
+////			alert(id);
+//			
+//			modal = document.getElementById('myModal_'+id);
+//
+//    		// Get the button that opens the modal
+//    		btn = document.getElementById("myBtn_"+id);
+//    		// Get the <span> element that closes the modal
+//    		
+//    		span = document.getElementById("close_"+id);
+//    		span2 = document.getElementById("delete_"+id);
+//
+//    		// When the user clicks the button, open the modal 
+//    		
+//    			modal.style.display = "block";
+//    		
+//    		span2.onclick = function() {
+//    			deletePicture_note();
+//        		modal.style.display = "none";
+//        	}
+//
+//    		// When the user clicks on <span> (x), close the modal
+//    		span.onclick = function() {
+//    			modal.style.display = "none";
+//    		}
+//    		
+//    		// When the user clicks anywhere outside of the modal, close it
+//    		window.onclick = function(event) {
+//    			if (event.target == modal) {
+//    				modal.style.display = "none";
+//    			}
+//    		}	
+//		}
 		
 		$(document).ready(function() {
 			printPicture();
@@ -207,19 +212,21 @@
 		    		for(var i = 0 ;i < result.length;i++){
 //		    			alert(result[i].picture_note_url);
 //		    			alert(result[i].picture_note_id);
-		    			$('#container').append( 		    					
-		    				'<button id="myBtn_' + result[i].picture_note_id + '" onclick="getID(this.id)">'+
-								'<img id="previewer11" src="'+ result[i].picture_note_url + '" class = "min">'+
-							"</button>"	+"<br>" + 							
-							'<div id="myModal_' + result[i].picture_note_id + '" class="modal">' +
-							'<div class="modal-content" >' +
-							'<button id = "close_' + result[i].picture_note_id +'"  type="button" class="close" style="float:right">Close</button>'+
-							'<div style="height:600px;overflow:auto;">' +
-							'<img id="previewer1" src="'+ result[i].picture_note_url + '"class="max"> ' +
-							'</div>' +						
-							'<button id = "delete_' + result[i].picture_note_id +'"  type="button"  onclick ="deletePicture_note()" class="close" style="float:right">Delete</button>'+							
-						    '</div>' +		    				
-		    				'</div>'
+		    			$('#container').append( 
+		    					'<img id="picture_note_' +  result[i].picture_note_id + '" class="fs-gal" src="' + result[i].picture_note_url +'" alt="picture_note_' + result[i].picture_note_id + '" data-url="' + result[i].picture_note_url + '" />'	
+		    					
+//		    				'<button id="myBtn_' + result[i].picture_note_id + '" onclick="getID(this.id)">'+
+//								'<img id="previewer11" src="'+ result[i].picture_note_url + '" class = "min">'+
+//							"</button>"	+"<br>" + 							
+//							'<div id="myModal_' + result[i].picture_note_id + '" class="modal">' +
+//							'<div class="modal-content" >' +
+//							'<button id = "close_' + result[i].picture_note_id +'"  type="button" class="close" style="float:right">Close</button>'+
+//							'<div style="height:600px;overflow:auto;">' +
+//							'<img id="previewer1" src="'+ result[i].picture_note_url + '"class="max"> ' +
+//							'</div>' +						
+//							'<button id = "delete_' + result[i].picture_note_id +'"  type="button"  onclick ="deletePicture_note()" class="close" style="float:right">Delete</button>'+							
+//						    '</div>' +		    				
+//		    				'</div>'
 		    			);	    			
 					}	    		
 		    	},
@@ -233,9 +240,13 @@
 				{
 //					alert("OK");
 					setText_note();
+					$("#text_area").attr("disabled","false");
+		    		$("#noteFooter").slideToggle();
 				}
 			else{
 					updateText_note();
+					$("#text_area").attr("disabled","false");
+		    		$("#noteFooter").slideToggle();
 				}	
 		};
 		
@@ -296,6 +307,8 @@
 				},				
 				success : function(data) {
 //					alert(data);
+					$('#text_area').append( data.text_note );
+	    			text_note_id = data.text_note_id;
 				},
 				error : function() {
 					alert("error");
@@ -304,6 +317,10 @@
 		};
 		
 		function deletePicture_note(){
+//			document.getElementById('picture').value;
+			var zzz= $("#picture").text();
+//			alert(zzz);
+			var id = zzz.split('_')[2];
 //			alert(id);
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
@@ -314,8 +331,9 @@
 				},				
 				success : function(data) {
 //					alert("OKOK");
-					$("#myBtn_"+id).remove();
-					$("#modal_"+id).remove();
+					$("#picture_note_"+id).remove();
+//					$("#modal_"+id).remove();
 				},
 			});
 		}
+		

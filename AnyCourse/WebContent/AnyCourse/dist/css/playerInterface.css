@@ -1,3 +1,7 @@
+#noteFooter{
+	display:none;
+}
+
 .list-group {
 	overflow: hidden;
 	border-left: 1px solid rgb(221, 221, 221);

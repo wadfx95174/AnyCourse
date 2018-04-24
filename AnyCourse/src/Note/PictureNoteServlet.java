@@ -68,7 +68,7 @@ public class PictureNoteServlet extends HttpServlet {
 		}
 		if(state.equals("insert"))
 		{
-//			System.out.println("AAAAA");
+		System.out.println("AAAAA");
 			int unit_id = Integer.parseInt(request.getParameter("unit_id"));
 			String user_id = request.getParameter("user_id");
 			String picture_note_url = request.getParameter("picture_note_url");
