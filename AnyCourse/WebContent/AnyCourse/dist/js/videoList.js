@@ -66,6 +66,7 @@ $(document).ready(function() {
 						    	"list_name" : videoListArray[checkID-1][1]
 							},
 							success:function(resultUnit){
+								unitVideoID = 1;
 								//清除原先檢視的unit
 								$('#unit li').each(function(){
 								    $(this).remove();
