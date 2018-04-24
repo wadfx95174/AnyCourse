@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>AnyCourse</title>
+<!-- AnyCourseLogo -->
+<link rel="icon" type="image/x-icon" href="../AnyCourseLogo.ico" />
 <meta
 	content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
 	name='viewport'>
@@ -52,30 +54,30 @@
 	<div class="wrapper">
 		<header class="main-header">
 			<!-- Logo -->
-			<a href="../HomePage.html" class="logo"><b>AnyCourse</b></a>
+			<a href="../HomePage.html" class="logo"><img src="../dist/img/AnyCourseLogo.png" width="42px;" height="42px;"><b>AnyCourse</b></a>
 			<!-- Header Navbar: style can be found in header.less -->
 			<nav class="navbar navbar-static-top" role="navigation">
 				<!-- Sidebar toggle button-->
 				<a href="#" class="sidebar-toggle" data-toggle="offcanvas"
 					role="button"> <span class="sr-only">Toggle navigation</span>
 				</a>
+				<!-- search form -->
+				<div class="col-xs-5">
+					<form action="#" method="get" class="sidebar-form">
+						<div class="input-group">
+							<input type="text" name="q" class="form-control"
+								placeholder="Search..." /> <span class="input-group-btn">
+								<button type='submit' name='search' id='search-btn'
+									class="btn btn-flat">
+									<i class="fa fa-search"></i>
+								</button>
+							</span>
+						</div>
+					</form>
+				</div>
+				<!-- /.search form -->
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
-						<li>
-						<!-- search form -->
-							<form action="#" method="get" class="sidebar-form">
-								<div class="input-group">
-									<input type="text" name="q" class="form-control"
-										placeholder="Search..." /> <span class="input-group-btn">
-										<button type='submit' name='search' id='search-btn'
-											class="btn btn-flat">
-											<i class="fa fa-search"></i>
-										</button>
-									</span>
-								</div>
-							</form>
-							<!-- /.search form -->
-						</li>
 						<!-- Notifications: style can be found in dropdown.less -->
 						<li class="dropdown notifications-menu"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown"> <i
@@ -209,7 +211,7 @@
 			<!-- Content Header (Page header) -->
 			<section class="content">
 				<div class="row">
-					<section class="col-md-7 connectedSortable ui-sortable">
+					<section class="col-lg-7 col-md-7 col-xs-12 col-sm-12 connectedSortable ui-sortable">
 						<div id = "vid" class="embed-responsive embed-responsive-16by9">
 							<!--<iframe class="embed-responsive-item"
 								src="http://140.112.161.119/vod/100S103/100S103_CT01V01.mp4"
@@ -334,7 +336,7 @@
 							<!-- nav-tabs-custom -->
 							<!-- /.box -->
 					</section>
-					<section class="col-md-5 connectedSortable ui-sortable">
+					<section class="col-md-5 col-xs-12 connectedSortable ui-sortable">
                      <div class="box box-primary">
                          <div class="box-header ui-sortable-handle">
                            <i class="fa fa-tags"></i>
@@ -355,11 +357,81 @@
                            </ul>
                          </div><!-- /.box-body -->
                      </div>
+                     
+                        <h3 style="margin-top:10px;"><strong>影片清單</strong></h3>
+                     <div class="box box-primary">
+                        <div class="box-header ui-sortable-handle">
+                           <i class="ion ion-clipboard"></i>
+                           <h3 class="box-title"><strong>清單A</strong></h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+                           <div class="list-group"  id="list">
+                              <a href="PlayerInterface.html" class="list-group-item">
+                                 <div class="media">
+                                    <div class="col-xs-6 pull-left" style="padding-left: 0px;">
+                                       <div class="embed-responsive embed-responsive-16by9">          
+                                          <img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">        
+                                       </div>
+                                    </div>
+                                    <div class="media-body">
+                                       <h3 class="media-heading">導涵式公式的推廣</h3>
+                                       <p>中央大學 王老師</p>
+                                       <p>讚數:216,165</p>
+                                    </div>
+                                 </div>
+                              </a>
+                              <a href="PlayerInterface.html" class="list-group-item">
+                                 <div class="media">
+                                    <div class="col-xs-6 pull-left" style="padding-left: 0px;">
+                                       <div class="embed-responsive embed-responsive-16by9">          
+                                          <img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">        
+                                       </div>
+                                    </div>
+                                    <div class="media-body">
+                                       <h3 class="media-heading">導涵式公式的推廣</h3>
+                                       <p>中央大學 王老師</p>
+                                       <p>讚數:216,165</p>
+                                    </div>
+                                 </div>
+                              </a>
+                              <a href="PlayerInterface.html" class="list-group-item">
+                                 <div class="media">
+                                    <div class="col-xs-6 pull-left" style="padding-left: 0px;">
+                                       <div class="embed-responsive embed-responsive-16by9">          
+                                          <img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">        
+                                       </div>
+                                    </div>
+                                    <div class="media-body">
+                                       <h3 class="media-heading">導涵式公式的推廣</h3>
+                                       <p>中央大學 王老師</p>
+                                       <p>讚數:216,165</p>
+                                    </div>
+                                 </div>
+                              </a>
+                              <a href="PlayerInterface.html" class="list-group-item">
+                                 <div class="media">
+                                    <div class="col-xs-6 pull-left" style="padding-left: 0px;">
+                                       <div class="embed-responsive embed-responsive-16by9">          
+                                          <img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">        
+                                       </div>
+                                    </div>
+                                    <div class="media-body">
+                                       <h3 class="media-heading">導涵式公式的推廣</h3>
+                                       <p>中央大學 王老師</p>
+                                       <p>讚數:216,165</p>
+                                    </div>
+                                 </div>
+                              </a>
+                           </div>
+                           
+                        </div><!--box-body-->
+                     </div>
+                     
                         <h3 style="margin-top:10px;"><strong>推薦影片</strong></h3>
                      <div class="box box-primary">
                         <div class="box-header ui-sortable-handle">
-                           <i class="fa fa-tags"></i>
-                           <h3 class="box-title"><strong>暫存標籤</strong></h3>
+                           <i class="fa fa-star"></i>
+                           <h3 class="box-title"><strong>推薦影片</strong></h3>
                         </div><!-- /.box-header -->
                         <div class="box-body">
                            <div class="list-group"  id="recommend">
