@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class LoginVerificationDatabaseManager
+public class LoginVerificationManager
 {
 	private String selectPasswordSQL = "select password from account where user_id = ? or email = ?";
 	private String selectUserIdSQL = "select user_id from account where user_id = ? or email = ?";
@@ -18,7 +18,7 @@ public class LoginVerificationDatabaseManager
 	private ResultSet result = null;
 	private PreparedStatement pst = null;
 	
-	public LoginVerificationDatabaseManager() {
+	public LoginVerificationManager() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5"
@@ -134,6 +134,6 @@ public class LoginVerificationDatabaseManager
 	
 	public static void main(String []args)
 	{
-//		LoginVerificationDatabaseManager lvdm = new LoginVerificationDatabaseManager();
+//		LoginVerificationManager lvdm = new LoginVerificationManager();
 	}
 }

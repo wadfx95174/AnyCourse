@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;;
 
-public class NoteDatabaseManager {
+public class NoteManager {
 	public String insertTextNoteSQL = "insert into text_note (text_note_id,unit_id,user_id,text_note,share,share_time,likes) value(null,?,?,?,?,?,?)";
 	public String selectTextNoteSQL = "select * from text_note ";
 	public String deleteTextNoteSQL = "delete from text_note where text_note_id = ?";
@@ -30,7 +30,7 @@ public class NoteDatabaseManager {
 	public Random random = new Random();
 	
 	
-	public NoteDatabaseManager(){
+	public NoteManager(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//?��餃�??�river
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5", "root", "peter");//���onnection

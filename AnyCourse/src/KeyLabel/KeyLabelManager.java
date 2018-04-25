@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 
-public class KeyLabelDatabaseManager
+public class KeyLabelManager
 {
 	private String selectUnitKeyLabelSQL = "select * from keylabel where unit_id = ?";
 	private String updateKeyLabelSQL = "update keylabel set keylabel_name = ?, begin_time = ?, end_time = ?, where keylabel_id = ?";
@@ -21,7 +21,7 @@ public class KeyLabelDatabaseManager
 	private ResultSet result = null;
 	private PreparedStatement pst = null;
 	
-	public KeyLabelDatabaseManager() {
+	public KeyLabelManager() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5"

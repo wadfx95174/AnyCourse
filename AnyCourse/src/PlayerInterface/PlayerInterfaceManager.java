@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 import com.google.gson.Gson;
 
-public class PlayerInterfaceDatabaseManager
+public class PlayerInterfaceManager
 {
 	private String selectVideoUrlSQL = "select * from unit where unit_id = ?";
 	private Connection con = null;
@@ -17,7 +17,7 @@ public class PlayerInterfaceDatabaseManager
 	private ResultSet result = null;
 	private PreparedStatement pst = null;
 	
-	public PlayerInterfaceDatabaseManager() {
+	public PlayerInterfaceManager() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5"
