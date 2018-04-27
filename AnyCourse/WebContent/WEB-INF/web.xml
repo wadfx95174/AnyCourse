@@ -33,6 +33,11 @@
     <servlet-name>LoginVerificationServlet</servlet-name>
     <servlet-class>LoginVerification.LoginVerificationServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>CalendarServlet</servlet-name>
+    <servlet-class>Personal.Calendar.CalendarServlet</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>TextNoteServlet</servlet-name>
     <url-pattern>/TextNoteServlet.do</url-pattern>
@@ -64,6 +69,10 @@
   <servlet-mapping>
     <servlet-name>PlayerInterfaceServlet</servlet-name>
     <url-pattern>/PlayerInterfaceServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CalendarServlet</servlet-name>
+    <url-pattern>/CalendarServlet.do</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>Personal.SearchRecord.SearchRecordServlet</welcome-file>
