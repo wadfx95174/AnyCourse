@@ -60,7 +60,7 @@ public class CalendarDTO
 	}
 	public String getBorderColor()
 	{
-		return backgroundColor;
+		return borderColor;
 	}
 	public void setBorderColor(String borderColor)
 	{
