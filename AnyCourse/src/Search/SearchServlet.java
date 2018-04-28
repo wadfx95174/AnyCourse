@@ -16,7 +16,6 @@ public class SearchServlet extends HttpServlet {
 	private SearchManager manager = new SearchManager();
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String searchQuery = request.getParameter("search_query");
-		System.out.println(searchQuery);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		Gson gson = new Gson();

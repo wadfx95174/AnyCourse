@@ -7,6 +7,7 @@ public class Unit
 	private String videoUrl;
 	private int likes;
 	private String videoImgSrc;
+	private String schoolName;
 	public int getUnitId()
 	{
 		return unitId;
@@ -47,10 +48,18 @@ public class Unit
 	{
 		this.videoImgSrc = videoImgSrc;
 	}
+	public String getSchoolName()
+	{
+		return schoolName;
+	}
+	public void setSchoolName(String schoolName)
+	{
+		this.schoolName = schoolName;
+	}
 	@Override
 	public String toString()
 	{
 		return "Unit [unitId=" + unitId + ", unitName=" + unitName + ", videoUrl=" + videoUrl + ", likes=" + likes
-				+ ", videoImgSrc=" + videoImgSrc + "]";
+				+ ", videoImgSrc=" + videoImgSrc + ", schoolName=" + schoolName + "]";
 	}
 }

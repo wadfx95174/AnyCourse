@@ -119,6 +119,22 @@ public class SearchManager
 					outputList.get(i).addUnit(unit);
 				}
 			}
+			pst = con.prepareStatement(selectUnitKeywordSQL);
+			pst.setString(1, "%" + keyword + "%" );
+			result = pst.executeQuery();
+			while (result.next())
+			{
+				Search search = new Search();
+				Unit unit = new Unit();
+				unit.setUnitId(result.getInt("unit_id"));
+				unit.setUnitName(result.getString("unit_name"));
+				unit.setVideoUrl(result.getString("video_url"));
+				unit.setLikes(result.getInt("likes"));
+				unit.setSchoolName(result.getString("school_name"));
+				unit.setVideoImgSrc(result.getString("video_img_src"));
+				search.addUnit(unit);
+				outputList.add(search);;
+			}
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());
