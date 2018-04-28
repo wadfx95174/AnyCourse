@@ -37,7 +37,6 @@
     <servlet-name>CalendarServlet</servlet-name>
     <servlet-class>Personal.Calendar.CalendarServlet</servlet-class>
   </servlet>
-  
   <servlet-mapping>
     <servlet-name>TextNoteServlet</servlet-name>
     <url-pattern>/TextNoteServlet.do</url-pattern>
