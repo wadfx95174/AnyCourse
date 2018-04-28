@@ -59,60 +59,53 @@ $(document).ready(function(){
     oScript.type = "text/javascript"; 
     oScript.src= (get('type') == "1") ? "../dist/js/youtubePlayer.js" : "../dist/js/jwPlayer.js"; 
     oHead.appendChild(oScript); 
-//    $.ajax({
-//    	url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
-//    	method: 'GET',
-//    	data: {
-//    		"method": 'getVideo',
-//    		"type" : get('type'),
-//    		"unitId": get('unit_id')
-//    	},
-//    	error: function(){
-//    	},
-//    	success: function(response){
-//    		var videotype = response.videoUrl.split('.')[1];
-//    		if (videotype == "youtube")
-//    		{
-//    			
-//    		}
-//    		else
-//    		{
-//    			$('#vid').append('<video controls="" name="media" id = "myvideo" ><source src="'+response.videoUrl+'" type="video/mp4"></video>');
-//    		}
-////    		$('source').attr('src', response);		//  <div id="youTubePlayer"></div>
-//    		$('h3')[0].append(response.unitName);
-////    		$('#introduction').append(response.)
-//    	    video=$("#myvideo")[0];
-//    	}
-//    });
-//    alert(get('id'));
+    if (get('list_id') != undefined)
+    {
+    	$.ajax({
+        	url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+        	method: 'POST',
+        	data: {
+        		courselistId: get('list_id'),
+        	},
+        	success: function(result){
+        		console.log(result);
+        		$('#list').slimScroll({
+        	        height: '300px'
+        	      });
+        	    $('#list').attr('class',  'box box-primary');
+        	    $('#list').append('<div class="box-header ui-sortable-handle">'
+        	                    + '<i class="ion ion-clipboard"></i>'
+        	                    + '<h3 class="box-title"><strong>'+result[0].listName+'</strong></h3>'
+        	                    + '</div>'
+        	                    + '<div class="box-body">'
+        	                    + '   <div class="list-group"  id="list">');
+        	    for (var i = 0; i < result.length; i++)
+        	    {
+        	    	$('#list').append('      <a href="PlayerInterface.html?type='+ (result[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unit_id='+result[i].unitId+'&list_id='+get('list_id')+'" class="list-group-item">'
+		    	                    + '         <div class="media">'
+		    	                    + '            <div class="col-xs-6 pull-left" style="padding-left: 0px;">'
+		    	                    + '               <div class="embed-responsive embed-responsive-16by9">          '
+		    	                    + '                   <img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="'+result[i].videoImgSrc+'">'        
+		    	                    + '               </div>'
+		    	                    + '            </div>'
+		    	                    + '            <div class="media-body">'
+		    	                    + '               <h3 class="media-heading">'+result[i].unitName+'</h3>'
+		    	                    + '               <p>讚數:'+result[i].likes+'</p>'
+		    	                    + '            </div>' 
+		    	                    + '         </div>'
+		    	                    + '      </a>');
+        	    }
+        	    $('#list').append('   </div>'                           
+        	                    + '</div>'); 
+        	},
+        	error: function(){
+        		console.log("post fail");
+        	}
+        });
+    }
     
-    $('#list').slimScroll({
-        height: '300px'
-      });
-    $('#list').attr('class',  'box box-primary');
-    $('#list').append('<div class="box-header ui-sortable-handle">'
-                      + '    <i class="ion ion-clipboard"></i>'
-                      + '     <h3 class="box-title"><strong>清單A</strong></h3>'
-                     + '  </div><!-- /.box-header -->'
-                     + '   <div class="box-body">'
-                     + '      <div class="list-group"  id="list">'
-                      + '        <a href="PlayerInterface.html" class="list-group-item">'
-                      + '           <div class="media">'
-                      + '              <div class="col-xs-6 pull-left" style="padding-left: 0px;">'
-                      + '                 <div class="embed-responsive embed-responsive-16by9">          '
-                       + '                   <img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">'        
-                      + '                 </div>'
-                      + '              </div>'
-                     + '               <div class="media-body">'
-                      + '                 <h3 class="media-heading">導涵式公式的推廣</h3>'
-                     + '                  <p>中央大學 王老師</p>'
-                      + '                 <p>讚數:216,165</p>'
-                      + '              </div>'
-                      + '           </div>'
-                      + '        </a>'
-                       + '    </div>'                           
-                     + '   </div><!--box-body-->'); 
+    
+    
     
     
 	
