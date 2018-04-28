@@ -33,7 +33,7 @@ public class NoteDatabaseManager {
 	public NoteDatabaseManager(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//?��餃�??�river
-			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5", "root", "peter");//���onnection
+			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5", "root", "peter");//���onnection
 			
 		}
 		catch(ClassNotFoundException e){

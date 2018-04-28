@@ -1,32 +1,13 @@
 
 $(document).ready(function(){
-	$( ".column" ).sortable({
-	    connectWith: ".column",
-	    handle: ".portlet-header",
-	    cancel: ".portlet-toggle",
-	    placeholder: "portlet-placeholder ui-corner-all"
-	  });
-
-	  $( ".portlet" )
-	    .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-	    .find( ".portlet-header" )
-	      .addClass( "ui-widget-header ui-corner-all" )
-	      .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
-
-	  $( ".portlet-toggle" ).on( "click", function() {
-	    var icon = $( this );
-	    icon.toggleClass( "ui-icon-minusthick ui-icon-plusthick" );
-	    icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
-	  });
+	
 //	$.ajax({
-//		url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+//		url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
 //		method : 'GET',
-//		data:{
-//			"action":selectList//代表要selectList
-//		},
 //		success:function(result){
 //			videoListArray = new Array(result.length);
 //	  		for(var i = 0 ;i < result.length;i++){
+//	  			
 //	  			$('#videoListUL').append('<li id = "videoListID_'+videoListID+'" onclick="getID('+videoListID+')">'
 //	                    +'<span class="handle ui-sortable-handle">'
 //	                    +'<i class="fa fa-ellipsis-v">'
@@ -47,7 +28,7 @@ $(document).ready(function(){
 //				  $("#videoListID_"+videoListID).on("click" , function(){
 //					  
 //					  $.ajax({
-//							url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+//							url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
 //							method : 'GET',
 //						    data : {
 //						    	"action" : selectUnit,//代表要selectUnit
