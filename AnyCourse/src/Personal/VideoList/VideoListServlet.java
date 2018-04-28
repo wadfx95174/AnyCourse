@@ -64,10 +64,6 @@ public class VideoListServlet extends HttpServlet{
 		}
 		//2代表update
 		else if(request.getParameter("action").equals("2")) {
-			
-//			System.out.println(request.getParameter("creator"));
-//			System.out.println(request.getParameter("courselist_id"));
-//			System.out.println(request.getParameter("list_name"));
 			videoList.setCreator(request.getParameter("creator"));
 			videoList.setCourselistID(Integer.parseInt(request.getParameter("courselist_id")));
 			videoList.setListName(request.getParameter("list_name"));

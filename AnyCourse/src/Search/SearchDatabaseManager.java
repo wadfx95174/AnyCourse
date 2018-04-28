@@ -1,4 +1,4 @@
-package PlayerInterface;
+package Search;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,21 +6,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
-import com.google.gson.Gson;
-
-public class PlayerInterfaceManager
+public class SearchDatabaseManager
 {
-	private String selectVideoUrlSQL = "select * from unit where unit_id = ?";
+	private String selectCourseListSQL = "select * from courselist where list_name like ? ";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
 	private PreparedStatement pst = null;
 	
-	public PlayerInterfaceManager() {
+	public SearchDatabaseManager() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
-			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
+			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=falseuseUnicode=true&characterEncoding=Big5"
 					, "root", "peter");//取得connection
 			
 		}
@@ -31,32 +30,30 @@ public class PlayerInterfaceManager
 			System.out.println("Exception" + x.toString());
 		}
 	}
-	public String getVideoUrl(int unitId) {
-		Unit unit = new Unit();
+	public ArrayList<String> selectCourseListTable(String name) {
+
+		ArrayList<String> outputList = new ArrayList<>(); 
 		try {
-			pst = con.prepareStatement(selectVideoUrlSQL);
-			pst.setInt(1, unitId);
+
+			pst = con.prepareStatement(selectCourseListSQL);
+			pst.setString(1,  "%" + name + "%" );
 			result = pst.executeQuery();
-			while(result.next()) 
-			{ 	
-				unit.setUnitId(result.getInt("unit_id"));
-				unit.setUnitName(result.getString("unit_name"));
-				unit.setListName(result.getString("list_name"));
-				unit.setSchoolName(result.getString("school_name"));
-				unit.setLikes(result.getInt("likes"));
-				unit.setVideoImgSrc(result.getString("video_img_src"));
-				unit.setVideoUrl(result.getString("video_url"));
-			}
+			 while(result.next()) 
+		     { 	
+				 String output = result.getString("list_name");
+				 outputList.add(output);
+		     }
 		}
-			catch(SQLException x){
+			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		Gson gson = new Gson();
-		return gson.toJson(unit);
+		 return outputList;
 	}
+	
+	
 	public void Close() {
 		try {
 			if(result!=null) {
@@ -76,4 +73,11 @@ public class PlayerInterfaceManager
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
+	
+	public static void main(String []args)
+	{
+		SearchDatabaseManager kldm = new SearchDatabaseManager();
+		
+		System.out.println(kldm.selectCourseListTable("化學"));
+	}
 }

@@ -80,36 +80,9 @@
 				<!-- /.search form -->
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
+						
 						<!-- Notifications: style can be found in dropdown.less -->
-						<li class="dropdown notifications-menu"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown"> <i
-								class="fa fa-bell-o"></i> <span class="label label-warning">10</span>
-						</a>
-							<ul class="dropdown-menu">
-								<li class="header">You have 10 notifications</li>
-								<li>
-									<!-- inner menu: contains the actual data -->
-									<ul class="menu">
-										<li><a href="#"> <i class="fa fa-users text-aqua"></i>
-												5 new members joined today
-										</a></li>
-										<li><a href="#"> <i class="fa fa-warning text-yellow"></i>
-												Very long description here that may not fit into the page
-												and may cause design problems
-										</a></li>
-										<li><a href="#"> <i class="fa fa-users text-red"></i>
-												5 new members joined
-										</a></li>
-										<li><a href="#"> <i
-												class="fa fa-shopping-cart text-green"></i> 25 sales made
-										</a></li>
-										<li><a href="#"> <i class="fa fa-user text-red"></i>
-												You changed your username
-										</a></li>
-									</ul>
-								</li>
-								<li class="footer"><a href="#">View all</a></li>
-							</ul></li>
+						
 						<!-- User Account: style can be found in dropdown.less -->
 						<li class="dropdown user user-menu"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown"> <img
@@ -155,47 +128,74 @@
 				<!-- sidebar menu: : style can be found in sidebar.less -->
 				<ul class="sidebar-menu">
 					<li class="header">功能列表</li>
-					<li class="treeview"><a href="../../HomePage.html"><i
-							class="fa fa-home"></i> <span>首頁</span></a></li>
-					<li class="active treeview"><a href="#"> <i
-							class="fa fa-user"></i> <span>個人頁面</span><i
-							class="fa fa-angle-left pull-right"></i>
-					</a>
+					<li class="treeview">
+						<a href="../../HomePage.html">
+							<i class="fa fa-home"></i> 
+							<span>首頁</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="VideoListPage.html">
+							<i class="ion ion-clipboard"></i>
+							<span>課程清單</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="CoursePlanPage.html">
+							<i class="fa fa-tasks"></i>
+							<span>課程計畫</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="CalendarPage.html">
+							<i class="fa fa-calendar"></i>
+							<span>行事曆</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="NotePage.html">
+							<i class="fa fa-book"></i>
+							<span>筆記</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="KeyLabelPage.html">
+							<i class="fa fa-tags"></i>
+							<span>重點標籤</span>
+						</a>
+					</li>
+					<li class="active treeview">
+						<a href="#"> 
+							<i class="fa fa-user"></i> 
+							<span>個人頁面</span><i class="fa fa-angle-left pull-right"></i>
+						</a>
 						<ul class="treeview-menu ">
-							<li class="active"><a href="VideoListPage.html"><i
-									class="ion ion-clipboard"></i>課程清單</a></li>
-							<li class="active"><a href="CoursePlanPage.html"><i
-									class="fa fa-tasks"></i>課程計畫</a></li>
-							<li class="active"><a href="CalendarPage.html"><i
-									class="fa fa-calendar"></i>行事曆</a></li>
-							<li class="active"><a href="NotePage.html"><i
-									class="fa fa-book"></i>筆記</a></li>
-							<li class="active"><a href="KeyLabelPage.html"><i
-									class="fa fa-tags"></i>重點標籤</a></li>
-							<li class="active"><a href="WatchRecordPage.html"><i
-									class="fa fa-eye"></i>觀看紀錄</a></li>
-							<li class="active"><a href="SearchRecordPage.html"><i
-									class="fa fa-clock-o"></i>查詢紀錄</a></li>
-						</ul></li>
-					<li class="active treeview"><a href="#"> <i
-							class="fa fa-users"></i> <span>群組</span><i
-							class="fa fa-angle-left pull-right"></i>
-							<ul class="treeview-menu">
-								<li class="active"><a href="#"><i
-										class="fa fa-pencil-square-o"></i>管理頁面</a></li>
-								<li class="active"><a href="#"><i
-										class="fa fa-circle-o"></i>考研向前衝</a></li>
-							</ul>
-					</a></li>
-					<li class="treeview"><a href="#"> <i class="fa fa-cog"></i>
+							<li class="active">
+								<a href="WatchRecordPage.html">
+									<i class="fa fa-eye"></i>
+									<span>觀看紀錄</span>
+								</a>
+							</li>
+							<li class="active">
+								<a href="SearchRecordPage.html">
+									<i class="fa fa-clock-o"></i>
+									<span>查詢紀錄</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="treeview">
+						<a href="#"> 
+							<i class="fa fa-cog"></i>
 							<span>設定</span>
-					</a></li>
-					<li class="treeview"><a href="#"> <i
-							class="fa fa-question-circle"></i> <span>說明</span>
-					</a></li>
-					<li class="treeview"><a href="#"> <i class="fa fa-bell-o"></i>
-							<span>通知</span> <small class="label pull-right label-warning">10</small>
-					</a></li>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="#"> 
+							<i class="fa fa-question-circle"></i> 
+							<span>說明</span>
+						</a>
+					</li>
 				</ul>
 			</section>
 			<!-- /.sidebar -->
@@ -204,20 +204,7 @@
 		<div class="content-wrapper">
 			<section class="content">
 				<div class="row">
-					<!-- Main content-header -->
-					<section class="content-header">
-						<ul class="nav nav-pills" role="tablist">
-							<li role="presentation"><a href="VideoListPage.html"">課程清單</a></li>
-							<li role="presentation"><a href="CoursePlanPage.html">課程計畫</a></li>
-							<li role="presentation"><a href="CalendarPage.html">行事曆</a></li>
-							<li role="presentation"><a href="NotePage.html">筆記</a></li>
-							<li role="presentation"><a href="KeyLabelPage.html">重點標籤</a></li>
-							<li role="presentation"><a href="WatchRecordPage.html">觀看紀錄</a></li>
-							<li role="presentation" class="nav-item active"><a
-								href="SearchRecordPage.html">查詢紀錄</a></li>
-						</ul>
-					</section>
-					<!-- /.content-header -->
+					
 					<!-- Main content -->
 					<section class="content">
 						<div class="box box-primary" >
