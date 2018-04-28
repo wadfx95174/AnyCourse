@@ -18,6 +18,9 @@ $(document).ready(function(){
 		},
 		success: function(response){
 			uid = response.videoUrl.split('/')[4];
+			youTubePlayer.cueVideoById({
+                videoId: uid
+               });
 			$('h3')[0].append(response.unitName);
 	//		$('#introduction').append(response.)
 //		    video=$("#myvideo")[0];
