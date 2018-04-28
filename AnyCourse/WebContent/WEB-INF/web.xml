@@ -37,10 +37,12 @@
     <servlet-name>CalendarServlet</servlet-name>
     <servlet-class>Personal.Calendar.CalendarServlet</servlet-class>
   </servlet>
+
   <servlet-mapping>
     <servlet-name>HomePageServlet</servlet-name>
     <url-pattern>/HomePageServlet.do</url-pattern>
   </servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>TextNoteServlet</servlet-name>
     <url-pattern>/TextNoteServlet.do</url-pattern>
