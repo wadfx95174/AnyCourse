@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PlayerInterfaceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private PlayerInterfaceDatabaseManager manager = new PlayerInterfaceDatabaseManager();
+	private PlayerInterfaceManager manager = new PlayerInterfaceManager();
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		response.setContentType("application/json");

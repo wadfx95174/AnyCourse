@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 
 public class LoginVerificationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private LoginVerificationDatabaseManager manager= new LoginVerificationDatabaseManager();
+    private LoginVerificationManager manager= new LoginVerificationManager();
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

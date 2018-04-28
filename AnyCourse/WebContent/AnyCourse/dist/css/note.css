@@ -44,3 +44,10 @@
 	text-decoration: none;
 	cursor: pointer;
 }
+
+.fs-gal {
+        width: 100px;
+        height: auto;
+        float: left;
+      }
+

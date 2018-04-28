@@ -24,7 +24,7 @@ public class HomePageServlet extends HttpServlet {
 		
 		ArrayList<Map<Integer, HomePage>> homePages;
 		
-		HomePageDatabaseManager homePageDatabaseManager = new HomePageDatabaseManager();
+		HomePageManager homePageDatabaseManager = new HomePageManager();
 		homePages = homePageDatabaseManager.getAllVideo("1");
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();

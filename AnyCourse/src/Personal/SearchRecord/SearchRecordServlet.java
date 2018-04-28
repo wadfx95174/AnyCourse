@@ -17,7 +17,7 @@ public class SearchRecordServlet extends HttpServlet{
 		response.setHeader("content-type","text/html;charset=UTF-8");
 		
 		ArrayList<SearchRecord> searchRecords = new ArrayList<SearchRecord>(); 
-		SearchRecordDatabaseManager searchRecordDatebaseManager = new SearchRecordDatabaseManager();
+		SearchRecordManager searchRecordDatebaseManager = new SearchRecordManager();
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		
@@ -32,7 +32,7 @@ public class SearchRecordServlet extends HttpServlet{
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type","text/html;charset=UTF-8");
 		
-		SearchRecordDatabaseManager searchRecordDatebaseManager = new SearchRecordDatabaseManager();
+		SearchRecordManager searchRecordDatebaseManager = new SearchRecordManager();
 		SearchRecord searchRecord = new SearchRecord();
 		
 		searchRecord.setUserID(request.getParameter("user_id"));

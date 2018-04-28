@@ -1,0 +1,200 @@
+package KeyLabel;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import com.google.gson.Gson;
+
+public class KeyLabelManager
+{
+	private String selectUnitKeyLabelSQL = "select * from keylabel where unit_id = ?";
+	private String updateKeyLabelSQL = "update keylabel set keylabel_name = ?, begin_time = ?, end_time = ?, where keylabel_id = ?";
+	private String insertKeyLabelSQL = "insert into keylabel value (null,?,?,?,?,?,?,?,?)";
+	private String deleteKeyLabelSQL = "delete from keylabel where keylabel_id = ?";
+	private Connection con = null;
+	private Statement stat = null;
+	private ResultSet result = null;
+	private PreparedStatement pst = null;
+	
+	public KeyLabelManager() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
+			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5"
+					, "root", "peter");//取得connection
+			
+		}
+		catch(ClassNotFoundException e){
+			System.out.println("DriverClassNotFound"+e.toString());
+		}
+		catch(SQLException x){
+			System.out.println("Exception" + x.toString());
+		}
+	}
+	public String getUnitKeyLabel(int unit) {
+
+		ArrayList<KeyLabel> outputList = new ArrayList<>(); 
+		try {
+			pst = con.prepareStatement(selectUnitKeyLabelSQL);
+			pst.setInt(1, unit);
+			result = pst.executeQuery();
+			while(result.next()) 
+			{ 	
+				KeyLabel keyLabel = new KeyLabel();
+				keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
+				keyLabel.setUnitId(result.getInt("unit_id"));
+				keyLabel.setUserId(result.getString("user_id"));
+				keyLabel.setKeyLabelName(result.getString("keylabel_name"));
+				keyLabel.setBeginTime(result.getInt("begin_time"));
+				keyLabel.setEndTime(result.getInt("end_time"));
+				keyLabel.setShare(result.getInt("share"));
+				keyLabel.setShareTime(result.getString("share_time"));
+				keyLabel.setLikes(result.getInt("likes"));
+				outputList.add(keyLabel);
+			}
+		}
+			catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		String json = new Gson().toJson(outputList);
+		return json;
+	}
+	
+//	public String getUnitPersonalKeyLabel(int unit, int user) {
+//
+//		ArrayList<KeyLabel> outputList = new ArrayList<>(); 
+//		try {
+//			pst = con.prepareStatement(selectPersonalKeyLabelSQL);
+//			pst.setInt(1, unit);
+//			pst.setInt(2, user);
+//			result = pst.executeQuery();
+//			while(result.next()) 
+//			{ 	
+//				KeyLabel keyLabel = new KeyLabel();
+//				keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
+//				keyLabel.setUnitId(result.getInt("unit_id"));
+//				keyLabel.setUserId(result.getString("user_id"));
+//				keyLabel.setKeyLabelName(result.getString("keylabel_name"));
+//				keyLabel.setBeginTime(result.getInt("begin_time"));
+//				keyLabel.setEndTime(result.getInt("end_time"));
+//				keyLabel.setShare(result.getInt("share"));
+//				keyLabel.setShareTime(result.getString("share_time"));
+//				keyLabel.setLikes(result.getInt("likes"));
+//				outputList.add(keyLabel);
+//			}
+//		}
+//			catch(SQLException x){
+//			System.out.println("Exception select"+x.toString());
+//		}
+//		finally {
+//			Close();
+//		}
+//		String json = new Gson().toJson(outputList);
+//		return json;
+//	}
+	
+	public int insertKeyLabel(KeyLabel keyLabel)
+	{
+		try
+		{
+			pst = con.prepareStatement(insertKeyLabelSQL, Statement.RETURN_GENERATED_KEYS);
+			pst.setInt(1, keyLabel.getUnitId());
+			pst.setString(2, keyLabel.getUserId());
+			pst.setString(3, keyLabel.getKeyLabelName());
+			pst.setInt(4, keyLabel.getBeginTime());
+			pst.setInt(5, keyLabel.getEndTime());
+			pst.setInt(6, 0);
+			pst.setString(7, null);
+			pst.setInt(8, 0);
+			pst.executeUpdate();
+			ResultSet generatedKeys = pst.getGeneratedKeys();
+			if (generatedKeys.next())
+				return generatedKeys.getInt(1);
+			
+		} catch (final SQLException x)
+		{
+			System.out.println("Exception insert" + x.toString());
+		} finally
+		{
+			Close();
+		}
+		return 0;
+	}
+	
+	public void updateKeyLabel(KeyLabel keyLabel)
+	{
+		try {
+			pst = con.prepareStatement(updateKeyLabelSQL);
+			pst.setString(1,keyLabel.getKeyLabelName());
+			pst.setInt(2,keyLabel.getBeginTime());
+			pst.setInt(3,keyLabel.getEndTime());
+			pst.setInt(4, keyLabel.getKeyLabelId());
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("Exception delete"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
+	public void deleteKeyLabel(int keyLabelId)
+	{
+		try {
+			pst = con.prepareStatement(deleteKeyLabelSQL);
+			pst.setInt(1,keyLabelId);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("Exception delete"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
+	public void Close() {
+		try {
+			if(result!=null) {
+				result.close();
+				result = null;
+			}
+			if(stat!=null) {
+				stat.close();
+				stat = null;
+			}
+			if(pst!=null) {
+				pst.close();
+				pst = null;
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Close Exception :" + e.toString()); 
+		}		
+	} 
+	
+//	public static void main(String []args)
+//	{
+//		KeyLabelDatabaseManager kldm = new KeyLabelDatabaseManager();
+//		
+//		ArrayList<KeyLabel> unitKeyLabel = kldm.getUnitKeyLabel(1);
+//		for (KeyLabel i:unitKeyLabel)
+//		{
+//			System.out.println(i);
+//		}
+//		System.out.println("unitPersonal:");
+//		ArrayList<KeyLabel> unitPersonalKeyLabel = kldm.getUnitPersonalKeyLabel(1, 1);
+//		for (KeyLabel i:unitPersonalKeyLabel)
+//		{
+//			System.out.println(i);
+//		}
+//	}
+}

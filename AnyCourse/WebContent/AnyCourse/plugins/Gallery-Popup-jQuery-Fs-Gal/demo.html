@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Full Screen Photo Gallery Demo</title>
+ 
+    <link rel="stylesheet" type="text/css" href="css/fs-gal.css" />
+    <style type="text/css">
+      /* For demo only */
+     
+      .fs-gal {
+        width: 100px;
+        height: auto;
+        float: left;
+      }
+    </style>
+  </head>
+  <body>
+  <div class="container">
+
+    <!-- Create objects with class 'fs-gal' and include the data-attribute 'data-url' with the relative or absolute path which is to be displayed. -->
+    <img class="fs-gal" src="https://picsum.photos/1280/853?image=822" alt="Example Image 1" data-url="https://picsum.photos/1280/853?image=822" />
+    <img class="fs-gal" src="https://picsum.photos/1280/853?image=823" alt="Example Image 1" data-url="https://picsum.photos/1280/853?image=823" />
+    <img class="fs-gal" src="https://picsum.photos/1280/853?image=818" alt="Example Image 1" data-url="https://picsum.photos/1280/853?image=818" />
+    <img class="fs-gal" src="https://picsum.photos/1280/853?image=817" alt="Example Image 1" data-url="https://picsum.photos/1280/853?image=817" />
+	</div>
+    <!-- Full screen gallery -->
+    <div class="fs-gal-view">
+      <h1></h1>
+      <img class="fs-gal-prev fs-gal-nav" src="img/prev.svg" alt="Previous picture" title="Previous picture" />
+      <img class="fs-gal-next fs-gal-nav" src="img/next.svg" alt="Next picture" title="Next picture" />
+      <img class="fs-gal-close" src="img/close.svg" alt="Close gallery" title="Close gallery" />
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="js/fs-gal.js"></script>
+
+  </body>
+</html>

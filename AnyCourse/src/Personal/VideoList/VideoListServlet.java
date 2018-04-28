@@ -17,7 +17,7 @@ public class VideoListServlet extends HttpServlet{
 		
 		ArrayList<VideoList> videoLists = new ArrayList<VideoList>();
 		ArrayList<UnitVideo> unitVideos = new ArrayList<UnitVideo>();
-		VideoListDatabaseManager videoListDatebaseManager = new VideoListDatabaseManager();
+		VideoListManager videoListDatebaseManager = new VideoListManager();
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		if(request.getParameter("action").equals("0")) {
@@ -41,7 +41,7 @@ public class VideoListServlet extends HttpServlet{
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type","text/html;charset=UTF-8");
 		
-		VideoListDatabaseManager videoListDatebaseManager = new VideoListDatabaseManager();
+		VideoListManager videoListDatebaseManager = new VideoListManager();
 		VideoList videoList = new VideoList();
 		
 		//0代表insert

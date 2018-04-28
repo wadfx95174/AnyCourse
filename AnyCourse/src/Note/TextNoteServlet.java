@@ -34,7 +34,7 @@ public class TextNoteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());		
-		NoteDatabaseManager dbnote1 = new NoteDatabaseManager();
+		NoteManager dbnote1 = new NoteManager();
 //		Note_database dbnote2 = new Note_database();
 		 
 		ArrayList<TextNote> textNotes = new ArrayList<TextNote>();
@@ -72,7 +72,7 @@ public class TextNoteServlet extends HttpServlet {
 		 
 		if(state.equals("insert"))
 		{
-			NoteDatabaseManager dbnote = new NoteDatabaseManager();
+			NoteManager dbnote = new NoteManager();
 			
 			TextNote textNote = new TextNote();
 			
@@ -91,7 +91,7 @@ public class TextNoteServlet extends HttpServlet {
 		}
 		if(state.equals("update"))
 		{
-			NoteDatabaseManager dbnote = new NoteDatabaseManager();
+			NoteManager dbnote = new NoteManager();
 			int text_note_id = Integer.parseInt(request.getParameter("text_note_id"));
 			
 			TextNote textNote = new TextNote();

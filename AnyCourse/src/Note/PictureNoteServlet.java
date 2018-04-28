@@ -33,7 +33,7 @@ public class PictureNoteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		NoteDatabaseManager dbnote = new NoteDatabaseManager();	
+		NoteManager dbnote = new NoteManager();	
 		ArrayList<PictureNote> pictureNotes = new ArrayList<PictureNote>();
 		 
 		dbnote.selectPictureNoteTable(pictureNotes);
@@ -55,7 +55,7 @@ public class PictureNoteServlet extends HttpServlet {
 		if(state.equals("delete"))
 		{
 			System.out.println("ddd");
-			NoteDatabaseManager dbnote = new NoteDatabaseManager();
+			NoteManager dbnote = new NoteManager();
 			int picture_note_id = Integer.parseInt(request.getParameter("picture_note_id"));
 			
 			PictureNote pictureNote = new PictureNote();
@@ -68,14 +68,14 @@ public class PictureNoteServlet extends HttpServlet {
 		}
 		if(state.equals("insert"))
 		{
-//			System.out.println("AAAAA");
+		System.out.println("AAAAA");
 			int unit_id = Integer.parseInt(request.getParameter("unit_id"));
 			String user_id = request.getParameter("user_id");
 			String picture_note_url = request.getParameter("picture_note_url");
 			int share = Integer.parseInt(request.getParameter("share"));
 			String share_time = request.getParameter("share_time");
 			int likes = Integer.parseInt(request.getParameter("likes"));
-			NoteDatabaseManager dbnote = new NoteDatabaseManager();
+			NoteManager dbnote = new NoteManager();
 						
 			PictureNote pictureNote = new PictureNote();
 //			pictureNote.setPicture_note_id(picture_note_id);
