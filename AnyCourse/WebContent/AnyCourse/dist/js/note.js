@@ -153,7 +153,7 @@
 					}
 //		    		alert(text_note_id);
 		    	},
-				error:function(){alert('failed');}
+				error:function(){}
 			});
 		});
 		
@@ -230,7 +230,7 @@
 		    			);	    			
 					}	    		
 		    	},
-				error:function(){alert('failed');}
+				error:function(){}
 			});
 		}
 		
@@ -283,7 +283,7 @@
 					}
 //		    		alert(text_note_id);
 		    	},
-				error:function(){alert('failed');}
+				error:function(){}
 			});
 		};
 		
