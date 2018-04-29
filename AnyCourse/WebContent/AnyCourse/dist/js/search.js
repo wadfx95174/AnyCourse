@@ -20,7 +20,7 @@ $(document).ready(function(){
 				{
 					$('#result').append(
 							'<li>'
-							+'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[0].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unit_id='+response[i].units[0].unitId+'">'
+							+'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[0].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unit_id='+response[i].units[0].unitId+'&list_id='+response[i].courselistId+'">'
 							+'<div class="media">'
 							+'<div class="media-body">'
 							+'<div class="col-xs-4 pull-left" style="padding-left: 0px;">'

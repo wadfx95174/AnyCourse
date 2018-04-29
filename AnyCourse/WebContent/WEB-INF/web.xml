@@ -74,7 +74,7 @@
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>LoginVerificationServlet</servlet-name>
-    <url-pattern>/AnyCourse/pages/examples/LoginVerificationServlet.do</url-pattern>
+    <url-pattern>/LoginVerificationServlet.do</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>PlayerInterfaceServlet</servlet-name>
