@@ -16,6 +16,7 @@ public class HomePage {
 	private int courselist_id;
 	private int share;
 	private int oorder;
+	private int num;
 	private int video_type;
 	/*
 	 * 1代表推薦影片，2代表推薦清單，3代表課程清單，4代表想要觀看，5代表正在觀看
@@ -73,6 +74,12 @@ public class HomePage {
 	}
 	public int getOorder() {
 		return oorder;
+	}
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
 	}
 	public void setVideo_type(int video_type) {
 		this.video_type = video_type;

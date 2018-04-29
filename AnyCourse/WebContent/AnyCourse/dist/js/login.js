@@ -1,6 +1,6 @@
 $( document ).ready(function() {
      $.ajax({
-    	 url: 'http://localhost:8080/AnyCourse/AnyCourse/pages/examples/LoginVerificationServlet.do',
+    	 url: 'http://localhost:8080/AnyCourse/LoginVerificationServlet.do',
     	 method : 'GET',
     	 data: {
              method : "checkLogin"

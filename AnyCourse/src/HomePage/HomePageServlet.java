@@ -30,10 +30,7 @@ public class HomePageServlet extends HttpServlet {
 		Gson gson = builder.setPrettyPrinting().create();
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(homePages));
-//		for(Map<Integer, HomePage> s:homePages) {
-//			System.out.println(s.get(0).getTeacher());
-//		}
-		System.out.println(gson.toJson(homePages));
+//		System.out.println(gson.toJson(homePages));
 	}
 
 	

@@ -12,6 +12,18 @@ import java.util.Map;
 
 
 public class HomePageManager {
+	private String selectRecommend ="select * from customlist_video,unit,recommended_result,courselist where "
+			+"recommended_result.unit_id = unit.unit_id and "
+			+"customlist_video.unit_id = unit.unit_id and "
+			+"customlist_video.courselist_id = courselist.courselist_id and "
+			+"recommended_result.user_id = ";
+	private String selectPlan="select * from customlist_video,unit,personal_plan,courselist "
+			+"where personal_plan.unit_id = unit.unit_id and "
+			+"customlist_video.unit_id = unit.unit_id and "
+			+"customlist_video.courselist_id = courselist.courselist_id and "
+			+"personal_plan.status = ";
+	private String selectPlanMax="select MAX(oorder) from personal_plan where status =";
+	
 	private Map<Integer, HomePage> map;
 	private HomePage homePage;
 	
@@ -38,6 +50,7 @@ public class HomePageManager {
 		ArrayList<Map<Integer, HomePage>> homePages = new ArrayList<Map<Integer, HomePage>>();
 		 
 		homePages.add(selectRecommendVideo(user_id));
+		homePages.add(selectRecommendList(user_id));
 		homePages.add(selectVideoList(user_id));
 		homePages.add(selectCoursePlanWant(user_id));
 		homePages.add(selectCoursePlanING(user_id));
@@ -55,29 +68,78 @@ public class HomePageManager {
 	public Map<Integer, HomePage> selectRecommendVideo(String user_id){
 		map = new HashMap<Integer, HomePage>();
 		int count = 0;//map的key
-//		int max = 0;
+		try {
+			stat = con.createStatement();
+			result = stat.executeQuery(selectRecommend + user_id);
+			while(result.next()) {
+				homePage = new HomePage();
+				homePage.setUser_id(result.getString("recommended_result.user_id"));
+				homePage.setList_name(result.getString("courselist.list_name"));
+				homePage.setUnit_name(result.getString("unit.unit_name"));
+				homePage.setSchool_name(result.getString("courselist.school_name"));
+				homePage.setTeacher(result.getString("courselist.teacher"));
+				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
+				homePage.setUnitLikes(result.getInt("unit.likes"));
+				homePage.setUnit_id(result.getInt("unit.unit_id"));
+				if(result.getString("unit.video_img_src") == "") {
+					homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+				}
+				else {
+					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+				}
+				
+				homePage.setType(1);//代表推薦影片
+				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
+					homePage.setVideo_type(1);//youtube
+				}
+				else {
+					homePage.setVideo_type(2);//jwplayer
+				}
+				map.put(count, homePage);
+				count++;
+			} 
+		}
+		catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		
+		return map;
+	}
+	
+	
+	//推薦清單
+	public Map<Integer, HomePage> selectRecommendList(String user_id){
+		map = new HashMap<Integer, HomePage>();
+		int count = 0;//map的key
+//		int listNum = 1;//計算有幾個清單
+//			int max = 0;
 		int check = 0;//0代表是第一次跑這個清單，不是0代表這個清單已經跑過，就不需要再存了
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from customlist_video,unit,recommended_result,courselist where "
-					+"recommended_result.unit_id = unit.unit_id and "
-					+"customlist_video.unit_id = unit.unit_id and "
-					+"customlist_video.courselist_id = courselist.courselist_id and "
-					+"recommended_result.user_id = " + user_id);
+			result = stat.executeQuery(selectRecommend + user_id +" order by customlist_video.oorder ASC");
 			while(result.next()) {
 				if(check == 0 || check!=result.getInt("customlist_video.courselist_id")) {
 					homePage = new HomePage();
 					homePage.setUser_id(result.getString("recommended_result.user_id"));
 					homePage.setList_name(result.getString("courselist.list_name"));
-					homePage.setUnit_name(result.getString("unit.unit_name"));
-//					homePage.setCourse_info(result.getString("courselist.course_info"));
+//						homePage.setUnit_name(result.getString("unit.unit_name"));
 					homePage.setSchool_name(result.getString("courselist.school_name"));
 					homePage.setTeacher(result.getString("courselist.teacher"));
 					homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
-					homePage.setUnitLikes(result.getInt("unit.likes"));
+					homePage.setListLikes(result.getInt("courselist.likes"));
 					homePage.setUnit_id(result.getInt("unit.unit_id"));
-					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
-					homePage.setType(1);//代表推薦影片
+//					homePage.setNum(listNum);
+					if(result.getString("unit.video_img_src") == "") {
+						homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+					}
+					else {
+						homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+					}
+					
+					homePage.setType(2);//代表推薦清單
 					if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
 						homePage.setVideo_type(1);//youtube
 					}
@@ -85,6 +147,7 @@ public class HomePageManager {
 						homePage.setVideo_type(2);//jwplayer
 					}
 					map.put(count, homePage);
+//					listNum++;
 					count++;
 				}
 				check = result.getInt("customlist_video.courselist_id");
@@ -126,14 +189,13 @@ public class HomePageManager {
 					homePage = new HomePage();
 					homePage.setUser_id(result.getString("list.user_id"));
 					homePage.setList_name(result.getString("courselist.list_name"));
-//					homePage.setCourse_info(result.getString("courselist.course_info"));
 					homePage.setSchool_name(result.getString("courselist.school_name"));
 					homePage.setTeacher(result.getString("courselist.teacher"));
 					homePage.setCourselist_id(result.getInt("list.courselist_id"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
 					homePage.setUnit_id(result.getInt("customlist_video.unit_id"));
 					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
-					homePage.setOorder(max);
+					homePage.setNum(max);
 					homePage.setType(3);//代表課程清單
 					if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
 						homePage.setVideo_type(1);//youtube
@@ -163,48 +225,38 @@ public class HomePageManager {
 		map = new HashMap<Integer, HomePage>();
 		int count = 0;//map的key
 		int max = 0;
-		int check = 0;//0代表是第一次跑這個清單，不是0代表這個清單已經跑過，就不需要再存了
 		try {
 			//找oorder來當最大值
 			stat = con.createStatement();
-			result = stat.executeQuery("select MAX(oorder) from personal_plan where status = 1 and user_id = " + user_id);
+			result = stat.executeQuery(selectPlanMax+" 1 and user_id = " + user_id);
 			while(result.next()) {
 				max = result.getInt("MAX(oorder)");
 				//檢查有沒有資料
 				if(max == 0)return null;
 			}
 			
-			result = stat.executeQuery("select * from customlist_video,unit,personal_plan,courselist "
-					+"where personal_plan.unit_id = unit.unit_id and "
-					+"customlist_video.unit_id = unit.unit_id and "
-					+"customlist_video.courselist_id = courselist.courselist_id and "
-					+"personal_plan.status = 1 and "
-					+"personal_plan.user_id =" + user_id);
+			result = stat.executeQuery(selectPlan+ "1 and personal_plan.user_id = " + user_id);
 			while(result.next()) {
-				if(check == 0 || check!=result.getInt("customlist_video.courselist_id")) {
-					homePage = new HomePage();
-					homePage.setUser_id(result.getString("personal_plan.user_id"));
-					homePage.setUnit_name(result.getString("unit.unit_name"));
-					homePage.setList_name(result.getString("courselist.list_name"));
-//					homePage.setCourse_info(result.getString("courselist.course_info"));
-					homePage.setSchool_name(result.getString("courselist.school_name"));
-					homePage.setTeacher(result.getString("courselist.teacher"));
-					homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
-					homePage.setUnitLikes(result.getInt("unit.likes"));
-					homePage.setUnit_id(result.getInt("unit.unit_id"));
-					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
-					homePage.setOorder(max);
-					homePage.setType(4);//代表想要觀看
-					if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
-						homePage.setVideo_type(1);//youtube
-					}
-					else {
-						homePage.setVideo_type(2);//jwplayer
-					}
-					map.put(count, homePage);
-					count++;
+				homePage = new HomePage();
+				homePage.setUser_id(result.getString("personal_plan.user_id"));
+				homePage.setUnit_name(result.getString("unit.unit_name"));
+				homePage.setList_name(result.getString("courselist.list_name"));
+				homePage.setSchool_name(result.getString("courselist.school_name"));
+				homePage.setTeacher(result.getString("courselist.teacher"));
+				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
+				homePage.setUnitLikes(result.getInt("unit.likes"));
+				homePage.setUnit_id(result.getInt("unit.unit_id"));
+				homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+				homePage.setOorder(max);
+				homePage.setType(4);//代表想要觀看
+				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
+					homePage.setVideo_type(1);//youtube
 				}
-				check = result.getInt("customlist_video.courselist_id");
+				else {
+					homePage.setVideo_type(2);//jwplayer
+				}
+				map.put(count, homePage);
+				count++;
 			} 
 		}
 		catch(SQLException x){
@@ -220,63 +272,53 @@ public class HomePageManager {
 	
 	
 	//找使用者的課程計畫中的"正在觀看"
-		public Map<Integer, HomePage> selectCoursePlanING(String user_id){
-			map = new HashMap<Integer, HomePage>();
-			int count = 0;//map的key
-			int max = 0;
-			int check = 0;//0代表是第一次跑這個清單，不是0代表這個清單已經跑過，就不需要再存了
-			try {
-				//找oorder來當最大值
-				stat = con.createStatement();
-				result = stat.executeQuery("select MAX(oorder) from personal_plan where status = 2 and user_id = " + user_id);
-				while(result.next()) {
-					max = result.getInt("MAX(oorder)");
-					//檢查有沒有資料
-					if(max == 0)return null;
-				}
-				
-				result = stat.executeQuery("select * from customlist_video,unit,personal_plan,courselist "
-						+"where personal_plan.unit_id = unit.unit_id and "
-						+"customlist_video.unit_id = unit.unit_id and "
-						+"customlist_video.courselist_id = courselist.courselist_id and "
-						+"personal_plan.status = 2 and "
-						+"personal_plan.user_id =" + user_id);
-				while(result.next()) {
-					if(check == 0 || check!=result.getInt("customlist_video.courselist_id")) {
-						homePage = new HomePage();
-						homePage.setUser_id(result.getString("personal_plan.user_id"));
-						homePage.setUnit_name(result.getString("unit.unit_name"));
-						homePage.setList_name(result.getString("courselist.list_name"));
-//						homePage.setCourse_info(result.getString("courselist.course_info"));
-						homePage.setSchool_name(result.getString("courselist.school_name"));
-						homePage.setTeacher(result.getString("courselist.teacher"));
-						homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
-						homePage.setUnitLikes(result.getInt("unit.likes"));
-						homePage.setUnit_id(result.getInt("unit.unit_id"));
-						homePage.setVideo_img_src(result.getString("unit.video_img_src"));
-						homePage.setOorder(max);
-						homePage.setType(5);//代表想要觀看
-						if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
-							homePage.setVideo_type(1);//youtube
-						}
-						else {
-							homePage.setVideo_type(2);//jwplayer
-						}
-						map.put(count, homePage);
-						count++;
-					}
-					check = result.getInt("customlist_video.courselist_id");
-				} 
-			}
-			catch(SQLException x){
-				System.out.println("Exception select"+x.toString());
-			}
-			finally {
-				Close();
+	public Map<Integer, HomePage> selectCoursePlanING(String user_id){
+		map = new HashMap<Integer, HomePage>();
+		int count = 0;//map的key
+		int max = 0;
+		try {
+			//找oorder來當最大值
+			stat = con.createStatement();
+			result = stat.executeQuery(selectPlanMax+" 2 and user_id = " + user_id);
+			while(result.next()) {
+				max = result.getInt("MAX(oorder)");
+				//檢查有沒有資料
+				if(max == 0)return null;
 			}
 			
-			return map;
+			result = stat.executeQuery(selectPlan+ "2 and personal_plan.user_id = " + user_id);
+			while(result.next()) {
+				homePage = new HomePage();
+				homePage.setUser_id(result.getString("personal_plan.user_id"));
+				homePage.setUnit_name(result.getString("unit.unit_name"));
+				homePage.setList_name(result.getString("courselist.list_name"));
+				homePage.setSchool_name(result.getString("courselist.school_name"));
+				homePage.setTeacher(result.getString("courselist.teacher"));
+				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
+				homePage.setUnitLikes(result.getInt("unit.likes"));
+				homePage.setUnit_id(result.getInt("unit.unit_id"));
+				homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+				homePage.setOorder(max);
+				homePage.setType(5);//代表想要觀看
+				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
+					homePage.setVideo_type(1);//youtube
+				}
+				else {
+					homePage.setVideo_type(2);//jwplayer
+				}
+				map.put(count, homePage);
+				count++;
+			} 
 		}
+		catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		
+		return map;
+	}
 	public void Close() {
 		try {
 			if(result!=null) {
