@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>AdminLTE 2 | Calendar</title>
+<title>AnyCourse</title>
 <!-- AnyCourseLogo -->
 <link rel="icon" type="image/x-icon" href="../../AnyCourseLogo.ico" />
 <meta
@@ -31,6 +31,8 @@
          folder instead of downloading all of them to reduce the load. -->
 <link href="../../dist/css/skins/_all-skins.css" rel="stylesheet"
 	type="text/css" />
+<!-- AutoComplete style -->
+<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -53,12 +55,11 @@
 				</a>
 				<!-- search form -->
 				<div class="col-xs-5">
-				
-					<form action="#" method="get" class="sidebar-form">
+					<form action="../SearchResult.html" method="get" class="sidebar-form">
 						<div class="input-group">
-							<input type="text" name="q" class="form-control"
+							<input id="tags" type="text" name="search_query" class="form-control"
 								placeholder="Search..." /> <span class="input-group-btn">
-								<button type='submit' name='search' id='search-btn'
+								<button type='submit' id='search-btn'
 									class="btn btn-flat">
 									<i class="fa fa-search"></i>
 								</button>
@@ -69,36 +70,9 @@
 				<!-- /.search form -->
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
+						
 						<!-- Notifications: style can be found in dropdown.less -->
-						<li class="dropdown notifications-menu"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown"> <i
-								class="fa fa-bell-o"></i> <span class="label label-warning">10</span>
-						</a>
-							<ul class="dropdown-menu">
-								<li class="header">You have 10 notifications</li>
-								<li>
-									<!-- inner menu: contains the actual data -->
-									<ul class="menu">
-										<li><a href="#"> <i class="fa fa-users text-aqua"></i>
-												5 new members joined today
-										</a></li>
-										<li><a href="#"> <i class="fa fa-warning text-yellow"></i>
-												Very long description here that may not fit into the page
-												and may cause design problems
-										</a></li>
-										<li><a href="#"> <i class="fa fa-users text-red"></i>
-												5 new members joined
-										</a></li>
-										<li><a href="#"> <i
-												class="fa fa-shopping-cart text-green"></i> 25 sales made
-										</a></li>
-										<li><a href="#"> <i class="fa fa-user text-red"></i>
-												You changed your username
-										</a></li>
-									</ul>
-								</li>
-								<li class="footer"><a href="#">View all</a></li>
-							</ul></li>
+						
 						<!-- User Account: style can be found in dropdown.less -->
 						<li class="dropdown user user-menu"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown"> <img
@@ -144,47 +118,74 @@
 				<!-- sidebar menu: : style can be found in sidebar.less -->
 				<ul class="sidebar-menu">
 					<li class="header">功能列表</li>
-					<li class="treeview"><a href="../../HomePage.html"><i
-							class="fa fa-home"></i> <span>首頁</span></a></li>
-					<li class="active treeview"><a href="#"> <i
-							class="fa fa-user"></i> <span>個人頁面</span><i
-							class="fa fa-angle-left pull-right"></i>
-					</a>
+					<li class="treeview">
+						<a href="../../HomePage.html">
+							<i class="fa fa-home"></i> 
+							<span>首頁</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="VideoListPage.html">
+							<i class="ion ion-clipboard"></i>
+							<span>課程清單</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="CoursePlanPage.html">
+							<i class="fa fa-tasks"></i>
+							<span>課程計畫</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="CalendarPage.html">
+							<i class="fa fa-calendar"></i>
+							<span>行事曆</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="NotePage.html">
+							<i class="fa fa-book"></i>
+							<span>筆記</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="KeyLabelPage.html">
+							<i class="fa fa-tags"></i>
+							<span>重點標籤</span>
+						</a>
+					</li>
+					<li class="active treeview">
+						<a href="#"> 
+							<i class="fa fa-user"></i> 
+							<span>個人頁面</span><i class="fa fa-angle-left pull-right"></i>
+						</a>
 						<ul class="treeview-menu ">
-							<li class="active"><a href="VideoListPage.html"><i
-									class="ion ion-clipboard"></i>課程清單</a></li>
-							<li class="active"><a href="CoursePlanPage.html"><i
-									class="fa fa-tasks"></i>課程計畫</a></li>
-							<li class="active"><a href="CalendarPage.html"><i
-									class="fa fa-calendar"></i>行事曆</a></li>
-							<li class="active"><a href="NotePage.html"><i
-									class="fa fa-book"></i>筆記</a></li>
-							<li class="active"><a href="KeyLabelPage.html"><i
-									class="fa fa-tags"></i>重點標籤</a></li>
-							<li class="active"><a href="WatchRecordPage.html"><i
-									class="fa fa-eye"></i>觀看紀錄</a></li>
-							<li class="active"><a href="SearchRecordPage.html"><i
-									class="fa fa-clock-o"></i>查詢紀錄</a></li>
-						</ul></li>
-					<li class="active treeview"><a href="#"> <i
-							class="fa fa-users"></i> <span>群組</span><i
-							class="fa fa-angle-left pull-right"></i>
-							<ul class="treeview-menu">
-								<li class="active"><a href="#"><i
-										class="fa fa-pencil-square-o"></i>管理頁面</a></li>
-								<li class="active"><a href="#"><i
-										class="fa fa-circle-o"></i>考研向前衝</a></li>
-							</ul>
-					</a></li>
-					<li class="treeview"><a href="#"> <i class="fa fa-cog"></i>
+							<li class="active">
+								<a href="WatchRecordPage.html">
+									<i class="fa fa-eye"></i>
+									<span>觀看紀錄</span>
+								</a>
+							</li>
+							<li class="active">
+								<a href="SearchRecordPage.html">
+									<i class="fa fa-clock-o"></i>
+									<span>查詢紀錄</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li class="treeview">
+						<a href="#"> 
+							<i class="fa fa-cog"></i>
 							<span>設定</span>
-					</a></li>
-					<li class="treeview"><a href="#"> <i
-							class="fa fa-question-circle"></i> <span>說明</span>
-					</a></li>
-					<li class="treeview"><a href="#"> <i class="fa fa-bell-o"></i>
-							<span>通知</span> <small class="label pull-right label-warning">10</small>
-					</a></li>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="#"> 
+							<i class="fa fa-question-circle"></i> 
+							<span>說明</span>
+						</a>
+					</li>
 				</ul>
 			</section>
 			<!-- /.sidebar -->
@@ -194,26 +195,12 @@
 		<div class="content-wrapper">
 			<section class="content">
 				<div class="row">
-					<!-- Main content -->
-					<section class="content-header">
-						<ul class="nav nav-pills" role="tablist">
-							<li role="presentation"><a href="VideoListPage.html"">課程清單</a></li>
-							<li role="presentation"><a
-								href="CoursePlanPage.html">課程計畫</a></li>
-							<li role="presentation" class="nav-item active"><a
-								href="CalendarPage.html">行事曆</a></li>
-							<li role="presentation"><a href="NotePage.html">筆記</a></li>
-							<li role="presentation"><a href="KeyLabelPage.html">重點標籤</a></li>
-							<li role="presentation"><a href="WatchRecordPage.html">觀看紀錄</a></li>
-							<li role="presentation"><a href="SearchRecordPage.html">查詢紀錄</a></li>
-						</ul>
-					</section>
 					<section class="content">
 						<div class="row">
 							<div class="col-md-3">
-								<div class="box box-solid">
+								<div class="box box-primary">
 									<div class="box-header with-border">
-										<h4 class="box-title">課程</h4>
+										<h3 class="box-title"><strong>課程</strong></h3>
 									</div>
 									<div class="box-body">
 										<!-- the events -->
@@ -233,9 +220,9 @@
 									<!-- /.box-body -->
 								</div>
 								<!-- /. box -->
-								<div class="box box-solid">
+								<div class="box box-primary">
 									<div class="box-header with-border">
-										<h3 class="box-title">Create Event</h3>
+										<h3 class="box-title"><strong>Create Event</strong></h3>
 									</div>
 									<div class="box-body">
 										<div class="btn-group"
@@ -332,198 +319,10 @@
 	<script src="../../plugins/fullcalendar/fullcalendar.min.js"
 		type="text/javascript"></script>
 	<!-- Page specific script -->
-	<script type="text/javascript">
-      $(function () {
-
-        // ----初始化外部事件----
-        function ini_events(ele) {
-          ele.each(function () {
-            // 宣告EventObject (可以不用start跟end)
-            var eventObject = {
-              title: $.trim($(this).text()), // 直接取標籤上的文字
-            };
-
-            // 把eventObject存到DOM裡面，之後就可以取得
-            $(this).data('eventObject', eventObject);
-
-            // 讓事件可以被拖動
-            $(this).draggable({
-              zIndex: 1070,
-              revert: true, // will cause the event to go back to its
-              revertDuration: 0  //  original position after the drag
-            });
-
-          });
-        }
-        ini_events($('#external-events div.external-event'));		//--------------------這個要改為資料庫抓取
-
-        // ----初始化行事曆----
-        
-        // calendar的Date型態
-        var date = new Date();
-        var d = date.getDate(),
-                m = date.getMonth(),
-                y = date.getFullYear();
-        
-		var m = moment() // Start, End to dateTime
-        
-        // 從資料庫取得行事曆的資料，並更新至頁面
-        $.ajax({
-			url: 'http://localhost:8080/AnyCourse/CalendarServlet.do',
-			type: 'GET',
-			dataType: "json", 
-			error: function(){
-				console.log('get CalendarInfo error!');
-			},
-			success: function(response){
-				console.log(response);
-				$('#calendar').fullCalendar({
-			          header: {
-			            left: 'prev,next today',
-			            center:  'title',
-			            right: 'month,agendaWeek,agendaDay'
-			          },
-			          buttonText: {
-			            today: 'today',
-			            month: 'month',
-			            week: 'week',
-			            day: 'day'
-			          },
-			          events: response,
-			          timeFormat: 'hh:mm a',
-			          editable: true,
-			          droppable: true,
-			          
-			          // 當外部事件放進Calendar時觸發
-			          drop: function (date) {
-
-			            // retrieve the dropped element's stored Event Object
-			            var originalEventObject = $(this).data('eventObject');
-
-			            // we need to copy it, so that multiple events don't have a reference to the same object
-			            var copiedEventObject = $.extend({}, originalEventObject);
-
-			            var startTime = window.prompt("start:");
-			            var endTime = window.prompt("end:");
-			            
-			            // assign it the date that was reported
-			            copiedEventObject.start = new Date(date + parseInt(startTime) * 60000);
-			            copiedEventObject.end = new Date(date + parseInt(endTime) * 60000);
-			            copiedEventObject.backgroundColor = $(this).css("background-color");
-			            copiedEventObject.borderColor = $(this).css("border-color");
-			            var startTime = $.fullCalendar.moment(copiedEventObject.start);
-			            var endTime = $.fullCalendar.moment(copiedEventObject.end);
-			            console.log(startTime.format());
-			            console.log(endTime);
-			            
-			            $.ajax({
-		            		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
-		            		method: 'POST',
-		            		data: {
-		            			title: copiedEventObject.title,
-	   	        		  		//url: copiedEventObject.url,
-	   	        		  		start: startTime.format('YYYY-MM-DD HH:mm:ss'),//copiedEventObject.start.toISOString(),
-	   	        		  		end: endTime.format('YYYY-MM-DD HH:mm:ss'),//copiedEventObject.end.toISOString(),
-	   	        		  		backgroundColor: copiedEventObject.backgroundColor,
-	   	        		  		borderColor: copiedEventObject.borderColor,
-	   	        		  		method: "insert"
-		            		},
-		            		error: function(){
-		            			alert("InsertFail");
-		            		},
-		            		success: function(response){
-	   	        				copiedEventObject.id = response;
-	   	        				//$('#calendar').fullCalendar('updateEvent', event);
-	   	        				$('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
-					            {	
-				 	        	    //alert(copiedEventObject.id + " " + copiedEventObject.title + " " + copiedEventObject.url + " " + copiedEventObject.start + " " + copiedEventObject.end + " " + copiedEventObject.allDay);
-					            	
-					            }; // end renderEvent
-					            
-		            		} // end success
-		            	}); // end ajax
-			            
-			            // 若勾選抓取後移除，則移除該元件
-			            if ($('#drop-remove').is(':checked')) {
-			              $(this).remove();
-			            }
-			          } // end drop
-			          
-			          // ----點擊事件----
-			          ,eventClick: function(event, jsEvent, view) { 
-			        	  //event.start.add(1, 'days');//modify 
-			        	  //alert('Event: ' + event.start.toISOString());
-			        	  console.log(event);
-			        	  //console.log(jsEvent);
-			        	  //2018-03-28T18:35:00
-			        	  var m = moment();
-			        	  $('#calendar').fullCalendar('updateEvent', event);//notify change 
-			        	 }
-			      	  // ----移動事件----
-			          ,eventDrop: function(event, delta, revertFunc) {
-			        	 console.log(event.id + " " + event.title + " was dropped on " + event.start.format());
-		
-			        	 // 如果取消改變，就把event還原回去不動作(revertFunc())
-			        	 //if (!confirm("Are you sure about this change?")) {
-			        	 //  revertFunc();
-			        	 //}
-			        	    
-		        	     if (event.end != null)
-		        	        $.post("http://localhost:8080/AnyCourse/CalendarServlet.do", 
-		        			  {
-		        		  		 id: event.id,
-		        		  		 title: event.title,
-		        		  		 url: event.url,
-		        		  		 start: event.start.toISOString(),
-		        		  		 end: event.end.toISOString(),
-		        		  		 method: "update"
-		        			  });
-		        	     else 
-		        		    $.post("http://localhost:8080/AnyCourse/CalendarServlet.do", 
-		        			  {
-		        		  		 id: event.id,
-		        		  		 title: event.title,
-		        		  		 url: event.url,
-		        		  		 start: event.start.toISOString(),
-		        		  		 method: "update"
-		        			  });
-			          } // end eventDrop
-			    }); // end fullcalendar
-			} // end succuss
-		})
-		
-        /* ADDING EVENTS */
-        var currColor = "#3c8dbc"; //Red by default
-        //Color chooser button
-        var colorChooser = $("#color-chooser-btn");
-        $("#color-chooser > li > a").click(function (e) {
-          e.preventDefault();
-          //Save color
-          currColor = $(this).css("color");
-          //Add color effect to button
-          $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
-        });
-        $("#add-new-event").click(function (e) {
-          e.preventDefault();
-          //Get value and make sure it is not null
-          var val = $("#new-event").val();
-          if (val.length == 0) {
-            return;
-          }
-
-          //Create events
-          var event = $("<div />");
-          event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
-          event.html(val);
-          $('#external-events').prepend(event);
-
-          //Add draggable funtionality
-          ini_events(event);
-
-          //Remove event from text input
-          $("#new-event").val("");
-        })
-		})
-    </script>
+	
+	<!-- CalendarPage.js -->
+	<script src="../../dist/js/calendarPage.js" type="text/javascript"></script>
+	<!-- AutoComplete -->
+	<script src="../../dist/js/autoComplete.js" type="text/javascript"></script>
 </body>
 </html>

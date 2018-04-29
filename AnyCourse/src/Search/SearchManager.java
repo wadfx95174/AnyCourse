@@ -10,9 +10,11 @@ import java.util.ArrayList;
 
 public class SearchManager
 {
-	private String selectCourseListSQL = "select * from courselist where list_name like ? ";
-	private String selectUnitKeywordSQL = "select * from unit natural join unit_keyword where unit_keyword like ? ";
-	private String selectCourseKeywordSQL = "select * from courselist natural join course_keyword where course_keyword like ?";
+	private final String selectCourseListSQL = "select * from courselist where list_name like ?";
+	private final String selectUnitKeywordSQL = "select * from unit natural join unit_keyword where unit_keyword like ? ";
+//	private final String selectCourseKeywordSQL = "select * from courselist natural join course_keyword where course_keyword like ? or list_name like ? group by courselist_id";
+	private final String selectCourseKeywordSQL = "select max(courselist_id)courselist_id, max(school_name)school_name, max(list_name)list_name, max(teacher)teacher, max(department_name)department_name, max(course_info)course_info, max(creator)creator, max(share)share, max(likes)likes from courselist natural join course_keyword where course_keyword like ? or list_name like ? group by list_name ORDER BY `courselist_id` ASC";
+	private final String selectUnitByCourseIdSQL = "select * from unit natural join customlist_video where courselist_id = ?";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -55,13 +57,13 @@ public class SearchManager
 		 return outputList;
 	}
 	
-	public ArrayList<String> selectUnitKeywordTable(String name) {
+	public ArrayList<String> getUnitByKeyword(String keyword) {
 
 		ArrayList<String> outputList = new ArrayList<>(); 
 		try {
 
 			pst = con.prepareStatement(selectUnitKeywordSQL);
-			pst.setString(1,  "%" + name + "%" );
+			pst.setString(1,  "%" + keyword + "%" );
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 	
@@ -78,19 +80,61 @@ public class SearchManager
 		 return outputList;
 	}
 	
-	public ArrayList<String> selectCourseKeywordTable(String name) {
+	public ArrayList<Search> getCourseListByKeyword(String keyword) {
 
-		ArrayList<String> outputList = new ArrayList<>(); 
+		ArrayList<Search> outputList = new ArrayList<Search>(); 
 		try {
 
 			pst = con.prepareStatement(selectCourseKeywordSQL);
-			pst.setString(1,  "%" + name + "%" );
+			pst.setString(1,  "%" + keyword + "%" );
+			pst.setString(2,  "%" + keyword + "%" );
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 	
-				 String output = result.getString(3);
+				 Search output = new Search();
+				 output.setCourselistId(result.getInt("courselist_id"));
+				 output.setSchoolName(result.getString("school_name"));
+				 output.setListName(result.getString("list_name"));
+				 output.setTeacher(result.getString("teacher"));
+				 output.setDepartmentName(result.getString("department_name"));
+				 output.setCourseInfo(result.getString("course_info"));
+				 output.setCreator(result.getString("creator"));
+				 output.setShare(result.getInt("share"));
+				 output.setLikes(result.getInt("likes"));
 				 outputList.add(output);
 		     }
+			pst = con.prepareStatement(selectUnitByCourseIdSQL);
+			for (int i = 0; i < outputList.size(); i++)
+			{
+				pst.setInt(1,outputList.get(i).getCourselistId());
+				result = pst.executeQuery();
+				while (result.next())
+				{
+					Unit unit = new Unit();
+					unit.setUnitId(result.getInt("unit_id"));
+					unit.setUnitName(result.getString("unit_name"));
+					unit.setVideoUrl(result.getString("video_url"));
+					unit.setLikes(result.getInt("likes"));
+					unit.setVideoImgSrc(result.getString("video_img_src"));
+					outputList.get(i).addUnit(unit);
+				}
+			}
+			pst = con.prepareStatement(selectUnitKeywordSQL);
+			pst.setString(1, "%" + keyword + "%" );
+			result = pst.executeQuery();
+			while (result.next())
+			{
+				Search search = new Search();
+				Unit unit = new Unit();
+				unit.setUnitId(result.getInt("unit_id"));
+				unit.setUnitName(result.getString("unit_name"));
+				unit.setVideoUrl(result.getString("video_url"));
+				unit.setLikes(result.getInt("likes"));
+				unit.setSchoolName(result.getString("school_name"));
+				unit.setVideoImgSrc(result.getString("video_img_src"));
+				search.addUnit(unit);
+				outputList.add(search);;
+			}
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());
@@ -101,12 +145,12 @@ public class SearchManager
 		 return outputList;
 	}
 	
-	public ArrayList<String> getAllKeyword(String name) {
+//	public ArrayList<String> getAllKeyword(String name) {
 
-		ArrayList<String> outputList = selectCourseKeywordTable(name);
-		outputList.addAll(selectUnitKeywordTable(name));
-		 return outputList;
-	}
+//		ArrayList<String> outputList = selectCourseKeywordTable(name);
+//		outputList.addAll(selectUnitKeywordTable(name));
+//		 return outputList;
+//	}
 	
 	
 	public void Close() {
@@ -135,6 +179,7 @@ public class SearchManager
 		
 //		System.out.println(kldm.selectCourseListTable("化學"));
 //		System.out.println(kldm.selectUnitKeywordTable("微積分"));
-		System.out.println(kldm.getAllKeyword("微積分"));
+		System.out.println(kldm.getCourseListByKeyword("微積分"));
+//		System.out.println(kldm.getAllKeyword("微積分"));
 	}
 }

@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <meta
 	content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
 	name='viewport'>
@@ -41,6 +42,8 @@
 <!-- Daterange picker -->
 <link href="plugins/daterangepicker/daterangepicker-bs3.css"
 	rel="stylesheet" type="text/css" />
+<!-- AutoComplete style -->
+<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
 <!-- bootstrap wysihtml5 - text editor -->
 <link href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
 <!-- HomePage.CSS -->
@@ -64,12 +67,11 @@
 				</a>
 				<!-- search form -->
 				<div class="col-xs-5">
-				
-					<form action="#" method="get" class="sidebar-form">
+					<form action="pages/SearchResult.html" method="get" class="sidebar-form">
 						<div class="input-group">
-							<input type="text" name="q" class="form-control"
+							<input id="tags" type="text" name="search_query" class="form-control"
 								placeholder="Search..." /> <span class="input-group-btn">
-								<button type='submit' name='search' id='search-btn'
+								<button type='submit' id='search-btn'
 									class="btn btn-flat">
 									<i class="fa fa-search"></i>
 								</button>
@@ -82,35 +84,7 @@
 					<ul class="nav navbar-nav">
 						
 						<!-- Notifications: style can be found in dropdown.less -->
-						<li class="dropdown notifications-menu"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown"> <i
-								class="fa fa-bell-o"></i> <span class="label label-warning">10</span>
-						</a>
-							<ul class="dropdown-menu">
-								<li class="header">You have 10 notifications</li>
-								<li>
-									<!-- inner menu: contains the actual data -->
-									<ul class="menu">
-										<li><a href="#"> <i class="fa fa-users text-aqua"></i>
-												5 new members joined today
-										</a></li>
-										<li><a href="#"> <i class="fa fa-warning text-yellow"></i>
-												Very long description here that may not fit into the page
-												and may cause design problems
-										</a></li>
-										<li><a href="#"> <i class="fa fa-users text-red"></i>
-												5 new members joined
-										</a></li>
-										<li><a href="#"> <i
-												class="fa fa-shopping-cart text-green"></i> 25 sales made
-										</a></li>
-										<li><a href="#"> <i class="fa fa-user text-red"></i>
-												You changed your username
-										</a></li>
-									</ul>
-								</li>
-								<li class="footer"><a href="#">View all</a></li>
-							</ul></li>
+						
 						<!-- User Account: style can be found in dropdown.less -->
 						<li class="dropdown user user-menu"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown"> <img
@@ -158,53 +132,75 @@
 
 				<ul class="sidebar-menu">
 					<li class="header">功能列表</li>
-					<li class="treeview"><a href="HomePage.html"><i
-							class="fa fa-home"></i> <span>首頁</span></a></li>
-					<li class="active treeview"><a href="#"> <i
-							class="fa fa-user"></i> <span>個人頁面</span><i
-							class="fa fa-angle-left pull-right"></i>
-					</a>
+					<li class="treeview">
+						<a href="HomePage.html">
+							<i class="fa fa-home"></i> 
+							<span>首頁</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="pages/Personal/VideoListPage.html">
+							<i class="ion ion-clipboard"></i>
+							<span>課程清單</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="pages/Personal/CoursePlanPage.html">
+							<i class="fa fa-tasks"></i>
+							<span>課程計畫</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="pages/Personal/CalendarPage.html">
+							<i class="fa fa-calendar"></i>
+							<span>行事曆</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="pages/Personal/NotePage.html">
+							<i class="fa fa-book"></i>
+							<span>筆記</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="pages/Personal/KeyLabelPage.html">
+							<i class="fa fa-tags"></i>
+							<span>重點標籤</span>
+						</a>
+					</li>
+					<li class="active treeview">
+						<a href="#"> 
+							<i class="fa fa-user"></i> 
+							<span>個人頁面</span><i class="fa fa-angle-left pull-right"></i>
+						</a>
 						<ul class="treeview-menu ">
-							<li class="active"><a
-								href="pages/Personal/VideoListPage.html"><i
-									class="ion ion-clipboard"></i>課程清單</a></li>
-							<li class="active"><a
-								href="pages/Personal/CoursePlanPage.html"><i
-									class="fa fa-tasks"></i>課程計畫</a></li>
-							<li class="active"><a
-								href="pages/Personal/CalendarPage.html"><i
-									class="fa fa-calendar"></i>行事曆</a></li>
-							<li class="active"><a href="pages/Personal/NotePage.html"><i
-									class="fa fa-book"></i>筆記</a></li>
-							<li class="active"><a
-								href="pages/Personal/KeyLabelPage.html"><i
-									class="fa fa-tags"></i>重點標籤</a></li>
-							<li class="active"><a
-								href="pages/Personal/WatchRecordPage.html"><i
-									class="fa fa-eye"></i>觀看紀錄</a></li>
-							<li class="active"><a
-								href="pages/Personal/SearchRecordPage.html"><i
-									class="fa fa-clock-o"></i>查詢紀錄</a></li>
-						</ul></li>
-					<li class="active treeview"><a href="#"> <i
-							class="fa fa-users"></i> <span>群組</span><i
-							class="fa fa-angle-left pull-right"></i>
-							<ul class="treeview-menu">
-								<li class="active"><a href="#"><i
-										class="fa fa-pencil-square-o"></i>管理頁面</a></li>
-								<li class="active"><a href="#"><i
-										class="fa fa-circle-o"></i>考研向前衝</a></li>
-							</ul>
-					</a></li>
-					<li class="treeview"><a href="#"> <i class="fa fa-cog"></i>
+							<li class="active">
+								<a href="pages/Personal/WatchRecordPage.html">
+									<i class="fa fa-eye"></i>
+									<span>觀看紀錄</span>
+								</a>
+							</li>
+							<li class="active">
+								<a href="pages/Personal/SearchRecordPage.html">
+									<i class="fa fa-clock-o"></i>
+									<span>查詢紀錄</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					
+					<li class="treeview">
+						<a href="#"> 
+							<i class="fa fa-cog"></i>
 							<span>設定</span>
-					</a></li>
-					<li class="treeview"><a href="#"> <i
-							class="fa fa-question-circle"></i> <span>說明</span>
-					</a></li>
-					<li class="treeview"><a href="#"> <i class="fa fa-bell-o"></i>
-							<span>通知</span> <small class="label pull-right label-warning">10</small>
-					</a></li>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="#"> 
+							<i class="fa fa-question-circle"></i> 
+							<span>說明</span>
+						</a>
+					</li>
 				</ul>
 
 			</section>
@@ -213,31 +209,38 @@
 		<!-- Right side column. Contains the navbar and content of the page -->
 		<div class="content-wrapper">
 			<!-- Main content -->
-			<section class="content-header">
+			<!--  <section class="content-header">
 				<h4>
 					<b>推薦影片</b>
 				</h4>
-			</section>
+			</section>-->
 			<!-- /section content -->
-			<section class="content">
+			<!--<section class="content">
 				<div class="row">
 				<div class="swiper-container">
 				    <div class="swiper-wrapper">
 				      <div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;">
 						<div class="card">
-							<div class="embed-responsive embed-responsive-16by9">
-                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
-                            </div>
-							<div class="card-block" style="padding-top:0px;"  onclick="jumpToPlayerInterface(1,1)">
-								<h4 class="card-title">微積分一</h4>
+						<figure class="snip1492">
+							  <div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface(1,1)">
+	                             <img id="img"  class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/6DrXLdwJk8U/hqdefault.jpg">
+	                          </div><i class="fa fa-play"></i>
+							  <a href="#" onclick="jumpToPlayerInterface(1,1)"></a>
+							</figure>
+						  
+							<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface(1,1)">
+								<h4 class="card-title" >高等微積分(一) Advanced Calculus I</h4>
 								<div class="card-text">
-									SDSDsddddddddddddssssssssssssssssssssssssssssssssssssss
+									本課程除了微分積分之方法與計算之外，學習重點在於基本數學觀念的理解。例如中間值定理、平均值定理、極值定理等。這些定理不僅本身有其基本應用的價值，背後也有它們數學的涵義與想法。瞭解這些想法，一方面可以推廣這些定理，另一方面當我們面臨更複雜的問題時，解決問題初步的試探可以以這些基本數學想法做為基礎或做為類比。這是數學做為一種科學思考的價值。
 								</div>
 								<div class="meta">
-									<a>國立台灣大學&nbsp;&nbsp;王老師</a>
+									<a>國立交通大學&nbsp;&nbsp;白老師</a>
 								</div>
 								<div class="meta">
-									<a>123,456</a>
+									<a>113,146</a>
+								</div>
+								<div class="meta">
+									<a>類型 : 清單</a>
 								</div>
 							</div>
 							<div class="card-footer">
@@ -246,34 +249,32 @@
 							           新增至 <span class="caret caret-up"></span>
 							         </button>
 							         <ul class="dropdown-menu drop-up" role="menu">
-										<li><a href="#"> <i class="fa fa-list-alt"></i>新增至課程清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-file-text-o"></i>新增至共同清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-tasks"></i>新增至課程計畫
-										</a></li>
-										<li><a href="#"> <i class="fa fa-align-left"></i>新增至共同計畫
-										</a></li>
+										<li>
+											<a href="#"> <i class="ion ion-clipboard"></i>新增至課程清單</a>
+										</li>
+										<li>
+											<a href="#"> <i class="fa fa-tasks"></i>新增至課程計畫</a>
+										</li>
 									</ul>
 							 	</div>
 							</div>
 						</div>
-					</div>
+					  </div>
 				      <div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;">
 						<div class="card">
-							<div class="embed-responsive embed-responsive-16by9">
-                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
+						  <div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface(1,1)">
+                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/4f2pQLiPz4U/hqdefault.jpg">
                             </div>
 							<div class="card-block" style="padding-top:0px;"  onclick="jumpToPlayerInterface(1,1)">
-								<h4 class="card-title">微積分一</h4>
+								<h4 class="card-title" >微積分(一) Calculus I</h4>
 								<div class="card-text">
-									SDSDsddddddddddddssssssssssssssssssssssssssssssssssssss
+									本課程除了微分積分之方法與計算之外，學習重點在於基本數學觀念的理解。例如中間值定理、平均值定理、極值定理等。這些定理不僅本身有其基本應用的價值，背後也有它們數學的涵義與想法。瞭解這些想法，一方面可以推廣這些定理，另一方面當我們面臨更複雜的問題時，解決問題初步的試探可以以這些基本數學想法做為基礎或做為類比。這是數學做為一種科學思考的價值。
 								</div>
 								<div class="meta">
-									<a>國立台灣大學&nbsp;&nbsp;王老師</a>
+									<a>國立交通大學&nbsp;&nbsp;莊老師</a>
 								</div>
 								<div class="meta">
-									<a>123,456</a>
+									<a>111,214</a>
 								</div>
 							</div>
 							<div class="card-footer">
@@ -282,287 +283,7 @@
 							           新增至 <span class="caret caret-up"></span>
 							         </button>
 							         <ul class="dropdown-menu drop-up" role="menu">
-										<li><a href="#"> <i class="fa fa-list-alt"></i>新增至課程清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-file-text-o"></i>新增至共同清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-tasks"></i>新增至課程計畫
-										</a></li>
-										<li><a href="#"> <i class="fa fa-align-left"></i>新增至共同計畫
-										</a></li>
-									</ul>
-							 	</div>
-							</div>
-						</div>
-					</div><div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;">
-						<div class="card">
-							<div class="embed-responsive embed-responsive-16by9">
-                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
-                            </div>
-							<div class="card-block" style="padding-top:0px;"  onclick="jumpToPlayerInterface(1,1)">
-								<h4 class="card-title">微積分一</h4>
-								<div class="card-text">
-									SDSDsddddddddddddssssssssssssssssssssssssssssssssssssss
-								</div>
-								<div class="meta">
-									<a>國立台灣大學&nbsp;&nbsp;王老師</a>
-								</div>
-								<div class="meta">
-									<a>123,456</a>
-								</div>
-							</div>
-							<div class="card-footer">
-								<div class="btn-group show-on-hover dropup">
-							         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							           新增至 <span class="caret caret-up"></span>
-							         </button>
-							         <ul class="dropdown-menu drop-up" role="menu">
-										<li><a href="#"> <i class="fa fa-list-alt"></i>新增至課程清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-file-text-o"></i>新增至共同清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-tasks"></i>新增至課程計畫
-										</a></li>
-										<li><a href="#"> <i class="fa fa-align-left"></i>新增至共同計畫
-										</a></li>
-									</ul>
-							 	</div>
-							</div>
-						</div>
-					</div><div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;">
-						<div class="card">
-							<div class="card-block" style="padding-top:0px;"  onclick="jumpToPlayerInterface(1,1)">
-								<div class="embed-responsive embed-responsive-16by9">
-	                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
-	                            </div>
-								<h4 class="card-title">微積分一</h4>
-								<div class="card-text">
-									SDSDsddddddddddddssssssssssssssssssssssssssssssssssssss
-								</div>
-								<div class="meta">
-									<a>國立台灣大學&nbsp;&nbsp;王老師</a>
-								</div>
-								<div class="meta">
-									<a>123,456</a>
-								</div>
-							</div>
-							<div class="card-footer">
-								<div class="btn-group show-on-hover dropup">
-							         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							           新增至... <span class="caret caret-up"></span>
-							         </button>
-							         <ul class="dropdown-menu drop-up" role="menu">
-										<li><a href="#"> <i class="fa fa-list-alt"></i>新增至課程清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-file-text-o"></i>新增至共同清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-tasks"></i>新增至課程計畫
-										</a></li>
-										<li><a href="#"> <i class="fa fa-align-left"></i>新增至共同計畫
-										</a></li>
-									</ul>
-							 	</div>
-							</div>
-						</div>
-					</div><div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;">
-						<div class="card">
-							<div class="card-block" style="padding-top:0px;"  onclick="jumpToPlayerInterface(1,1)">
-								<div class="embed-responsive embed-responsive-16by9">
-	                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
-	                            </div>
-								<h4 class="card-title">微積分一</h4>
-								<div class="card-text">
-									SDSDsddddddddddddssssssssssssssssssssssssssssssssssssss
-								</div>
-								<div class="meta">
-									<a>國立台灣大學&nbsp;&nbsp;王老師</a>
-								</div>
-								<div class="meta">
-									<a>123,456</a>
-								</div>
-							</div>
-							<div class="card-footer">
-								<div class="btn-group show-on-hover dropup">
-							         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							           新增至... <span class="caret caret-up"></span>
-							         </button>
-							         <ul class="dropdown-menu drop-up" role="menu">
-										<li><a href="#"> <i class="fa fa-list-alt"></i>新增至課程清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-file-text-o"></i>新增至共同清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-tasks"></i>新增至課程計畫
-										</a></li>
-										<li><a href="#"> <i class="fa fa-align-left"></i>新增至共同計畫
-										</a></li>
-									</ul>
-							 	</div>
-							</div>
-						</div>
-					</div><div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;">
-						<div class="card">
-							<div class="card-block" style="padding-top:0px;"  onclick="jumpToPlayerInterface(1,1)">
-								<div class="embed-responsive embed-responsive-16by9">
-	                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
-	                            </div>
-								<h4 class="card-title">微積分一</h4>
-								<div class="card-text">
-									SDSDsddddddddddddssssssssssssssssssssssssssssssssssssss
-								</div>
-								<div class="meta">
-									<a>國立台灣大學&nbsp;&nbsp;王老師</a>
-								</div>
-								<div class="meta">
-									<a>123,456</a>
-								</div>
-							</div>
-							<div class="card-footer">
-								<div class="btn-group show-on-hover dropup">
-							         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							           新增至... <span class="caret caret-up"></span>
-							         </button>
-							         <ul class="dropdown-menu drop-up" role="menu">
-										<li><a href="#"> <i class="fa fa-list-alt"></i>新增至課程清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-file-text-o"></i>新增至共同清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-tasks"></i>新增至課程計畫
-										</a></li>
-										<li><a href="#"> <i class="fa fa-align-left"></i>新增至共同計畫
-										</a></li>
-									</ul>
-							 	</div>
-							</div>
-						</div>
-					</div><div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;">
-						<div class="card">
-							<div class="card-block" style="padding-top:0px;"  onclick="jumpToPlayerInterface(1,1)">
-								<div class="embed-responsive embed-responsive-16by9">
-	                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
-	                            </div>
-								<h4 class="card-title">微積分一</h4>
-								<div class="card-text">
-									SDSDsddddddddddddssssssssssssssssssssssssssssssssssssss
-								</div>
-								<div class="meta">
-									<a>國立台灣大學&nbsp;&nbsp;王老師</a>
-								</div>
-								<div class="meta">
-									<a>123,456</a>
-								</div>
-							</div>
-							<div class="card-footer">
-								<div class="btn-group show-on-hover dropup">
-							         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							           新增至... <span class="caret caret-up"></span>
-							         </button>
-							         <ul class="dropdown-menu drop-up" role="menu">
-										<li><a href="#"> <i class="fa fa-list-alt"></i>新增至課程清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-file-text-o"></i>新增至共同清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-tasks"></i>新增至課程計畫
-										</a></li>
-										<li><a href="#"> <i class="fa fa-align-left"></i>新增至共同計畫
-										</a></li>
-									</ul>
-							 	</div>
-							</div>
-						</div>
-					</div><div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;">
-						<div class="card">
-							<div class="card-block" style="padding-top:0px;"  onclick="jumpToPlayerInterface(1,1)">
-								<div class="embed-responsive embed-responsive-16by9">
-	                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
-	                            </div>
-								<h4 class="card-title">微積分一</h4>
-								<div class="card-text">
-									SDSDsddddddddddddssssssssssssssssssssssssssssssssssssss
-								</div>
-								<div class="meta">
-									<a>國立台灣大學&nbsp;&nbsp;王老師</a>
-								</div>
-								<div class="meta">
-									<a>123,456</a>
-								</div>
-							</div>
-							<div class="card-footer">
-								<div class="btn-group show-on-hover dropup">
-							         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							           新增至... <span class="caret caret-up"></span>
-							         </button>
-							         <ul class="dropdown-menu drop-up" role="menu">
-										<li><a href="#"> <i class="fa fa-list-alt"></i>新增至課程清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-file-text-o"></i>新增至共同清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-tasks"></i>新增至課程計畫
-										</a></li>
-										<li><a href="#"> <i class="fa fa-align-left"></i>新增至共同計畫
-										</a></li>
-									</ul>
-							 	</div>
-							</div>
-						</div>
-					</div><div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;">
-						<div class="card">
-							<div class="card-block" style="padding-top:0px;"  onclick="jumpToPlayerInterface(1,1)">
-								<div class="embed-responsive embed-responsive-16by9">
-	                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
-	                            </div>
-								<h4 class="card-title">微積分一</h4>
-								<div class="card-text">
-									SDSDsddddddddddddssssssssssssssssssssssssssssssssssssss
-								</div>
-								<div class="meta">
-									<a>國立台灣大學&nbsp;&nbsp;王老師</a>
-								</div>
-								<div class="meta">
-									<a>123,456</a>
-								</div>
-							</div>
-							<div class="card-footer">
-								<div class="btn-group show-on-hover dropup">
-							         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							           新增至... <span class="caret caret-up"></span>
-							         </button>
-							         <ul class="dropdown-menu drop-up" role="menu">
-										<li><a href="#"> <i class="fa fa-list-alt"></i>新增至課程清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-file-text-o"></i>新增至共同清單
-										</a></li>
-										<li><a href="#"> <i class="fa fa-tasks"></i>新增至課程計畫
-										</a></li>
-										<li><a href="#"> <i class="fa fa-align-left"></i>新增至共同計畫
-										</a></li>
-									</ul>
-							 	</div>
-							</div>
-						</div>
-					</div><div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;">
-						<div class="card">
-							<div class="card-block" style="padding-top:0px;"  onclick="jumpToPlayerInterface(1,1)">
-								<div class="embed-responsive embed-responsive-16by9">
-	                               <img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">
-	                            </div>
-								<h4 class="card-title">微積分一</h4>
-								<div class="card-text">
-									SDSDsddddddddddddssssssssssssssssssssssssssssssssssssss
-								</div>
-								<div class="meta">
-									<a>國立台灣大學&nbsp;&nbsp;王老師</a>
-								</div>
-								<div class="meta">
-									<a>123,456</a>
-								</div>
-							</div>
-							<div class="card-footer">
-								<div class="btn-group show-on-hover dropup">
-							         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							           新增至... <span class="caret caret-up"></span>
-							         </button>
-							         <ul class="dropdown-menu drop-up" role="menu">
-										<li><a href="#"> <i class="fa fa-list-alt"></i>新增至課程清單
+										<li><a href="#"> <i class="ion ion-clipboard"></i>新增至課程清單
 										</a></li>
 										<li><a href="#"> <i class="fa fa-file-text-o"></i>新增至共同清單
 										</a></li>
@@ -575,22 +296,13 @@
 							</div>
 						</div>
 					</div>
-				    </div>
-				    <!-- Add Pagination -->
-				    <div class="swiper-pagination"></div>
+				    </div>-->
 				    <!-- Add Arrows -->
-				    <div class="swiper-button-next"></div>
+				    <!--<div class="swiper-button-next"></div>
 				    <div class="swiper-button-prev"></div>
 				  </div>
 				</div>
-			</section>
-			<!-- /.section content -->
-			<!-- Main content -->
-			<section class="content-header">
-				<h4>
-					<b>推薦清單</b>
-				</h4>
-			</section>
+			</section>-->
 		</div>
 	</div>
 
@@ -643,22 +355,9 @@
 	<script src="dist/js/demo.js" type="text/javascript"></script>
 	<!-- homePage -->
 	<script src="dist/js/homePage.js" type="text/javascript"></script>
+	<!-- AutoComplete -->
+	<script src="dist/js/autoComplete.js" type="text/javascript"></script>
 	<!-- Swiper -->
 	<script src="dist/js/swiper.min.js" type="text/javascript"></script>
-	
-	<script>
-    var swiper = new Swiper('.swiper-container', {
-      slidesPerView: 3,
-      spaceBetween: 0,
-      slidesPerGroup: 1,
-      loop: false,
-      loopFillGroupWithBlank: true,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
-  </script>
-	
 </body>
 </html>

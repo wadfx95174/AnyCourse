@@ -33,7 +33,7 @@ public class NoteManager {
 	public NoteManager(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//?��餃�??�river
-			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5", "root", "peter");//���onnection
+			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5", "root", "peter");//���onnection
 			
 		}
 		catch(ClassNotFoundException e){
@@ -81,7 +81,7 @@ public class NoteManager {
 				 textNote.setLikes(result.getInt("likes"));	
 				 textNotes.add(textNote);
 		     }
-			 System.out.println(textNotes);
+//			 System.out.println(textNotes);
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());
@@ -165,7 +165,7 @@ public class NoteManager {
 				 pictureNote.setLikes(result.getInt("likes"));
 				 pictureNotes.add(pictureNote);
 		     }
-			 System.out.println(pictureNotes);
+//			 System.out.println(pictureNotes);
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());

@@ -21,7 +21,7 @@ $(document).ready(function() {
 						+'<div class="col-xs-1 text-left">'
 						+'<input name="checkboxItem" type="checkbox"/>'
 						+'</div>'
-						+'<div class="col-xs-7" id="searchRecordWord_'+ (i+1) +'"><a href="#">' + result[i].search_word + '</a></div>'
+						+'<div class="col-xs-7" id="searchRecordWord_'+ (i+1) +'"><a href="../SearchResult.html?search_query='+result[i].search_word+'">' + result[i].search_word + '</a></div>'
 						+'<div class="col-xs-3" id="searchRecordTime_'+ (i+1) +'">' + result[i].search_time + '</div>'
 						+'<div class="col-xs-1">'
 						+'<button type="button" data-toggle="modal" data-target="#deleteModal1" onclick="setID('+(i+1)+')"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除"></i></button>'

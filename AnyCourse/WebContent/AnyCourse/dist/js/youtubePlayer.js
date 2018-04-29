@@ -1,28 +1,14 @@
 var youTubePlayer;
 var uid;
-
+function get(name)
+{
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+}
+var setVideoCloseTime = 0;
 $(document).ready(function(){
-	function get(name)
-	{
-	   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
-	      return decodeURIComponent(name[1]);
-	}
-	$.ajax({
-		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
-		method: 'GET',
-		data: {
-			"method": 'getVideo',
-			"unitId": get('unit_id')
-		},
-		error: function(){
-		},
-		success: function(response){
-			uid = response.videoUrl.split('/')[4];
-			$('h3')[0].append(response.unitName);
-	//		$('#introduction').append(response.)
-//		    video=$("#myvideo")[0];
-		}
-	});
+	
+	
   //  初始化YoutubePlayer
 	
 	
@@ -273,21 +259,64 @@ $(document).ready(function(){
 	    	}, // end success
 			error:function(){alert('failed');}
 		});	// end ajax
+	    
+	    
+	    
+	  //---------------------------抓影片結束時間，並儲存----------------------------------------------//
+	  //---------------------------要設perconal_plan跟watch_record兩個table-------------------------//
+	    window.onbeforeunload = function(event) { 
+	    	var current = youTubePlayer.getCurrentTime();
+	        console.log(current);
+	        $.ajax({
+	        	url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+	        	method: 'POST',
+	        	data:{
+	        		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
+	        		"currentTime":current,//關閉的時間
+	        		"unitId" : get("unit_id")
+	        	},
+	        	success:function(result){},
+	        	error: function(){
+	        		console.log("setVideoEndTime failed!");
+	        	}
+	        })
+	    }; 
+	  //---------------------------抓影片結束時間，並儲存----------------------------------------------//
 })
 
 //--------------------------youtube iframe api-----------------------------
-function onYouTubeIframeAPIReady() {
-    youTubePlayer = new YT.Player('youTubePlayer', {
-      height: '390',
-      width: '640',
-      videoId: uid,     //影片ID
-      events: {                   //哪些狀態執行哪些func
-        'onReady': onPlayerReady,   //ready後會執行 onPlayerReady func
-      }
+  function onYouTubeIframeAPIReady() {
+	
+	$.ajax({
+		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+		method: 'GET',
+		data: {
+			"method": 'getVideo',
+			"unitId": get('unit_id')
+		},
+		error: function(){
+		},
+		success: function(response){
+			uid = response.videoUrl.split('/')[4];
 
-    });
-    youTubePlayer.personalPlayer = {'currentTimeSliding': false,  //初始化參數，滑動bar會用到
-                                    'errors': []};
+			youTubePlayer = new YT.Player('youTubePlayer', {
+			      height: '390',
+			      width: '640',
+			      videoId: uid,     //影片ID
+			      events: {                   //哪些狀態執行哪些func
+			        'onReady': onPlayerReady,   //ready後會執行 onPlayerReady func
+			      }
+
+			    });
+			    youTubePlayer.personalPlayer = {'currentTimeSliding': false,  //初始化參數，滑動bar會用到
+			                                    'errors': []};
+			    
+			$('h3')[0].append(response.unitName);
+	//		$('#introduction').append(response.)
+//		    video=$("#myvideo")[0];
+		}
+	});
+    
   }
   //  ready後用到的func
   function onPlayerReady(event) {   
@@ -366,8 +395,8 @@ function onYouTubeIframeAPIReady() {
         }
     }
   }
-  (function () {
-    'use strict';
+//  (function () {
+//    'use strict';
 
     function init() {
         // Load YouTube library
@@ -390,5 +419,6 @@ function onYouTubeIframeAPIReady() {
     } else if (window.attachEvent) {
         window.attachEvent('onload', init);
     }
-  }());
-	
+//  }());
+
+    

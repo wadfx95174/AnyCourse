@@ -52,7 +52,7 @@ $('#userId').change(function userId() {
           
       // 檢查帳號是否已存在
 	  $.ajax({
-              url : "http://localhost:8080/AnyCourse/AnyCourse/pages/examples/LoginVerificationServlet.do",
+              url : "http://localhost:8080/AnyCourse/LoginVerificationServlet.do",
               data : {
             	  method : "checkExist",
                   userId : $("#userId").val()

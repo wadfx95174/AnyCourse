@@ -41,7 +41,7 @@ public class PictureNoteServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.getWriter().write(pictureNote_json);	
 		
-		System.out.println(pictureNote_json);
+//		System.out.println(pictureNote_json);
 	}
 
 	/**

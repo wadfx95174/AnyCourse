@@ -7,6 +7,13 @@
 .dlg-no-close .ui-dialog-titlebar-close {
 	display: none;
 }
-#unit > a{
+#unit > a,.list-group-item{
 	cursor: pointer;
+}
+.textSet{
+	width:100%;
+    word-break:keep-all;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;/
 }
