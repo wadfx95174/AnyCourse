@@ -15,6 +15,12 @@ $('#recommend').slimScroll({
     height: '300px'
   });
 
+function get(name)
+{
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+	}
+
 
 var video;
 var keyLabelArray;
@@ -47,18 +53,6 @@ $(document).ready(function(){
     });
 
 //----------------------------------------------video----------------------------------------------//
-
-    function get(name)
-    {
-	   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
-	      return decodeURIComponent(name[1]);
-   	}
-    
-    var oHead = document.getElementsByTagName('HEAD').item(0); 
-    var oScript= document.createElement("script"); 
-    oScript.type = "text/javascript"; 
-    oScript.src= (get('type') == "1") ? "../dist/js/youtubePlayer.js" : "../dist/js/jwPlayer.js"; 
-    oHead.appendChild(oScript); 
     if (get('list_id') != undefined)
     {
     	$.ajax({
@@ -103,6 +97,14 @@ $(document).ready(function(){
         	}
         });
     }
+    
+    
+    var oHead = document.getElementsByTagName('HEAD').item(0); 
+    var oScript= document.createElement("script"); 
+    oScript.type = "text/javascript"; 
+    oScript.src= (get('type') == "1") ? "../dist/js/youtubePlayer.js" : "../dist/js/jwPlayer.js"; 
+    oHead.appendChild(oScript); 
+    
     
     
     
