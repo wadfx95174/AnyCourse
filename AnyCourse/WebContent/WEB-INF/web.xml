@@ -44,6 +44,10 @@
     <servlet-name>PersonalKeyLabelServlet</servlet-name>
     <servlet-class>Personal.KeyLabel.PersonalKeyLabelServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>PlayerInterfaceServlet</servlet-name>
+    <servlet-class>PlayerInterface.PlayerInterfaceServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>HomePageServlet</servlet-name>
     <url-pattern>/HomePageServlet.do</url-pattern>
@@ -56,10 +60,6 @@
     <servlet-name>PictureNoteServlet</servlet-name>
     <url-pattern>/PictureNoteServlet.do</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <servlet-name>PlayerInterfaceServlet</servlet-name>
-    <servlet-class>PlayerInterface.PlayerInterfaceServlet</servlet-class>
-  </servlet>
   <servlet-mapping>
     <servlet-name>SearchRecordServlet</servlet-name>
     <url-pattern>/SearchRecordServlet.do</url-pattern>

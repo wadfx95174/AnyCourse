@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 public class KeyLabelManager
 {
 	private String selectUnitKeyLabelSQL = "select * from keylabel where unit_id = ?";
-	private String updateKeyLabelSQL = "update keylabel set keylabel_name = ?, begin_time = ?, end_time = ?, where keylabel_id = ?";
+	private String updateKeyLabelSQL = "update keylabel set keylabel_name = ?, begin_time = ?, end_time = ? where keylabel_id = ?";
 	private String insertKeyLabelSQL = "insert into keylabel value (null,?,?,?,?,?,?,?,?)";
 	private String deleteKeyLabelSQL = "delete from keylabel where keylabel_id = ?";
 	private Connection con = null;
@@ -24,7 +24,7 @@ public class KeyLabelManager
 	public KeyLabelManager() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
-			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5"
+			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
 					, "root", "peter");//取得connection
 			
 		}
