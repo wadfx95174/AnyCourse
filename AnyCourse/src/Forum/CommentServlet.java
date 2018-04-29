@@ -57,7 +57,8 @@ public class CommentServlet extends HttpServlet {
 		String state = request.getParameter("state");
 				 
 		if(state.equals("insert"))
-		{			
+		{
+			int unit_id = Integer.parseInt(request.getParameter("unit_id"));
 			String user_id = request.getParameter("user_id");
 			String nick_name = request.getParameter("nick_name");
 //			String comment_time;
@@ -67,6 +68,7 @@ public class CommentServlet extends HttpServlet {
 			
 			Comment comment = new Comment();
 			
+			comment.setUnit_id(unit_id);
 			comment.setUser_id(user_id);
 			comment.setNick_name(nick_name);
 //			comment.setComment_time(comment_time);
@@ -87,6 +89,7 @@ public class CommentServlet extends HttpServlet {
 		if(state.equals("update"))
 		{
 			int comment_id = Integer.parseInt(request.getParameter("comment_id"));
+			int unit_id = Integer.parseInt(request.getParameter("unit_id"));
 			String user_id = request.getParameter("user_id");
 			String nick_name = request.getParameter("nick_name");
 			String comment_time = request.getParameter("comment_time");
@@ -96,6 +99,7 @@ public class CommentServlet extends HttpServlet {
 			
 			Comment comment = new Comment();
 			comment.setComment_id(comment_id);
+			comment.setUnit_id(unit_id);
 			comment.setUser_id(user_id);
 			comment.setNick_name(nick_name);
 			comment.setComment_time(comment_time);

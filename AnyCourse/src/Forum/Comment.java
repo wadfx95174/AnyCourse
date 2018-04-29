@@ -2,11 +2,19 @@ package Forum;
 
 public class Comment {
 	public int comment_id;
+	public int unit_id;
 	public String user_id;
 	public String nick_name;
 	public String comment_time;
 	public String comment_content;
 	
+	
+	public int getUnit_id() {
+		return unit_id;
+	}
+	public void setUnit_id(int unit_id) {
+		this.unit_id = unit_id;
+	}
 	public String getNick_name() {
 		return nick_name;
 	}

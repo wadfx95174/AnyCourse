@@ -13,7 +13,7 @@ import Forum.Comment;
 import Forum.Reply;;
 
 public class ForumManager {
-	public String insertCommentSQL = "insert into comment (comment_id,user_id,nick_name,comment_time,comment_content) value(null,?,?,null,?)";
+	public String insertCommentSQL = "insert into comment (comment_id,unit_id,user_id,nick_name,comment_time,comment_content) value(null,?,?,?,null,?)";
 	public String selectCommentSQL = "select * from comment ";
 	public String deleteCommentSQL = "delete from comment where comment_id = ?";
 	public String updateCommentSQL = "update comment set user_id = ?,nick_name = ?,comment_time = ?,comment_content = ? where comment_id = ?";
@@ -52,10 +52,11 @@ public class ForumManager {
 			pst = con.prepareStatement(insertCommentSQL,Statement.RETURN_GENERATED_KEYS);
 			//pst.setInt(1,);
 			//pst.setInt(1,comment.getComment_id());
-			pst.setString(1,comment.getUser_id());
-			pst.setString(2,comment.getNick_name());
+			pst.setInt(1,comment.getUnit_id());
+			pst.setString(2,comment.getUser_id());
+			pst.setString(3,comment.getNick_name());
 			//pst.setString(3,comment.comment_time);
-			pst.setString(3,comment.getComment_content());
+			pst.setString(4,comment.getComment_content());
 			pst.executeUpdate();
 			ResultSet generatedKeys = pst.getGeneratedKeys();
 			if (generatedKeys.next())
@@ -68,6 +69,7 @@ public class ForumManager {
 			     { 
 				 comment = new Comment();
 				 comment.setComment_id(result.getInt("comment_id"));
+				 comment.setUnit_id(result.getInt("unit_id"));
 				 comment.setUser_id(result.getString("user_id"));
 				 comment.setNick_name(result.getString("nick_name"));
 				 comment.setComment_time(result.getString("comment_time"));
@@ -95,6 +97,7 @@ public class ForumManager {
 		     { 	
 				 comment = new Comment();
 				 comment.setComment_id(result.getInt("comment_id"));
+				 comment.setUnit_id(result.getInt("unit_id"));
 				 comment.setUser_id(result.getString("user_id"));
 				 comment.setNick_name(result.getString("nick_name"));
 				 comment.setComment_time(result.getString("comment_time"));
@@ -126,11 +129,12 @@ public class ForumManager {
 	public void updateCommentTable(Comment comment){
 		try {
 			pst = con.prepareStatement(updateCommentSQL);	
-			pst.setInt(5,comment.getComment_id());
-			pst.setString(1,comment.getUser_id());
-			pst.setString(2,comment.getNick_name());
-			pst.setString(3,comment.getComment_time());
-			pst.setString(4,comment.getComment_content());
+			pst.setInt(6,comment.getComment_id());
+			pst.setInt(1,comment.getUnit_id());
+			pst.setString(2,comment.getUser_id());
+			pst.setString(3,comment.getNick_name());
+			pst.setString(4,comment.getComment_time());
+			pst.setString(5,comment.getComment_content());
 			
 			pst.executeUpdate();
 		}

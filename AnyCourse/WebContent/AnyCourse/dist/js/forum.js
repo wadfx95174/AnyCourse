@@ -1,6 +1,7 @@
 var state;
 var comment_id =null;
 var reply_id =null;
+var unit_id = 1;
 var user_id = 111;
 var nick_name = "jerry";
 var comment_time;
@@ -18,7 +19,8 @@ function setComment(){
 			url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 			method : 'POST',
 			data : {
-				"state" : "insert",			
+				"state" : "insert",	
+				"unit_id" : unit_id,
 				"user_id" : user_id,
 				"nick_name" : nick_name,
 //				"comment_time" : dt.toLocaleString(),
@@ -88,6 +90,41 @@ $(document).ready(function() {
     	},
 		error:function(){}
 	});
+	$.ajax({
+		url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
+		method : 'GET',
+		success : function(result) {
+//			alert(result.comment_id);
+//			alert(result.user_id);
+//			alert(result.nick_name);
+//			alert(result.comment_time);
+//			alert(result.comment_content);
+			console.log(result);
+			for(var i = 0 ;i < result.length;i++){
+			$('#com_'+result[i].comment_id).append( 	
+					'<div id="rep_' + result[i].reply_id + '"class="col-xs-12 C" >'+
+					'<h4 style="float:left;">' + result[i].nick_name +'</h4>'+
+					'<h5 style="float:right;">' + result[i].reply_time +'</h5>'+													
+					'<textarea class="col-xs-12" rows="2" cols="50" id="reply_' + result[i].reply_id + '" disabled="disabled" style="float:left;">' + result[i].reply_content + '</textarea>'+																			
+					'<button id="reply_' + result[i].reply_id + '" type="button" class="btn btn-default btn_css" onclick="">刪除</button>'+
+					'<button id="reply_' + result[i].reply_id + '" type="button" class="btn btn-default btn_css" onclick="">編輯</button>'+							
+					'</div>'																	
+				);	
+//				alert("OKOK");
+			}
+//			$("#reply_div_" + id ).slideToggle();
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+	         /*弹出jqXHR对象的信息*/
+	         alert(jqXHR.responseText);
+	         alert(jqXHR.status);
+	         alert(jqXHR.readyState);
+	         alert(jqXHR.statusText);
+	         /*弹出其他两个参数的信息*/
+	         alert(textStatus);
+	         alert(errorThrown);
+	     }
+	})
 });
 
 function display_reply(input){
@@ -150,41 +187,7 @@ function setReply(input){
 	}			
 }
 
-$.ajax({
-	url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
-	method : 'GET',
-	success : function(result) {
-//		alert(result.comment_id);
-//		alert(result.user_id);
-//		alert(result.nick_name);
-//		alert(result.comment_time);
-//		alert(result.comment_content);
-		console.log(result);
-		for(var i = 0 ;i < result.length;i++){
-		$('#com_'+result[i].comment_id).append( 	
-				'<div id="rep_' + result[i].reply_id + '"class="col-xs-12 C" >'+
-				'<h4 style="float:left;">' + result[i].nick_name +'</h4>'+
-				'<h5 style="float:right;">' + result[i].reply_time +'</h5>'+													
-				'<textarea class="col-xs-12" rows="2" cols="50" id="reply_' + result[i].reply_id + '" disabled="disabled" style="float:left;">' + result[i].reply_content + '</textarea>'+																			
-				'<button id="reply_' + result[i].reply_id + '" type="button" class="btn btn-default btn_css" onclick="">刪除</button>'+
-				'<button id="reply_' + result[i].reply_id + '" type="button" class="btn btn-default btn_css" onclick="">編輯</button>'+							
-				'</div>'																	
-			);	
-//			alert("OKOK");
-		}
-//		$("#reply_div_" + id ).slideToggle();
-	},
-	error: function (jqXHR, textStatus, errorThrown) {
-         /*弹出jqXHR对象的信息*/
-         alert(jqXHR.responseText);
-         alert(jqXHR.status);
-         alert(jqXHR.readyState);
-         alert(jqXHR.statusText);
-         /*弹出其他两个参数的信息*/
-         alert(textStatus);
-         alert(errorThrown);
-     }
-})
+
 
 
 
