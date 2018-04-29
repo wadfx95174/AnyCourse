@@ -20,7 +20,9 @@ public class PlayerInterfaceServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(manager.getList(Integer.parseInt(request.getParameter("courselistId"))));
 	}
 
 }

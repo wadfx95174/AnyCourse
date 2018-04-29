@@ -44,7 +44,7 @@ public class TextNoteServlet extends HttpServlet {
 		String textNote_json = new Gson().toJson(textNotes);
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(textNote_json);
-		System.out.println(textNote_json);
+//		System.out.println(textNote_json);
 				
 		
 //		dbnote2.selectPictureNoteTable(pictureNote);

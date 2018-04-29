@@ -4,7 +4,6 @@
   <welcome-file-list>
     <welcome-file>HomePage.html</welcome-file>
   </welcome-file-list>
-  
   <servlet>
     <servlet-name>HomePageServlet</servlet-name>
     <servlet-class>HomePage.HomePageServlet</servlet-class>
@@ -37,12 +36,18 @@
     <servlet-name>CalendarServlet</servlet-name>
     <servlet-class>Personal.Calendar.CalendarServlet</servlet-class>
   </servlet>
-
+  <servlet>
+    <servlet-name>SearchServlet</servlet-name>
+    <servlet-class>Search.SearchServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PersonalKeyLabelServlet</servlet-name>
+    <servlet-class>Personal.KeyLabel.PersonalKeyLabelServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>HomePageServlet</servlet-name>
     <url-pattern>/HomePageServlet.do</url-pattern>
   </servlet-mapping>
-
   <servlet-mapping>
     <servlet-name>TextNoteServlet</servlet-name>
     <url-pattern>/TextNoteServlet.do</url-pattern>
@@ -78,5 +83,13 @@
   <servlet-mapping>
     <servlet-name>CalendarServlet</servlet-name>
     <url-pattern>/CalendarServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SearchServlet</servlet-name>
+    <url-pattern>/SearchServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PersonalKeyLabelServlet</servlet-name>
+    <url-pattern>/PersonalKeyLabelServlet.do</url-pattern>
   </servlet-mapping>
 </web-app>
