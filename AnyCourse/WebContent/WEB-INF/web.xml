@@ -10,6 +10,14 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
+    <servlet-name>CommentServlet</servlet-name>
+    <servlet-class>Forum.CommentServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ReplyServlet</servlet-name>
+    <servlet-class>Forum.ReplyServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>TextNoteServlet</servlet-name>
     <servlet-class>Note.TextNoteServlet</servlet-class>
   </servlet>
@@ -37,6 +45,14 @@
     <servlet-name>CalendarServlet</servlet-name>
     <servlet-class>Personal.Calendar.CalendarServlet</servlet-class>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>CommentServlet</servlet-name>
+    <url-pattern>/CommentServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReplyServlet</servlet-name>
+    <url-pattern>/ReplyServlet.do</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>TextNoteServlet</servlet-name>
     <url-pattern>/TextNoteServlet.do</url-pattern>

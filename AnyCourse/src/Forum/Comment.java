@@ -3,9 +3,16 @@ package Forum;
 public class Comment {
 	public int comment_id;
 	public String user_id;
+	public String nick_name;
 	public String comment_time;
 	public String comment_content;
 	
+	public String getNick_name() {
+		return nick_name;
+	}
+	public void setNick_name(String nick_name) {
+		this.nick_name = nick_name;
+	}
 	public int getComment_id() {
 		return comment_id;
 	}

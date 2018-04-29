@@ -3,7 +3,7 @@ $('#noteArea').slimScroll({
     height: '200px'
   });
 $('.tab-content').slimScroll({
-    height: '300px'
+    height: '500px'
   });
 $('#keyLabel1').slimScroll({
     height: '130px'

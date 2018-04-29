@@ -19,7 +19,7 @@ import Forum.Reply;
 /**
  * Servlet implementation class commentServlet
  */
-@WebServlet("/commentServlet")
+@WebServlet("/CommentServlet")
 public class CommentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -57,9 +57,10 @@ public class CommentServlet extends HttpServlet {
 		String state = request.getParameter("state");
 				 
 		if(state.equals("insert"))
-		{
+		{			
 			String user_id = request.getParameter("user_id");
-			String comment_time = request.getParameter("comment_time");
+			String nick_name = request.getParameter("nick_name");
+//			String comment_time;
 			String comment_content = request.getParameter("comment_content");
 			
 			ForumManager dbcomment = new ForumManager();
@@ -67,18 +68,19 @@ public class CommentServlet extends HttpServlet {
 			Comment comment = new Comment();
 			
 			comment.setUser_id(user_id);
-			comment.setComment_time(comment_time);
+			comment.setNick_name(nick_name);
+//			comment.setComment_time(comment_time);
 			comment.setComment_content(comment_content);
 			
 //			dbcomment.insertCommentTable(comment);
 //			response.setContentType("application/json");
 //			PrintWriter out = response.getWriter();		
 //			out.print("success");
-			
-			int id =dbcomment.insertCommentTable(comment);
-			comment.setComment_id(id);
+			comment = dbcomment.insertCommentTable(comment);
+//			int id =dbcomment.insertCommentTable(comment);
+//			comment.setComment_id(id);
 			String comment_json = new Gson().toJson(comment);
-			response.setContentType("application/json");
+			response.setContentType("application/json;charset = utf-8;");
 			response.getWriter().write(comment_json);
 			
 		}
@@ -86,6 +88,7 @@ public class CommentServlet extends HttpServlet {
 		{
 			int comment_id = Integer.parseInt(request.getParameter("comment_id"));
 			String user_id = request.getParameter("user_id");
+			String nick_name = request.getParameter("nick_name");
 			String comment_time = request.getParameter("comment_time");
 			String comment_content = request.getParameter("comment_content");
 			
@@ -94,6 +97,7 @@ public class CommentServlet extends HttpServlet {
 			Comment comment = new Comment();
 			comment.setComment_id(comment_id);
 			comment.setUser_id(user_id);
+			comment.setNick_name(nick_name);
 			comment.setComment_time(comment_time);
 			comment.setComment_content(comment_content);
 

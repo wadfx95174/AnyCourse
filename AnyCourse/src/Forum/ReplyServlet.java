@@ -56,7 +56,8 @@ public class ReplyServlet extends HttpServlet {
 		{
 			int comment_id = Integer.parseInt(request.getParameter("comment_id"));
 			String user_id = request.getParameter("user_id");
-			String reply_time = request.getParameter("reply_time");
+			String nick_name = request.getParameter("nick_name");
+//			String reply_time = request.getParameter("reply_time");
 			String reply_content = request.getParameter("reply_content");
 			
 			ForumManager dbreply = new ForumManager();
@@ -65,7 +66,8 @@ public class ReplyServlet extends HttpServlet {
 			
 			reply.setComment_id(comment_id);
 			reply.setUser_id(user_id);
-			reply.setReply_time(reply_time);
+			reply.setNick_name(nick_name);
+//			reply.setReply_time(reply_time);
 			reply.setReply_content(reply_content);
 			
 //			dbreply.insertReplyTable(reply);
@@ -73,10 +75,11 @@ public class ReplyServlet extends HttpServlet {
 //			PrintWriter out = response.getWriter();		
 //			out.print("success");
 			
-			int id =dbreply.insertReplyTable(reply);
-			reply.setReply_id(id);
+//			int id =dbreply.insertReplyTable(reply);
+//			reply.setReply_id(id);
+			reply = dbreply.insertReplyTable(reply);
 			String reply_json = new Gson().toJson(reply);
-			response.setContentType("application/json");
+			response.setContentType("application/json;charset = utf-8;");
 			response.getWriter().write(reply_json);
 		}
 		if(state.equals("update"))
@@ -84,6 +87,7 @@ public class ReplyServlet extends HttpServlet {
 			int reply_id = Integer.parseInt(request.getParameter("reply_id"));
 			int comment_id = Integer.parseInt(request.getParameter("comment_id"));
 			String user_id = request.getParameter("user_id");
+			String nick_name = request.getParameter("nick_name");
 			String reply_time = request.getParameter("reply_time");
 			String reply_content = request.getParameter("reply_content");
 			
@@ -94,6 +98,7 @@ public class ReplyServlet extends HttpServlet {
 			reply.setReply_id(reply_id);
 			reply.setComment_id(comment_id);
 			reply.setUser_id(user_id);
+			reply.setNick_name(nick_name);
 			reply.setReply_time(reply_time);
 			reply.setReply_content(reply_content);
 
