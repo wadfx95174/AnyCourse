@@ -33,8 +33,9 @@ function setComment(){
 //				alert(result.comment_time);
 //				alert(result.comment_content);
 				$('#comment-body').append(  	 
-						'<div id="com_' + result.comment_id + '" class="B" >'+						
-						'<h4 style="float:left;">' + result.nick_name + '</h4>'+
+						'<div id="com_' + result.comment_id + '" class="B" >'+	
+						'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
+						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result.nick_name + '</h4>'+
 						'<h5 style="float:right;">' + result.comment_time + '</h5>'+														
 						'<textarea class="col-xs-12" rows="2" cols="50" id="comment_' + result.comment_id + '" disabled="disabled" style="float:left;">' + result.comment_content + '</textarea>'+																			
 						'<button id="comment4_' + result.comment_id + '" type="button" class="btn btn-default btn_css" style="display:none;" onclick="update_comment(this.id)">確認</button>'+
@@ -75,7 +76,8 @@ $(document).ready(function() {
     			
     			$('#comment-body').append( 	 
 						'<div id="com_' + result[i].comment_id + '" class="B">'+
-						'<h4 style="float:left;">' + result[i].nick_name + '</h4>'+
+						'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">&nbsp;'+
+						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result[i].nick_name + '</h4>'+
 						'<h5 style="float:right;">' + result[i].comment_time + '</h5>'+														
 						'<textarea class="col-xs-12" rows="2" cols="50" id="comment_' + result[i].comment_id + '" disabled="disabled" style="float:left;">' + result[i].comment_content + '</textarea>'+																			
 						'<button id="comment4_' + result[i].comment_id + '" type="button" class="btn btn-default btn_css" style="display:none;" onclick="update_comment(this.id)">確認</button>'+
@@ -104,7 +106,8 @@ $(document).ready(function() {
     				for(var i = 0 ;i < result.length;i++){
     				$('#com_'+result[i].comment_id).append( 	
     						'<div id="rep_' + result[i].reply_id + '"class="col-xs-12 C" >'+
-    						'<h4 style="float:left;">' + result[i].nick_name +'</h4>'+
+    						'<img src="https://ppt.cc/fi5Q0x@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
+    						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result[i].nick_name +'</h4>'+
     						'<h5 style="float:right;">' + result[i].reply_time +'</h5>'+													
     						'<textarea class="col-xs-12" rows="2" cols="50" id="reply_' + result[i].reply_id + '" disabled="disabled" style="float:left;">' + result[i].reply_content + '</textarea>'+																			
     						'<button id="reply3_' + result[i].reply_id + '_' + result[i].comment_id +'" type="button" class="btn btn-default btn_css" style="display:none;" onclick="update_reply(this.id)">確認</button>'+
@@ -171,7 +174,8 @@ function setReply(input){
 //				alert(result.comment_content);
 				$('#com_'+id).append( 	
 						'<div id="rep_' + result.reply_id + '"class="col-xs-12 C" >'+
-						'<h4 style="float:left;">' + result.nick_name +'</h4>'+
+						'<img src="https://ppt.cc/fi5Q0x@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
+						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result.nick_name +'</h4>'+
 						'<h5 style="float:right;">' + result.reply_time +'</h5>'+													
 						'<textarea class="col-xs-12" rows="2" cols="50" id="reply_' + result.reply_id + '" disabled="disabled" style="float:left;">' + result.reply_content + '</textarea>'+																			
 						'<button id="reply3_' + result.reply_id + '_' + result.comment_id +'" type="button" class="btn btn-default btn_css" style="display:none;" onclick="update_reply(this.id)">確認</button>'+
