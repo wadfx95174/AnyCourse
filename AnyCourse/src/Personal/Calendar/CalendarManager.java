@@ -14,10 +14,10 @@ import com.google.gson.Gson;
 
 public class CalendarManager
 {
-	private final String selectEventsSQL = "select * from event ";
+	private final String selectEventsSQL = "select * from event natural join calendar where user_id = ?";
 	private final String insertEventSQL = "insert into event value (null,1,?,?,?,?,?,?)";
 	private final String updateEventSQL = "update event set title = ?,url = ?,start = ?,end = ? where event_id = ?";
-	
+	private final String insertCalendarSQL = "insert into calendar value (?,?)";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -40,13 +40,14 @@ public class CalendarManager
 		}
 	}
 	
-	public String getEvents()
+	public ArrayList<CalendarDTO> getEvents(String userId)
 	{
-		List<CalendarDTO> list = new ArrayList<CalendarDTO>();
+		ArrayList<CalendarDTO> list = new ArrayList<CalendarDTO>();
 		try
 		{
-			stat = con.createStatement();
-			result = stat.executeQuery(selectEventsSQL);
+			pst = con.prepareStatement(selectEventsSQL);
+			pst.setString(1, userId);
+			result = pst.executeQuery();
 			while (result.next())
 			{
 				CalendarDTO dto = new CalendarDTO();
@@ -67,17 +68,16 @@ public class CalendarManager
 			Close();
 		}
 
-		String json = new Gson().toJson(list);
-		return json;
+		return list;
 	}
 	
-	public int insertEvent(CalendarDTO dto)
+	public int insertEvent(CalendarDTO dto, String userId)
 	{
 		try
 		{
 			pst = con.prepareStatement(insertEventSQL, Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, dto.getTitle());
-			pst.setString(2,dto.getUrl());
+			pst.setString(2, dto.getUrl());
 			pst.setString(3, dto.getStart());
 			pst.setString(4, dto.getEnd());
 			pst.setString(5, dto.getBackgroundColor());
@@ -85,8 +85,14 @@ public class CalendarManager
 			pst.executeUpdate();
 			ResultSet generatedKeys = pst.getGeneratedKeys();
 			if (generatedKeys.next())
-				return generatedKeys.getInt(1);
-			
+			{
+				int newEventId = generatedKeys.getInt(1);
+				pst = con.prepareStatement(insertCalendarSQL);
+				pst.setString(1, userId);
+				pst.setInt(2, newEventId);
+				pst.executeUpdate();
+				return newEventId;
+			}
 		} catch (final SQLException x)
 		{
 			System.out.println("Exception insert" + x.toString());
@@ -146,6 +152,6 @@ public class CalendarManager
 	public static void main(String []args)
 	{
 		CalendarManager manager = new CalendarManager();
-		System.out.println(manager.getEvents());
+		System.out.println(manager.getEvents("1"));
 	}
 }

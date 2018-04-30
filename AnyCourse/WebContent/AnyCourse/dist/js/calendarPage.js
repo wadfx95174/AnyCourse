@@ -1,16 +1,48 @@
  $(function () {
 
-	  checkLogin("../", "../../../");
+	  	checkLogin("../", "../../../");
+	  
+	  	$.ajax({
+	  		url:'http://localhost:8080/AnyCourse/CalendarServlet.do',
+	  		method:'GET',
+	  		data:{
+	  			method:'getCoursePlan'
+	  		},
+	  		error:function(){
+	  			console.log('get coursePlan error');
+	  		},
+	  		success:function(result){
+	  			console.log('coursePlan result:');
+	  			console.log(result);
+	  			for(var i = 0; i < result.length; i++)
+	  			{
+		  			$('#external-events').append(
+		  				'<div class="external-event">'+result[i].unit_name+'</div>'
+		  			);
+	  			}
+	  	        ini_events($('#external-events div.external-event'), result);
+	  		}
+	  	});
+	  
         // ----初始化外部事件----
-        function ini_events(ele) {
+        function ini_events(ele, coursePlanList) {
+          var index = 0;	// 跑each迴圈用
           ele.each(function () {
             // 宣告EventObject (可以不用start跟end)
             var eventObject = {
-              title: $.trim($(this).text()), // 直接取標籤上的文字
+              title: coursePlanList[index].unit_name,
+              unitId: coursePlanList[index].unit_id,
+              type: coursePlanList[index].video_type
             };
 
             // 把eventObject存到DOM裡面，之後就可以取得
             $(this).data('eventObject', eventObject);
+            
+            $(this).click(function(){
+            	console.log($(this).data('eventObject'));		//********************************
+            	$('#selectedEvent').text($(this).text());
+            	$('#selectedEvent').css('background-color', $(this).css('background-color'));
+            });
 
             // 讓事件可以被拖動
             $(this).draggable({
@@ -18,10 +50,10 @@
               revert: true, // will cause the event to go back to its
               revertDuration: 0  //  original position after the drag
             });
-
+            
+            index++;
           });
         }
-        ini_events($('#external-events div.external-event'));		//--------------------這個要改為資料庫抓取
 
         // ----初始化行事曆----
         
@@ -38,6 +70,9 @@
 			url: 'http://localhost:8080/AnyCourse/CalendarServlet.do',
 			type: 'GET',
 			dataType: "json", 
+			data: {
+				method:"getEvent"
+			},
 			error: function(){
 				console.log('get CalendarInfo error!');
 			},
@@ -59,6 +94,23 @@
 			          timeFormat: 'hh:mm a',
 			          editable: true,
 			          droppable: true,
+			          selectable: true,
+			          selectHelper: true,	// 在week跟day select時顯示時間
+			          select: function(start, end, allDay) {
+			        	    var title = prompt('Event Title:');
+			        	    if (title) {
+			        	    	$('#calendar').fullCalendar('renderEvent',
+			        	            {
+			        	                title: title,
+			        	                start: start,
+			        	                end: end,
+			        	                allDay: allDay
+			        	            },
+			        	            true // make the event "stick"
+			        	        );
+			        	    }
+			        	    $('#calendar').fullCalendar('unselect');
+			        	},
 			          
 			          // 當外部事件放進Calendar時觸發
 			          drop: function (date) {
@@ -122,6 +174,19 @@
 			        	  console.log(event);
 			        	  //console.log(jsEvent);
 			        	  //2018-03-28T18:35:00
+			        	  
+			        	  
+			        	  // 前往該事件網址
+			        	  if (event.url) {
+//			        	      window.open(event.url);
+				        	  //url = "../PlayerInterface.html?unit_id="+unit_id+"&type="+type;//此處拼接內容
+				        	  url = "../PlayerInterface.html?unit_id=1&type=1";//此處拼接內容
+				        	  window.location.href = url;
+			        	      return false;
+			        	    }
+
+			        	  
+			        	  
 			        	  var m = moment();
 			        	  $('#calendar').fullCalendar('updateEvent', event);//notify change 
 			        	 }

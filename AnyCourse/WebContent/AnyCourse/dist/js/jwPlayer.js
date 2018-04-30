@@ -317,7 +317,7 @@ $(document).ready(function(){
 			} // end for
     		
     	}, // end success
-		error:function(){alert('failed');}
+		error:function(){console.log('getPKL fail');}
 	});	// end ajax
     
     $.ajax({
@@ -345,7 +345,7 @@ $(document).ready(function(){
 				addToTempKeyLabel(selectId);
 			})
     	}, // end success
-		error:function(){alert('failed');}
+		error:function(){console.log('getEKL fail');}
 	});	// end ajax
 
 //----------------------------------------------keyLabel----------------------------------------------//    

@@ -13,7 +13,14 @@ public class CoursePlan {
 	private String video_url;
 	private int likes;
 	private String video_img_src;
+	private int video_type;
 
+	public int getVideo_type() {
+		return video_type;
+	}
+	public void setVideo_type(int video_type) {
+		this.video_type = video_type;
+	}
 	public String getUser_id() {
 		return user_id;
 	}

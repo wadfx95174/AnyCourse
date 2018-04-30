@@ -24,7 +24,7 @@ public class VideoListServlet extends HttpServlet{
 			videoListDatebaseManager.selectCourseListTable(videoLists);
 			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(videoLists));
-			System.out.println(gson.toJson(videoLists));
+//			System.out.println(gson.toJson(videoLists));
 		}
 		else if(request.getParameter("action").equals("1")) {
 			videoListDatebaseManager.selectCustomListVideoTable(unitVideos

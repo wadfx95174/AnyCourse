@@ -11,9 +11,7 @@ $('#keyLabel1').slimScroll({
 $('#keyLabel2').slimScroll({
     height: '130px'
   });
-$('#recommend').slimScroll({
-    height: '300px'
-  });
+
 
 function get(name)
 {
@@ -120,13 +118,21 @@ $(document).ready(function(){
         	    $('#list').append('   </div>'                           
         	                    + '</div>'); 
         	    $('#listbox').slimScroll({
-        	        height: '300px'
+        	        height: '350px'
+        	      });
+        	    $('#recommend').slimScroll({
+        	        height: '350px'
         	      });
         	},
         	error: function(){
         		console.log("post fail");
         	}
         });
+    }
+    else {
+    	$('#recommend').slimScroll({
+    	    height: '600px'
+    	  });
     }
     
     

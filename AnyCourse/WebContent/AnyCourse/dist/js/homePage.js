@@ -403,11 +403,12 @@ $(document).ready(function(){
 	  
 	 
  }());
-	
+//跳轉至播放介面
 function jumpToPlayerInterface(unit_id,type){
     url = "pages/PlayerInterface.html?unit_id="+unit_id+"&type="+type;//此處拼接內容
     window.location.href = url;
 }
+//跳轉至播放介面，且是清單
 function jumpToPlayerInterfaceWithList(unit_id,type,list_id){
 	url = "pages/PlayerInterface.html?unit_id="+unit_id+"&type="+type+"&list_id="+list_id;
 	window.location.href = url;
