@@ -37,8 +37,7 @@ public class ForumManager {
 	public ForumManager(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//?��餃�??�river
-			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5", "root", "peter");//���onnection
-			
+			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5", "root", "peter");//���onnection			   
 		}
 		catch(ClassNotFoundException e){
 			System.out.println("DriverClassNotFound"+e.toString());
@@ -105,7 +104,7 @@ public class ForumManager {
 				 comment.setComment_content(result.getString("comment_content"));
 				 comments.add(comment);
 		     }
-			 System.out.println(comments);
+//			 System.out.println(comments);
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());
@@ -176,8 +175,8 @@ public class ForumManager {
 				 reply.setReply_time(result.getString("reply_time"));
 				 reply.setReply_content(result.getString("reply_content"));
 			     }
-				 System.out.println(result.getInt("comment_id"));
-				 System.out.println(result.getString("comment_time"));
+//				 System.out.println(result.getInt("comment_id"));
+//				 System.out.println(result.getString("comment_time"));
 				//return generatedKeys.getInt(1);
 				 return reply;
 			}
@@ -206,7 +205,7 @@ public class ForumManager {
 				 reply.setReply_content(result.getString("reply_content"));
 				 replys.add(reply);
 		     }
-			 System.out.println(replys);
+//			 System.out.println(replys);
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());

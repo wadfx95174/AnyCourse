@@ -45,7 +45,7 @@ public class CommentServlet extends HttpServlet {
 		String comment_json = new Gson().toJson(comments);
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(comment_json);
-		System.out.println(comment_json);
+//		System.out.println(comment_json);
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class CommentServlet extends HttpServlet {
 			System.out.println(comment);
 			dbcomment.updateCommentTable(comment);
 			PrintWriter out = response.getWriter();		
-			out.print("success");
+//			out.print("success");
 		}	
 		if(state.equals("delete"))
 		{
@@ -120,7 +120,7 @@ public class CommentServlet extends HttpServlet {
 						
 			dbcomment.deleteCommentTable(comment_id);
 			PrintWriter out = response.getWriter();		
-			out.print("success");
+//			out.print("success");
 		}
 	}
 }

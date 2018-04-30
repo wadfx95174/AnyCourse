@@ -87,7 +87,7 @@ public class TextNoteServlet extends HttpServlet {
 			dbnote.insertTextNoteTable(textNote);
 			response.setContentType("application/json");
 			PrintWriter out = response.getWriter();		
-			out.print("success");
+//			out.print("success");
 		}
 		if(state.equals("update"))
 		{
@@ -106,7 +106,7 @@ public class TextNoteServlet extends HttpServlet {
 			System.out.println(textNote);
 			dbnote.updateTextNoteTable(textNote);
 			PrintWriter out = response.getWriter();		
-			out.print("success");
+//			out.print("success");
 		}
 		
 	}
