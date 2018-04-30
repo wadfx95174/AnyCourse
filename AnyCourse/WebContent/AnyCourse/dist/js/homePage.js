@@ -1,7 +1,7 @@
 document.write("<script type='text/javascript' src='dist/js/swiper.min.js'></script>");
 
 $(document).ready(function(){
-	checkLogin("pages/", "");
+	checkLogin("pages/", "../");
 	//重複利用的字串，尾巴
 	var str = '</div></div><div class="card-footer"><div class="btn-group show-on-hover dropup">'
 	+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">新增至' 
@@ -403,11 +403,12 @@ $(document).ready(function(){
 	  
 	 
  }());
-	
+//跳轉至播放介面
 function jumpToPlayerInterface(unit_id,type){
     url = "pages/PlayerInterface.html?unit_id="+unit_id+"&type="+type;//此處拼接內容
     window.location.href = url;
 }
+//跳轉至播放介面，且是清單
 function jumpToPlayerInterfaceWithList(unit_id,type,list_id){
 	url = "pages/PlayerInterface.html?unit_id="+unit_id+"&type="+type+"&list_id="+list_id;
 	window.location.href = url;
