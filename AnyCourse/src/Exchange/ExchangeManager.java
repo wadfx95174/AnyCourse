@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.google.gson.Gson;
+
 import Note.PictureNote;
 import Note.TextNote;
 import KeyLabel.KeyLabel;
@@ -94,6 +96,35 @@ public class ExchangeManager {
 			Close();
 		}
 	}
+	
+	public void selectKeyLabelTable(ArrayList<KeyLabel> keyLabels) {
+		try {
+			stat = con.createStatement();
+			result = stat.executeQuery(selectKeylabelSQL);
+			 while(result.next()) 
+		     { 
+				 keyLabel = new KeyLabel();
+				 keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
+				 keyLabel.setUnitId(result.getInt("unit_id"));
+				 keyLabel.setUserId(result.getString("user_id"));
+				 keyLabel.setKeyLabelName(result.getString("keylabel_name"));
+				 keyLabel.setBeginTime(result.getInt("begin_time"));
+				 keyLabel.setEndTime(result.getInt("end_time"));
+				 keyLabel.setShare(result.getInt("share"));
+				 keyLabel.setShareTime(result.getString("share_time"));
+				 keyLabel.setLikes(result.getInt("likes"));
+				 keyLabels.add(keyLabel);
+		     }
+//			 System.out.println(pictureNotes);
+		}
+			 catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
 	
 	public void Close() {
 		try {
