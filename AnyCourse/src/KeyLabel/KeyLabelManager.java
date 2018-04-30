@@ -13,6 +13,8 @@ import com.google.gson.Gson;
 public class KeyLabelManager
 {
 	private String selectUnitKeyLabelSQL = "select * from keylabel where unit_id = ?";
+	private String selectExangeKeyLabelSQL = "select * from keylabel where unit_id = ? and share = 1";
+	private String selectPersonalKeyLabelSQL = "select * from keylabel where unit_id = ? and user_id = ?";
 	private String updateKeyLabelSQL = "update keylabel set keylabel_name = ?, begin_time = ?, end_time = ? where keylabel_id = ?";
 	private String insertKeyLabelSQL = "insert into keylabel value (null,?,?,?,?,?,?,?,?)";
 	private String deleteKeyLabelSQL = "delete from keylabel where keylabel_id = ?";
@@ -35,6 +37,7 @@ public class KeyLabelManager
 			System.out.println("Exception" + x.toString());
 		}
 	}
+	// 取單元全部的重點標籤
 	public String getUnitKeyLabel(int unit) {
 
 		ArrayList<KeyLabel> outputList = new ArrayList<>(); 
@@ -66,39 +69,71 @@ public class KeyLabelManager
 		String json = new Gson().toJson(outputList);
 		return json;
 	}
-	
-//	public String getUnitPersonalKeyLabel(int unit, int user) {
-//
-//		ArrayList<KeyLabel> outputList = new ArrayList<>(); 
-//		try {
-//			pst = con.prepareStatement(selectPersonalKeyLabelSQL);
-//			pst.setInt(1, unit);
-//			pst.setInt(2, user);
-//			result = pst.executeQuery();
-//			while(result.next()) 
-//			{ 	
-//				KeyLabel keyLabel = new KeyLabel();
-//				keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
-//				keyLabel.setUnitId(result.getInt("unit_id"));
-//				keyLabel.setUserId(result.getString("user_id"));
-//				keyLabel.setKeyLabelName(result.getString("keylabel_name"));
-//				keyLabel.setBeginTime(result.getInt("begin_time"));
-//				keyLabel.setEndTime(result.getInt("end_time"));
-//				keyLabel.setShare(result.getInt("share"));
-//				keyLabel.setShareTime(result.getString("share_time"));
-//				keyLabel.setLikes(result.getInt("likes"));
-//				outputList.add(keyLabel);
-//			}
-//		}
-//			catch(SQLException x){
-//			System.out.println("Exception select"+x.toString());
-//		}
-//		finally {
-//			Close();
-//		}
-//		String json = new Gson().toJson(outputList);
-//		return json;
-//	}
+	// 取單元交流重點標籤
+	public String getExangeKeyLabel(int unit) {
+
+		ArrayList<KeyLabel> outputList = new ArrayList<>(); 
+		try {
+			pst = con.prepareStatement(selectExangeKeyLabelSQL);
+			pst.setInt(1, unit);
+			result = pst.executeQuery();
+			while(result.next()) 
+			{ 	
+				KeyLabel keyLabel = new KeyLabel();
+				keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
+				keyLabel.setUnitId(result.getInt("unit_id"));
+				keyLabel.setUserId(result.getString("user_id"));
+				keyLabel.setKeyLabelName(result.getString("keylabel_name"));
+				keyLabel.setBeginTime(result.getInt("begin_time"));
+				keyLabel.setEndTime(result.getInt("end_time"));
+				keyLabel.setShare(result.getInt("share"));
+				keyLabel.setShareTime(result.getString("share_time"));
+				keyLabel.setLikes(result.getInt("likes"));
+				outputList.add(keyLabel);
+			}
+		}
+			catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		String json = new Gson().toJson(outputList);
+		return json;
+	}
+	// 取單元個人重點標籤
+	public String getPersonalKeyLabel(int unit, String user) {
+
+		ArrayList<KeyLabel> outputList = new ArrayList<>(); 
+		try {
+			pst = con.prepareStatement(selectPersonalKeyLabelSQL);
+			pst.setInt(1, unit);
+			pst.setString(2, user);
+			result = pst.executeQuery();
+			while(result.next()) 
+			{ 	
+				KeyLabel keyLabel = new KeyLabel();
+				keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
+				keyLabel.setUnitId(result.getInt("unit_id"));
+				keyLabel.setUserId(result.getString("user_id"));
+				keyLabel.setKeyLabelName(result.getString("keylabel_name"));
+				keyLabel.setBeginTime(result.getInt("begin_time"));
+				keyLabel.setEndTime(result.getInt("end_time"));
+				keyLabel.setShare(result.getInt("share"));
+				keyLabel.setShareTime(result.getString("share_time"));
+				keyLabel.setLikes(result.getInt("likes"));
+				outputList.add(keyLabel);
+			}
+		}
+			catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		String json = new Gson().toJson(outputList);
+		return json;
+	}
 	
 	public int insertKeyLabel(KeyLabel keyLabel)
 	{

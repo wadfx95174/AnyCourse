@@ -4,9 +4,6 @@ function checkLogin(htmlUrl, servletUrl)
     	url: 'http://localhost:8080/AnyCourse/AccountServlet.do',
     	method: 'POST',
     	success: function(result){
-    		console.log(result.userId);
-    		console.log(result.nickName);
-    		console.log(result.pictureUrl)
     		if (result.userId)
     		{
     			$('.navbar-nav').append(
