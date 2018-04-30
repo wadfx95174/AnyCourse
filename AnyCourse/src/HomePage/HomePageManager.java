@@ -285,9 +285,14 @@ public class HomePageManager {
 					homePage.setCourselist_id(result.getInt("list.courselist_id"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
 					homePage.setUnit_id(result.getInt("customlist_video.unit_id"));
-					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
 					homePage.setNum(max);
 					homePage.setType(3);//代表課程清單
+					if(result.getString("unit.video_img_src") == "") {
+						homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+					}
+					else {
+						homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+					}
 					if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
 						homePage.setVideo_type(1);//youtube
 					}
@@ -337,9 +342,14 @@ public class HomePageManager {
 				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
 				homePage.setUnit_id(result.getInt("unit.unit_id"));
-				homePage.setVideo_img_src(result.getString("unit.video_img_src"));
 				homePage.setOorder(max);
 				homePage.setType(4);//代表想要觀看
+				if(result.getString("unit.video_img_src") == "") {
+					homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+				}
+				else {
+					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+				}
 				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
 					homePage.setVideo_type(1);//youtube
 				}
@@ -387,9 +397,14 @@ public class HomePageManager {
 				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
 				homePage.setUnit_id(result.getInt("unit.unit_id"));
-				homePage.setVideo_img_src(result.getString("unit.video_img_src"));
 				homePage.setOorder(max);
 				homePage.setType(5);//代表想要觀看
+				if(result.getString("unit.video_img_src") == "") {
+					homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+				}
+				else {
+					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+				}
 				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
 					homePage.setVideo_type(1);//youtube
 				}

@@ -1,4 +1,5 @@
 @import url(//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
+
 /*!
  *   AdminLTE v2.0.1
  *   Author: Almsaeed Studio
@@ -12,7 +13,7 @@
  */
 @import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
 * {
-    font-family: 'Noto Sans TC';
+    font-family: 'Permanent Marker', cursive;
 }
 html,
 body {
@@ -27,6 +28,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Microsoft JhengHei','Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
+  font-size:16px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -4072,3 +4074,12 @@ Gradient Background colors
 /*********************************設定autocomplete的z-index*******************************/
 .ui-autocomplete { position: absolute; cursor: default;z-index:2000 !important;
  max-height: 200px; overflow-y: scroll; overflow-x: hidden;}
+/*********************************************/
+@import url('https://fonts.googleapis.com/css?family=Baloo+Bhaina|Baloo+Paaji|Berkshire+Swash|Black+Ops+One|Bowlby+One|Carter+One|Chelsea+Market|Chewy|Concert+One|Freckle+Face|Fredoka+One|Frijole|Fugaz+One|Holtwood+One+SC|Kaushan+Script|Leckerli+One|Lobster|Luckiest+Guy|Pacifico|Pattaya|Permanent+Marker|Rammetto+One|Righteous|Shrikhand|Ultra|Work+Sans');
+/*@font-face{
+    font-family:"test";
+    src: url('Pacifico-Regular.ttf');
+}
+b{
+	font-family:'Carter One', cursive;
+}*/
