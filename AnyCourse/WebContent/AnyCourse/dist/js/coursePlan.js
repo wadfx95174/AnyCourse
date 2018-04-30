@@ -11,6 +11,7 @@ $( ".column" ).sortable({
     placeholder: "portlet-placeholder ui-corner-all"
   });
 $(document).ready(function() {
+	checkLogin("../", "../../../");
 	$.ajax({
 		url:'http://localhost:8080/AnyCourse/CoursePlanServlet.do',
 		method:'GET',

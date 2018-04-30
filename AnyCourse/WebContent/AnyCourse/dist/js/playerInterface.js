@@ -3,7 +3,7 @@ $('#noteArea').slimScroll({
     height: '200px'
   });
 $('.tab-content').slimScroll({
-    height: '300px'
+    height: '500px'
   });
 $('#keyLabel1').slimScroll({
     height: '130px'
@@ -28,6 +28,8 @@ var selectId = 0;
 var element;		//存DOM元素
 
 $(document).ready(function(){
+    checkLogin("", "../../");
+    
     $("#editNote").click(function(){
 //    	alert("AAA");
 //    	alert($("#text_area").attr("disabled"));

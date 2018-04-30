@@ -7,10 +7,10 @@ $( document ).ready(function() {
          },
     	 dataType: 'json',
    		 success:function(result){
-   			 if(result.userId == null)
-   				 alert("請先登入");
-   			 else
-   				 alert("您已登入");
+//   			 if(result.userId == null)
+//   				 alert("請先登入");
+//   			 else
+//   				 alert("您已登入");
    	     },
    		 error:function(){
    		 }

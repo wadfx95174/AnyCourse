@@ -5,6 +5,15 @@
     <welcome-file>HomePage.html</welcome-file>
   </welcome-file-list>
   <servlet>
+    <servlet-name>CommentServlet</servlet-name>
+    <servlet-class>Forum.CommentServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ReplyServlet</servlet-name>
+    <servlet-class>Forum.ReplyServlet</servlet-class>
+  </servlet>
+  <servlet>
+  <servlet>
     <servlet-name>HomePageServlet</servlet-name>
     <servlet-class>HomePage.HomePageServlet</servlet-class>
   </servlet>
@@ -52,9 +61,21 @@
     <servlet-name>PlayerInterfaceServlet</servlet-name>
     <servlet-class>PlayerInterface.PlayerInterfaceServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>AccountServlet</servlet-name>
+    <servlet-class>Account.AccountServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>HomePageServlet</servlet-name>
     <url-pattern>/HomePageServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CommentServlet</servlet-name>
+    <url-pattern>/CommentServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReplyServlet</servlet-name>
+    <url-pattern>/ReplyServlet.do</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>TextNoteServlet</servlet-name>
@@ -99,5 +120,9 @@
   <servlet-mapping>
     <servlet-name>CoursePlanServlet</servlet-name>
     <url-pattern>/CoursePlanServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AccountServlet</servlet-name>
+    <url-pattern>/AccountServlet.do</url-pattern>
   </servlet-mapping>
 </web-app>

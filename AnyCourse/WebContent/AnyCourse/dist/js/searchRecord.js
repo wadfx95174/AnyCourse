@@ -7,6 +7,7 @@ function check_all(obj,cName)
 var checkID;
 var searchRecordArray;
 $(document).ready(function() {
+	checkLogin("../", "../../../");
 	
 	
 	//取得資料庫的資料

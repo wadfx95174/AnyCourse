@@ -5,6 +5,7 @@ function get(name)
 }
 var array = [];
 $(document).ready(function(){
+    checkLogin("", "../../");
 	$.ajax({
 		method:"GET",
 		url:'http://localhost:8080/AnyCourse/SearchServlet.do',

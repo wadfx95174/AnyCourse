@@ -16,7 +16,8 @@ function formatTime(seconds) {
 
 $(document).ready(function() {
 	
-	
+
+	checkLogin("../", "../../../");
 	//取得資料庫的資料
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/PersonalKeyLabelServlet.do',

@@ -51,6 +51,7 @@
 <link href="../dist/css/foundation.min.css" rel="stylesheet" type="text/css" />
 <link href="../dist/css/playerjs.css" rel="stylesheet" type="text/css" />
 <link href="../dist/css/note.css" rel="stylesheet" type="text/css" />
+<link href="../dist/css/forum.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="skin-blue">
 	<div class="wrapper">
@@ -80,33 +81,6 @@
 				<!-- /.search form -->
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
-						
-						<!-- Notifications: style can be found in dropdown.less -->
-						
-						<!-- User Account: style can be found in dropdown.less -->
-						<li class="dropdown user user-menu"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown"> <img
-								src="../dist/img/user2-160x160.jpg" class="user-image"
-								alt="User Image" /> <span class="hidden-xs">小翔</span>
-						</a>
-							<ul class="dropdown-menu">
-								<!-- User image -->
-								<li class="user-header"><img
-									src="../dist/img/user2-160x160.jpg" class="img-circle"
-									alt="User Image" />
-									<p>
-										小翔
-										<!-- <small>Member since Nov. 2012</small> -->
-									</p></li>
-								<li class="user-footer">
-									<div class="pull-left">
-										<a href="#" class="btn btn-default btn-flat">設定</a>
-									</div>
-									<div class="pull-right">
-										<a href="#" class="btn btn-default btn-flat">登出</a>
-									</div>
-								</li>
-							</ul></li>
 					</ul>
 				</div>
 			</nav>
@@ -122,7 +96,7 @@
 							alt="User Image" />
 					</div>
 					<div class="pull-left info">
-						<h4>小翔，您好!</h4>
+						<h4><span id="user-name">訪客</span>，您好!</h4>
 					</div>
 				</div>
 				<!-- sidebar menu: : style can be found in sidebar.less -->
@@ -320,9 +294,17 @@
 										
 									</div>
 									<!-- /.tab-pane -->
-									<div class="tab-pane" id="forum">The European languages
-										are members of the same family. Their separate existence is a
-										myth.</div>
+									<div class="tab-pane" id="forum">
+										<div class="A">
+											<h2><label>發表評論</label></h2>											
+											<textarea id="comment_area" class="col-xs-12" rows="3" cols="50" placeholder="Comment something..." style="float:left;"></textarea>
+											<button type="button" class="btn btn-default btn_css" onclick="setComment()">確認</button>
+										</div>
+										<div class="A" id="comment-body">
+											
+																						
+										</div>
+									</div>
 									<!-- /.tab-pane -->
 								</div>
 								<!-- /.tab-content -->
@@ -557,8 +539,11 @@
 	<script src="../dist/js/playerInterface.js" type="text/javascript"></script>
 	<script src="../dist/js/progress.js" type="text/javascript"></script>
 	<script src="../dist/js/note.js" type="text/javascript"></script>
+	<script src="../dist/js/forum.js" type="text/javascript"></script>
 	<!-- AutoComplete -->
 	<script src="../dist/js/autoComplete.js" type="text/javascript"></script>
+	<!-- Account -->
+	<script src="../dist/js/account.js" type="text/javascript"></script>
 	
 
 	
