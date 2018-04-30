@@ -10,6 +10,7 @@ import java.sql.Statement;
 public class LoginVerificationManager
 {
 	private String selectPasswordSQL = "select password from account where user_id = ? or email = ?";
+	private String selectUserSQL = "select * from account where user_id = ? or email = ?";
 	private String selectUserIdSQL = "select user_id from account where user_id = ? or email = ?";
 	private String insertAccountTableSQL = "insert into account value (?,null,?,null,?,?,null)";
 	private String insertFavoriteCourseSQL = "insert into favorite_course value(?,?)";
@@ -60,6 +61,30 @@ public class LoginVerificationManager
 			if(result.next()) 
 			{ 	
 				return result.getString("user_id");
+			}
+		}
+			catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return null;
+	}
+	
+	public UserProfile getUserProfile(String param) {
+		UserProfile user = new UserProfile();
+		try {
+			pst = con.prepareStatement(selectUserSQL);
+			pst.setString(1, param);
+			pst.setString(2, param);
+			result = pst.executeQuery();
+			if(result.next()) 
+			{ 	
+				user.setUserId(result.getString("user_id"));
+				user.setNickName(result.getString("nick_name"));
+				user.setPictureUrl(result.getString("picture_url"));
+				return user;
 			}
 		}
 			catch(SQLException x){

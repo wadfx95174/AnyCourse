@@ -63,8 +63,12 @@ public class LoginVerificationServlet extends HttpServlet {
 			else
 			{
 				response.getWriter().println("登入成功");
-				session.setAttribute("userId", manager.getUserId(param));
-				System.out.println(session.getAttribute("userId"));
+				UserProfile user = manager.getUserProfile(param);
+				session.setAttribute("userId", user.getUserId());
+				session.setAttribute("nickName", user.getNickName());
+				session.setAttribute("pictureUrl", user.getPictureUrl());
+				
+				response.sendRedirect("AnyCourse/HomePage.html");
 			}
 		}
 		else if (method.equals("register"))

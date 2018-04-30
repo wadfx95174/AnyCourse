@@ -1,6 +1,7 @@
 document.write("<script type='text/javascript' src='dist/js/swiper.min.js'></script>");
 
 $(document).ready(function(){
+	checkLogin("pages/", "");
 	//重複利用的字串，尾巴
 	var str = '</div></div><div class="card-footer"><div class="btn-group show-on-hover dropup">'
 	+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">新增至' 
@@ -255,6 +256,26 @@ $(document).ready(function(){
 						);
 						$('.snip1492').tooltip({title:result[i][j].list_name , scontainer: "body", placement:"bottom", animation: true}); 
 					}
+				}
+				//台大
+				else if(result[i][0].type == 6){
+					
+				}
+				//清大
+				else if(result[i][0].type == 7){
+					
+				}
+				//交大
+				else if(result[i][0].type == 8){
+	
+				}
+				//成大
+				else if(result[i][0].type == 9){
+	
+				}
+				//政大
+				else if(result[i][0].type == 10){
+	
 				}
 				var swiper = new Swiper('.swiper-container', {
 				      slidesPerView: 3,

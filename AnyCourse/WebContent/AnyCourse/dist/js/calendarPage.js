@@ -1,5 +1,6 @@
  $(function () {
 
+	  checkLogin("../", "../../../");
         // ----初始化外部事件----
         function ini_events(ele) {
           ele.each(function () {
