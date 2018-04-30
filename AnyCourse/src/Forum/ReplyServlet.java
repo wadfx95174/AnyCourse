@@ -115,10 +115,22 @@ public class ReplyServlet extends HttpServlet {
 			Reply reply = new Reply();
 			reply.setReply_id(reply_id);
 						
-			dbreply.deleteCommentTable(reply_id);
+			dbreply.deleteReplyTable(reply_id);
 			PrintWriter out = response.getWriter();		
 			out.print("success");
-		}		
+		}	
+		if(state.equals("delete2"))
+		{
+			ForumManager dbreply = new ForumManager();
+			int comment_id = Integer.parseInt(request.getParameter("comment_id"));
+			
+			Reply reply = new Reply();
+			reply.setComment_id(comment_id);
+						
+			dbreply.deleteReplyTable2(comment_id);
+			PrintWriter out = response.getWriter();		
+			out.print("success");
+		}	
 	}
 
 }

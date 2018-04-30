@@ -16,11 +16,12 @@ public class ForumManager {
 	public String insertCommentSQL = "insert into comment (comment_id,unit_id,user_id,nick_name,comment_time,comment_content) value(null,?,?,?,null,?)";
 	public String selectCommentSQL = "select * from comment ";
 	public String deleteCommentSQL = "delete from comment where comment_id = ?";
-	public String updateCommentSQL = "update comment set user_id = ?,nick_name = ?,comment_time = ?,comment_content = ? where comment_id = ?";
+	public String updateCommentSQL = "update comment set unit_id = ?,user_id = ?,nick_name = ?,comment_time = ?,comment_content = ? where comment_id = ?";
 	
 	public String insertReplySQL = "insert into reply (reply_id,comment_id,user_id,nick_name,reply_time,reply_content) value(null,?,?,?,null,?)";
 	public String selectReplySQL = "select * from reply ";
 	public String deleteReplySQL = "delete from reply where reply_id = ?";
+	public String deleteReplySQL2 = "delete from reply where comment_id = ?";
 	public String updateReplySQL = "update reply set comment_id = ?,user_id = ?,nick_name = ?,reply_time = ?,reply_content = ? where reply_id = ?";
 	
 	public Comment comment;
@@ -218,6 +219,19 @@ public class ForumManager {
 		try {
 			pst = con.prepareStatement(deleteReplySQL);
 			pst.setInt(1,reply_id);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("Exception delete"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}  
+	public void deleteReplyTable2(int comment_id) {
+		try {
+			pst = con.prepareStatement(deleteReplySQL2);
+			pst.setInt(1,comment_id);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
