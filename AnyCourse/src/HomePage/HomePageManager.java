@@ -23,6 +23,9 @@ public class HomePageManager {
 			+"customlist_video.courselist_id = courselist.courselist_id and "
 			+"personal_plan.status = ";
 	private String selectPlanMax="select MAX(oorder) from personal_plan where status =";
+	private String selectRand="select * from customlist_video,unit,courselist "
+			+ "where customlist_video.unit_id = unit.unit_id and " 
+			+ "customlist_video.courselist_id = courselist.courselist_id order by rand() limit 20";
 	
 	private Map<Integer, HomePage> map;
 	private HomePage homePage;
@@ -54,16 +57,104 @@ public class HomePageManager {
 		homePages.add(selectVideoList(user_id));
 		homePages.add(selectCoursePlanWant(user_id));
 		homePages.add(selectCoursePlanING(user_id));
-		 
-//		for( Map row : rows )
-//		{
-//		    System.out.println( "id:" + row.get("id") + "\t"
-//		                      + "name:" + row.get("name") + "\t"
-//		                      + "sex:" + row.get("sex") + "\t"
-//		                      );
-//		}
 		return homePages;
 	}
+	public ArrayList<Map<Integer, HomePage>> getRandVideo(){
+		ArrayList<Map<Integer, HomePage>> homePages = new ArrayList<Map<Integer, HomePage>>();
+		homePages.add(selectRandVideo());
+		homePages.add(selectRandList());
+		return homePages;
+	}
+	//隨機抓20個影片
+	public Map<Integer, HomePage> selectRandVideo(){
+		map = new HashMap<Integer, HomePage>();
+		int count = 0;//map的key
+		try {
+			stat = con.createStatement();
+			result = stat.executeQuery(selectRand);
+			while(result.next()) {
+				homePage = new HomePage();
+				homePage.setList_name(result.getString("courselist.list_name"));
+				homePage.setUnit_name(result.getString("unit.unit_name"));
+				homePage.setSchool_name(result.getString("courselist.school_name"));
+				homePage.setTeacher(result.getString("courselist.teacher"));
+				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
+				homePage.setUnitLikes(result.getInt("unit.likes"));
+				homePage.setUnit_id(result.getInt("unit.unit_id"));
+				if(result.getString("unit.video_img_src") == "") {
+					homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+				}
+				else {
+					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+				}
+				
+				homePage.setType(1);//代表推薦影片
+				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
+					homePage.setVideo_type(1);//youtube
+				}
+				else {
+					homePage.setVideo_type(2);//jwplayer
+				}
+				map.put(count, homePage);
+				count++;
+			} 
+		}
+		catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		
+		return map;
+	}
+	
+	//隨機抓20個清單
+	public Map<Integer, HomePage> selectRandList(){
+		map = new HashMap<Integer, HomePage>();
+		int count = 0;//map的key
+		try {
+			stat = con.createStatement();
+			result = stat.executeQuery(selectRand);
+			while(result.next()) {
+				homePage = new HomePage();
+				homePage.setList_name(result.getString("courselist.list_name"));
+				homePage.setUnit_name(result.getString("unit.unit_name"));
+				homePage.setSchool_name(result.getString("courselist.school_name"));
+				homePage.setTeacher(result.getString("courselist.teacher"));
+				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
+				homePage.setListLikes(result.getInt("courselist.likes"));
+				homePage.setUnit_id(result.getInt("unit.unit_id"));
+				if(result.getString("unit.video_img_src") == "") {
+					homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+				}
+				else {
+					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+				}
+				
+				homePage.setType(2);//代表推薦影片
+				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
+					homePage.setVideo_type(1);//youtube
+				}
+				else {
+					homePage.setVideo_type(2);//jwplayer
+				}
+				map.put(count, homePage);
+				count++;
+			} 
+		}
+		catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		
+		return map;
+	}
+	
+	
+	
 	//推薦影片
 	public Map<Integer, HomePage> selectRecommendVideo(String user_id){
 		map = new HashMap<Integer, HomePage>();
@@ -268,7 +359,6 @@ public class HomePageManager {
 		
 		return map;
 	}
-	
 	
 	
 	//找使用者的課程計畫中的"正在觀看"

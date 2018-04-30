@@ -13,7 +13,6 @@
     <servlet-class>Forum.ReplyServlet</servlet-class>
   </servlet>
   <servlet>
-  <servlet>
     <servlet-name>HomePageServlet</servlet-name>
     <servlet-class>HomePage.HomePageServlet</servlet-class>
   </servlet>
