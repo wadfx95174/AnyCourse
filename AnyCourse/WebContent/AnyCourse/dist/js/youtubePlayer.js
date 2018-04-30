@@ -19,7 +19,7 @@ $(document).ready(function(){
 	// 點選progress, seek to 該位置
     $progress.on('click', function(e){
       var percent = ((e.pageX-$progress.offset().left)/$progress.width());
-      var seek = percent*youTubePlayer.getDuration();;
+      var seek = percent*youTubePlayer.getDuration();
       $('.meter').css('width', percent*100 + '%');
       changeTo(seek);
     });
@@ -106,7 +106,6 @@ $(document).ready(function(){
 	    		method : 'POST',
 	    	    data : {
 	    	    	"method" : "delete",
-//	    		    	"user_id" : 1,  //id 1要改成session的id
 	    	    	"keyLabelId" : keyLabelArray[selectId].keyLabelId
 	    		},
 	    		success:function(result){
@@ -116,31 +115,37 @@ $(document).ready(function(){
 	    	});
 	    });
 	    // 新增重點標籤
-	    $(document).on('click', '#createKlButton', function(event)
+	    $(document).on('click', '#submitKL', function(event)
 	    {
-	    	var klName = $('#cKeyLabelName').val();
-	    	var klBeginTime = parseInt($('#cBeginTime').val());
-	    	var klEndTime = parseInt($('#cEndTime').val());
-	    	
-	    	$.ajax({
-	    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
-	    		method : 'POST',
-	    	    data : {
-	    	    	"method" : "insert",
-	    	    	"userId" : 1,  //id 1要改成session的id
-	    	    	"keyLabelName" : klName,
-	    	    	"beginTime" : klBeginTime,
-	    	    	"endTime" : klEndTime,
-	    	    	"unitId" : 1   // id 要改
-	    		},
-	    		dataType : 'json',
-	    		cache: false,
-	    		success:function(result){
-	    			keyLabelArray[maxIndex] = result;
-	        		addToSelfKeyLabel(maxIndex++);
-	        	},
-	    		error:function(){alert('failed');}
-	    	});
+	    	var klName = $('#keyLabelName').val();
+	    	var klBeginTime = $( "#slider-range" ).slider( "values", 0 );
+	    	var klEndTime = $( "#slider-range" ).slider( "values", 1 );
+	    	if (klName != "")
+	    	{
+	    		$.ajax({
+	        		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+	        		method : 'POST',
+	        	    data : {
+	        	    	"method" : "insert",
+	        	    	"keyLabelName" : klName,
+	        	    	"beginTime" : klBeginTime,
+	        	    	"endTime" : klEndTime,
+	        	    	"unitId" : get("unit_id")
+	        		},
+	        		dataType : 'json',
+	        		cache: false,
+	        		success:function(result){
+	        			keyLabelArray[maxIndex] = result;
+	            		addToSelfKeyLabel(maxIndex++);
+	            		alert('新增成功');
+	            	},
+	        		error:function(){alert('failed');}
+	        	});
+	    	}
+	    	else
+	    	{
+	    		alert("標籤名稱不可為空!!");
+	    	}
 	    })
 	    // 點擊暫存標籤刪除按鈕，消除該標籤
 	    $(document).on('click', '.temp.dkl', function(event) 
@@ -206,7 +211,6 @@ $(document).ready(function(){
 	    		method : 'POST',
 	    	    data : {
 	    	    	"method" : "insert",
-	    	    	"userId" : 1,  //id 1要改成session的id
 	    	    	"keyLabelName" : keyLabelArray[selectId].keyLabelName,
 	    	    	"beginTime" : keyLabelArray[selectId].beginTime,
 	    	    	"endTime" : keyLabelArray[selectId].endTime,
@@ -227,37 +231,45 @@ $(document).ready(function(){
 			url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
 			method : 'GET', 
 			data : {
-				"unit_id" : 1		//unitid
+				"method" : "getPKL",
+				"unit_id" : get("unit_id")
 			},
 			success:function(result){
 				keyLabelArray = result;
 	    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
-	    			// 設置個人標籤
-	    			if (keyLabelArray[maxIndex].userId == 1)	//id 1要改成session的id
-					{
-	    				addToSelfKeyLabel(maxIndex);
-					}
-	    			// 設置交流區標籤
-	    			else if (keyLabelArray[maxIndex].share == 1)
-					{
-	    				$('#exchange').append('<li class="list-group-item">'
-	    						+ keyLabelArray[maxIndex].keyLabelName
-	    						+'<ul class="list-group-submenu">'
-	    						+'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
-	    						+'</ul>'
-	    						+'</li>');
-	    				
-					}
+	    			addToSelfKeyLabel(maxIndex);
+				} // end for
+	    		
+	    	}, // end success
+			error:function(){console.log('get PersonalKeyLabel failed');}
+		});	// end ajax
+	    
+	    $.ajax({
+			url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+			method : 'GET', 
+			data : {
+				"method" : "getEKL",
+				"unit_id" : get("unit_id")
+			},
+			success:function(result){
+				keyLabelArray = result;
+	    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
+					$('#exchange').append('<li class="list-group-item">'
+							+ keyLabelArray[maxIndex].keyLabelName
+							+'<ul class="list-group-submenu">'
+							+'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
+							+'</ul>'
+							+'</li>');
 				} // end for
 	    		
 	    		// 點選交流區的重點標籤，暫存區出現
 	    		$('.list-group-submenu').on('click', '.exchange', function(event) 
-						{
-	    					selectId = parseInt(this.getAttribute("id").split("-")[2]);
-							addToTempKeyLabel(selectId);
-						})
+				{
+					selectId = parseInt(this.getAttribute("id").split("-")[2]);
+					addToTempKeyLabel(selectId);
+				})
 	    	}, // end success
-			error:function(){alert('failed');}
+			error:function(){console.log('get ExangeKeyLabel failed');}
 		});	// end ajax
 	    
 	    
@@ -314,6 +326,8 @@ $(document).ready(function(){
 			$('h3')[0].append(response.unitName);
 	//		$('#introduction').append(response.)
 //		    video=$("#myvideo")[0];
+    		console.log('video: '+response);
+    	    $('#introduction').append(response.courseInfo);
 		}
 	});
     
@@ -323,6 +337,19 @@ $(document).ready(function(){
     youTubePlayer.setPlaybackRate(1);   //影片速率
     event.target.playVideo();   //  播放
   }
+  // 按下添加標籤按鈕，隱藏按鈕並顯示slider
+  $("#addKeyLabel").click(function(){
+	  $( "#slider-range" ).slider( "option", "max", youTubePlayer.getDuration());
+	  $( "#slider-range" ).slider( "values", [ 0, youTubePlayer.getDuration() ] );
+		
+
+	  // 調整slider會跳至影片該處
+	  $( "#slider-range" ).slider({
+		  stop: function( event, ui ) {
+			  changeTo(Math.floor(ui.value));
+		  }
+	  });
+  });
 
 
   // var done = false;

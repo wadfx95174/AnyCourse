@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 
 public class PlayerInterfaceManager
 {
-	private String selectVideoUrlSQL = "select * from unit where unit_id = ?";
+	private String selectVideoUrlSQL = "select * from unit natural join courselist where unit_id = ?";
 	private String selectCourseListSQL = "select * from unit natural join customlist_video where courselist_id = ?";
 	private Connection con = null;
 	private Statement stat = null;
@@ -51,6 +51,7 @@ public class PlayerInterfaceManager
 				unit.setLikes(result.getInt("likes"));
 				unit.setVideoImgSrc(result.getString("video_img_src"));
 				unit.setVideoUrl(result.getString("video_url"));
+				unit.setCourseInfo(result.getString("course_info"));
 			}
 		}
 			catch(SQLException x){

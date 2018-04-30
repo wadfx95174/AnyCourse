@@ -9,6 +9,7 @@ public class Unit
 	private String videoUrl;
 	private int likes;
 	private String videoImgSrc;
+	private String courseInfo;
 	public int getUnitId()
 	{
 		return unitId;
@@ -64,6 +65,14 @@ public class Unit
 	public void setVideoImgSrc(String videoImgSrc)
 	{
 		this.videoImgSrc = videoImgSrc;
+	}
+	public String getCourseInfo()
+	{
+		return courseInfo;
+	}
+	public void setCourseInfo(String courseInfo)
+	{
+		this.courseInfo = courseInfo;
 	}
 	
 }
