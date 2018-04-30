@@ -5,6 +5,7 @@ function get(name)
    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
       return decodeURIComponent(name[1]);
 }
+var setVideoCloseTime = 0;
 $(document).ready(function(){
 	
 	
@@ -258,6 +259,29 @@ $(document).ready(function(){
 	    	}, // end success
 			error:function(){alert('failed');}
 		});	// end ajax
+	    
+	    
+	    
+	  //---------------------------抓影片結束時間，並儲存----------------------------------------------//
+	  //---------------------------要設perconal_plan跟watch_record兩個table-------------------------//
+	    window.onbeforeunload = function(event) { 
+	    	var current = youTubePlayer.getCurrentTime();
+	        console.log(current);
+	        $.ajax({
+	        	url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+	        	method: 'POST',
+	        	data:{
+	        		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
+	        		"currentTime":current,//關閉的時間
+	        		"unitId" : get("unit_id")
+	        	},
+	        	success:function(result){},
+	        	error: function(){
+	        		console.log("setVideoEndTime failed!");
+	        	}
+	        })
+	    }; 
+	  //---------------------------抓影片結束時間，並儲存----------------------------------------------//
 })
 
 //--------------------------youtube iframe api-----------------------------
@@ -396,4 +420,5 @@ $(document).ready(function(){
         window.attachEvent('onload', init);
     }
 //  }());
-	
+
+    

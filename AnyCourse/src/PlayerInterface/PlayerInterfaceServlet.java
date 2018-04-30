@@ -23,7 +23,14 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		PlayerInterfaceManager manager = new PlayerInterfaceManager();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(manager.getList(Integer.parseInt(request.getParameter("courselistId"))));
+		if(request.getParameter("action").equals("getVideoList")) {
+			response.getWriter().write(manager.getList(Integer.parseInt(request.getParameter("courselistId"))));
+		}
+		else if(request.getParameter("action").equals("setVideoCloseTime")) {
+			manager.setVideoEndTime(Integer.parseInt(request.getParameter("currentTime").split("\\.")[0])
+					, Integer.parseInt(request.getParameter("unitId")), "1");
+		}
+		
 	}
 
 }

@@ -13,15 +13,15 @@ import Forum.Comment;
 import Forum.Reply;;
 
 public class ForumManager {
-	public String insertCommentSQL = "insert into comment (comment_id,user_id,comment_time,comment_content) value(null,?,?,?)";
+	public String insertCommentSQL = "insert into comment (comment_id,unit_id,user_id,nick_name,comment_time,comment_content) value(null,?,?,?,null,?)";
 	public String selectCommentSQL = "select * from comment ";
 	public String deleteCommentSQL = "delete from comment where comment_id = ?";
-	public String updateCommentSQL = "update comment set user_id = ?,comment_time = ?,comment_content = ? where comment_id = ?";
+	public String updateCommentSQL = "update comment set user_id = ?,nick_name = ?,comment_time = ?,comment_content = ? where comment_id = ?";
 	
-	public String insertReplySQL = "insert into reply (reply_id,comment_id,user_id,reply_time,reply_content) value(null,?,?,?,?)";
+	public String insertReplySQL = "insert into reply (reply_id,comment_id,user_id,nick_name,reply_time,reply_content) value(null,?,?,?,null,?)";
 	public String selectReplySQL = "select * from reply ";
 	public String deleteReplySQL = "delete from reply where reply_id = ?";
-	public String updateReplySQL = "update reply set comment_id = ?,user_id = ?,reply_time = ?,reply_content = ? where reply_id = ?";
+	public String updateReplySQL = "update reply set comment_id = ?,user_id = ?,nick_name = ?,reply_time = ?,reply_content = ? where reply_id = ?";
 	
 	public Comment comment;
 	public Reply reply;
@@ -47,25 +47,46 @@ public class ForumManager {
 		}
 	}
 	
-	public int insertCommentTable(Comment comment){
+	public Comment insertCommentTable(Comment comment){
 		try {
-			pst = con.prepareStatement(insertCommentSQL);
+			pst = con.prepareStatement(insertCommentSQL,Statement.RETURN_GENERATED_KEYS);
 			//pst.setInt(1,);
 			//pst.setInt(1,comment.getComment_id());
-			pst.setString(1,comment.getUser_id());
-			pst.setString(2,comment.comment_time);
-			pst.setString(3,comment.getComment_content());
+			pst.setInt(1,comment.getUnit_id());
+			pst.setString(2,comment.getUser_id());
+			pst.setString(3,comment.getNick_name());
+			//pst.setString(3,comment.comment_time);
+			pst.setString(4,comment.getComment_content());
 			pst.executeUpdate();
 			ResultSet generatedKeys = pst.getGeneratedKeys();
 			if (generatedKeys.next())
-				return generatedKeys.getInt(1);	
+			{
+				int id =generatedKeys.getInt(1);
+				pst = con.prepareStatement("SELECT * FROM comment WHERE comment_id = ?");
+				pst.setInt(1,id);
+				result = pst.executeQuery();
+				 while(result.next()) 
+			     { 
+				 comment = new Comment();
+				 comment.setComment_id(result.getInt("comment_id"));
+				 comment.setUnit_id(result.getInt("unit_id"));
+				 comment.setUser_id(result.getString("user_id"));
+				 comment.setNick_name(result.getString("nick_name"));
+				 comment.setComment_time(result.getString("comment_time"));
+				 comment.setComment_content(result.getString("comment_content"));
+			     }
+//				 System.out.println(result.getInt("comment_id"));
+//				 System.out.println(result.getString("comment_time"));
+				//return generatedKeys.getInt(1);
+				 return comment;
+			}
 		}
 		catch(SQLException x){
 			System.out.println("Exception insert"+x.toString());
 		}
 		finally {
 			Close();
-			return -1;
+			return comment;
 		}
 	}	
 	public void selectCommentTable(ArrayList<Comment> comments) {
@@ -76,7 +97,9 @@ public class ForumManager {
 		     { 	
 				 comment = new Comment();
 				 comment.setComment_id(result.getInt("comment_id"));
+				 comment.setUnit_id(result.getInt("unit_id"));
 				 comment.setUser_id(result.getString("user_id"));
+				 comment.setNick_name(result.getString("nick_name"));
 				 comment.setComment_time(result.getString("comment_time"));
 				 comment.setComment_content(result.getString("comment_content"));
 				 comments.add(comment);
@@ -106,10 +129,12 @@ public class ForumManager {
 	public void updateCommentTable(Comment comment){
 		try {
 			pst = con.prepareStatement(updateCommentSQL);	
-			pst.setInt(4,comment.getComment_id());
-			pst.setString(1,comment.getUser_id());
-			pst.setString(2,comment.getComment_time());
-			pst.setString(3,comment.getComment_content());
+			pst.setInt(6,comment.getComment_id());
+			pst.setInt(1,comment.getUnit_id());
+			pst.setString(2,comment.getUser_id());
+			pst.setString(3,comment.getNick_name());
+			pst.setString(4,comment.getComment_time());
+			pst.setString(5,comment.getComment_content());
 			
 			pst.executeUpdate();
 		}
@@ -122,28 +147,48 @@ public class ForumManager {
 	}
 	
 	 
-	public int insertReplyTable(Reply reply){
+	public Reply insertReplyTable(Reply reply){
 		try {
 			pst = con.prepareStatement(insertReplySQL,Statement.RETURN_GENERATED_KEYS);
 			//pst.setInt(1,);
 			//pst.setInt(1,reply.getReply_id());
 			pst.setInt(1,reply.getComment_id());
 			pst.setString(2,reply.getUser_id());
-			pst.setString(3,reply.getReply_time());
+			pst.setString(3,reply.getNick_name());
+			//pst.setString(4,reply.getReply_time());
 			pst.setString(4,reply.getReply_content());
 			pst.executeUpdate();
 			ResultSet generatedKeys = pst.getGeneratedKeys();
 			if (generatedKeys.next())
-				return generatedKeys.getInt(1);		   			    
+			{
+				int id =generatedKeys.getInt(1);
+				pst = con.prepareStatement("SELECT * FROM reply WHERE reply_id = ?");
+				pst.setInt(1,id);
+				result = pst.executeQuery();
+				 while(result.next()) 
+			     { 
+				 reply = new Reply();
+				 reply.setReply_id(result.getInt("reply_id"));
+				 reply.setComment_id(result.getInt("comment_id"));
+				 reply.setUser_id(result.getString("user_id"));
+				 reply.setNick_name(result.getString("nick_name"));
+				 reply.setReply_time(result.getString("reply_time"));
+				 reply.setReply_content(result.getString("reply_content"));
+			     }
+				 System.out.println(result.getInt("comment_id"));
+				 System.out.println(result.getString("comment_time"));
+				//return generatedKeys.getInt(1);
+				 return reply;
+			}
 		}
 		catch(SQLException x){
 			System.out.println("Exception insert"+x.toString());
 		}
 		finally {
 			Close();
+			return reply;
 		}
-		return -1;
-		
+			
 	}	 
 	public void selectReplyTable(ArrayList<Reply> replys) {
 		try {
@@ -155,7 +200,8 @@ public class ForumManager {
 				 reply.setReply_id(result.getInt("reply_id"));
 				 reply.setComment_id(result.getInt("comment_id"));
 				 reply.setUser_id(result.getString("user_id"));
-				 reply.setReply_time(result.getString("reply_id"));
+				 reply.setNick_name(result.getString("nick_name"));
+				 reply.setReply_time(result.getString("reply_time"));
 				 reply.setReply_content(result.getString("reply_content"));
 				 replys.add(reply);
 		     }
@@ -184,11 +230,12 @@ public class ForumManager {
 	public void updateReplyTable(Reply reply){
 		try {
 			pst = con.prepareStatement(updateReplySQL);	
-			pst.setInt(5,reply.getReply_id());
+			pst.setInt(6,reply.getReply_id());
 			pst.setInt(1,reply.getComment_id());
 			pst.setString(2,reply.getUser_id());
-			pst.setString(3,reply.getReply_time());
-			pst.setString(4,reply.getReply_content());
+			pst.setString(3,reply.getNick_name());
+			pst.setString(4,reply.getReply_time());
+			pst.setString(5,reply.getReply_content());
 			
 			pst.executeUpdate();
 		}

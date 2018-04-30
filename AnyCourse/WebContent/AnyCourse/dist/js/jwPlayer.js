@@ -319,5 +319,24 @@ $(document).ready(function(){
 	});	// end ajax
 
 //----------------------------------------------keyLabel----------------------------------------------//    
+//---------------------------抓影片結束時間，並儲存----------------------------------------------//
+//---------------------------要設perconal_plan跟watch_record兩個table-------------------------//
+    window.onbeforeunload = function(event) { 
+        console.log(video["currentTime"]);
+        console.log(get("unit_id"));
+        $.ajax({
+        	url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+        	method: 'POST',
+        	data:{
+        		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
+        		"currentTime":video["currentTime"],//關閉的時間
+        		"unitId" : get("unit_id")
+        	},
+        	success:function(result){},
+        	error: function(){
+        		console.log("setVideoEndTime failed!");
+        	}
+        })
+    }; 
+//---------------------------抓影片結束時間，並儲存----------------------------------------------//
 });
-

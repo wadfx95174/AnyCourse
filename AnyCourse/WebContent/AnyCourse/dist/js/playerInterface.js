@@ -3,7 +3,7 @@ $('#noteArea').slimScroll({
     height: '200px'
   });
 $('.tab-content').slimScroll({
-    height: '300px'
+    height: '500px'
   });
 $('#keyLabel1').slimScroll({
     height: '130px'
@@ -20,7 +20,6 @@ function get(name)
    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
       return decodeURIComponent(name[1]);
 	}
-
 
 var video;
 var keyLabelArray;
@@ -62,22 +61,21 @@ $(document).ready(function(){
         	method: 'POST',
         	data: {
         		courselistId: get('list_id'),
+        		action: 'getVideoList',//代表要取videoList
         	},
         	success: function(result){
-        		console.log(result);
-        		$('#list').slimScroll({
-        	        height: '300px'
-        	      });
+//        		console.log(result);
+        		
         	    $('#list').attr('class',  'box box-primary');
         	    $('#list').append('<div class="box-header ui-sortable-handle">'
         	                    + '<i class="ion ion-clipboard"></i>'
         	                    + '<h3 class="box-title"><strong>'+result[0].listName+'</strong></h3>'
         	                    + '</div>'
         	                    + '<div class="box-body">'
-        	                    + '   <div class="list-group"  id="list">');
+        	                    + '   <div class="list-group"  id="listbox">');
         	    for (var i = 0; i < result.length; i++)
         	    {
-        	    	$('#list').append('      <a href="PlayerInterface.html?type='+ (result[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unit_id='+result[i].unitId+'&list_id='+get('list_id')+'" class="list-group-item">'
+        	    	$('#listbox').append('      <a href="PlayerInterface.html?type='+ (result[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unit_id='+result[i].unitId+'&list_id='+get('list_id')+'" class="list-group-item">'
 		    	                    + '         <div class="media">'
 		    	                    + '            <div class="col-xs-6 pull-left" style="padding-left: 0px;">'
 		    	                    + '               <div class="embed-responsive embed-responsive-16by9">          '
@@ -93,6 +91,9 @@ $(document).ready(function(){
         	    }
         	    $('#list').append('   </div>'                           
         	                    + '</div>'); 
+        	    $('#listbox').slimScroll({
+        	        height: '300px'
+        	      });
         	},
         	error: function(){
         		console.log("post fail");
