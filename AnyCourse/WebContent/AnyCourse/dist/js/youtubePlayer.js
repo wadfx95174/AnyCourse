@@ -138,6 +138,11 @@ $(document).ready(function(){
 	        			keyLabelArray[maxIndex] = result;
 	            		addToSelfKeyLabel(maxIndex++);
 	            		alert('新增成功');
+
+	        	    	changeTo(klBeginTime);
+	        	    	$('.keyLabelDiv').css('margin-left', (klBeginTime / youTubePlayer.getDuration() * 100) + '%');
+	        	    	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / youTubePlayer.getDuration() * 100) + '%');
+	        	    	$('.keyLabelDiv').attr('data-original-title', klName);
 	            	},
 	        		error:function(){alert('failed');}
 	        	});
@@ -324,9 +329,6 @@ $(document).ready(function(){
 			                                    'errors': []};
 			    
 			$('h3')[0].append(response.unitName);
-	//		$('#introduction').append(response.)
-//		    video=$("#myvideo")[0];
-    		console.log('video: '+response);
     	    $('#introduction').append(response.courseInfo);
 		}
 	});
@@ -339,6 +341,7 @@ $(document).ready(function(){
   }
   // 按下添加標籤按鈕，隱藏按鈕並顯示slider
   $("#addKeyLabel").click(function(){
+	    // 設置slider的最大時間
 	  $( "#slider-range" ).slider( "option", "max", youTubePlayer.getDuration());
 	  $( "#slider-range" ).slider( "values", [ 0, youTubePlayer.getDuration() ] );
 		

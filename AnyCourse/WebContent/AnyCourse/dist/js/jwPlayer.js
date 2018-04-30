@@ -23,20 +23,17 @@ $(document).ready(function(){
     	success: function(response){
     		$('#vid').append('<video controls="" name="media" id = "myvideo" ><source src="'+response.videoUrl+'" type="video/mp4"></video>');
     		
-//    		$('source').attr('src', response);		//  <div id="youTubePlayer"></div>
     		$('h3')[0].append(response.unitName);
-//    		$('#introduction').append(response.)
     	    video=$("#myvideo")[0];
-    		console.log('video: '+response);
     	    $('#introduction').append(response.courseInfo);
-    	    $( "#slider-range" ).slider( "option", "max", video["duration"] / 1);
     	}
     });
     
 	// 按下添加標籤按鈕，隱藏按鈕並顯示slider
 	$("#addKeyLabel").click(function(){
+	    // 設置slider的最大時間
 	    $( "#slider-range" ).slider( "option", "max", Math.floor(video["duration"]));
-		  $( "#slider-range" ).slider( "values", [ 0,  Math.floor(video["duration"])] );
+		$( "#slider-range" ).slider( "values", [ 0,  Math.floor(video["duration"])]);
 
 
 	    // 調整slider會跳至影片該處
@@ -212,6 +209,11 @@ $(document).ready(function(){
         			keyLabelArray[maxIndex] = result;
             		addToSelfKeyLabel(maxIndex++);
             		alert('新增成功');
+
+                	video.currentTime = klBeginTime;
+                	$('.keyLabelDiv').css('margin-left', (klBeginTime / video['duration'] * 100) + '%');
+                	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / video['duration'] * 100) + '%');
+                	$('.keyLabelDiv').attr('data-original-title', klName);
             	},
         		error:function(){alert('failed');}
         	});
