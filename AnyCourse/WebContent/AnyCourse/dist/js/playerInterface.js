@@ -18,6 +18,15 @@ function get(name)
    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
       return decodeURIComponent(name[1]);
 	}
+function formatTime(seconds) {
+    return [
+        parseInt(seconds / 60 / 60),
+        parseInt(seconds / 60 % 60),
+        parseInt(seconds % 60)
+    ]
+        .join(":")
+        .replace(/\b(\d)\b/g, "0$1");
+}
 
 var video;
 var keyLabelArray;
@@ -27,6 +36,25 @@ var element;		//存DOM元素
 
 $(document).ready(function(){
     checkLogin("", "../../");
+    
+    $( "#slider-range" ).slider({
+        range: true,
+        min: 0,
+        max: 0,
+        values: [ 0, 0 ],
+        slide: function( event, ui ) {
+            $( "#bVideoTime" ).val( formatTime(ui.values[ 0 ]) );
+            $( "#eVideoTime" ).val( formatTime(ui.values[ 1 ]) );
+          }
+        });
+    $( "#bVideoTime" ).val( $( "#slider-range" ).slider( "values", 0 ) );
+    $( "#eVideoTime" ).val( $( "#slider-range" ).slider( "values", 1 ) );
+    
+    $("#addKeyLabel,#submitKL,#cancelKL").click(function(){
+    	$("#slider").toggle();
+    	$("#addKeyLabel").toggle();
+    });
+    
     
     $("#editNote").click(function(){
 //    	alert("AAA");

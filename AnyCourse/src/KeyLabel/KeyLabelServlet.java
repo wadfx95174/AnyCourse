@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
@@ -19,7 +20,14 @@ public class KeyLabelServlet extends HttpServlet {
 		KeyLabelManager keyLabelDatebaseManager = new KeyLabelManager();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(keyLabelDatebaseManager.getUnitKeyLabel(Integer.parseInt(request.getParameter("unit_id"))));		
+		String method = request.getParameter("method");
+		if (method.equals("getPKL"))
+		{
+			HttpSession session = request.getSession();
+			response.getWriter().write(keyLabelDatebaseManager.getPersonalKeyLabel(Integer.parseInt(request.getParameter("unit_id")), (String)session.getAttribute("userId")));
+		}
+		else if (method.equals("getEKL"))
+			response.getWriter().write(keyLabelDatebaseManager.getExangeKeyLabel(Integer.parseInt(request.getParameter("unit_id"))));
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,7 +39,8 @@ public class KeyLabelServlet extends HttpServlet {
 		{
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			keyLabel.setUserId(request.getParameter("userId"));
+			HttpSession session = request.getSession();
+			keyLabel.setUserId((String)session.getAttribute("userId"));
 			keyLabel.setUnitId(Integer.parseInt(request.getParameter("unitId")));
 			keyLabel.setKeyLabelName(request.getParameter("keyLabelName"));
 			keyLabel.setBeginTime(Integer.parseInt(request.getParameter("beginTime")));

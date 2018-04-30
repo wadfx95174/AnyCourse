@@ -64,7 +64,7 @@ public class PictureNoteServlet extends HttpServlet {
 			
 			dbnote.deletePictureNoteTable(picture_note_id);
 			PrintWriter out = response.getWriter();		
-			out.print("success");
+//			out.print("success");
 		}
 		if(state.equals("insert"))
 		{

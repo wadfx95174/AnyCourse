@@ -130,9 +130,16 @@
 							    <span class="duration"></span>
 							</div> 
 							<div class="keyLabelDiv" data-toggle="tooltip" data-placement="bottom"></div>
-							<div class="controlPanel"><button data-toggle="modal" data-target="#klCreateModal">添加標籤</button></div>
+							<div id="slider" style="display:none; height: 50px;">
+								<div id="slider-range"></div>
+								<label style="margin-top: 10px;" for="videoTime">影片時間</label>
+ 								<input type="text" id="bVideoTime" style="width:70px;margin-top: 10px;">-<input type="text" id="eVideoTime" style="width:70px;margin-top: 10px;">
+								<button style="margin-top: 5px;" class="btn btn-primary btn-flat pull-right" id="cancelKL">取消</button>
+								<button style="margin-top: 5px;" class="btn btn-primary btn-flat pull-right" id="submitKL">確認</button>
+								<input style="margin-top: 10px; margin-right:10px" type="text" class="pull-right" id="keyLabelName" placeholder="標籤名稱">
+							</div>
                      	</div>
-						<div style="float: left;">
+						<div>
 							<h3 style="margin-top: 10px;">
 							</h3>
 						</div>
@@ -210,8 +217,10 @@
 								<ul class="nav nav-tabs">
 									<li class="active"><a href="#introduction"
 										data-toggle="tab" aria-expanded="true">課程簡介</a></li>
-									<li class=""><a href="#exchange" data-toggle="tab"
-										aria-expanded="false">交流區</a></li>
+									<li class=""><a href="#exchange_note" data-toggle="tab"
+										aria-expanded="false">交流筆記</a></li>
+									<li class=""><a href="#exchange_keylabel" data-toggle="tab"
+										aria-expanded="false">交流標籤</a></li>
 									<li class=""><a href="#forum" data-toggle="tab"
 										aria-expanded="false">討論區</a></li>
 								</ul>
@@ -221,7 +230,11 @@
 										
 									</div>
 									<!-- /.tab-pane -->
-									<div class="list-group tab-pane" id="exchange">
+									<div class="list-group tab-pane" id="exchange_note">
+										
+									</div>
+									<!-- /.tab-pane -->
+									<div class="list-group tab-pane" id="exchange_keylabel">
 										
 									</div>
 									<!-- /.tab-pane -->
@@ -248,6 +261,7 @@
                          <div class="box-header ui-sortable-handle">
                            <i class="fa fa-tags"></i>
                            <h3 class="box-title"><strong>個人標籤</strong></h3>
+							<div class="pull-right"><button class="btn btn-primary btn-flat" id="addKeyLabel">添加標籤</button></div>
                          </div><!-- /.box-header -->
                          <div class="box-body">
                            <ul class="list-group connectedSortable" style="margin-bottom: 5px;" id="keyLabel1">
