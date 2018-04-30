@@ -29,6 +29,8 @@ var selectId = 0;
 var element;		//存DOM元素
 
 $(document).ready(function(){
+    checkLogin("", "../../");
+    
     $("#editNote").click(function(){
 //    	alert("AAA");
 //    	alert($("#text_area").attr("disabled"));

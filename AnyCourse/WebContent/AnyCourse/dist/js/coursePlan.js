@@ -8,6 +8,7 @@ $(document).ready(function() {
     cancel: ".portlet-toggle",
     placeholder: "portlet-placeholder ui-corner-all"
   });
+  checkLogin("../", "../../../");
 
 //  $( ".portlet" )
 //    .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )

@@ -44,6 +44,10 @@
     <servlet-name>PersonalKeyLabelServlet</servlet-name>
     <servlet-class>Personal.KeyLabel.PersonalKeyLabelServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>AccountServlet</servlet-name>
+    <servlet-class>Account.AccountServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>HomePageServlet</servlet-name>
     <url-pattern>/HomePageServlet.do</url-pattern>
@@ -91,5 +95,9 @@
   <servlet-mapping>
     <servlet-name>PersonalKeyLabelServlet</servlet-name>
     <url-pattern>/PersonalKeyLabelServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AccountServlet</servlet-name>
+    <url-pattern>/AccountServlet.do</url-pattern>
   </servlet-mapping>
 </web-app>

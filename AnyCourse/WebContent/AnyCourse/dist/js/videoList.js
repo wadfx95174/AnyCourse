@@ -23,6 +23,8 @@ $(document).ready(function() {
     forcePlaceholderSize: true,
     zIndex: 999999
   });
+
+  checkLogin("../", "../../../");
   
   var selectList = 0;
   var selectUnit = 1;

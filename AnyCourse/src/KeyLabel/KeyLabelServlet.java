@@ -13,17 +13,18 @@ import com.google.gson.Gson;
 @WebServlet("/KeyLabelServlet")
 public class KeyLabelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private KeyLabelManager keyLabelDatebaseManager = new KeyLabelManager();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+		KeyLabelManager keyLabelDatebaseManager = new KeyLabelManager();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(keyLabelDatebaseManager.getUnitKeyLabel(Integer.parseInt(request.getParameter("unit_id"))));		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+		KeyLabelManager keyLabelDatebaseManager = new KeyLabelManager();
 		KeyLabel keyLabel = new KeyLabel();
 		String method = request.getParameter("method");
 		if (method.equals("insert"))

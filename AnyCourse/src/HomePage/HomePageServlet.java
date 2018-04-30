@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,9 +24,9 @@ public class HomePageServlet extends HttpServlet {
 		response.setHeader("content-type","text/html;charset=UTF-8");
 		
 		ArrayList<Map<Integer, HomePage>> homePages;
-		
+		HttpSession session = request.getSession();
 		HomePageManager homePageDatabaseManager = new HomePageManager();
-		homePages = homePageDatabaseManager.getAllVideo("1");
+		homePages = homePageDatabaseManager.getAllVideo((String)session.getAttribute("userId"));
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		response.setContentType("application/json");

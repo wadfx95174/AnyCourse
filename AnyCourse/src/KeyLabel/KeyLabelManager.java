@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 public class KeyLabelManager
 {
 	private String selectUnitKeyLabelSQL = "select * from keylabel where unit_id = ?";
-	private String updateKeyLabelSQL = "update keylabel set keylabel_name = ?, begin_time = ?, end_time = ?, where keylabel_id = ?";
+	private String updateKeyLabelSQL = "update keylabel set keylabel_name = ?, begin_time = ?, end_time = ? where keylabel_id = ?";
 	private String insertKeyLabelSQL = "insert into keylabel value (null,?,?,?,?,?,?,?,?)";
 	private String deleteKeyLabelSQL = "delete from keylabel where keylabel_id = ?";
 	private Connection con = null;

@@ -4069,3 +4069,6 @@ Gradient Background colors
 .btn-noColor.hover {
   background-color: #e7e7e7;
 }
+/*********************************設定autocomplete的z-index*******************************/
+.ui-autocomplete { position: absolute; cursor: default;z-index:2000 !important;
+ max-height: 200px; overflow-y: scroll; overflow-x: hidden;}
