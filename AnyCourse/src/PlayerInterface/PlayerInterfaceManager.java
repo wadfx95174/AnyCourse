@@ -126,7 +126,7 @@ public class PlayerInterfaceManager
 			check = false;//檢查有沒有在課程計畫的table中找到這個unit_id
 			while(result.next()) {check = true;}
 			//如果有，就更新影片結束時間，true是有，沒有就不做事
-			if(check == true) {
+			if(check == true) { 
 				
 				//判斷結束了沒，currentTime+5秒代表5秒內會結束的都改變status
 				if(currentTime+5 > duration) {
