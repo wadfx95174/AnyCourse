@@ -6,12 +6,19 @@ public class KeyLabel
 	private int unitId;
 	private String userId;
 	private String keyLabelName;
+	private String nick_name;	
 	private int beginTime;
 	private int endTime;
 	private int share;
 	private String shareTime;
 	private int likes;
 	
+	public String getNick_name() {
+		return nick_name;
+	}
+	public void setNick_name(String nick_name) {
+		this.nick_name = nick_name;
+	}
 	public int getKeyLabelId()
 	{
 		return keyLabelId;

@@ -16,7 +16,7 @@ import Note.PictureNote;
 /**
  * Servlet implementation class ExchangePictureNoteServlet
  */
-@WebServlet("/ExchangePictureNoteServlet")
+//@WebServlet("/ExchangePictureNoteServlet")
 public class ExchangePictureNoteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

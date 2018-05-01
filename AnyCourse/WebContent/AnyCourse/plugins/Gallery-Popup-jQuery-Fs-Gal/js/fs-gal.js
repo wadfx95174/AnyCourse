@@ -36,17 +36,20 @@ $('document').ready(function() {
     $('.fs-gal-view').fadeIn(); //Display gallery
   }
   //Gallery navigation
-  $('.fs-gal-view .fs-gal-nav').click(function() {
+  $(document).on('click','.fs-gal-view .fs-gal-nav', function() {
+  //$('.fs-gal-view .fs-gal-nav').click(function() {
     var index = $(this).data('img-index');
     var img = $($('.fs-gal').get(index));
     fsGal_DisplayImage(img);
   });
   //Close gallery
-  $('.fs-gal-view .fs-gal-close').click(function() {
+  $(document).on('click','.fs-gal-view .fs-gal-close', function() {
+ // $('.fs-gal-view .fs-gal-close').click(function() {
     $('.fs-gal-view').fadeOut();
   });
   //delete
-  $('.fs-gal-view .fs-gal-delete').click(function() {
+  $(document).on('click','.fs-gal-view .fs-gal-delete', function() {
+ // $('.fs-gal-view .fs-gal-delete').click(function() {
     $('.fs-gal-view').fadeOut();
   });
   //Keyboard navigation

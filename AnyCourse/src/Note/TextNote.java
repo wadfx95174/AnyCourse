@@ -5,6 +5,17 @@ public class TextNote {
 	public int text_note_id;
 	public int unit_id;
 	public String user_id;
+	public String nick_name;
+	public String getNick_name() {
+		return nick_name;
+	}
+
+
+	public void setNick_name(String nick_name) {
+		this.nick_name = nick_name;
+	}
+
+
 	public String text_note;
 	public int share;
 	public String share_time;

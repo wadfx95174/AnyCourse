@@ -1,0 +1,66 @@
+/**
+ * Author: Tim Vervoort - info@timvervoort.com
+ * Licence: Free for commercial use
+ * Last update: 8th November 2017 - v1.0
+ */
+.ffs-gal-view {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  text-align: center;
+  background-size: contain;
+  background-position: center center;
+  background-color: rgba(20, 20, 20, 0.7);
+  background-repeat: no-repeat;
+  overflow: hidden;
+  z-index: 9999; /* Sit on top */
+}
+.ffs-gal-view h1 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 50px;
+  line-height: 50px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-weight: 300;
+  font-size: 26px;
+  z-index: 9999; /* Sit on top */
+}
+.ffs-gal-prev, .ffs-gal-next, .ffs-gal-close {
+  position: absolute;
+  top: calc(50vh - 20px);
+  height: 40px;
+  width: 40px;
+  z-index: 9999; /* Sit on top */
+}
+.ffs-gal-prev {
+  left: 0;
+}
+.ffs-gal-next {
+  right: 0;
+}
+.ffs-gal-close {
+  top: 4px;
+  right: 4px;
+  height: 30px;
+  width: 30px;
+}
+.ffs-gal:hover, .ffs-gal-nav:hover, .ffs-gal-close:hover {
+  cursor: pointer;
+}
+.ffs-gal {
+        width: 100px;
+        height: auto;
+      }

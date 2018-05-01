@@ -16,7 +16,7 @@ import Note.TextNote;
 /**
  * Servlet implementation class ExchangeNoteServlet
  */
-@WebServlet("/ExchangeNoteServlet")
+//@WebServlet("/ExchangeNoteServlet")
 public class ExchangeTextNoteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
