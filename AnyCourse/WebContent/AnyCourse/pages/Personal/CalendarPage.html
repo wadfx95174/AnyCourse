@@ -102,33 +102,14 @@
 					<section class="content">
 						<div class="row">
 							<div class="col-md-3">
-								<div class="box box-primary">
-									<div class="box-header with-border">
-										<h3 class="box-title"><strong>課程</strong></h3>
-									</div>
-									<div class="box-body">
-										<!-- the events -->
-										<div id='external-events'>
-											<!--<div class='external-event bg-green'>微積分一</div>
-											<div class='external-event bg-yellow'>微積分二</div>
-											<div class='external-event bg-aqua'>作業系統</div>
-											<div class='external-event bg-light-blue'>離散數學</div>
-											<div class='external-event bg-red'>計算機組織</div> -->
-											<div class="checkbox">
-												<label for='drop-remove'> <input type='checkbox'
-													id='drop-remove' /> 抓取後移除
-												</label>
-											</div>
-										</div>
-									</div>
-									<!-- /.box-body -->
-								</div>
 								<!-- /. box -->
 								<div class="box box-primary">
 									<div class="box-header with-border">
-										<h3 class="box-title"><strong>Create Event</strong></h3>
+										<h3 class="box-title"><strong>已選事件</strong></h3>
 									</div>
 									<div class="box-body">
+										<!-- the events -->
+										<div class='external-event' id='selectedEvent'>選擇事件...</div>
 										<div class="btn-group"
 											style="width: 100%; margin-bottom: 10px;">
 											<!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
@@ -161,6 +142,47 @@
 														class="fa fa-square"></i></a></li>
 											</ul>
 										</div>
+										<div>
+											<!-- <div class="checkbox">
+												<label for='drop-remove'> <input type='checkbox'
+													id='drop-remove' /> 抓取後移除
+												</label>
+											</div> -->
+											<div class="checkbox">
+												<label for='click-remove'> <input type='checkbox'
+													id='click-remove' /> 點擊事件刪除
+												</label>
+											</div>
+										</div>
+									</div>
+									<!-- /.box-body -->
+								</div>
+								<!-- /. box -->
+								<div class="box box-primary">
+									<div class="box-header with-border">
+										<h3 class="box-title"><strong>選擇課程/事件</strong></h3>
+									</div>
+									<div class="box-body">
+										<!-- the events -->
+										<div>
+											<ul class="pagination" id='external-events' id='external-events'>
+											</ul>
+											<!--<div class='external-event bg-green'>微積分一</div>
+											<div class='external-event bg-yellow'>微積分二</div>
+											<div class='external-event bg-aqua'>作業系統</div>
+											<div class='external-event bg-light-blue'>離散數學</div>
+											<div class='external-event bg-red'>計算機組織</div> -->
+										</div>
+									</div>
+									<!-- /.box-body -->
+								</div>
+								<!-- /. box -->
+								<div class="box box-primary">
+									<div class="box-header with-border">
+										<h3 class="box-title"><strong>新增自訂事件</strong></h3>
+									</div>
+									<div class="box-body">
+										
 										<!-- /btn-group -->
 										<div class="input-group">
 											<input id="new-event" type="text" class="form-control"
@@ -171,8 +193,6 @@
 											</div>
 											<!-- /btn-group -->
 										</div>
-										
-										<div class='external-event' id='selectedEvent'>外部</div>
 										<!-- /input-group -->
 									</div>
 								</div>

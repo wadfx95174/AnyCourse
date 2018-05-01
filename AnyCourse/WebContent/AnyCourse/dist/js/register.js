@@ -13,6 +13,12 @@ $(function () {
   });
 });
 
+  if ($('#nickName').val())nickName();
+  if ($('#userId').val())userId();
+  if ($('#password').val())password();
+  if ($('#confirmPw').val())confirmPw();
+  if ($('#email').val())email();
+
 //檢查"暱稱"欄位 
 $('#nickName').change(function nickName(){
  nickNameCheck = false;

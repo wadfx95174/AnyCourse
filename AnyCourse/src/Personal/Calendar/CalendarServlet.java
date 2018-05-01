@@ -36,24 +36,36 @@ public class CalendarServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CalendarManager calendarManager = new CalendarManager();
 		CalendarDTO event = new CalendarDTO();
-		event.setTitle(request.getParameter("title"));
-		event.setUrl(request.getParameter("url"));
-		event.setStart(request.getParameter("start"));
-		event.setEnd(request.getParameter("end"));
-		event.setBackgroundColor(request.getParameter("backgroundColor"));
-		event.setBorderColor(request.getParameter("borderColor"));
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		if (request.getParameter("method").equals("insert"))
+		String method = request.getParameter("method");
+		if (method.equals("insert"))
 		{
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			event.setTitle(request.getParameter("title"));
+			event.setUrl(request.getParameter("url"));
+			event.setStart(request.getParameter("start"));
+			event.setEnd(request.getParameter("end"));
+			event.setBackgroundColor(request.getParameter("backgroundColor"));
+			event.setBorderColor(request.getParameter("borderColor"));
 			HttpSession session = request.getSession();
 			int newId = calendarManager.insertEvent(event, (String)session.getAttribute("userId"));
 			String json = new Gson().toJson(newId);
 			response.getWriter().write(json);
 		}
+		else if (method.equals("delete"))
+		{
+			calendarManager.deleteEvent(Integer.parseInt(request.getParameter("eventId")));
+		}
 		else
 		{
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			event.setTitle(request.getParameter("title"));
+			event.setUrl(request.getParameter("url"));
+			event.setStart(request.getParameter("start"));
+			event.setEnd(request.getParameter("end"));
+			event.setBackgroundColor(request.getParameter("backgroundColor"));
+			event.setBorderColor(request.getParameter("borderColor"));
 			event.setId(Integer.parseInt(request.getParameter("id")));
 			calendarManager.updateEvent(event);
 		}

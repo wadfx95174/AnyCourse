@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class PlayerInterfaceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -21,6 +22,8 @@ public class PlayerInterfaceServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		PlayerInterfaceManager manager = new PlayerInterfaceManager();
+		HttpSession session = request.getSession();
+		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		if(request.getParameter("action").equals("getVideoList")) {
@@ -28,7 +31,8 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		}
 		else if(request.getParameter("action").equals("setVideoCloseTime")) {
 			manager.setVideoEndTime(Integer.parseInt(request.getParameter("currentTime").split("\\.")[0])
-					, Integer.parseInt(request.getParameter("unitId")), "1");
+					, Integer.parseInt(request.getParameter("unitId")), (String)session.getAttribute("userId")
+					,Integer.parseInt(request.getParameter("duration").split("\\.")[0]));
 		}
 		
 	}

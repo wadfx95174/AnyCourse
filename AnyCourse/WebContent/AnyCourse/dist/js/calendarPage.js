@@ -14,19 +14,28 @@
 	  		success:function(result){
 	  			console.log('coursePlan result:');
 	  			console.log(result);
-	  			for(var i = 0; i < result.length; i++)
+	  			coursePlanList = result;
+	  			for(var i = 0; i < coursePlanList.length; i++)
 	  			{
 		  			$('#external-events').append(
-		  				'<div class="external-event">'+result[i].unit_name+'</div>'
+		  				'<li><a href="javascript:void(0)">'+coursePlanList[i].unit_name+'</a></li>'
 		  			);
 	  			}
-	  	        ini_events($('#external-events div.external-event'), result);
+	  	        ini_events($('#external-events li'));
 	  		}
 	  	});
 	  
+
+        // 讓已選事件可以被拖動
+        $('#selectedEvent').draggable({
+          zIndex: 1070,
+          revert: true, // will cause the event to go back to its
+          revertDuration: 0  //  original position after the drag
+        });
+	  	
         // ----初始化外部事件----
-        function ini_events(ele, coursePlanList) {
-          var index = 0;	// 跑each迴圈用
+        var index = 0;	// 跑each迴圈用
+        function ini_events(ele) {
           ele.each(function () {
             // 宣告EventObject (可以不用start跟end)
             var eventObject = {
@@ -41,16 +50,8 @@
             $(this).click(function(){
             	console.log($(this).data('eventObject'));		//********************************
             	$('#selectedEvent').text($(this).text());
-            	$('#selectedEvent').css('background-color', $(this).css('background-color'));
+            	$('#selectedEvent').data($(this).data());
             });
-
-            // 讓事件可以被拖動
-            $(this).draggable({
-              zIndex: 1070,
-              revert: true, // will cause the event to go back to its
-              revertDuration: 0  //  original position after the drag
-            });
-            
             index++;
           });
         }
@@ -97,18 +98,43 @@
 			          selectable: true,
 			          selectHelper: true,	// 在week跟day select時顯示時間
 			          select: function(start, end, allDay) {
-			        	    var title = prompt('Event Title:');
-			        	    if (title) {
-			        	    	$('#calendar').fullCalendar('renderEvent',
-			        	            {
-			        	                title: title,
-			        	                start: start,
-			        	                end: end,
-			        	                allDay: allDay
-			        	            },
-			        	            true // make the event "stick"
-			        	        );
-			        	    }
+			        	    // 新增一個event Object接selectedEvent
+			        	    var selectedObject = $('#selectedEvent').data('eventObject');
+			        	    if (selectedObject == undefined)return;
+			        	    selectedObject.start = start.format('YYYY-MM-DD HH:mm:ss');
+			        	    selectedObject.end = end.format('YYYY-MM-DD HH:mm:ss');
+			        	    selectedObject.backgroundColor = $('#selectedEvent').css('background-color'),
+			        	    selectedObject.borderColor =  $('#selectedEvent').css('border-color'),
+			        	    // 送到資料庫更新
+			        	    $.ajax({
+			            		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
+			            		method: 'POST',
+			            		cache: false,
+			            		data: {
+		        	                title: selectedObject.title,
+		   	        		  		url: selectedObject.unitId + '/' + selectedObject.type,
+		        	                start: selectedObject.start,
+		        	                end: selectedObject.end,
+		        	                backgroundColor: selectedObject.backgroundColor,
+		   	        		  		borderColor: selectedObject.borderColor,
+		   	        		  		method: "insert"
+			            		},
+			            		error: function(){
+			            			console.log('InsertFail');
+			            		},
+			            		success: function(response){
+			            			console.log(response);
+			            			selectedObject.id = response;
+		   	        				//$('#calendar').fullCalendar('updateEvent', event);
+			            			
+			            			// 把新增的Object更新到fullcalendar
+		   	        				$('#calendar').fullCalendar('renderEvent', selectedObject, true)
+						            {	
+					 	        	    //alert(copiedEventObject.id + " " + copiedEventObject.title + " " + copiedEventObject.url + " " + copiedEventObject.start + " " + copiedEventObject.end + " " + copiedEventObject.allDay);
+						            }; // end renderEvent
+						            
+			            		} // end success
+			            	}); // end ajax
 			        	    $('#calendar').fullCalendar('unselect');
 			        	},
 			          
@@ -139,7 +165,7 @@
 		            		method: 'POST',
 		            		data: {
 		            			title: copiedEventObject.title,
-	   	        		  		//url: copiedEventObject.url,
+	   	        		  		url: copiedEventObject.unitId + '/' + copiedEventObject.type,
 	   	        		  		start: startTime.format('YYYY-MM-DD HH:mm:ss'),//copiedEventObject.start.toISOString(),
 	   	        		  		end: endTime.format('YYYY-MM-DD HH:mm:ss'),//copiedEventObject.end.toISOString(),
 	   	        		  		backgroundColor: copiedEventObject.backgroundColor,
@@ -147,7 +173,7 @@
 	   	        		  		method: "insert"
 		            		},
 		            		error: function(){
-		            			alert("InsertFail");
+		            			console.log("InsertFail");
 		            		},
 		            		success: function(response){
 	   	        				copiedEventObject.id = response;
@@ -169,27 +195,41 @@
 			          
 			          // ----點擊事件----
 			          ,eventClick: function(event, jsEvent, view) { 
-			        	  //event.start.add(1, 'days');//modify 
-			        	  //alert('Event: ' + event.start.toISOString());
 			        	  console.log(event);
-			        	  //console.log(jsEvent);
-			        	  //2018-03-28T18:35:00
-			        	  
-			        	  
+
+				          if ($('#click-remove').is(':checked')) 
+				          {
+				        	  if (confirm('確定要刪除 "'+event.title+'"')) 
+				        	  {
+				        		  $.ajax({
+					            		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
+					            		method: 'POST',
+					            		data: {
+					            			eventId: event.id,
+				   	        		  		method: "delete"
+					            		},
+					            		error: function(){
+					            			console.log("Delete Event Fail");
+					            		},
+					            		success: function(){
+					            			// 從fullcalendar上移除
+							        		$('#calendar').fullCalendar('removeEvents', event.id)
+					            		} // end success
+					            	}); // end ajax
+				        	  }
+				        	  return false;
+				          }
+				          
 			        	  // 前往該事件網址
-			        	  if (event.url) {
-//			        	      window.open(event.url);
-				        	  //url = "../PlayerInterface.html?unit_id="+unit_id+"&type="+type;//此處拼接內容
-				        	  url = "../PlayerInterface.html?unit_id=1&type=1";//此處拼接內容
+				          else if (event.url) 
+			        	  {
+				        	  var urls = event.url.split('/');
+				        	  url = "../PlayerInterface.html?unit_id="+urls[0]+"&type="+urls[1];//此處拼接內容
 				        	  window.location.href = url;
 			        	      return false;
-			        	    }
+			        	  }
 
-			        	  
-			        	  
-			        	  var m = moment();
-			        	  $('#calendar').fullCalendar('updateEvent', event);//notify change 
-			        	 }
+			          }
 			      	  // ----移動事件----
 			          ,eventDrop: function(event, delta, revertFunc) {
 			        	 console.log(event.id + " " + event.title + " was dropped on " + event.start.format());
@@ -233,6 +273,7 @@
           currColor = $(this).css("color");
           //Add color effect to button
           $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+      	  $('#selectedEvent').css({"background-color": currColor, "border-color": currColor});
         });
         $("#add-new-event").click(function (e) {
           e.preventDefault();
