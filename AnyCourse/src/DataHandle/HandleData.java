@@ -2,7 +2,7 @@ package DataHandle;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-
+//把影片網址切出課程ID，拼接成圖片網址
 public class HandleData {
 
 	public static void main(String[] args) {

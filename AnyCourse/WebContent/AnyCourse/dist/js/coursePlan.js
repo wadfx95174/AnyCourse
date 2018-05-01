@@ -4,7 +4,7 @@ $('#unit').slimScroll({
 $('.box-body').slimScroll({
 	  height: '420px;'
 	  });
-
+var listArray;
 $(document).ready(function() {
 	checkLogin("../", "../../../");
 	var str3='<li class="portlet">'
@@ -26,8 +26,8 @@ $(document).ready(function() {
 		+'</div>'
 		+'<span class="pull-right">' 
 		+'<i class="fa fa-times" style="cursor: pointer;"></i>'
-		+'</span>' 
-		
+		+'</span>';
+	var videoID = 1;
 	$.ajax({
 		url:'http://localhost:8080/AnyCourse/CoursePlanServlet.do',
 		method:'GET',
@@ -36,13 +36,14 @@ $(document).ready(function() {
 //			
 //		},
 		success:function(result){
+			listArray = new Array(result.length);
 			for(var i = 0;i < result.length; i++){
 //				console.log(result[i].teacher);
 				//想要觀看
 				if(result[i].status == 1){
 					
 					$('#wantList').append(str3
-							+'<a class="portlet-content" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type+')">'
+							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type+')">'
 							+'<div class="info-card">'
 							+'<div class="embed-responsive embed-responsive-16by9">'
 							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].video_img_src+'">' 
@@ -66,7 +67,7 @@ $(document).ready(function() {
 				//正在觀看
 				else if(result[i].status == 2){
 					$('#ingList').append(str3
-							+'<a class="portlet-content" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type+')">'
+							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type+')">'
 							+'<div class="info-card">'
 							+'<div class="embed-responsive embed-responsive-16by9">'
 							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].video_img_src+'">' 
@@ -90,7 +91,7 @@ $(document).ready(function() {
 				//已觀看完
 				else if(result[i].status == 3){
 					$('#doneList').append(str3
-							+'<a class="portlet-content" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type+')">'
+							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type+')">'
 							+'<div class="info-card">'
 							+'<div class="embed-responsive embed-responsive-16by9">'
 							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].video_img_src+'">' 
@@ -111,12 +112,17 @@ $(document).ready(function() {
 							+'</li>'
 					);
 				}
+				videoID++;
 			}
-			
-					
+//			console.log(result.length);
+			for(var i = 1 ; i <= result.length;i++){
+				listArray[i] = result[i-1].unit_id;
+//				console.log(listArray[i]);
+			}
 		},
 		error:function(){alert('failed');}
 	})
+//----------------------jQueryUI的sortable套件，並且運用start、update兩個事件去把排序資料存進資料庫中-----------------//
 	$( ".column" ).sortable({
 	    connectWith: ".column",
 	    handle: ".portlet-header",
@@ -126,44 +132,45 @@ $(document).ready(function() {
 	    start:function(event,ui){
 	    	var start_pos = ui.item.index();//獲取被移動的影片被移動"前"在該sortable的index
 	    	ui.item.data('start_pos',start_pos);
-	    	
-	    },
-	    //當來自一個連接的sortable列表的一個項目被放置到另一個列表時觸發該事件。後者是事件目標
-	    receive:function(event,ui){
-	    	var sender = ui.sender.context.id;//獲取被移動的影片被移動"前"是在哪個sortable
+	    	var id = ui.item.context.children[3].id;//拿item的小孩
+	    	ui.item.data('id',id);
+	    	var sender = ui.item.parent().attr("id");
 	    	ui.item.data('sender',sender);
-	    	var received = ui.item.parent().attr('id');//獲取被移動的影片被移動"後"是在哪個sortable
-	    	ui.item.data('received',received);
-//	    	console.log(ui.item.parent().attr('id'));
+	    	
 	    },
 	    //當使用者停止排序且DOM位置改變時觸發該事件
 	    update:function(event,ui){
 	    	var oldIndex = ui.item.data('start_pos');
 	    	var newIndex = ui.item.index();//獲取被移動的影片移動"後"在後來的sortable的index
+	    	var received = ui.item.parent().attr('id');//獲取被移動的影片被移動"後"是在哪個sortable
 	    	var sender = ui.item.data('sender');
-	    	var received = ui.item.data('received');
-//	    	console.log(ui.sender.index());
-//	    	console.log(oldIndex);
-//	    	console.log(newIndex);
+	    	var id = ui.item.data('id');
 	    	
-	    	$.ajax({
-	    		type:'post',
-	    		url:'http://localhost:8080/AnyCourse/CoursePlanServlet.do',
-	    		data:{
-	    			action: 'sortable',
-	    			oldIndex: oldIndex,
-	    			newIndex: newIndex,
-	    			sender: sender,
-	    			received: received
-	    		},
-	    		success:function(result){},
-	    		error:function(){
-	    			console.log("CoursePlan Sort Error!");
-	    		}
-	    	})
+	    	//原本她會執行兩次(sender被更新，及received也被更新，這句共讓他只執行一次)
+	    	if (this === ui.item.parent()[0]) {
+//	    		console.log(sender);
+//	    		console.log(oldIndex);
+	    		$.ajax({
+	    			url:'http://localhost:8080/AnyCourse/CoursePlanServlet.do',
+		    		method:'POST',
+		    		data:{
+		    			action: 'sortable',
+	    				oldIndex: oldIndex + 1,
+		    			newIndex: newIndex + 1,//因為抓到的index是從0開始算，而資料庫是從1開始，所以要加1
+	    				sender: sender,
+		    			received: received,
+		    			unit_id: listArray[id]//unit_id
+		    		},
+//		    		success:function(result){},
+		    		error:function(){
+		    			console.log("CoursePlan Sort Error!");
+		    		}
+		    	})
+	    	}
+	    	
 	    }
 	});
-  
+//----------------------/.jQueryUI的sortable套件，並且運用start、update兩個事件去把排序資料存進資料庫中-----------------//
 	
 });
 //跳轉至播放介面

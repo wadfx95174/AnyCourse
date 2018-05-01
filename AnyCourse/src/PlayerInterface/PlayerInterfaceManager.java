@@ -94,8 +94,8 @@ public class PlayerInterfaceManager
 	}
 	//設定影片的結束時間
 	//watch_record的watch_time是存入資料時資料庫自動抓現在的時間
-	//如果該影片有存在在使用者的課程計畫中，則personal_plan的last_time也要update
-	public void setVideoEndTime(int currentTime,int unit_id,String user_id) {
+	//如果該影片有存在在使用者的課程計畫中，則personal_plan的last_time也要update，並且判斷要不要改status
+	public void setVideoEndTime(int currentTime,int unit_id,String user_id,int duration) {
 		try {
 			stat = con.createStatement();
 			result = stat.executeQuery("select * from watch_record where user_id = "+user_id
@@ -125,8 +125,13 @@ public class PlayerInterfaceManager
 					+" and unit_id = "+unit_id);
 			check = false;//檢查有沒有在課程計畫的table中找到這個unit_id
 			while(result.next()) {check = true;}
-			//如果有，就更新影片結束時間
+			//如果有，就更新影片結束時間，true是有，沒有就不做事
 			if(check == true) {
+				
+				//判斷結束了沒，currentTime+5秒代表5秒內會結束的都改變status
+				if(currentTime+5 > duration) {
+					
+				}
 				pst = con.prepareStatement("update personal_plan set last_time = ? where user_id = ? and unit_id = ? ");
 				pst.setInt(1,currentTime);
 				pst.setString(2,user_id);

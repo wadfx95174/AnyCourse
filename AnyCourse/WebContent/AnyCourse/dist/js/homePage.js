@@ -176,6 +176,7 @@ $(document).ready(function(){
 							+str2);
 					//亂數決定順序
 					var temp;
+					console.log(result[i][0].oorder);
 					for(var j = 0 ;j < result[i][0].oorder;j++){
 						temp = Math.floor(Math.random()*result[i][0].oorder);
 						var course_info = result[i][temp];
@@ -418,4 +419,9 @@ function jumpToPlayerInterfaceWithList(unit_id,type,list_id){
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+window.onload = function() {
+    if(!window.location.hash) {
+        window.location = window.location + '#loaded';
+        window.location.reload();
+    }
+}

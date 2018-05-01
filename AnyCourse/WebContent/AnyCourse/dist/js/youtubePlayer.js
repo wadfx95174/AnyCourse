@@ -283,13 +283,15 @@ $(document).ready(function(){
 	  //---------------------------要設perconal_plan跟watch_record兩個table-------------------------//
 	    window.onbeforeunload = function(event) { 
 	    	var current = youTubePlayer.getCurrentTime();
-	        console.log(current);
+	    	var duration = youTubePlayer.getDuration();
+	        console.log(duration);
 	        $.ajax({
 	        	url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
 	        	method: 'POST',
 	        	data:{
 	        		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
-	        		"currentTime":current,//關閉的時間
+	        		"currentTime": current,//關閉的時間
+	        		"duration": duration,//影片總共有多長時間
 	        		"unitId" : get("unit_id")
 	        	},
 	        	success:function(result){},
