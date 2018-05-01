@@ -7,9 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gson.Gson;
 
 
 public class CalendarManager
@@ -17,6 +14,7 @@ public class CalendarManager
 	private final String selectEventsSQL = "select * from event natural join calendar where user_id = ?";
 	private final String insertEventSQL = "insert into event value (null,1,?,?,?,?,?,?)";
 	private final String updateEventSQL = "update event set title = ?,url = ?,start = ?,end = ? where event_id = ?";
+	private final String deleteEventSQL = "delete from event where event_id = ?";
 	private final String insertCalendarSQL = "insert into calendar value (?,?)";
 	private Connection con = null;
 	private Statement stat = null;
@@ -117,6 +115,22 @@ public class CalendarManager
 		} catch (final SQLException x)
 		{
 			System.out.println("Exception update" + x.toString());
+		} finally
+		{
+			Close();
+		}
+	}
+	
+	public void deleteEvent(int eventId)
+	{
+		try
+		{
+			pst = con.prepareStatement(deleteEventSQL);
+			pst.setInt(1,eventId);
+			pst.executeUpdate();
+		} catch (final SQLException x)
+		{
+			System.out.println("Exception delete" + x.toString());
 		} finally
 		{
 			Close();
