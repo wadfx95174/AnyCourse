@@ -11,19 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import KeyLabel.KeyLabel;;
+import Note.PictureNote;
 
 /**
- * Servlet implementation class ExchangeKeylabelServlet
+ * Servlet implementation class ExchangePictureNoteServlet
  */
-@WebServlet("/ExchangeKeylabelServlet")
-public class ExchangeKeylabelServlet extends HttpServlet {
+@WebServlet("/ExchangePictureNoteServlet")
+public class ExchangePictureNoteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ExchangeKeylabelServlet() {
+    public ExchangePictureNoteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,15 +34,15 @@ public class ExchangeKeylabelServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		ExchangeManager dbkeylabel = new ExchangeManager();
-		 
-		ArrayList<KeyLabel> keyLabels = new ArrayList<KeyLabel>();
-			
-		dbkeylabel.selectKeyLabelTable(keyLabels);
-		String keyLabel_json = new Gson().toJson(keyLabels);
-		response.setContentType("application/json;charset = utf-8;");
-		response.getWriter().write(keyLabel_json);
-//		System.out.println(keyLabel_json);
+		ExchangeManager dbnote2 = new ExchangeManager();
+		
+		ArrayList<PictureNote> pictureNotes = new ArrayList<PictureNote>();
+		
+		dbnote2.selectPictureNoteTable(pictureNotes);
+		String pictureNote_json = new Gson().toJson(pictureNotes);
+		response.setContentType("application/json");
+		response.getWriter().write(pictureNote_json);			
+//		System.out.println(pictureNote_json);
 	}
 
 	/**

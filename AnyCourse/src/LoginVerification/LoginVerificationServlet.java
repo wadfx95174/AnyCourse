@@ -81,7 +81,10 @@ public class LoginVerificationServlet extends HttpServlet {
 			userProfile.addFavoriteCourse(request.getParameter("Preference"));
 			manager.createAccount(userProfile);
 			manager.insertFavoriteCourse(userProfile);
-			response.getWriter().println("註冊成功");
+			session.setAttribute("userId", request.getParameter("Account"));
+			session.setAttribute("nickName", request.getParameter("Nickname"));
+			session.setAttribute("pictureUrl", "");
+			response.sendRedirect("AnyCourse/HomePage.html");
 		}
 	}
 
