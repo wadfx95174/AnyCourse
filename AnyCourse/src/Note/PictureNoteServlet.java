@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
@@ -34,10 +35,12 @@ public class PictureNoteServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		NoteManager dbnote = new NoteManager();	
+		HttpSession session = request.getSession();
 		ArrayList<PictureNote> pictureNotes = new ArrayList<PictureNote>();
-		 
-		dbnote.selectPictureNoteTable(pictureNotes);
+//		System.out.println(request.getParameter("unit_id"));
+		
 		String pictureNote_json = new Gson().toJson(pictureNotes);
+		pictureNote_json = dbnote.selectPictureNoteTable(Integer.parseInt(request.getParameter("unit_id")), (String)session.getAttribute("userId"));
 		response.setContentType("application/json");
 		response.getWriter().write(pictureNote_json);	
 		
@@ -50,6 +53,7 @@ public class PictureNoteServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
+		HttpSession session = request.getSession();
 		String state = request.getParameter("state");	
 		 
 		if(state.equals("delete"))
@@ -68,9 +72,9 @@ public class PictureNoteServlet extends HttpServlet {
 		}
 		if(state.equals("insert"))
 		{
-		System.out.println("AAAAA");
+//		System.out.println("AAAAA");
 			int unit_id = Integer.parseInt(request.getParameter("unit_id"));
-			String user_id = request.getParameter("user_id");
+			String user_id = (String)session.getAttribute("userId");
 			String picture_note_url = request.getParameter("picture_note_url");
 			int share = Integer.parseInt(request.getParameter("share"));
 			String share_time = request.getParameter("share_time");

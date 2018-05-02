@@ -16,9 +16,9 @@ import Note.TextNote;
 import KeyLabel.KeyLabel;
 
 public class ExchangeManager {
-	public String selectTextNoteSQL = "select * from account natural join text_note where share=1 ";
-	public String selectPictureNoteSQL = "select * from picture_note where share=1";
-	public String selectKeylabelSQL = "select * from account natural join keylabel where share=1";
+	public String selectTextNoteSQL = "select * from account natural join text_note where unit_id = ? and share=1 ";
+	public String selectPictureNoteSQL = "select * from picture_note where unit_id = ? and share=1";
+	public String selectKeylabelSQL = "select * from account natural join keylabel where unit_id = ? and share=1";
 	
 	public TextNote textNote;
 	public PictureNote pictureNote;
@@ -44,10 +44,14 @@ public class ExchangeManager {
 		}
 	}
 	
-	public void selectTextNoteTable(ArrayList<TextNote> textNotes) {
+	public String selectTextNoteTable(int unit_id) {
+		ArrayList<TextNote> textNotes = new ArrayList<>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery(selectTextNoteSQL);
+			pst = con.prepareStatement(selectTextNoteSQL);
+			pst.setInt(1, unit_id);
+			result = pst.executeQuery();
+//			stat = con.createStatement();
+//			result = stat.executeQuery(selectTextNoteSQL);
 			 while(result.next()) 
 		     { 	
 				 textNote = new TextNote();
@@ -70,12 +74,18 @@ public class ExchangeManager {
 		finally {
 			Close();
 		}
+		String json = new Gson().toJson(textNotes);
+		return json;
 	}
 	 
-	public void selectPictureNoteTable(ArrayList<PictureNote> pictureNotes) {
+	public String selectPictureNoteTable(int unit_id) {
+		ArrayList<PictureNote> pictureNotes = new ArrayList<>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery(selectPictureNoteSQL);
+			pst = con.prepareStatement(selectPictureNoteSQL);
+			pst.setInt(1, unit_id);
+			result = pst.executeQuery();
+//			stat = con.createStatement();
+//			result = stat.executeQuery(selectPictureNoteSQL);
 			 while(result.next()) 
 		     { 
 				 pictureNote = new PictureNote();
@@ -96,12 +106,18 @@ public class ExchangeManager {
 		finally {
 			Close();
 		}
+		String json = new Gson().toJson(pictureNotes);
+		return json;
 	}
 	
-	public void selectKeyLabelTable(ArrayList<KeyLabel> keyLabels) {
+	public String selectKeyLabelTable(int unit_id) {
+		ArrayList<KeyLabel> keyLabels = new ArrayList<>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery(selectKeylabelSQL);
+			pst = con.prepareStatement(selectKeylabelSQL);
+			pst.setInt(1, unit_id);
+			result = pst.executeQuery();
+//			stat = con.createStatement();
+//			result = stat.executeQuery(selectKeylabelSQL);
 			 while(result.next()) 
 		     { 
 				 keyLabel = new KeyLabel();
@@ -125,6 +141,8 @@ public class ExchangeManager {
 		finally {
 			Close();
 		}
+		String json = new Gson().toJson(keyLabels);
+		return json;
 	}
 	
 	

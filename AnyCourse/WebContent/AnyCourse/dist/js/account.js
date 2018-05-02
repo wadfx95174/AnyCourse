@@ -3,6 +3,7 @@ function checkLogin(htmlUrl, servletUrl)
 	$.ajax({
     	url: 'http://localhost:8080/AnyCourse/AccountServlet.do',
     	method: 'POST',
+    	cache :false,
     	success: function(result){
     		if (result.userId)
     		{

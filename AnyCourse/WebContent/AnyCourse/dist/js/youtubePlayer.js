@@ -252,9 +252,11 @@ $(document).ready(function(){
 	    $.ajax({
 			url : 'http://localhost:8080/AnyCourse/ExchangeKeyLabelServlet.do',
 			method : 'GET', 
-			
+			data : {					
+				"unit_id" : get("unit_id")
+			},
 			success:function(result){
-				alert("OK");
+//				alert("OK");
 				keyLabelArray = result;
 	    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
 	    			$('#exchange_keylabel').append(

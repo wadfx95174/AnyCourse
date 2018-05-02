@@ -1,8 +1,18 @@
 document.write("<script type='text/javascript' src='../dist/js/swiper.min.js'></script>");
+
+function get(name)
+{
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+	}
+
 $(document).ready(function() {
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/ExchangeTextNoteServlet.do',
 		method : 'GET',
+		data : {					
+			"unit_id" : get("unit_id")
+		},
 		success:function(result){
 //			alert(result);
 			
@@ -15,12 +25,13 @@ $(document).ready(function() {
 						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result[i].nick_name + '</h4>'+
 						'<h5 style="float:right;">' + result[i].share_time + '</h5>'+														
 						'<textarea class="col-xs-12" rows="4" cols="50" id="exText_' + result[i].text_note_id + '" disabled="disabled" style="float:left;">' + result[i].text_note + '</textarea>'+																			
-						'<div class="row">'+
-						'<div class="swiper-container" style="clear:both;">'+
-						'<div class="swiper-wrapper" id="exP_' + result[i].user_id +'" style="clear:both;">'+
-//						'<div id="exP_' + result[i].user_id +'"  style="clear:both;">'+		
-						'</div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div>'+						
-						'</div></div>'+						
+					//	'<div class="row">'+
+					//	'<div class="swiper-container" style="clear:both;">'+
+					//	'<div class="swiper-wrapper" id="exP_' + result[i].user_id +'" style="clear:both;">'+
+						'<div id="exP_' + result[i].user_id +'"  style="clear:both;">'+		
+					//	'</div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div>'+						
+					//	'</div></div>'+		
+						'</div>'+
 						'<div class="ffs-gal-view view'+ result[i].user_id +'">'+
 						'<h1 id="picture"></h1>'+ 
 						'<img class="ffs-gal-prev ffs-gal-nav prev' + result[i].user_id + ' nav'+ result[i].user_id +'" src="../plugins/Gallery-Popup-jQuery-Fs-Gal/img/prev.svg" alt="Previous picture" title="Previous picture" />'+									     
@@ -35,6 +46,9 @@ $(document).ready(function() {
     		$.ajax({
     			url : 'http://localhost:8080/AnyCourse/ExchangePictureNoteServlet.do',
     			method : 'GET',
+    			data : {					
+					"unit_id" : get("unit_id")
+				},
     			success : function(result) {
 //    				alert(result.comment_id);
 //    				alert(result.user_id);
@@ -44,9 +58,9 @@ $(document).ready(function() {
 //    				console.log(result);
     				for(var i = 0 ;i < result.length;i++){
     				$('#exP_'+result[i].user_id).append( 
-    						'<div class="swiper-slide col-xs-2 col-sm-2" style="padding:0px;">'+
-    						'<img id="no_'+ result[i].user_id +'_'+ result[i].picture_note_id +'" class="ffs-gal p'+ result[i].user_id +'" src="' + result[i].picture_note_url +'" alt="picture_note_' + result[i].picture_note_id + '" data-url="' + result[i].picture_note_url + '" />'+
-    						'</div>'
+//    						'<div class="swiper-slide col-xs-2 col-sm-2" style="padding:0px;">'+
+    						'<img id="no_'+ result[i].user_id +'_'+ result[i].picture_note_id +'" class="ffs-gal p'+ result[i].user_id +'" src="' + result[i].picture_note_url +'" alt="picture_note_' + result[i].picture_note_id + '" data-url="' + result[i].picture_note_url + '" />'
+//    						+'</div>'
     					);	
     				}
 //    				$("#reply_div_" + id ).toggle();

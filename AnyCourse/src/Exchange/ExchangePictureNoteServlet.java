@@ -38,8 +38,9 @@ public class ExchangePictureNoteServlet extends HttpServlet {
 		
 		ArrayList<PictureNote> pictureNotes = new ArrayList<PictureNote>();
 		
-		dbnote2.selectPictureNoteTable(pictureNotes);
+		
 		String pictureNote_json = new Gson().toJson(pictureNotes);
+		pictureNote_json = dbnote2.selectPictureNoteTable(Integer.parseInt(request.getParameter("unit_id")));
 		response.setContentType("application/json");
 		response.getWriter().write(pictureNote_json);			
 //		System.out.println(pictureNote_json);

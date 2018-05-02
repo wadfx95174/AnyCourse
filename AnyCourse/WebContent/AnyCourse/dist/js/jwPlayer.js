@@ -311,9 +311,11 @@ $(document).ready(function(){
     $.ajax({
 		url : 'http://localhost:8080/AnyCourse/ExchangeKeyLabelServlet.do',
 		method : 'GET', 
-		
+		data : {					
+			"unit_id" : get("unit_id")
+		},
 		success:function(result){
-			alert("OK");
+//			alert("OK");
 			keyLabelArray = result;
     		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
     			$('#exchange_keylabel').append(
@@ -338,6 +340,19 @@ $(document).ready(function(){
     	}, // end success
 		error:function(){console.log('getEKL fail');alert("fail");}
 	});	// end ajax
+    
+//設置暫存重點標籤
+  function addToTempKeyLabel(index)
+  {
+  	$('#keyLabel2').append('<li class="list-group-item">'
+  			+ keyLabelArray[index].keyLabelName
+  			+'<ul class="list-group-submenu">'
+  			+'<a href="javascript:void(0)" class = "temp dkl" id = "temp-dkl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>'
+  			+'<a href="javascript:void(0)" class = "temp akl" id = "temp-akl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>'
+  			+'<a href="#" class = "temp ukl" id = "temp-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
+  			+'</ul>'
+  			+'</li>');
+  }
 
 //----------------------------------------------keyLabel----------------------------------------------//    
 //---------------------------抓影片結束時間，並儲存----------------------------------------------//

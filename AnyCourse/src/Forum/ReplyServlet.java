@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
@@ -33,6 +34,7 @@ public class ReplyServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		HttpSession session = request.getSession();
 		ForumManager dbreply = new ForumManager();
 		 
 		ArrayList<Reply> replys = new ArrayList<Reply>();
@@ -50,13 +52,14 @@ public class ReplyServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
+		HttpSession session = request.getSession();
 		String state = request.getParameter("state");
 		 
 		if(state.equals("insert"))
 		{
 			int comment_id = Integer.parseInt(request.getParameter("comment_id"));
-			String user_id = request.getParameter("user_id");
-			String nick_name = request.getParameter("nick_name");
+			String user_id = (String)session.getAttribute("userId");
+			String nick_name = (String)session.getAttribute("nickName");
 //			String reply_time = request.getParameter("reply_time");
 			String reply_content = request.getParameter("reply_content");
 			
@@ -86,8 +89,8 @@ public class ReplyServlet extends HttpServlet {
 		{
 			int reply_id = Integer.parseInt(request.getParameter("reply_id"));
 			int comment_id = Integer.parseInt(request.getParameter("comment_id"));
-			String user_id = request.getParameter("user_id");
-			String nick_name = request.getParameter("nick_name");
+			String user_id = (String)session.getAttribute("userId");
+			String nick_name = (String)session.getAttribute("nickName");
 			String reply_time = request.getParameter("reply_time");
 			String reply_content = request.getParameter("reply_content");
 			

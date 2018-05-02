@@ -9,6 +9,11 @@ var comment_content;
 var reply_time;
 var reply_content;
 
+function get(name)
+{
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+	}
 
 function setComment(){	
 	if($("#comment_area").val() !== ''){
@@ -20,7 +25,7 @@ function setComment(){
 			method : 'POST',
 			data : {
 				"state" : "insert",	
-				"unit_id" : unit_id,
+				"unit_id" : get("unit_id"),
 				"user_id" : user_id,
 				"nick_name" : nick_name,
 //				"comment_time" : dt.toLocaleString(),
@@ -70,6 +75,9 @@ $(document).ready(function() {
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 		method : 'GET',
+		data : {
+			"unit_id" : get("unit_id"),
+		},
 		success:function(result){
 //			alert(result);
     		for(var i = 0 ;i < result.length;i++){
@@ -96,6 +104,9 @@ $(document).ready(function() {
     		$.ajax({
     			url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
     			method : 'GET',
+//    			data : {
+//    				"unit_id" : get("unit_id"),
+//    			},
     			success : function(result) {
 //    				alert(result.comment_id);
 //    				alert(result.user_id);
@@ -283,7 +294,7 @@ function update_comment(input){
 		method : 'POST',
 		data : {
 			"state" : "update",
-			"unit_id" : unit_id,
+			"unit_id" : get("unit_id"),
 			"comment_id" : id,
 			"user_id" : user_id,
 			"nick_name" : nick_name,

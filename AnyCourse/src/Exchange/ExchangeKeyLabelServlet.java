@@ -38,8 +38,9 @@ public class ExchangeKeyLabelServlet extends HttpServlet {
 		 
 		ArrayList<KeyLabel> keyLabels = new ArrayList<KeyLabel>();
 			
-		dbkeylabel.selectKeyLabelTable(keyLabels);
+		
 		String keyLabel_json = new Gson().toJson(keyLabels);
+		keyLabel_json = dbkeylabel.selectKeyLabelTable(Integer.parseInt(request.getParameter("unit_id")));
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(keyLabel_json);
 //		System.out.println(keyLabel_json);
