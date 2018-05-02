@@ -16,6 +16,7 @@ $(document).ready(function(){
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
 		method : 'GET',
+		cache :false,
 		success:function(result){
 //			console.log(Object.keys(result[0]).length);
 			for(var i = 0;i < result.length ; i++){
@@ -315,6 +316,7 @@ $(document).ready(function(){
 //					  $.ajax({
 //							url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
 //							method : 'GET',
+//							cache :false,
 //						    data : {
 //						    	"action" : selectUnit,//代表要selectUnit
 //						    	"school_name" : videoListArray[checkID-1][5],

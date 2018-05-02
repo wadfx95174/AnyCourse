@@ -66,6 +66,7 @@
 				$.ajax({
 					url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
 					method : 'POST',
+					cache :false,
 					data : {
 						"state" : "insert",
 						"unit_id" : get("unit_id"),
@@ -148,6 +149,7 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'GET',
+				cache :false,
 				data : {					
 					"unit_id" : get("unit_id")
 				},
@@ -216,6 +218,7 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
 				method : 'GET',
+				cache :false,
 				data : {					
 					"unit_id" : get("unit_id")
 				},
@@ -267,6 +270,7 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'POST',
+				cache :false,
 				data : {
 					"state" : "insert",
 					"unit_id" : get("unit_id"),
@@ -284,6 +288,7 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'GET',
+				cache :false,
 				data : {					
 					"unit_id" : get("unit_id")
 				},
@@ -309,6 +314,7 @@
 			$.ajax({  
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'POST',
+				cache :false,
 				data : {
 					"state" : "update",
 					"text_note_id" : text_note_id,
@@ -339,6 +345,7 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
 				method : 'POST',
+				cache :false,
 				data : {
 					"state" : "delete",
 					"picture_note_id" : id,					

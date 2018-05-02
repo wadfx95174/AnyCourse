@@ -5,6 +5,7 @@
 	  	$.ajax({
 	  		url:'http://localhost:8080/AnyCourse/CalendarServlet.do',
 	  		method:'GET',
+	  		cache :false,
 	  		data:{
 	  			method:'getCoursePlan'
 	  		},
@@ -71,6 +72,7 @@
 			url: 'http://localhost:8080/AnyCourse/CalendarServlet.do',
 			type: 'GET',
 			dataType: "json", 
+			cache :false,
 			data: {
 				method:"getEvent"
 			},
@@ -163,6 +165,7 @@
 			            $.ajax({
 		            		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
 		            		method: 'POST',
+		            		cache :false,
 		            		data: {
 		            			title: copiedEventObject.title,
 	   	        		  		url: copiedEventObject.unitId + '/' + copiedEventObject.type,
@@ -204,6 +207,7 @@
 				        		  $.ajax({
 					            		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
 					            		method: 'POST',
+					            		cache :false,
 					            		data: {
 					            			eventId: event.id,
 				   	        		  		method: "delete"

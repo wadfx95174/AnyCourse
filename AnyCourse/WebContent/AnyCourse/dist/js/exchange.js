@@ -10,6 +10,7 @@ $(document).ready(function() {
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/ExchangeTextNoteServlet.do',
 		method : 'GET',
+		cache :false,
 		data : {					
 			"unit_id" : get("unit_id")
 		},
@@ -46,6 +47,7 @@ $(document).ready(function() {
     		$.ajax({
     			url : 'http://localhost:8080/AnyCourse/ExchangePictureNoteServlet.do',
     			method : 'GET',
+    			cache :false,
     			data : {					
 					"unit_id" : get("unit_id")
 				},
@@ -97,6 +99,7 @@ $(document).ready(function() {
 //$.ajax({
 //	url : 'http://localhost:8080/AnyCourse/ExchangeKeyLabelServlet.do',
 //	method : 'GET', 
+//	cache :false,
 //	
 //	success:function(result){
 //		keyLabelArray = result;

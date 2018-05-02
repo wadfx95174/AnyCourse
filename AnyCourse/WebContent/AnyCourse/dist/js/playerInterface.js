@@ -85,6 +85,7 @@ $(document).ready(function(){
     	$.ajax({
         	url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
         	method: 'POST',
+        	cache :false,
         	data: {
         		courselistId: get('list_id'),
         		action: 'getVideoList',//代表要取videoList
@@ -157,6 +158,7 @@ $(document).ready(function(){
         	$.ajax({
         		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
             	method: 'POST',
+            	cache :false,
             	data:{
             		action:'like',
             		unit_id:get('unit_id'),
@@ -179,6 +181,7 @@ $(document).ready(function(){
         	$.ajax({
         		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
             	method: 'POST',
+            	cache :false,
             	data:{
             		action:'like',
             		unit_id:get('unit_id'),

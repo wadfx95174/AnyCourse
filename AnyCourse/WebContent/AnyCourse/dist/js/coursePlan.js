@@ -31,6 +31,7 @@ $(document).ready(function() {
 	$.ajax({
 		url:'http://localhost:8080/AnyCourse/CoursePlanServlet.do',
 		method:'GET',
+		cache :false,
 //		data:{
 //			action:'select',//初始化
 //			
@@ -153,6 +154,7 @@ $(document).ready(function() {
 	    		$.ajax({
 	    			url:'http://localhost:8080/AnyCourse/CoursePlanServlet.do',
 		    		method:'POST',
+		    		cache :false,
 		    		data:{
 		    			action: 'sortable',
 	    				oldIndex: oldIndex + 1,

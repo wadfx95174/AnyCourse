@@ -22,6 +22,7 @@ $(document).ready(function() {
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/PersonalKeyLabelServlet.do',
 		method : 'GET', 
+		cache :false,
 		data: {
 			userId : 1
 		},

@@ -23,6 +23,7 @@ function setComment(){
 		$.ajax({
 			url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 			method : 'POST',
+			cache :false,
 			data : {
 				"state" : "insert",	
 				"unit_id" : get("unit_id"),
@@ -75,6 +76,7 @@ $(document).ready(function() {
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 		method : 'GET',
+		cache :false,
 		data : {
 			"unit_id" : get("unit_id"),
 		},
@@ -104,6 +106,7 @@ $(document).ready(function() {
     		$.ajax({
     			url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
     			method : 'GET',
+    			cache :false,
 //    			data : {
 //    				"unit_id" : get("unit_id"),
 //    			},
@@ -169,6 +172,7 @@ function setReply(input){
 		$.ajax({
 			url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
 			method : 'POST',
+			cache :false,
 			data : {
 				"state" : "insert",	
 				"comment_id" : id,
@@ -226,6 +230,7 @@ function delete_reply(input){
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "delete",
 			"reply_id" : id,					
@@ -242,6 +247,7 @@ function delete_comment(input){
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "delete",
 			"comment_id" : id,					
@@ -292,6 +298,7 @@ function update_comment(input){
 	$.ajax({  
 		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "update",
 			"unit_id" : get("unit_id"),
@@ -347,6 +354,7 @@ function update_reply(input){
 	$.ajax({  
 		url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "update",
 			"reply_id" : id,
