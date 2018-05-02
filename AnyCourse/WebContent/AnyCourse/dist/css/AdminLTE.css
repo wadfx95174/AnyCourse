@@ -11,9 +11,9 @@
  * Core: Genral Layout Style
  * -------------------------
  */
-@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+@import url('https://fonts.googleapis.com/css?family=Baloo+Bhaina');
 * {
-    font-family: 'Permanent Marker', cursive;
+    font-family: 'Baloo Bhaina', cursive;
 }
 html,
 body {
@@ -4075,11 +4075,4 @@ Gradient Background colors
 .ui-autocomplete { position: absolute; cursor: default;z-index:2000 !important;
  max-height: 200px; overflow-y: scroll; overflow-x: hidden;}
 /*********************************************/
-@import url('https://fonts.googleapis.com/css?family=Baloo+Bhaina|Baloo+Paaji|Berkshire+Swash|Black+Ops+One|Bowlby+One|Carter+One|Chelsea+Market|Chewy|Concert+One|Freckle+Face|Fredoka+One|Frijole|Fugaz+One|Holtwood+One+SC|Kaushan+Script|Leckerli+One|Lobster|Luckiest+Guy|Pacifico|Pattaya|Permanent+Marker|Rammetto+One|Righteous|Shrikhand|Ultra|Work+Sans');
-/*@font-face{
-    font-family:"test";
-    src: url('Pacifico-Regular.ttf');
-}
-b{
-	font-family:'Carter One', cursive;
-}*/
+

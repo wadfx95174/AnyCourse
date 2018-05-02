@@ -94,13 +94,13 @@
 					},
 					error: function (jqXHR, textStatus, errorThrown) {
 		                 /*弹出jqXHR对象的信息*/
-		                 alert(jqXHR.responseText);
-		                 alert(jqXHR.status);
-		                 alert(jqXHR.readyState);
-		                 alert(jqXHR.statusText);
+//		                 alert(jqXHR.responseText);
+//		                 alert(jqXHR.status);
+//		                 alert(jqXHR.readyState);
+//		                 alert(jqXHR.statusText);
 		                 /*弹出其他两个参数的信息*/
-		                 alert(textStatus);
-		                 alert(errorThrown);
+//		                 alert(textStatus);
+//		                 alert(errorThrown);
 		             }
 				})				
 				
@@ -311,7 +311,7 @@
 	    			text_note_id = data.text_note_id;
 				},
 				error : function() {
-					alert("error");
+//					alert("error");
 				}
 			});
 		};

@@ -54,13 +54,13 @@ function setComment(){
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 	             /*弹出jqXHR对象的信息*/
-	             alert(jqXHR.responseText);
-	             alert(jqXHR.status);
-	             alert(jqXHR.readyState);
-	             alert(jqXHR.statusText);
+//	             alert(jqXHR.responseText);
+//	             alert(jqXHR.status);
+//	             alert(jqXHR.readyState);
+//	             alert(jqXHR.statusText);
 	             /*弹出其他两个参数的信息*/
-	             alert(textStatus);
-	             alert(errorThrown);
+//	             alert(textStatus);
+//	             alert(errorThrown);
 	         }
 		})				
 	}	
@@ -102,7 +102,7 @@ $(document).ready(function() {
 //    				alert(result.nick_name);
 //    				alert(result.comment_time);
 //    				alert(result.comment_content);
-    				console.log(result);
+//    				console.log(result);
     				for(var i = 0 ;i < result.length;i++){
     				$('#com_'+result[i].comment_id).append( 	
     						'<div id="rep_' + result[i].reply_id + '"class="col-xs-12 C" >'+
