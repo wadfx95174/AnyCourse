@@ -14,7 +14,12 @@
 		// 200 KB 对应的字节数
 		var maxsize = 200 * 1024;
 
-		
+
+		function get(name)
+		{
+		   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+		      return decodeURIComponent(name[1]);
+			}
 			
 
 		filechooser.onchange = function() {
@@ -61,9 +66,10 @@
 				$.ajax({
 					url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
 					method : 'POST',
+					cache :false,
 					data : {
 						"state" : "insert",
-						"unit_id" : unit_id,
+						"unit_id" : get("unit_id"),
 						"user_id" : user_id,
 						"picture_note_url" : dataUrl,
 					//	"text_note" : text_note,
@@ -143,6 +149,10 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'GET',
+				cache :false,
+				data : {					
+					"unit_id" : get("unit_id")
+				},
 				success:function(result){
 //					alert(result);
 		    		for(var i = 0 ;i < result.length;i++){
@@ -208,6 +218,10 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
 				method : 'GET',
+				cache :false,
+				data : {					
+					"unit_id" : get("unit_id")
+				},
 				success:function(result){
 		    		for(var i = 0 ;i < result.length;i++){
 //		    			alert(result[i].picture_note_url);
@@ -256,9 +270,10 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'POST',
+				cache :false,
 				data : {
 					"state" : "insert",
-					"unit_id" : unit_id,
+					"unit_id" : get("unit_id"),
 					"user_id" : user_id,
 					//"picture_note_url" : dataUrl,
 					"text_note" : text_note,
@@ -273,6 +288,10 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'GET',
+				cache :false,
+				data : {					
+					"unit_id" : get("unit_id")
+				},
 				success:function(result){
 //					alert(result);
 		    		for(var i = 0 ;i < result.length;i++){
@@ -295,10 +314,11 @@
 			$.ajax({  
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'POST',
+				cache :false,
 				data : {
 					"state" : "update",
 					"text_note_id" : text_note_id,
-					"unit_id" : unit_id,
+					"unit_id" : get("unit_id"),
 					"user_id" : user_id,
 					"text_note" : text_note,
 					"share" : share,
@@ -325,6 +345,7 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
 				method : 'POST',
+				cache :false,
 				data : {
 					"state" : "delete",
 					"picture_note_id" : id,					

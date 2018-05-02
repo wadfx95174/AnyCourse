@@ -15,6 +15,7 @@ $(document).ready(function(){
 	$.ajax({
 		url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
     	method: 'POST',
+    	cache :false,
     	data: {
     		"action": 'setIsBrowse',
     		"unitId": get('unit_id')
@@ -33,6 +34,7 @@ $(document).ready(function(){
 	$.ajax({
     	url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
     	method: 'GET',
+    	cache :false,
     	data: {
     		"method": 'getVideo',
     		"unitId": get('unit_id')
@@ -186,6 +188,7 @@ $(document).ready(function(){
     	$.ajax({
     		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
     		method : 'POST',
+    		cache :false,
     	    data : {
     	    	"method" : "delete",
     	    	"keyLabelId" : keyLabelArray[selectId].keyLabelId
@@ -296,6 +299,7 @@ $(document).ready(function(){
     	$.ajax({
     		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
     		method : 'POST',
+    		cache :false,
     	    data : {
     	    	"method" : "insert",
     	    	"keyLabelName" : keyLabelArray[selectId].keyLabelName,
@@ -317,6 +321,7 @@ $(document).ready(function(){
     $.ajax({
 		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
 		method : 'GET', 
+		cache :false,
 		data : {
 			"method" : "getPKL",
 			"unit_id" : get("unit_id")
@@ -334,7 +339,10 @@ $(document).ready(function(){
     $.ajax({
 		url : 'http://localhost:8080/AnyCourse/ExchangeKeyLabelServlet.do',
 		method : 'GET', 
-		
+		cache :false,
+		data : {					
+			"unit_id" : get("unit_id")
+		},
 		success:function(result){
 			//alert("OK");
 			keyLabelArray = result;

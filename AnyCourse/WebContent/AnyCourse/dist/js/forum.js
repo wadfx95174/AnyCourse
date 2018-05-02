@@ -9,6 +9,11 @@ var comment_content;
 var reply_time;
 var reply_content;
 
+function get(name)
+{
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+	}
 
 function setComment(){	
 	if($("#comment_area").val() !== ''){
@@ -18,9 +23,10 @@ function setComment(){
 		$.ajax({
 			url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 			method : 'POST',
+			cache :false,
 			data : {
 				"state" : "insert",	
-				"unit_id" : unit_id,
+				"unit_id" : get("unit_id"),
 				"user_id" : user_id,
 				"nick_name" : nick_name,
 //				"comment_time" : dt.toLocaleString(),
@@ -70,6 +76,10 @@ $(document).ready(function() {
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 		method : 'GET',
+		cache :false,
+		data : {
+			"unit_id" : get("unit_id"),
+		},
 		success:function(result){
 //			alert(result);
     		for(var i = 0 ;i < result.length;i++){
@@ -96,6 +106,10 @@ $(document).ready(function() {
     		$.ajax({
     			url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
     			method : 'GET',
+    			cache :false,
+//    			data : {
+//    				"unit_id" : get("unit_id"),
+//    			},
     			success : function(result) {
 //    				alert(result.comment_id);
 //    				alert(result.user_id);
@@ -158,6 +172,7 @@ function setReply(input){
 		$.ajax({
 			url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
 			method : 'POST',
+			cache :false,
 			data : {
 				"state" : "insert",	
 				"comment_id" : id,
@@ -215,6 +230,7 @@ function delete_reply(input){
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "delete",
 			"reply_id" : id,					
@@ -231,6 +247,7 @@ function delete_comment(input){
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "delete",
 			"comment_id" : id,					
@@ -281,9 +298,10 @@ function update_comment(input){
 	$.ajax({  
 		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "update",
-			"unit_id" : unit_id,
+			"unit_id" : get("unit_id"),
 			"comment_id" : id,
 			"user_id" : user_id,
 			"nick_name" : nick_name,
@@ -336,6 +354,7 @@ function update_reply(input){
 	$.ajax({  
 		url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "update",
 			"reply_id" : id,

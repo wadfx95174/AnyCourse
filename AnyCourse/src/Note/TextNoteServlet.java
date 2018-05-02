@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
@@ -35,14 +36,17 @@ public class TextNoteServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());		
 		NoteManager dbnote1 = new NoteManager();
+		HttpSession session = request.getSession();
 //		Note_database dbnote2 = new Note_database();
 		 
 		ArrayList<TextNote> textNotes = new ArrayList<TextNote>();
 //		PictureNote pictureNote = new PictureNote();
 		
-		dbnote1.selectTextNoteTable(textNotes);
+		//dbnote1.selectTextNoteTable(textNotes);
+		  
 		String textNote_json = new Gson().toJson(textNotes);
-		response.setContentType("application/json;charset = utf-8;");
+		textNote_json = dbnote1.selectTextNoteTable(Integer.parseInt(request.getParameter("unit_id")), (String)session.getAttribute("userId"));
+		response.setContentType("application/json;charset = utf-8;");	
 		response.getWriter().write(textNote_json);
 //		System.out.println(textNote_json);
 				
@@ -61,10 +65,11 @@ public class TextNoteServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
+		HttpSession session = request.getSession();
 		String state = request.getParameter("state");
 		
 		int unit_id = Integer.parseInt(request.getParameter("unit_id"));
-		String user_id = request.getParameter("user_id");
+		String user_id = (String)session.getAttribute("userId");
 		String text_note = request.getParameter("text_note");
 		int share = Integer.parseInt(request.getParameter("share"));
 		String share_time = request.getParameter("share_time");

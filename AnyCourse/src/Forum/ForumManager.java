@@ -9,17 +9,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.google.gson.Gson;
+
 import Forum.Comment;
 import Forum.Reply;;
 
 public class ForumManager {
 	public String insertCommentSQL = "insert into comment (comment_id,unit_id,user_id,nick_name,comment_time,comment_content) value(null,?,?,?,null,?)";
-	public String selectCommentSQL = "select * from comment ";
+	public String selectCommentSQL = "select * from comment where unit_id= ? ";
 	public String deleteCommentSQL = "delete from comment where comment_id = ?";
 	public String updateCommentSQL = "update comment set unit_id = ?,user_id = ?,nick_name = ?,comment_time = ?,comment_content = ? where comment_id = ?";
 	
 	public String insertReplySQL = "insert into reply (reply_id,comment_id,user_id,nick_name,reply_time,reply_content) value(null,?,?,?,null,?)";
-	public String selectReplySQL = "select * from reply ";
+	public String selectReplySQL = "select * from reply";
 	public String deleteReplySQL = "delete from reply where reply_id = ?";
 	public String deleteReplySQL2 = "delete from reply where comment_id = ?";
 	public String updateReplySQL = "update reply set comment_id = ?,user_id = ?,nick_name = ?,reply_time = ?,reply_content = ? where reply_id = ?";
@@ -89,10 +91,14 @@ public class ForumManager {
 			return comment;
 		}
 	}	
-	public void selectCommentTable(ArrayList<Comment> comments) {
+	public String selectCommentTable(int unit_id) {
+		ArrayList<Comment> comments = new ArrayList<>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery(selectCommentSQL);
+			pst = con.prepareStatement(selectCommentSQL);
+			pst.setInt(1, unit_id);
+			result = pst.executeQuery();
+//			stat = con.createStatement();
+//			result = stat.executeQuery(selectCommentSQL);
 			 while(result.next()) 
 		     { 	
 				 comment = new Comment();
@@ -112,6 +118,8 @@ public class ForumManager {
 		finally {
 			Close();
 		}
+		String json = new Gson().toJson(comments);
+		return json;
 	}
 	public void deleteCommentTable(int comment_id) {
 		try {

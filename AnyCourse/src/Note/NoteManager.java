@@ -9,15 +9,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Random;;
+import java.util.Random;
+
+import com.google.gson.Gson;;
 
 public class NoteManager {
 	public String insertTextNoteSQL = "insert into text_note (text_note_id,unit_id,user_id,text_note,share,share_time,likes) value(null,?,?,?,?,?,?)";
-	public String selectTextNoteSQL = "select * from text_note ";
+	public String selectTextNoteSQL = "select * from text_note where unit_id = ? and user_id= ? ";
 	public String deleteTextNoteSQL = "delete from text_note where text_note_id = ?";
 	public String updateTextNoteSQL = "update text_note set unit_id = ?,user_id = ?,text_note = ?,share = ?,share_time = ?,likes = ? where text_note_id = ?";
 	public String insertPictureNoteSQL = "insert into picture_note (picture_note_id,unit_id,user_id,picture_note_url,share,share_time,likes) value(null,?,?,?,?,?,?)";
-	public String selectPictureNoteSQL = "select * from picture_note ";
+	public String selectPictureNoteSQL = "select * from picture_note where unit_id = ? and user_id= ?";
 	public String deletePictureNoteSQL = "delete from picture_note where picture_note_id = ?";
 	
 	public TextNote textNote;
@@ -63,10 +65,15 @@ public class NoteManager {
 			Close();
 		}
 	}	
-	public void selectTextNoteTable(ArrayList<TextNote> textNotes) {
+	//public void selectTextNoteTable(ArrayList<TextNote> textNotes) {
+	public String selectTextNoteTable(int unit_id,String user_id) {
+		ArrayList<TextNote> textNotes = new ArrayList<>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery(selectTextNoteSQL);
+			pst = con.prepareStatement(selectTextNoteSQL);
+			pst.setInt(1, unit_id);
+			pst.setString(2, user_id);
+			result = pst.executeQuery();
+			//result = stat.executeQuery(selectTextNoteSQL);
 			 while(result.next()) 
 		     { 	
 				 textNote = new TextNote();
@@ -88,6 +95,8 @@ public class NoteManager {
 		finally {
 			Close();
 		}
+		String json = new Gson().toJson(textNotes);
+		return json;
 	}
 	public void deleteTextNoteTable(int text_note_id) {
 		try {
@@ -148,10 +157,15 @@ public class NoteManager {
 		return -1;
 		
 	}	 
-	public void selectPictureNoteTable(ArrayList<PictureNote> pictureNotes) {
+	public String selectPictureNoteTable(int unit_id,String user_id) {
+		ArrayList<PictureNote> pictureNotes = new ArrayList<>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery(selectPictureNoteSQL);
+			pst = con.prepareStatement(selectPictureNoteSQL);
+			System.out.println();
+			pst.setInt(1,unit_id);
+			pst.setString(2,user_id);
+			result = pst.executeQuery();
+			//result = stat.executeQuery(selectPictureNoteSQL);
 			 while(result.next()) 
 		     { 
 				 pictureNote = new PictureNote();
@@ -172,6 +186,8 @@ public class NoteManager {
 		finally {
 			Close();
 		}
+		String json = new Gson().toJson(pictureNotes);
+		return json;
 	}
 	public void deletePictureNoteTable(int picture_note_id) {
 		try {

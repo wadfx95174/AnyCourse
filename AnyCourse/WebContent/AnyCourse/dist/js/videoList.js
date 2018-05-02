@@ -32,6 +32,7 @@ $(document).ready(function() {
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
 		method : 'GET',
+		cache :false,
 		data:{
 			"action":'selectList'//代表要selectList
 		},
@@ -59,6 +60,7 @@ $(document).ready(function() {
 					  $.ajax({
 							url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
 							method : 'GET',
+							cache :false,
 						    data : {
 						    	"action" : 'selectUnit',//代表要selectUnit
 						    	"school_name" : videoListArray[checkID-1][5],
@@ -158,6 +160,7 @@ $(document).ready(function() {
 		  $.ajax({
 			  url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
 			  method : 'POST', 
+			  cache :false,
 			  data : {
 				  "action" : 'insert',//代表要insert
 				  "list_name" : $("#named").val()
@@ -183,6 +186,7 @@ $(document).ready(function() {
 					  $.ajax({
 							url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
 							method : 'GET',
+							cache :false,
 						    data : {
 						    	"action" : 'selectUnit',//代表要selectUnit
 						    	"school_name" : videoListArray[checkID-1][5],
@@ -273,6 +277,7 @@ $(document).ready(function() {
 		$.ajax({
 			url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
 			method : 'POST',
+			cache :false,
 		    data : {
 		    	/*
 		    	   videoListArray[][0] = courselist_id;
@@ -309,6 +314,7 @@ $(document).ready(function() {
     $.ajax({
 		url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
 		method : 'POST',
+		cache :false,
 	    data : {
 	    	/*
 	    	   videoListArray[][0] = courselist_id;

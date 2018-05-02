@@ -25,6 +25,7 @@ $(document).ready(function(){
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
 		method : 'GET',
+		cache :false,
 		success:function(result){
 //			console.log(result[0][0].type);
 			for(var i = 0;i < result.length ; i++){
@@ -302,14 +303,14 @@ $(document).ready(function(){
   	},
 		error:function(){}
 	});
-	$('#addToCoursePlanButton').click(function(e){
-		e.preventDefault();
-		$.ajax({
-			url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
-			method : 'POST',
+	//$('#addToCoursePlanButton').click(function(e){
+		//e.preventDefault();
+		//$.ajax({
+			//url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+			//method : 'POST',
 			
-		})
-	})
+		//})
+	//})
 	  
 	 
  }());

@@ -8,6 +8,7 @@ $(document).ready(function(){
     checkLogin("", "../../");
 	$.ajax({
 		method:"GET",
+		cache :false,
 		url:'http://localhost:8080/AnyCourse/SearchServlet.do',
 		data: {
 			search_query: get('search_query')
