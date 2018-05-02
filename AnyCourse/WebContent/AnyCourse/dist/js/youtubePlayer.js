@@ -9,6 +9,29 @@ var setVideoCloseTime = 0;
 $(document).ready(function(){
 	
 	
+	//設瀏覽紀錄，或是已經有瀏覽紀錄則加1，並檢查他是否已經有按讚
+	$.ajax({
+		url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+    	method: 'POST',
+    	data: {
+    		"action": 'setIsBrowse',
+    		"unitId": get('unit_id')
+    	},
+    	error: function(){
+    		console.log("SetIsBrowse Error!!!")
+    	},
+    	success: function(response){
+//    		alert(response);
+//    		console.log("aaa");
+    	    console.log(response.personalLike);
+    	    if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
+    	    else if(response.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
+    	}
+	})
+	
+	
+	
+	
   //  初始化YoutubePlayer
 	
 	
@@ -289,17 +312,16 @@ $(document).ready(function(){
 	    window.onbeforeunload = function(event) { 
 	    	var current = youTubePlayer.getCurrentTime();
 	    	var duration = youTubePlayer.getDuration();
-	        console.log(duration);
+	        console.log(Math.floor(duration));
 	        $.ajax({
 	        	url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
 	        	method: 'POST',
 	        	data:{
 	        		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
-	        		"currentTime": current,//關閉的時間
-	        		"duration": duration,//影片總共有多長時間
+	        		"currentTime": Math.floor(current),//關閉的時間
+	        		"duration": Math.floor(duration),//影片總共有多長時間
 	        		"unitId" : get("unit_id")
 	        	},
-	        	success:function(result){},
 	        	error: function(){
 	        		console.log("setVideoEndTime failed!");
 	        	}
@@ -310,7 +332,7 @@ $(document).ready(function(){
 
 //--------------------------youtube iframe api-----------------------------
   function onYouTubeIframeAPIReady() {
-	
+//	console.log(get('unit_id'));
 	$.ajax({
 		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
 		method: 'GET',
@@ -321,6 +343,7 @@ $(document).ready(function(){
 		error: function(){
 		},
 		success: function(response){
+//			console.log(response.videoUrl);
 			uid = response.videoUrl.split('/')[4];
 
 			youTubePlayer = new YT.Player('youTubePlayer', {
@@ -336,6 +359,9 @@ $(document).ready(function(){
 			                                    'errors': []};
 			    
 			$('h3')[0].append(response.unitName);
+//			if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
+//    	    else if(reponse.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
+    	    $('#likesNum').text(response.likes);
     	    $('#introduction').append(response.courseInfo);
 		}
 	});

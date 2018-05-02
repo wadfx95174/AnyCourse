@@ -114,12 +114,7 @@
 				<div class="row">
 					<section class="col-lg-7 col-md-7 col-xs-12 col-sm-12 connectedSortable ui-sortable">
 						<div id = "vid" class="embed-responsive embed-responsive-16by9">
-							<!--<iframe class="embed-responsive-item"
-								src="http://140.112.161.119/vod/100S103/100S103_CT01V01.mp4"
-								frameborder="0" allowfullscreen> </iframe>-->
-								
-								
-								
+							
 								<!-- http://140.112.161.119/vod/100S103/100S103_CT01V01.mp4 -->
 								<div id="youTubePlayer"></div>							
 								<!-- <video controls="" name="media" id = "myvideo" ><source src="" type="video/mp4"></video> -->
@@ -146,8 +141,10 @@
 							</h3>
 						</div>
 						<div style="text-align: right; margin: 10px;">
-							<a class="btn" style="color: black;"><i class="fa fa-heart-o"
-								role="button"></i><span>123,569</span></a>
+							<a class="btn" style="color: black;" id="likesButton">
+								<i id="likesIcon" class="fa" role="button"></i>
+								<span id="likesNum"></span>
+							</a>
 						</div>
 						<div class="box box-primary">
 							<div class="box-header with-border">

@@ -18,7 +18,6 @@ import com.google.gson.Gson;
  */  
 @WebServlet("/PictureNoteServlet")
 public class PictureNoteServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()

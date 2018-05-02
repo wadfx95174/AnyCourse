@@ -142,12 +142,56 @@ $(document).ready(function(){
     oScript.src= (get('type') == "1") ? "../dist/js/youtubePlayer.js" : "../dist/js/jwPlayer.js"; 
     oHead.appendChild(oScript); 
     
+//----------------------------------------------keyLabel----------------------------------------------//   
     
+
+//----------------------------------------------按讚----------------------------------------------// 
     
-    
-    
-    
-	
-    
-//----------------------------------------------keyLabel----------------------------------------------//    
+    $('#likesButton').click(function(){
+    	//按讚
+    	if($('#likesIcon').hasClass('fa-heart-o')){
+//    		console.log("like");
+    		$('#likesIcon').removeClass('fa-heart-o');
+        	$('#likesIcon').addClass('fa-heart');
+//        	console.log(get('unit_id'));
+        	$.ajax({
+        		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+            	method: 'POST',
+            	data:{
+            		action:'like',
+            		unit_id:get('unit_id'),
+            		like:1,//1代表喜歡
+            	},
+            	success:function(result){
+            		console.log(result.likes);
+            		$('#likesNum').text(result.likes);
+            	},
+            	error:function(){
+            		console.log("Like Fail!");
+            	}
+        	})
+    	}
+    	//收回讚
+    	else{
+//    		console.log("Un");
+    		$('#likesIcon').removeClass('fa-heart');
+        	$('#likesIcon').addClass('fa-heart-o');
+        	$.ajax({
+        		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+            	method: 'POST',
+            	data:{
+            		action:'like',
+            		unit_id:get('unit_id'),
+            		like:0//0代表收回讚
+            	},
+            	success:function(result){
+            		console.log(result.likes);
+            		$('#likesNum').text(result.likes);
+            	},
+            	error:function(){
+            		console.log("UnLike Fail!");
+            	}
+        	})
+    	}
+    })
 });

@@ -11,6 +11,25 @@ $(document).ready(function(){
 	   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
 	      return decodeURIComponent(name[1]);
    	}
+	//設瀏覽紀錄，或是已經有瀏覽紀錄則加1，並檢查他是否已經有按讚
+	$.ajax({
+		url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+    	method: 'POST',
+    	data: {
+    		"action": 'setIsBrowse',
+    		"unitId": get('unit_id')
+    	},
+    	error: function(){
+    		console.log("SetIsBrowse Error!!!")
+    	},
+    	success: function(response){
+//    		alert(response);
+//    		console.log("aaa");
+//    	    console.log(response.personalLike);
+    	    if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
+    	    else if(response.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
+    	}
+	})
 	$.ajax({
     	url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
     	method: 'GET',
@@ -25,6 +44,10 @@ $(document).ready(function(){
     		
     		$('h3')[0].append(response.unitName);
     	    video=$("#myvideo")[0];
+//    	    console.log(response.personalLike);
+//    	    if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
+//    	    else if(reponse.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
+    	    $('#likesNum').text(response.likes);
     	    $('#introduction').append(response.courseInfo);
     	}
     });
@@ -358,17 +381,19 @@ $(document).ready(function(){
 //---------------------------抓影片結束時間，並儲存----------------------------------------------//
 //---------------------------要設perconal_plan跟watch_record兩個table-------------------------//
     window.onbeforeunload = function(event) { 
+        console.log(video["currentTime"]);
         console.log(video["duration"]);
+        console.log(get("unit_id"));
+        
         $.ajax({
         	url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
         	method: 'POST',
         	data:{
         		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
-        		"currentTime":video["currentTime"],//關閉的時間
-        		"duration":video["duration"],//影片總共有多長時間
-        		"unitId" : get("unit_id")
+        		"currentTime":Math.floor(video["currentTime"]),//關閉的時間
+        		"duration":Math.floor(video["duration"]),//影片總共有多長時間
+        		"unitId": get("unit_id")
         	},
-        	success:function(result){},
         	error: function(){
         		console.log("setVideoEndTime failed!");
         	}

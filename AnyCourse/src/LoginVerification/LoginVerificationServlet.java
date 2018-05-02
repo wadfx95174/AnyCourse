@@ -11,9 +11,9 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 
 public class LoginVerificationServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-    private LoginVerificationManager manager= new LoginVerificationManager();
+     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		LoginVerificationManager manager= new LoginVerificationManager();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
@@ -47,6 +47,7 @@ public class LoginVerificationServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		LoginVerificationManager manager= new LoginVerificationManager(); 
 		response.setContentType("text/html");
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
