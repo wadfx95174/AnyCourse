@@ -5,6 +5,18 @@
     <welcome-file>HomePage.html</welcome-file>
   </welcome-file-list>
   <servlet>
+    <servlet-name>ExchangeTextNoteServlet</servlet-name>
+    <servlet-class>Exchange.ExchangeTextNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ExchangePictureNoteServlet</servlet-name>
+    <servlet-class>Exchange.ExchangePictureNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ExchangeKeyLabelServlet</servlet-name>
+    <servlet-class>Exchange.ExchangeKeyLabelServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>CommentServlet</servlet-name>
     <servlet-class>Forum.CommentServlet</servlet-class>
   </servlet>
@@ -64,6 +76,18 @@
     <servlet-name>AccountServlet</servlet-name>
     <servlet-class>Account.AccountServlet</servlet-class>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>ExchangeTextNoteServlet</servlet-name>
+    <url-pattern>/ExchangeTextNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ExchangePictureNoteServlet</servlet-name>
+    <url-pattern>/ExchangePictureNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ExchangeKeyLabelServlet</servlet-name>
+    <url-pattern>/ExchangeKeyLabelServlet.do</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>HomePageServlet</servlet-name>
     <url-pattern>/HomePageServlet.do</url-pattern>

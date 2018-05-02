@@ -76,7 +76,7 @@ $(document).ready(function() {
     			
     			$('#comment-body').append( 	 
 						'<div id="com_' + result[i].comment_id + '" class="B">'+
-						'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">&nbsp;'+
+						'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
 						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result[i].nick_name + '</h4>'+
 						'<h5 style="float:right;">' + result[i].comment_time + '</h5>'+														
 						'<textarea class="col-xs-12" rows="2" cols="50" id="comment_' + result[i].comment_id + '" disabled="disabled" style="float:left;">' + result[i].comment_content + '</textarea>'+																			

@@ -16,14 +16,14 @@ import KeyLabel.KeyLabel;;
 /**
  * Servlet implementation class ExchangeKeylabelServlet
  */
-@WebServlet("/ExchangeKeylabelServlet")
-public class ExchangeKeylabelServlet extends HttpServlet {
+//@WebServlet("/ExchangeKeyLabelServlet")
+public class ExchangeKeyLabelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ExchangeKeylabelServlet() {
+    public ExchangeKeyLabelServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

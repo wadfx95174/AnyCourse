@@ -16,9 +16,9 @@ import Note.TextNote;
 import KeyLabel.KeyLabel;
 
 public class ExchangeManager {
-	public String selectTextNoteSQL = "select * from text_note where share=1";
+	public String selectTextNoteSQL = "select * from account natural join text_note where share=1 ";
 	public String selectPictureNoteSQL = "select * from picture_note where share=1";
-	public String selectKeylabelSQL = "select * from keylabel where share=1";
+	public String selectKeylabelSQL = "select * from account natural join keylabel where share=1";
 	
 	public TextNote textNote;
 	public PictureNote pictureNote;
@@ -53,7 +53,8 @@ public class ExchangeManager {
 				 textNote = new TextNote();
 				 textNote.setText_note_id(result.getInt("text_note_id"));
 				 textNote.setUnit_id(result.getInt("unit_id"));
-				 textNote.setUser_id(result.getString("user_id"));
+				 textNote.setUser_id(result.getString("user_id"));	
+				 textNote.setNick_name(result.getString("nick_name"));
 				 textNote.setText_note(result.getString("text_note"));
 			//	 textNote.setPicture_note_url(result.getString("picture_note_url"));
 				 textNote.setShare(result.getInt("share"));
@@ -107,6 +108,7 @@ public class ExchangeManager {
 				 keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
 				 keyLabel.setUnitId(result.getInt("unit_id"));
 				 keyLabel.setUserId(result.getString("user_id"));
+				 keyLabel.setNick_name(result.getString("nick_name"));
 				 keyLabel.setKeyLabelName(result.getString("keylabel_name"));
 				 keyLabel.setBeginTime(result.getInt("begin_time"));
 				 keyLabel.setEndTime(result.getInt("end_time"));
