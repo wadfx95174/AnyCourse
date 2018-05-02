@@ -106,8 +106,8 @@ public class PlayerInterfaceManager
 	public void setVideoEndTime(int currentTime,int unit_id,String user_id,int duration) {
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from watch_record where user_id = "+user_id
-					+" and unit_id = "+unit_id);
+			result = stat.executeQuery("select * from watch_record where user_id = '"+user_id
+					+"' and unit_id = "+unit_id);
 			boolean check = false;//檢查watch_record裡面有沒有這筆單元影片的資料，false為沒有
 //			System.out.println("currentTime: " + currentTime);
 //			System.out.println("unit_id: " + unit_id);
@@ -129,8 +129,8 @@ public class PlayerInterfaceManager
 			
 			//檢查有沒有存在在使用者的課程計畫中
 			stat = con.createStatement();
-			result = stat.executeQuery("select unit_id from personal_plan where user_id = "+user_id
-					+" and unit_id = "+unit_id);
+			result = stat.executeQuery("select unit_id from personal_plan where user_id = '"+user_id
+					+"' and unit_id = "+unit_id);
 			check = false;//檢查有沒有在課程計畫的table中找到這個unit_id
 			while(result.next()) {check = true;}
 			//如果有，就更新影片結束時間，true是有，沒有就不做事
@@ -151,6 +151,7 @@ public class PlayerInterfaceManager
 			
 		}
 		catch(SQLException x){
+			System.out.println("end");
 		System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -173,8 +174,8 @@ public class PlayerInterfaceManager
 		try {
 			//更新share_likes的isBrowse
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from share_likes where user_id = "+user_id
-					+" and unit_id = "+unit_id);
+			result = stat.executeQuery("select * from share_likes where user_id = '"+user_id
+					+"' and unit_id = "+unit_id);
 			boolean check = false;//檢查watch_record裡面有沒有這筆單元影片的資料，false為沒有
 			while(result.next()) {
 				check = true;
@@ -189,7 +190,7 @@ public class PlayerInterfaceManager
 			}
 			//有就更新資料
 			else {
-//				System.out.println("111");
+//				System.out.println("");
 				pst = con.prepareStatement("update share_likes set isBrowse = isBrowse + 1 where user_id = ? and unit_id = ? and isBrowse < 6");
 				pst.setString(1,user_id);
 				pst.setInt(2,unit_id);
@@ -197,8 +198,8 @@ public class PlayerInterfaceManager
 			pst.executeUpdate();
 			
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from share_likes where user_id = "+user_id
-					+" and unit_id = "+unit_id);
+			result = stat.executeQuery("select * from share_likes where user_id = '"+user_id
+					+"' and unit_id = "+unit_id);
 			while(result.next()) {
 				unit = new Unit();
 				unit.setPersonalLike(result.getInt("isLike"));
@@ -206,6 +207,7 @@ public class PlayerInterfaceManager
 			}
 		}
 		catch(SQLException x) {
+			System.out.println("setIsBrowse");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -241,7 +243,7 @@ public class PlayerInterfaceManager
 				pst = con.prepareStatement("update unit set likes = likes - 1 where unit_id = ? and likes > 0");
 				pst.setInt(1, unit_id);
 				pst.executeUpdate();
-				System.out.println("111");
+//				System.out.println("111");
 				pst = con.prepareStatement("update share_likes set isLike = isLike - 1 where user_id = ? and unit_id = ? and isLike > 0");
 				pst.setString(1,user_id);
 				pst.setInt(2, unit_id);

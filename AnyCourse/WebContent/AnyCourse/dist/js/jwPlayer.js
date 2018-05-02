@@ -193,7 +193,7 @@ $(document).ready(function(){
     		success:function(result){
     			element.remove();
         	},
-    		error:function(){alert('failed');}
+    		error:function(){console.log('failed');}
     	});
     });
     // 新增重點標籤
@@ -219,14 +219,14 @@ $(document).ready(function(){
         		success:function(result){
         			keyLabelArray[maxIndex] = result;
             		addToSelfKeyLabel(maxIndex++);
-            		alert('新增成功');
+            		//alert('新增成功');
 
                 	video.currentTime = klBeginTime;
                 	$('.keyLabelDiv').css('margin-left', (klBeginTime / video['duration'] * 100) + '%');
                 	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / video['duration'] * 100) + '%');
                 	$('.keyLabelDiv').attr('data-original-title', klName);
             	},
-        		error:function(){alert('failed');}
+        		error:function(){console.log('failed');}
         	});
     	}
     	else
@@ -275,7 +275,7 @@ $(document).ready(function(){
     	    	$('.keyLabelDiv').css('margin-left', (klBeginTime / video['duration'] * 100) + '%');
     	    	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / video['duration'] * 100) + '%');
         	},
-    		error:function(){alert('failed');}
+    		error:function(){console.log('failed');}
     	});
     })
     
@@ -310,7 +310,7 @@ $(document).ready(function(){
         		addToSelfKeyLabel(maxIndex++);
             	element.remove();
         	},
-    		error:function(){alert('failed');}
+    		error:function(){console.log('failed');}
     	});
     });
     
@@ -336,7 +336,7 @@ $(document).ready(function(){
 		method : 'GET', 
 		
 		success:function(result){
-			alert("OK");
+			//alert("OK");
 			keyLabelArray = result;
     		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
     			$('#exchange_keylabel').append(
@@ -359,7 +359,7 @@ $(document).ready(function(){
 				addToTempKeyLabel(selectId);
 			})
     	}, // end success
-		error:function(){console.log('getEKL fail');alert("fail");}
+		error:function(){console.log('getEKL fail');}
 	});	// end ajax
 
 //----------------------------------------------keyLabel----------------------------------------------//    

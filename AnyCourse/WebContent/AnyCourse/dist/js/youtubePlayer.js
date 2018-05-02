@@ -21,7 +21,7 @@ $(document).ready(function(){
     		console.log("SetIsBrowse Error!!!")
     	},
     	success: function(response){
-//    		alert(response);
+//    		console.log(response);
 //    		console.log("aaa");
     	    console.log(response.personalLike);
     	    if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
@@ -134,7 +134,7 @@ $(document).ready(function(){
 	    		success:function(result){
 	    			element.remove();
 	        	},
-	    		error:function(){alert('failed');}
+	    		error:function(){console.log('failed');}
 	    	});
 	    });
 	    // 新增重點標籤
@@ -160,19 +160,19 @@ $(document).ready(function(){
 	        		success:function(result){
 	        			keyLabelArray[maxIndex] = result;
 	            		addToSelfKeyLabel(maxIndex++);
-	            		alert('新增成功');
+	            		console.log('新增成功');
 
 	        	    	changeTo(klBeginTime);
 	        	    	$('.keyLabelDiv').css('margin-left', (klBeginTime / youTubePlayer.getDuration() * 100) + '%');
 	        	    	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / youTubePlayer.getDuration() * 100) + '%');
 	        	    	$('.keyLabelDiv').attr('data-original-title', klName);
 	            	},
-	        		error:function(){alert('failed');}
+	        		error:function(){console.log('failed');}
 	        	});
 	    	}
 	    	else
 	    	{
-	    		alert("標籤名稱不可為空!!");
+	    		console.log("標籤名稱不可為空!!");
 	    	}
 	    })
 	    // 點擊暫存標籤刪除按鈕，消除該標籤
@@ -216,7 +216,7 @@ $(document).ready(function(){
 	    	    	$('.keyLabelDiv').css('margin-left', (klBeginTime / video['duration'] * 100) + '%');
 	    	    	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / video['duration'] * 100) + '%');
 	        	},
-	    		error:function(){alert('failed');}
+	    		error:function(){console.log('failed');}
 	    	});
 	    })
 	    
@@ -251,7 +251,7 @@ $(document).ready(function(){
 	        		addToSelfKeyLabel(maxIndex++);
 	            	element.remove();
 	        	},
-	    		error:function(){alert('failed');}
+	    		error:function(){console.log('failed');}
 	    	});
 	    });
 	    
@@ -277,7 +277,7 @@ $(document).ready(function(){
 			method : 'GET', 
 			
 			success:function(result){
-				alert("OK");
+				console.log("OK");
 				keyLabelArray = result;
 	    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
 	    			$('#exchange_keylabel').append(

@@ -16,7 +16,7 @@ public class HomePageManager {
 			+"recommended_result.unit_id = unit.unit_id and "
 			+"customlist_video.unit_id = unit.unit_id and "
 			+"customlist_video.courselist_id = courselist.courselist_id and "
-			+"recommended_result.user_id = ";
+			+"recommended_result.user_id = '";
 	private String selectPlan="select * from customlist_video,unit,personal_plan,courselist "
 			+"where personal_plan.unit_id = unit.unit_id and "
 			+"customlist_video.unit_id = unit.unit_id and "
@@ -161,7 +161,7 @@ public class HomePageManager {
 		int count = 0;//map的key
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery(selectRecommend + user_id);
+			result = stat.executeQuery(selectRecommend + user_id + " '");
 			while(result.next()) {
 				homePage = new HomePage();
 				homePage.setUser_id(result.getString("recommended_result.user_id"));
@@ -210,7 +210,7 @@ public class HomePageManager {
 		int check = 0;//0代表是第一次跑這個清單，不是0代表這個清單已經跑過，就不需要再存了
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery(selectRecommend + user_id +" order by customlist_video.oorder ASC");
+			result = stat.executeQuery(selectRecommend + user_id +"' order by customlist_video.oorder ASC");
 			while(result.next()) {
 				if(check == 0 || check!=result.getInt("customlist_video.courselist_id")) {
 					homePage = new HomePage();
@@ -263,7 +263,7 @@ public class HomePageManager {
 		try {
 			//找oorder來當最大值
 			stat = con.createStatement();
-			result = stat.executeQuery("select MAX(oorder) from list where user_id = " + user_id);
+			result = stat.executeQuery("select MAX(oorder) from list where user_id = '" + user_id+"'");
 			while(result.next()) {
 				max = result.getInt("MAX(oorder)");
 				//檢查有沒有資料
@@ -274,7 +274,7 @@ public class HomePageManager {
 					+"customlist_video.courselist_id = list.courselist_id and "
 					+"customlist_video.unit_id = unit.unit_id and "
 					+"list.courselist_id = courselist.courselist_id and "
-					+"list.user_id =" + user_id);
+					+"list.user_id ='" + user_id+"'");
 			while(result.next()) {
 				if(check == 0 || check!=result.getInt("customlist_video.courselist_id")) {
 					homePage = new HomePage();
@@ -324,14 +324,14 @@ public class HomePageManager {
 		try {
 			//找oorder來當最大值
 			stat = con.createStatement();
-			result = stat.executeQuery(selectPlanMax+" 1 and user_id = " + user_id);
+			result = stat.executeQuery(selectPlanMax+" 1 and user_id = '" + user_id+"'");
 			while(result.next()) {
 				max = result.getInt("MAX(oorder)");
 				//檢查有沒有資料
 				if(max == 0)return null;
 			}
 			
-			result = stat.executeQuery(selectPlan+ "1 and personal_plan.user_id = " + user_id);
+			result = stat.executeQuery(selectPlan+ "1 and personal_plan.user_id = '" + user_id+"'");
 			while(result.next()) {
 				homePage = new HomePage();
 				homePage.setUser_id(result.getString("personal_plan.user_id"));
@@ -379,14 +379,14 @@ public class HomePageManager {
 		try {
 			//找oorder來當最大值
 			stat = con.createStatement();
-			result = stat.executeQuery(selectPlanMax+" 2 and user_id = " + user_id);
+			result = stat.executeQuery(selectPlanMax+" 2 and user_id = '" + user_id+"'");
 			while(result.next()) {
 				max = result.getInt("MAX(oorder)");
 				//檢查有沒有資料
 				if(max == 0)return null;
 			}
 			
-			result = stat.executeQuery(selectPlan+ "2 and personal_plan.user_id = " + user_id);
+			result = stat.executeQuery(selectPlan+ "2 and personal_plan.user_id = '" + user_id+"'");
 			while(result.next()) {
 				homePage = new HomePage();
 				homePage.setUser_id(result.getString("personal_plan.user_id"));

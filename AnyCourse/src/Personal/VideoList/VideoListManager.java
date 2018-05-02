@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 public class VideoListManager {
 
-	private String selectCourseListSQL = "select * from courselist,list where courselist.courselist_id = list.courselist_id order by oorder ASC";
 	private String deleteCourseListSQL = "delete from courselist where courselist_id = ? and list_name = ? and creator = ? ";
 	private String deleteListSQL = "delete from list where user_id = ? and courselist_id = ? and oorder = ? ";
 	private String insertCourseListSQL = "insert into courselist (courselist_id,list_name,creator,share,likes) value(null,?,?,?,?)";
@@ -25,6 +24,7 @@ public class VideoListManager {
 
 	private VideoList videoList;
 	private UnitVideo unitVideo;
+	private ArrayList<VideoList> videoLists; 
 	
 	private Connection con = null;
 	private Statement stat = null;
@@ -46,23 +46,23 @@ public class VideoListManager {
 		}
 	}
 	//找該user的List
-	public void selectCourseListTable(ArrayList<VideoList> videoLists) {
-		
+	public ArrayList<VideoList> selectCourseListTable(String user_id) {
+		videoLists = new ArrayList<VideoList>();
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery(selectCourseListSQL);
+			result = stat.executeQuery("select * from courselist,list where courselist.courselist_id "
+					+ "= list.courselist_id and list.user_id = '"+user_id+"' order by list.oorder ASC");
 			while(result.next()) {
-				//選取該使用者的課程清單
-				if(result.getString("user_id").equals("1")) {
-					videoList = new VideoList();
-					videoList.setUserID(result.getString("list.user_id"));
-					videoList.setCourselistID(Integer.parseInt(result.getString("list.courselist_id")));
-					videoList.setOorder(result.getInt("list.oorder"));
-					videoList.setListName(result.getString("courselist.list_name")); 
-					videoList.setCreator(result.getString("courselist.creator"));
-					videoList.setSchoolName(result.getString("courselist.school_name"));
-					videoLists.add(videoList);
-				}
+				//選取該使用者的課程清單]
+				videoList = new VideoList();
+//				System.out.println(result.getString("list.user_id"));
+				videoList.setUserID(result.getString("list.user_id"));
+				videoList.setCourselistID(Integer.parseInt(result.getString("list.courselist_id")));
+				videoList.setOorder(result.getInt("list.oorder"));
+				videoList.setListName(result.getString("courselist.list_name")); 
+				videoList.setCreator(result.getString("courselist.creator"));
+				videoList.setSchoolName(result.getString("courselist.school_name"));
+				videoLists.add(videoList);
 			}
 		     
 		}
@@ -72,6 +72,7 @@ public class VideoListManager {
 		finally {
 			Close();
 		}
+		return videoLists;
 	}
 	
 	//尋找對應的單元影片
@@ -115,7 +116,7 @@ public class VideoListManager {
 	}
 	
 	//新增清單
-	public void insertCourseListTable(VideoList videoList) {
+	public void insertCourseListTable(VideoList videoList,String user_id) {
 		try {
 			//先存入courselist這個table，再從table中抓自動生成的courselist_id，再塞資料進list
 			pst = con.prepareStatement(insertCourseListSQL);
@@ -135,7 +136,7 @@ public class VideoListManager {
 			}
 			//去list中抓oorder欄位的最大值
 			stat = con.createStatement();
-			result = stat.executeQuery("select oorder from list where user_id = 00001 order by oorder ASC");
+			result = stat.executeQuery("select oorder from list where user_id = '"+user_id+"' order by oorder ASC");
 			while(result.next()) {
 				videoList.setOorder(Integer.parseInt(result.getString("oorder")));
 			}

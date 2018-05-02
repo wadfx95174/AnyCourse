@@ -74,7 +74,7 @@ $('#userId').change(function userId() {
               },
               error : function()
               {
-            	  alert("fail");
+            	  //alert("fail");
               }
           }); // end ajax
           return userFlag;
