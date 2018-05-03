@@ -5,6 +5,10 @@
     <welcome-file>HomePage.html</welcome-file>
   </welcome-file-list>
   <servlet>
+    <servlet-name>WatchRecordServlet</servlet-name>
+    <servlet-class>Personal.WatchRecord.WatchRecordServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>ExchangeTextNoteServlet</servlet-name>
     <servlet-class>Exchange.ExchangeTextNoteServlet</servlet-class>
   </servlet>
@@ -76,6 +80,10 @@
     <servlet-name>AccountServlet</servlet-name>
     <servlet-class>Account.AccountServlet</servlet-class>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>WatchRecordServlet</servlet-name>
+    <url-pattern>/WatchRecordServlet.do</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ExchangeTextNoteServlet</servlet-name>
     <url-pattern>/ExchangeTextNoteServlet.do</url-pattern>

@@ -160,6 +160,7 @@
 		    			
 		    			$('#text_area').append( result[i].text_note + "<br>");
 		    			text_note_id = result[i].text_note_id;
+		    			user_id = result[i].user_id;
 					}
 //		    		alert(text_note_id);
 		    	},
@@ -241,7 +242,8 @@
 //							'<button id = "delete_' + result[i].picture_note_id +'"  type="button"  onclick ="deletePicture_note()" class="close" style="float:right">Delete</button>'+							
 //						    '</div>' +		    				
 //		    				'</div>'
-		    			);	    			
+		    			);	
+		    			user_id = result[i].user_id;
 					}	    		
 		    	},
 				error:function(){}
@@ -357,4 +359,58 @@
 				},
 			});
 		}
+		
+		function shareNote(){
+			alert("oK");
+			$.ajax({  
+				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
+				method : 'POST',
+				cache :false,
+				data : {
+					"state" : "share",					
+					"unit_id" : get("unit_id"),
+//					"user_id" : user_id					
+				},				
+				success : function(data) {
+					alert("成功成功1");
+				},
+				error : function() {
+					alert("error1");
+				}
+			});
+
+		}
+		function notShareNote(){
+			$.ajax({  
+				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
+				method : 'POST',
+				cache :false,
+				data : {
+					"state" : "notShare",					
+					"unit_id" : get("unit_id"),
+//					"user_id" : user_id					
+				},				
+				success : function(data) {
+					alert("成功成功2");
+				},
+				error : function() {
+					alert("error2");
+				}
+			});
+		}
+		
+		$('#shareNote').click(function(){
+			if($('#shareNote').hasClass('btn-primary')){
+//				alert(typeof(user_id));
+				$('#shareNote').removeClass('btn-primary');
+	        	$('#shareNote').addClass('btn-danger');
+	        	shareNote();
+	        	
+			}
+			else{
+				$('#shareNote').removeClass('btn-danger');
+	        	$('#shareNote').addClass('btn-primary');
+	        	notShareNote();
+			}
+		})
 		
