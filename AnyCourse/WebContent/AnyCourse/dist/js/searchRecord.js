@@ -42,7 +42,7 @@ $(document).ready(function() {
     			}
     		}
     	},
-		error:function(){alert('failed');}
+		error:function(){console('failed');}
 	});
 	
 	
@@ -67,7 +67,7 @@ $(document).ready(function() {
 	    		$("#searchRecordID_"+checkID).remove();
 	    		
 	    	},
-			error:function(){alert('failed');}
+			error:function(){console.log('failed');}
 		});
 	    
 	  });

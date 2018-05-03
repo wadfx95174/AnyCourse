@@ -47,7 +47,7 @@ public class CoursePlanManager {
 					+ "personal_plan.unit_id = unit.unit_id and "
 					+ "unit.unit_id = customlist_video.unit_id and "
 					+ "customlist_video.courselist_id = courselist.courselist_id and "
-					+ "personal_plan.user_id = "+user_id +" order by personal_plan.oorder ASC");
+					+ "personal_plan.user_id = '"+user_id +"' order by personal_plan.oorder ASC");
 			while(result.next()) {
 				coursePlan = new CoursePlan();
 				coursePlan.setList_name(result.getString("courselist.list_name"));
@@ -92,7 +92,7 @@ public class CoursePlanManager {
 		else if(received.equals("doneList"))status = 3;
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from personal_plan where user_id = " + user_id + " and status = " + status);
+			result = stat.executeQuery("select * from personal_plan where user_id = '" + user_id + "' and status = " + status);
 			while(result.next()) {
 				coursePlan = new CoursePlan();
 				coursePlan.setUser_id(result.getString("user_id"));
@@ -139,7 +139,7 @@ public class CoursePlanManager {
 		else if(sender.equals("doneList"))status = 3;
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from personal_plan where user_id = " + user_id + " and status = " + status);
+			result = stat.executeQuery("select * from personal_plan where user_id = '" + user_id + "' and status = " + status);
 			while(result.next()) {
 				oldCoursePlan = new CoursePlan();
 				oldCoursePlan.setUser_id(result.getString("user_id"));

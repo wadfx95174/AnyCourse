@@ -121,7 +121,7 @@ $(document).ready(function() {
 //				console.log(listArray[i]);
 			}
 		},
-		error:function(){alert('failed');}
+		error:function(){}
 	})
 //----------------------jQueryUI的sortable套件，並且運用start、update兩個事件去把排序資料存進資料庫中-----------------//
 	$( ".column" ).sortable({

@@ -41,6 +41,6 @@ $(document).ready(function() {
 						+'</div></li>');
 			}
     	},
-		error:function(){alert('failed');}
+		error:function(){console.log('failed');}
 	});
 });

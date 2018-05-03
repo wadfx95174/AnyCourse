@@ -196,7 +196,7 @@ $(document).ready(function(){
     		success:function(result){
     			element.remove();
         	},
-    		error:function(){alert('failed');}
+    		error:function(){console.log('failed');}
     	});
     });
     // 新增重點標籤
@@ -210,7 +210,6 @@ $(document).ready(function(){
     		$.ajax({
         		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
         		method : 'POST',
-        		cache :false,
         	    data : {
         	    	"method" : "insert",
         	    	"keyLabelName" : klName,
@@ -223,14 +222,14 @@ $(document).ready(function(){
         		success:function(result){
         			keyLabelArray[maxIndex] = result;
             		addToSelfKeyLabel(maxIndex++);
-            		alert('新增成功');
+            		//alert('新增成功');
 
                 	video.currentTime = klBeginTime;
                 	$('.keyLabelDiv').css('margin-left', (klBeginTime / video['duration'] * 100) + '%');
                 	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / video['duration'] * 100) + '%');
                 	$('.keyLabelDiv').attr('data-original-title', klName);
             	},
-        		error:function(){alert('failed');}
+        		error:function(){console.log('failed');}
         	});
     	}
     	else
@@ -264,7 +263,6 @@ $(document).ready(function(){
     	$.ajax({
     		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
     		method : 'POST',
-    		cache :false,
     	    data : {
     	    	"method" : "update",
     	    	"keyLabelName" : klName,
@@ -280,7 +278,7 @@ $(document).ready(function(){
     	    	$('.keyLabelDiv').css('margin-left', (klBeginTime / video['duration'] * 100) + '%');
     	    	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / video['duration'] * 100) + '%');
         	},
-    		error:function(){alert('failed');}
+    		error:function(){console.log('failed');}
     	});
     })
     
@@ -316,7 +314,7 @@ $(document).ready(function(){
         		addToSelfKeyLabel(maxIndex++);
             	element.remove();
         	},
-    		error:function(){alert('failed');}
+    		error:function(){console.log('failed');}
     	});
     });
     
@@ -340,13 +338,13 @@ $(document).ready(function(){
     
     $.ajax({
 		url : 'http://localhost:8080/AnyCourse/ExchangeKeyLabelServlet.do',
-		method : 'GET',
+		method : 'GET', 
 		cache :false,
 		data : {					
 			"unit_id" : get("unit_id")
 		},
 		success:function(result){
-//			alert("OK");
+			//alert("OK");
 			keyLabelArray = result;
     		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
     			$('#exchange_keylabel').append(
@@ -369,21 +367,8 @@ $(document).ready(function(){
 				addToTempKeyLabel(selectId);
 			})
     	}, // end success
-		error:function(){console.log('getEKL fail');alert("fail");}
+		error:function(){console.log('getEKL fail');}
 	});	// end ajax
-    
-//設置暫存重點標籤
-  function addToTempKeyLabel(index)
-  {
-  	$('#keyLabel2').append('<li class="list-group-item">'
-  			+ keyLabelArray[index].keyLabelName
-  			+'<ul class="list-group-submenu">'
-  			+'<a href="javascript:void(0)" class = "temp dkl" id = "temp-dkl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>'
-  			+'<a href="javascript:void(0)" class = "temp akl" id = "temp-akl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>'
-  			+'<a href="#" class = "temp ukl" id = "temp-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
-  			+'</ul>'
-  			+'</li>');
-  }
 
 //----------------------------------------------keyLabel----------------------------------------------//    
 //---------------------------抓影片結束時間，並儲存----------------------------------------------//
@@ -396,7 +381,6 @@ $(document).ready(function(){
         $.ajax({
         	url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
         	method: 'POST',
-        	cache :false,
         	data:{
         		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
         		"currentTime":Math.floor(video["currentTime"]),//關閉的時間
