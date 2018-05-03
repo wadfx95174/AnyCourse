@@ -1,4 +1,4 @@
-package Personal.WatchRecord;
+package Personal.PersonalNote;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,22 +12,17 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
-import Note.NoteManager;
-import Note.PictureNote;
-import Personal.SearchRecord.SearchRecord;
-import Personal.SearchRecord.SearchRecordManager;
-
 /**
- * Servlet implementation class WatchRecordServlet
+ * Servlet implementation class PersonalPictureNoteServlet
  */
-@WebServlet("/WatchRecordServlet")
-public class WatchRecordServlet extends HttpServlet {
+@WebServlet("/PersonalPictureNoteServlet")
+public class PersonalPictureNoteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public WatchRecordServlet() {
+    public PersonalPictureNoteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,16 +33,16 @@ public class WatchRecordServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		WatchRecordManager dbwatchRecord = new WatchRecordManager();	
+		PersonalNoteManager dbpersonalNote = new PersonalNoteManager();	
 		HttpSession session = request.getSession();
-		ArrayList<WatchRecord> watchRecords = new ArrayList<>();
+		ArrayList<PersonalPictureNote> personalPictureNotes = new ArrayList<>();
 		
-		String watchRecord_json = new Gson().toJson(watchRecords);
-		watchRecord_json = dbwatchRecord.selectWatchRecordTable((String)session.getAttribute("userId"));
+		String personalPictureNote_json = new Gson().toJson(personalPictureNotes);
+		personalPictureNote_json = dbpersonalNote.selectPersonalPictureNoteTable((String)session.getAttribute("userId"));
 		response.setContentType("application/json;charset = utf-8;");
-		response.getWriter().write(watchRecord_json);	
+		response.getWriter().write(personalPictureNote_json);	
 		
-//		System.out.println(watchRecord_json);
+//		System.out.println(personalTextNote_json);
 	}
 
 	/**
@@ -56,18 +51,6 @@ public class WatchRecordServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
-		HttpSession session = request.getSession();
-		String user_id = (String)session.getAttribute("userId");
-		int unit_id = Integer.parseInt(request.getParameter("unit_id"));
-		
-		
-		WatchRecordManager dbwatchRecord = new WatchRecordManager();
-		WatchRecord watchRecord = new WatchRecord();
-				
-		watchRecord.setUser_id(user_id);
-		watchRecord.setUnit_id(unit_id);	
-		
-		dbwatchRecord.deleteWatchRecordTable(user_id,unit_id);
 	}
 
 }
