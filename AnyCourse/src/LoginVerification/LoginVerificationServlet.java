@@ -71,6 +71,18 @@ public class LoginVerificationServlet extends HttpServlet {
 				response.sendRedirect("AnyCourse/HomePage.html");
 			}
 		}
+		else if (method.equals("googleLogin"))
+		{
+			UserProfile userProfile = new UserProfile();
+			userProfile.setUserId(request.getParameter("Account"));
+			userProfile.setNickName(request.getParameter("Nickname"));
+			userProfile.setEmail(request.getParameter("Email"));
+			userProfile.setPictureUrl(request.getParameter("PictureUrl"));
+			manager.insertGoogleAccount(userProfile);
+			session.setAttribute("userId", userProfile.getUserId());
+			session.setAttribute("nickName", userProfile.getNickName());
+			session.setAttribute("pictureUrl", userProfile.getPictureUrl());
+		}
 		else if (method.equals("register"))
 		{
 			UserProfile userProfile = new UserProfile();

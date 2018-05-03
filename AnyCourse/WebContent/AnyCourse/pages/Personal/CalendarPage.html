@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>AnyCourse</title>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.css" rel="stylesheet"></link>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.print.css" rel="stylesheet" media="print"></link>
 <!-- AnyCourseLogo -->
 <link rel="icon" type="image/x-icon" href="../../AnyCourseLogo.ico" />
 <meta
@@ -109,7 +111,7 @@
 									</div>
 									<div class="box-body">
 										<!-- the events -->
-										<div class='external-event' id='selectedEvent'>選擇事件...</div>
+										<div class='external-event' id='selectedEvent' style='background-color:#00c0ef;border-color:#00c0ef;color:white;'>選擇事件...</div>
 										<div class="btn-group"
 											style="width: 100%; margin-bottom: 10px;">
 											<!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
@@ -148,11 +150,19 @@
 													id='drop-remove' /> 抓取後移除
 												</label>
 											</div> -->
-											<div class="checkbox">
-												<label for='click-remove'> <input type='checkbox'
-													id='click-remove' /> 點擊事件刪除
+											<div class="radio">
+												<label for='click-none'> <input type='radio'
+													id='click-none' name='clickBtn' checked/> 無
+												</label><br>
+												<label for='click-remove'> <input type='radio'
+													id='click-remove' name='clickBtn'/> 點擊事件刪除
+												</label><br>
+												<label for='click-add'> <input type='radio'
+													id='click-add' name='clickBtn'/> 點擊事件加入Google日曆
 												</label>
 											</div>
+										    <button class="btn btn-primary btn-flat" id="authorize-button" style="display: none;">匯入Google日曆</button>
+										    <!-- <button id="signout-button" style="display: none;">Sign Out</button> -->
 										</div>
 									</div>
 									<!-- /.box-body -->
@@ -165,7 +175,7 @@
 									<div class="box-body">
 										<!-- the events -->
 										<div>
-											<ul class="pagination" id='external-events' id='external-events'>
+											<ul class="pagination" id='external-events'>
 											</ul>
 											<!--<div class='external-event bg-green'>微積分一</div>
 											<div class='external-event bg-yellow'>微積分二</div>
@@ -239,11 +249,16 @@
 	<!-- AdminLTE for demo purposes -->
 	<script src="../../dist/js/demo.js" type="text/javascript"></script>
 	<!-- fullCalendar 2.2.5 -->
-	<script
-		src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"
-		type="text/javascript"></script>
-	<script src="../../plugins/fullcalendar/fullcalendar.min.js"
-		type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
+
+	<!-- fullCalendar with gcal -->
+	<!-- <script type="text/javascript" src="../../plugins/fullcalendar/gcal.js"></script>
+	<script type="text/javascript" src="../../plugins/fullcalendar/locale-all.js"></script> -->
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/locale/zh-tw.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/gcal.min.js"></script>
+	
 	<!-- Page specific script -->
 	
 	<!-- CalendarPage.js -->
