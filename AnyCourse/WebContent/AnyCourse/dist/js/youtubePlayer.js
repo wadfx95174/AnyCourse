@@ -9,6 +9,30 @@ var setVideoCloseTime = 0;
 $(document).ready(function(){
 	
 	
+	//設瀏覽紀錄，或是已經有瀏覽紀錄則加1，並檢查他是否已經有按讚
+	$.ajax({
+		url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+    	method: 'POST',
+    	cache :false,
+    	data: {
+    		"action": 'setIsBrowse',
+    		"unitId": get('unit_id')
+    	},
+    	error: function(){
+    		console.log("SetIsBrowse Error!!!")
+    	},
+    	success: function(response){
+//    		console.log(response);
+//    		console.log("aaa");
+    	    console.log(response.personalLike);
+    	    if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
+    	    else if(response.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
+    	}
+	})
+	
+	
+	
+	
   //  初始化YoutubePlayer
 	
 	
@@ -104,6 +128,7 @@ $(document).ready(function(){
 	    	$.ajax({
 	    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
 	    		method : 'POST',
+	    		cache :false,
 	    	    data : {
 	    	    	"method" : "delete",
 	    	    	"keyLabelId" : keyLabelArray[selectId].keyLabelId
@@ -111,7 +136,7 @@ $(document).ready(function(){
 	    		success:function(result){
 	    			element.remove();
 	        	},
-	    		error:function(){alert('failed');}
+	    		error:function(){console.log('failed');}
 	    	});
 	    });
 	    // 新增重點標籤
@@ -125,6 +150,7 @@ $(document).ready(function(){
 	    		$.ajax({
 	        		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
 	        		method : 'POST',
+	        		cache :false,
 	        	    data : {
 	        	    	"method" : "insert",
 	        	    	"keyLabelName" : klName,
@@ -137,19 +163,19 @@ $(document).ready(function(){
 	        		success:function(result){
 	        			keyLabelArray[maxIndex] = result;
 	            		addToSelfKeyLabel(maxIndex++);
-	            		alert('新增成功');
+	            		console.log('新增成功');
 
 	        	    	changeTo(klBeginTime);
 	        	    	$('.keyLabelDiv').css('margin-left', (klBeginTime / youTubePlayer.getDuration() * 100) + '%');
 	        	    	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / youTubePlayer.getDuration() * 100) + '%');
 	        	    	$('.keyLabelDiv').attr('data-original-title', klName);
 	            	},
-	        		error:function(){alert('failed');}
+	        		error:function(){console.log('failed');}
 	        	});
 	    	}
 	    	else
 	    	{
-	    		alert("標籤名稱不可為空!!");
+	    		console.log("標籤名稱不可為空!!");
 	    	}
 	    })
 	    // 點擊暫存標籤刪除按鈕，消除該標籤
@@ -178,6 +204,7 @@ $(document).ready(function(){
 	    	$.ajax({
 	    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
 	    		method : 'POST',
+	    		cache :false,
 	    	    data : {
 	    	    	"method" : "update",
 	    	    	"keyLabelName" : klName,
@@ -193,7 +220,7 @@ $(document).ready(function(){
 	    	    	$('.keyLabelDiv').css('margin-left', (klBeginTime / video['duration'] * 100) + '%');
 	    	    	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / video['duration'] * 100) + '%');
 	        	},
-	    		error:function(){alert('failed');}
+	    		error:function(){console.log('failed');}
 	    	});
 	    })
 	    
@@ -214,6 +241,7 @@ $(document).ready(function(){
 	    	$.ajax({
 	    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
 	    		method : 'POST',
+	    		cache :false,
 	    	    data : {
 	    	    	"method" : "insert",
 	    	    	"keyLabelName" : keyLabelArray[selectId].keyLabelName,
@@ -228,13 +256,14 @@ $(document).ready(function(){
 	        		addToSelfKeyLabel(maxIndex++);
 	            	element.remove();
 	        	},
-	    		error:function(){alert('failed');}
+	    		error:function(){console.log('failed');}
 	    	});
 	    });
 	    
 	    $.ajax({
 			url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
 			method : 'GET', 
+			cache :false,
 			data : {
 				"method" : "getPKL",
 				"unit_id" : get("unit_id")
@@ -250,21 +279,27 @@ $(document).ready(function(){
 		});	// end ajax
 	    
 	    $.ajax({
-			url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+			url : 'http://localhost:8080/AnyCourse/ExchangeKeyLabelServlet.do',
 			method : 'GET', 
-			data : {
-				"method" : "getEKL",
+			cache :false,
+			data : {					
 				"unit_id" : get("unit_id")
 			},
 			success:function(result){
+				console.log("OK");
 				keyLabelArray = result;
 	    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
-					$('#exchange').append('<li class="list-group-item">'
-							+ keyLabelArray[maxIndex].keyLabelName
-							+'<ul class="list-group-submenu">'
-							+'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
-							+'</ul>'
-							+'</li>');
+	    			$('#exchange_keylabel').append(
+	    					'<div id="exK_' + keyLabelArray[maxIndex].userId + '" class=" col-xs-12">'+
+	    					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
+	    					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + keyLabelArray[maxIndex].nick_name + '</h4>'+
+	    					'<li class="list-group-item">'+ keyLabelArray[maxIndex].keyLabelName+
+	    					'<ul class="list-group-submenu">'+
+	    					'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'+
+	    					'</ul>'+
+	    					'</li>'+
+	    					'</div>'
+	    					);
 				} // end for
 	    		
 	    		// 點選交流區的重點標籤，暫存區出現
@@ -283,16 +318,18 @@ $(document).ready(function(){
 	  //---------------------------要設perconal_plan跟watch_record兩個table-------------------------//
 	    window.onbeforeunload = function(event) { 
 	    	var current = youTubePlayer.getCurrentTime();
-	        console.log(current);
+	    	var duration = youTubePlayer.getDuration();
+	        console.log(Math.floor(duration));
 	        $.ajax({
 	        	url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
 	        	method: 'POST',
+	        	cache :false,
 	        	data:{
 	        		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
-	        		"currentTime":current,//關閉的時間
+	        		"currentTime": Math.floor(current),//關閉的時間
+	        		"duration": Math.floor(duration),//影片總共有多長時間
 	        		"unitId" : get("unit_id")
 	        	},
-	        	success:function(result){},
 	        	error: function(){
 	        		console.log("setVideoEndTime failed!");
 	        	}
@@ -303,10 +340,11 @@ $(document).ready(function(){
 
 //--------------------------youtube iframe api-----------------------------
   function onYouTubeIframeAPIReady() {
-	
+//	console.log(get('unit_id'));
 	$.ajax({
 		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
 		method: 'GET',
+		cache :false,
 		data: {
 			"method": 'getVideo',
 			"unitId": get('unit_id')
@@ -314,6 +352,7 @@ $(document).ready(function(){
 		error: function(){
 		},
 		success: function(response){
+//			console.log(response.videoUrl);
 			uid = response.videoUrl.split('/')[4];
 
 			youTubePlayer = new YT.Player('youTubePlayer', {
@@ -329,6 +368,9 @@ $(document).ready(function(){
 			                                    'errors': []};
 			    
 			$('h3')[0].append(response.unitName);
+//			if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
+//    	    else if(reponse.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
+    	    $('#likesNum').text(response.likes);
     	    $('#introduction').append(response.courseInfo);
 		}
 	});

@@ -2,6 +2,7 @@ package PlayerInterface;
 
 public class Unit
 {
+	private String user_id;
 	private int unitId;
 	private String schoolName;
 	private String listName;
@@ -10,6 +11,7 @@ public class Unit
 	private int likes;
 	private String videoImgSrc;
 	private String courseInfo;
+	private int personalLike;
 	public int getUnitId()
 	{
 		return unitId;
@@ -73,6 +75,18 @@ public class Unit
 	public void setCourseInfo(String courseInfo)
 	{
 		this.courseInfo = courseInfo;
+	}
+	public String getUserID() {
+		return user_id;
+	}
+	public void setUserID(String user_id) {
+		this.user_id = user_id;
+	}
+	public int getPersonalLike() {
+		return personalLike;
+	}
+	public void setPersonalLike(int personalLike) {
+		this.personalLike = personalLike;
 	}
 	
 }

@@ -14,7 +14,12 @@
 		// 200 KB 对应的字节数
 		var maxsize = 200 * 1024;
 
-		
+
+		function get(name)
+		{
+		   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+		      return decodeURIComponent(name[1]);
+			}
 			
 
 		filechooser.onchange = function() {
@@ -61,9 +66,10 @@
 				$.ajax({
 					url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
 					method : 'POST',
+					cache :false,
 					data : {
 						"state" : "insert",
-						"unit_id" : unit_id,
+						"unit_id" : get("unit_id"),
 						"user_id" : user_id,
 						"picture_note_url" : dataUrl,
 					//	"text_note" : text_note,
@@ -94,13 +100,13 @@
 					},
 					error: function (jqXHR, textStatus, errorThrown) {
 		                 /*弹出jqXHR对象的信息*/
-		                 alert(jqXHR.responseText);
-		                 alert(jqXHR.status);
-		                 alert(jqXHR.readyState);
-		                 alert(jqXHR.statusText);
+//		                 alert(jqXHR.responseText);
+//		                 alert(jqXHR.status);
+//		                 alert(jqXHR.readyState);
+//		                 alert(jqXHR.statusText);
 		                 /*弹出其他两个参数的信息*/
-		                 alert(textStatus);
-		                 alert(errorThrown);
+//		                 alert(textStatus);
+//		                 alert(errorThrown);
 		             }
 				})				
 				
@@ -143,6 +149,10 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'GET',
+				cache :false,
+				data : {					
+					"unit_id" : get("unit_id")
+				},
 				success:function(result){
 //					alert(result);
 		    		for(var i = 0 ;i < result.length;i++){
@@ -150,6 +160,7 @@
 		    			
 		    			$('#text_area').append( result[i].text_note + "<br>");
 		    			text_note_id = result[i].text_note_id;
+		    			user_id = result[i].user_id;
 					}
 //		    		alert(text_note_id);
 		    	},
@@ -208,6 +219,10 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
 				method : 'GET',
+				cache :false,
+				data : {					
+					"unit_id" : get("unit_id")
+				},
 				success:function(result){
 		    		for(var i = 0 ;i < result.length;i++){
 //		    			alert(result[i].picture_note_url);
@@ -227,7 +242,8 @@
 //							'<button id = "delete_' + result[i].picture_note_id +'"  type="button"  onclick ="deletePicture_note()" class="close" style="float:right">Delete</button>'+							
 //						    '</div>' +		    				
 //		    				'</div>'
-		    			);	    			
+		    			);	
+		    			user_id = result[i].user_id;
 					}	    		
 		    	},
 				error:function(){}
@@ -256,9 +272,10 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'POST',
+				cache :false,
 				data : {
 					"state" : "insert",
-					"unit_id" : unit_id,
+					"unit_id" : get("unit_id"),
 					"user_id" : user_id,
 					//"picture_note_url" : dataUrl,
 					"text_note" : text_note,
@@ -273,6 +290,10 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'GET',
+				cache :false,
+				data : {					
+					"unit_id" : get("unit_id")
+				},
 				success:function(result){
 //					alert(result);
 		    		for(var i = 0 ;i < result.length;i++){
@@ -295,10 +316,11 @@
 			$.ajax({  
 				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
 				method : 'POST',
+				cache :false,
 				data : {
 					"state" : "update",
 					"text_note_id" : text_note_id,
-					"unit_id" : unit_id,
+					"unit_id" : get("unit_id"),
 					"user_id" : user_id,
 					"text_note" : text_note,
 					"share" : share,
@@ -311,7 +333,7 @@
 	    			text_note_id = data.text_note_id;
 				},
 				error : function() {
-					alert("error");
+//					alert("error");
 				}
 			});
 		};
@@ -325,6 +347,7 @@
 			$.ajax({
 				url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
 				method : 'POST',
+				cache :false,
 				data : {
 					"state" : "delete",
 					"picture_note_id" : id,					
@@ -336,4 +359,58 @@
 				},
 			});
 		}
+		
+		function shareNote(){
+			alert("oK");
+			$.ajax({  
+				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
+				method : 'POST',
+				cache :false,
+				data : {
+					"state" : "share",					
+					"unit_id" : get("unit_id"),
+//					"user_id" : user_id					
+				},				
+				success : function(data) {
+					alert("成功成功1");
+				},
+				error : function() {
+					alert("error1");
+				}
+			});
+
+		}
+		function notShareNote(){
+			$.ajax({  
+				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
+				method : 'POST',
+				cache :false,
+				data : {
+					"state" : "notShare",					
+					"unit_id" : get("unit_id"),
+//					"user_id" : user_id					
+				},				
+				success : function(data) {
+					alert("成功成功2");
+				},
+				error : function() {
+					alert("error2");
+				}
+			});
+		}
+		
+		$('#shareNote').click(function(){
+			if($('#shareNote').hasClass('btn-primary')){
+//				alert(typeof(user_id));
+				$('#shareNote').removeClass('btn-primary');
+	        	$('#shareNote').addClass('btn-danger');
+	        	shareNote();
+	        	
+			}
+			else{
+				$('#shareNote').removeClass('btn-danger');
+	        	$('#shareNote').addClass('btn-primary');
+	        	notShareNote();
+			}
+		})
 		

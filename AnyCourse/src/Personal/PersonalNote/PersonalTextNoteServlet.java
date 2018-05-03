@@ -1,4 +1,4 @@
-package Exchange;
+package Personal.PersonalNote;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,22 +8,24 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
-import KeyLabel.KeyLabel;;
+import Personal.WatchRecord.WatchRecord;
+import Personal.WatchRecord.WatchRecordManager;
 
 /**
- * Servlet implementation class ExchangeKeylabelServlet
+ * Servlet implementation class PersonalTextNoteServlet
  */
-@WebServlet("/ExchangeKeylabelServlet")
-public class ExchangeKeylabelServlet extends HttpServlet {
+@WebServlet("/PersonalTextNoteServlet")
+public class PersonalTextNoteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ExchangeKeylabelServlet() {
+    public PersonalTextNoteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,15 +36,16 @@ public class ExchangeKeylabelServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		ExchangeManager dbkeylabel = new ExchangeManager();
-		 
-		ArrayList<KeyLabel> keyLabels = new ArrayList<KeyLabel>();
-			
-		dbkeylabel.selectKeyLabelTable(keyLabels);
-		String keyLabel_json = new Gson().toJson(keyLabels);
+		PersonalNoteManager dbpersonalNote = new PersonalNoteManager();	
+		HttpSession session = request.getSession();
+		ArrayList<PersonalTextNote> personalTextNotes = new ArrayList<>();
+		
+		String personalTextNote_json = new Gson().toJson(personalTextNotes);
+		personalTextNote_json = dbpersonalNote.selectPersonalTextNoteTable((String)session.getAttribute("userId"));
 		response.setContentType("application/json;charset = utf-8;");
-		response.getWriter().write(keyLabel_json);
-//		System.out.println(keyLabel_json);
+		response.getWriter().write(personalTextNote_json);	
+		
+//		System.out.println(personalTextNote_json);
 	}
 
 	/**
@@ -50,7 +53,7 @@ public class ExchangeKeylabelServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		//doGet(request, response);
 	}
 
 }

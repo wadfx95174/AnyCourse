@@ -47,7 +47,7 @@ public class CoursePlanManager {
 					+ "personal_plan.unit_id = unit.unit_id and "
 					+ "unit.unit_id = customlist_video.unit_id and "
 					+ "customlist_video.courselist_id = courselist.courselist_id and "
-					+ "personal_plan.user_id = "+user_id);
+					+ "personal_plan.user_id = '"+user_id +"' order by personal_plan.oorder ASC");
 			while(result.next()) {
 				coursePlan = new CoursePlan();
 				coursePlan.setList_name(result.getString("courselist.list_name"));
@@ -82,11 +82,102 @@ public class CoursePlanManager {
 		}
 		return coursePlans;
 	}
-	
-	//更改排序
-	public void updateCoursePlanList() {
-		
+	//獲取原本該狀態列表的資料
+	public ArrayList<CoursePlan> getCoursePlanOrder(String user_id,String received){
+		ArrayList<CoursePlan> coursePlans = new ArrayList<CoursePlan>();
+		CoursePlan coursePlan;
+		int status = 0;
+		if(received.equals("wantList"))status = 1;
+		else if(received.equals("ingList"))status = 2;
+		else if(received.equals("doneList"))status = 3;
+		try {
+			stat = con.createStatement();
+			result = stat.executeQuery("select * from personal_plan where user_id = '" + user_id + "' and status = " + status);
+			while(result.next()) {
+				coursePlan = new CoursePlan();
+				coursePlan.setUser_id(result.getString("user_id"));
+				coursePlan.setUnit_id(result.getInt("unit_id"));
+				coursePlan.setStatus(result.getInt("status"));
+				coursePlan.setOorder(result.getInt("oorder"));
+				coursePlans.add(coursePlan);
+			}
+		}
+		catch(SQLException x){
+			System.out.println("Exception update"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return coursePlans;
 	}
+	//更新移動後的List的排序
+	public void updateCoursePlanList(CoursePlan coursePlan) {
+		try {
+			//1:想要觀看。2:正在觀看。3:已觀看完
+			pst = con.prepareStatement("update personal_plan set status = ? , oorder = ? where user_id = ? and unit_id = ? ");
+			
+			pst.setString(3,coursePlan.getUser_id());
+			pst.setInt(4,coursePlan.getUnit_id());
+			pst.setInt(1,coursePlan.getStatus());
+			pst.setInt(2,coursePlan.getOorder());
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("Exception update"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	//獲取移動前的清單的資料
+	public ArrayList<CoursePlan> getOldCoursePlanOrder(String user_id,String sender){
+		ArrayList<CoursePlan> oldCoursePlans = new ArrayList<CoursePlan>();
+		CoursePlan oldCoursePlan;
+		int status = 0;
+		if(sender.equals("wantList"))status = 1;
+		else if(sender.equals("ingList"))status = 2;
+		else if(sender.equals("doneList"))status = 3;
+		try {
+			stat = con.createStatement();
+			result = stat.executeQuery("select * from personal_plan where user_id = '" + user_id + "' and status = " + status);
+			while(result.next()) {
+				oldCoursePlan = new CoursePlan();
+				oldCoursePlan.setUser_id(result.getString("user_id"));
+				oldCoursePlan.setUnit_id(result.getInt("unit_id"));
+				oldCoursePlan.setStatus(result.getInt("status"));
+				oldCoursePlan.setOorder(result.getInt("oorder"));
+//				System.out.println(oldCoursePlan.getOorder());
+				oldCoursePlans.add(oldCoursePlan);
+			}
+		}
+		catch(SQLException x){
+			System.out.println("Exception update"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return oldCoursePlans;
+	}
+	//更新移動前的清單的排序
+	public void updateOldStatusList(CoursePlan oldCoursePlan) {
+		try {
+			//1:想要觀看。2:正在觀看。3:已觀看完
+			pst = con.prepareStatement("update personal_plan set status = ? , oorder = ? where user_id = ? and unit_id = ? ");
+			
+			pst.setString(3,oldCoursePlan.getUser_id());
+			pst.setInt(4,oldCoursePlan.getUnit_id());
+			pst.setInt(1,oldCoursePlan.getStatus());
+			pst.setInt(2,oldCoursePlan.getOorder());
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("Exception update"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
 	
 	public void Close() {
 		try {

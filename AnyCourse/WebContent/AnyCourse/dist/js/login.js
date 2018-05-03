@@ -64,6 +64,7 @@ $( document ).ready(function() {
      $.ajax({
     	 url: 'http://localhost:8080/AnyCourse/LoginVerificationServlet.do',
     	 method : 'GET',
+    	 cache :false,
     	 data: {
              method : "checkLogin"
          },

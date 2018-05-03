@@ -16,9 +16,9 @@ import Note.TextNote;
 import KeyLabel.KeyLabel;
 
 public class ExchangeManager {
-	public String selectTextNoteSQL = "select * from text_note where share=1";
-	public String selectPictureNoteSQL = "select * from picture_note where share=1";
-	public String selectKeylabelSQL = "select * from keylabel where share=1";
+	public String selectTextNoteSQL = "select * from account natural join text_note where unit_id = ? and share=1 ";
+	public String selectPictureNoteSQL = "select * from picture_note where unit_id = ? and share=1";
+	public String selectKeylabelSQL = "select * from account natural join keylabel where unit_id = ? and share=1";
 	
 	public TextNote textNote;
 	public PictureNote pictureNote;
@@ -44,16 +44,21 @@ public class ExchangeManager {
 		}
 	}
 	
-	public void selectTextNoteTable(ArrayList<TextNote> textNotes) {
+	public String selectTextNoteTable(int unit_id) {
+		ArrayList<TextNote> textNotes = new ArrayList<>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery(selectTextNoteSQL);
+			pst = con.prepareStatement(selectTextNoteSQL);
+			pst.setInt(1, unit_id);
+			result = pst.executeQuery();
+//			stat = con.createStatement();
+//			result = stat.executeQuery(selectTextNoteSQL);
 			 while(result.next()) 
 		     { 	
 				 textNote = new TextNote();
 				 textNote.setText_note_id(result.getInt("text_note_id"));
 				 textNote.setUnit_id(result.getInt("unit_id"));
-				 textNote.setUser_id(result.getString("user_id"));
+				 textNote.setUser_id(result.getString("user_id"));	
+				 textNote.setNick_name(result.getString("nick_name"));
 				 textNote.setText_note(result.getString("text_note"));
 			//	 textNote.setPicture_note_url(result.getString("picture_note_url"));
 				 textNote.setShare(result.getInt("share"));
@@ -69,12 +74,18 @@ public class ExchangeManager {
 		finally {
 			Close();
 		}
+		String json = new Gson().toJson(textNotes);
+		return json;
 	}
 	 
-	public void selectPictureNoteTable(ArrayList<PictureNote> pictureNotes) {
+	public String selectPictureNoteTable(int unit_id) {
+		ArrayList<PictureNote> pictureNotes = new ArrayList<>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery(selectPictureNoteSQL);
+			pst = con.prepareStatement(selectPictureNoteSQL);
+			pst.setInt(1, unit_id);
+			result = pst.executeQuery();
+//			stat = con.createStatement();
+//			result = stat.executeQuery(selectPictureNoteSQL);
 			 while(result.next()) 
 		     { 
 				 pictureNote = new PictureNote();
@@ -95,18 +106,25 @@ public class ExchangeManager {
 		finally {
 			Close();
 		}
+		String json = new Gson().toJson(pictureNotes);
+		return json;
 	}
 	
-	public void selectKeyLabelTable(ArrayList<KeyLabel> keyLabels) {
+	public String selectKeyLabelTable(int unit_id) {
+		ArrayList<KeyLabel> keyLabels = new ArrayList<>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery(selectKeylabelSQL);
+			pst = con.prepareStatement(selectKeylabelSQL);
+			pst.setInt(1, unit_id);
+			result = pst.executeQuery();
+//			stat = con.createStatement();
+//			result = stat.executeQuery(selectKeylabelSQL);
 			 while(result.next()) 
 		     { 
 				 keyLabel = new KeyLabel();
 				 keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
 				 keyLabel.setUnitId(result.getInt("unit_id"));
 				 keyLabel.setUserId(result.getString("user_id"));
+				 keyLabel.setNick_name(result.getString("nick_name"));
 				 keyLabel.setKeyLabelName(result.getString("keylabel_name"));
 				 keyLabel.setBeginTime(result.getInt("begin_time"));
 				 keyLabel.setEndTime(result.getInt("end_time"));
@@ -123,6 +141,8 @@ public class ExchangeManager {
 		finally {
 			Close();
 		}
+		String json = new Gson().toJson(keyLabels);
+		return json;
 	}
 	
 	

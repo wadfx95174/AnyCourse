@@ -9,6 +9,11 @@ var comment_content;
 var reply_time;
 var reply_content;
 
+function get(name)
+{
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+	}
 
 function setComment(){	
 	if($("#comment_area").val() !== ''){
@@ -18,9 +23,10 @@ function setComment(){
 		$.ajax({
 			url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 			method : 'POST',
+			cache :false,
 			data : {
 				"state" : "insert",	
-				"unit_id" : unit_id,
+				"unit_id" : get("unit_id"),
 				"user_id" : user_id,
 				"nick_name" : nick_name,
 //				"comment_time" : dt.toLocaleString(),
@@ -54,13 +60,13 @@ function setComment(){
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 	             /*弹出jqXHR对象的信息*/
-	             alert(jqXHR.responseText);
-	             alert(jqXHR.status);
-	             alert(jqXHR.readyState);
-	             alert(jqXHR.statusText);
+//	             alert(jqXHR.responseText);
+//	             alert(jqXHR.status);
+//	             alert(jqXHR.readyState);
+//	             alert(jqXHR.statusText);
 	             /*弹出其他两个参数的信息*/
-	             alert(textStatus);
-	             alert(errorThrown);
+//	             alert(textStatus);
+//	             alert(errorThrown);
 	         }
 		})				
 	}	
@@ -70,13 +76,17 @@ $(document).ready(function() {
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 		method : 'GET',
+		cache :false,
+		data : {
+			"unit_id" : get("unit_id"),
+		},
 		success:function(result){
 //			alert(result);
     		for(var i = 0 ;i < result.length;i++){
     			
     			$('#comment-body').append( 	 
 						'<div id="com_' + result[i].comment_id + '" class="B">'+
-						'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">&nbsp;'+
+						'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
 						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result[i].nick_name + '</h4>'+
 						'<h5 style="float:right;">' + result[i].comment_time + '</h5>'+														
 						'<textarea class="col-xs-12" rows="2" cols="50" id="comment_' + result[i].comment_id + '" disabled="disabled" style="float:left;">' + result[i].comment_content + '</textarea>'+																			
@@ -96,13 +106,17 @@ $(document).ready(function() {
     		$.ajax({
     			url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
     			method : 'GET',
+    			cache :false,
+//    			data : {
+//    				"unit_id" : get("unit_id"),
+//    			},
     			success : function(result) {
 //    				alert(result.comment_id);
 //    				alert(result.user_id);
 //    				alert(result.nick_name);
 //    				alert(result.comment_time);
 //    				alert(result.comment_content);
-    				console.log(result);
+//    				console.log(result);
     				for(var i = 0 ;i < result.length;i++){
     				$('#com_'+result[i].comment_id).append( 	
     						'<div id="rep_' + result[i].reply_id + '"class="col-xs-12 C" >'+
@@ -158,6 +172,7 @@ function setReply(input){
 		$.ajax({
 			url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
 			method : 'POST',
+			cache :false,
 			data : {
 				"state" : "insert",	
 				"comment_id" : id,
@@ -215,6 +230,7 @@ function delete_reply(input){
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "delete",
 			"reply_id" : id,					
@@ -231,6 +247,7 @@ function delete_comment(input){
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "delete",
 			"comment_id" : id,					
@@ -281,9 +298,10 @@ function update_comment(input){
 	$.ajax({  
 		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "update",
-			"unit_id" : unit_id,
+			"unit_id" : get("unit_id"),
 			"comment_id" : id,
 			"user_id" : user_id,
 			"nick_name" : nick_name,
@@ -336,6 +354,7 @@ function update_reply(input){
 	$.ajax({  
 		url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
 		method : 'POST',
+		cache :false,
 		data : {
 			"state" : "update",
 			"reply_id" : id,

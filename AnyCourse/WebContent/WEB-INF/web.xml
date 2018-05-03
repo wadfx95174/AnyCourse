@@ -2,8 +2,32 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>AnyCourse</display-name>
   <welcome-file-list>
-    <welcome-file>HomePage.html</welcome-file>
+    <welcome-file>/AnyCourse/HomePage.html</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <servlet-name>PersonalTextNoteServlet</servlet-name>
+    <servlet-class>Personal.PersonalNote.PersonalTextNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PersonalPictureNoteServlet</servlet-name>
+    <servlet-class>Personal.PersonalNote.PersonalPictureNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>WatchRecordServlet</servlet-name>
+    <servlet-class>Personal.WatchRecord.WatchRecordServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ExchangeTextNoteServlet</servlet-name>
+    <servlet-class>Exchange.ExchangeTextNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ExchangePictureNoteServlet</servlet-name>
+    <servlet-class>Exchange.ExchangePictureNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ExchangeKeyLabelServlet</servlet-name>
+    <servlet-class>Exchange.ExchangeKeyLabelServlet</servlet-class>
+  </servlet>
   <servlet>
     <servlet-name>CommentServlet</servlet-name>
     <servlet-class>Forum.CommentServlet</servlet-class>
@@ -64,6 +88,30 @@
     <servlet-name>AccountServlet</servlet-name>
     <servlet-class>Account.AccountServlet</servlet-class>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>PersonalTextNoteServlet</servlet-name>
+    <url-pattern>/PersonalTextNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PersonalPictureNoteServlet</servlet-name>
+    <url-pattern>/PersonalPictureNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>WatchRecordServlet</servlet-name>
+    <url-pattern>/WatchRecordServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ExchangeTextNoteServlet</servlet-name>
+    <url-pattern>/ExchangeTextNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ExchangePictureNoteServlet</servlet-name>
+    <url-pattern>/ExchangePictureNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ExchangeKeyLabelServlet</servlet-name>
+    <url-pattern>/ExchangeKeyLabelServlet.do</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>HomePageServlet</servlet-name>
     <url-pattern>/HomePageServlet.do</url-pattern>

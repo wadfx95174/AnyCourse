@@ -1,4 +1,4 @@
-package Exchange;
+package Personal.PersonalNote;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,22 +8,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
-import Note.PictureNote;
-
 /**
- * Servlet implementation class ExchangePictureNoteServlet
+ * Servlet implementation class PersonalPictureNoteServlet
  */
-//@WebServlet("/ExchangePictureNoteServlet")
-public class ExchangePictureNoteServlet extends HttpServlet {
+@WebServlet("/PersonalPictureNoteServlet")
+public class PersonalPictureNoteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ExchangePictureNoteServlet() {
+    public PersonalPictureNoteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,16 +33,16 @@ public class ExchangePictureNoteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		ExchangeManager dbnote2 = new ExchangeManager();
+		PersonalNoteManager dbpersonalNote = new PersonalNoteManager();	
+		HttpSession session = request.getSession();
+		ArrayList<PersonalPictureNote> personalPictureNotes = new ArrayList<>();
 		
-		ArrayList<PictureNote> pictureNotes = new ArrayList<PictureNote>();
+		String personalPictureNote_json = new Gson().toJson(personalPictureNotes);
+		personalPictureNote_json = dbpersonalNote.selectPersonalPictureNoteTable((String)session.getAttribute("userId"));
+		response.setContentType("application/json;charset = utf-8;");
+		response.getWriter().write(personalPictureNote_json);	
 		
-		
-		String pictureNote_json = new Gson().toJson(pictureNotes);
-		pictureNote_json = dbnote2.selectPictureNoteTable(Integer.parseInt(request.getParameter("unit_id")));
-		response.setContentType("application/json");
-		response.getWriter().write(pictureNote_json);			
-//		System.out.println(pictureNote_json);
+//		System.out.println(personalTextNote_json);
 	}
 
 	/**
@@ -51,7 +50,7 @@ public class ExchangePictureNoteServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		//doGet(request, response);
 	}
 
 }

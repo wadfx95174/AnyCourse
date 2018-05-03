@@ -22,6 +22,7 @@ $(document).ready(function() {
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/PersonalKeyLabelServlet.do',
 		method : 'GET', 
+		cache :false,
 		data: {
 			userId : 1
 		},
@@ -40,6 +41,6 @@ $(document).ready(function() {
 						+'</div></li>');
 			}
     	},
-		error:function(){alert('failed');}
+		error:function(){console.log('failed');}
 	});
 });

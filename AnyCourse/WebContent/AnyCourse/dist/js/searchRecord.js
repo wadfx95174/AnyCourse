@@ -14,6 +14,7 @@ $(document).ready(function() {
 	$.ajax({
 		url : 'http://localhost:8080/AnyCourse/SearchRecordServlet.do',
 		method : 'GET', 
+		cache :false,
 		success:function(result){
 			searchRecordArray = new Array(result.length);
     		for(var i = 0 ;i < result.length;i++){
@@ -41,7 +42,7 @@ $(document).ready(function() {
     			}
     		}
     	},
-		error:function(){alert('failed');}
+		error:function(){console('failed');}
 	});
 	
 	
@@ -56,6 +57,7 @@ $(document).ready(function() {
 	    $.ajax({
 			url : 'http://localhost:8080/AnyCourse/SearchRecordServlet.do',
 			method : 'POST',
+			cache :false,
 		    data : {
 		    	"user_id" : searchRecordArray[checkID][0],
 		    	"search_word" : searchRecordArray[checkID][1],
@@ -65,7 +67,7 @@ $(document).ready(function() {
 	    		$("#searchRecordID_"+checkID).remove();
 	    		
 	    	},
-			error:function(){alert('failed');}
+			error:function(){console.log('failed');}
 		});
 	    
 	  });
