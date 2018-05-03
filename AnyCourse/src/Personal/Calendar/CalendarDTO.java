@@ -9,6 +9,7 @@ public class CalendarDTO
 	private String end;
 	private String backgroundColor;
 	private String borderColor;
+	private boolean allDay;
 	
 	public int getId()
 	{
@@ -65,5 +66,19 @@ public class CalendarDTO
 	public void setBorderColor(String borderColor)
 	{
 		this.borderColor = borderColor;
+	}
+	public boolean isAllDay()
+	{
+		return allDay;
+	}
+	public void setAllDay(boolean allDay)
+	{
+		this.allDay = allDay;
+	}
+	@Override
+	public String toString()
+	{
+		return "CalendarDTO [id=" + id + ", title=" + title + ", url=" + url + ", start=" + start + ", end=" + end
+				+ ", backgroundColor=" + backgroundColor + ", borderColor=" + borderColor + ", allDay=" + allDay + "]";
 	}
 }

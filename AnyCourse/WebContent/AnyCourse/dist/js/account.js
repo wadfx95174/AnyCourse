@@ -1,3 +1,10 @@
+document.write('<script src="login.js"></script>');
+
+$(document).on('click', '#logout', function logout()
+{
+    disconnectUser();
+})
+
 function checkLogin(htmlUrl, servletUrl)
 {
 	$.ajax({
@@ -26,7 +33,7 @@ function checkLogin(htmlUrl, servletUrl)
 						+'				<a href="#" class="btn btn-default btn-flat">設定</a>'
 						+'			</div>'
 						+'			<div class="pull-right">'
-						+'				<a href="'+servletUrl+'AccountServlet.do" class="btn btn-default btn-flat">登出</a>'
+						+'				<a href="'+servletUrl+'AccountServlet.do" id="logout" class="btn btn-default btn-flat">登出</a>'
 						+'			</div>'
 						+'		</li>'
 						+'	</ul></li>'

@@ -14,6 +14,7 @@ public class LoginVerificationManager
 	private String selectUserIdSQL = "select user_id from account where user_id = ? or email = ?";
 	private String insertAccountTableSQL = "insert into account value (?,null,?,null,?,?,null)";
 	private String insertFavoriteCourseSQL = "insert into favorite_course value(?,?)";
+	private String insertGoogleAccountSQL = "insert ignore into account (user_id,email,nick_name,picture_url) values (?,?,?,?)";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -127,6 +128,26 @@ public class LoginVerificationManager
 				pst.setString(2, str);
 				pst.executeUpdate();
 			}
+			
+		} catch (final SQLException x)
+		{
+			System.out.println("Exception insert" + x.toString());
+		} finally
+		{
+			Close();
+		}
+	}
+	
+	public void insertGoogleAccount(UserProfile userProfile)
+	{
+		try
+		{
+			pst = con.prepareStatement(insertGoogleAccountSQL);
+			pst.setString(1, userProfile.getUserId());
+			pst.setString(2, userProfile.getEmail());
+			pst.setString(3, userProfile.getNickName());
+			pst.setString(4, userProfile.getPictureUrl());
+			pst.executeUpdate();
 			
 		} catch (final SQLException x)
 		{
