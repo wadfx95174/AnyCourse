@@ -13,7 +13,7 @@ public class SearchManager
 	private final String selectCourseListSQL = "select * from courselist where list_name like ?";
 	private final String selectUnitKeywordSQL = "select * from unit natural join unit_keyword where unit_keyword like ? ";
 //	private final String selectCourseKeywordSQL = "select * from courselist natural join course_keyword where course_keyword like ? or list_name like ? group by courselist_id";
-	private final String selectCourseKeywordSQL = "select max(courselist_id)courselist_id, max(school_name)school_name, max(list_name)list_name, max(teacher)teacher, max(department_name)department_name, max(course_info)course_info, max(creator)creator, max(share)share, max(likes)likes from courselist natural join course_keyword where course_keyword like ? or list_name like ? group by list_name ORDER BY `courselist_id` ASC";
+	private final String selectCourseKeywordSQL = "select max(courselist_id)courselist_id, max(school_name)school_name, max(list_name)list_name, max(teacher)teacher, max(department_name)department_name, max(course_info)course_info, max(creator)creator, max(share)share, max(likes)likes from courselist natural join course_keyword where course_keyword like ? or list_name like ? or teacher like ? or school_name like ? or department_name like ? group by list_name ORDER BY `courselist_id` ASC";
 	private final String selectUnitByCourseIdSQL = "select * from unit natural join customlist_video where courselist_id = ?";
 	private Connection con = null;
 	private Statement stat = null;
@@ -86,8 +86,24 @@ public class SearchManager
 		try {
 
 			pst = con.prepareStatement(selectCourseKeywordSQL);
-			pst.setString(1,  "%" + keyword + "%" );
-			pst.setString(2,  "%" + keyword + "%" );
+			if (keyword.length() == 2)
+			{
+				String firstWord = keyword.substring(0,1);
+				String secondWord = keyword.substring(1);
+				pst.setString(1,  "%" + firstWord + "%" + secondWord + "%");
+				pst.setString(2,  "%" + firstWord + "%" + secondWord + "%");
+				pst.setString(3,  "%" + firstWord + "%" + secondWord + "%");
+				pst.setString(4,  "%" + firstWord + "%" + secondWord + "%");
+				pst.setString(5,  "%" + firstWord + "%" + secondWord + "%");
+			}
+			else
+			{
+				pst.setString(1,  "%" + keyword + "%" );
+				pst.setString(2,  "%" + keyword + "%" );
+				pst.setString(3,  "%" + keyword + "%" );
+				pst.setString(4,  "%" + keyword + "%" );
+				pst.setString(5,  "%" + keyword + "%" );
+			}
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 	
