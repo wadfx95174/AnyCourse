@@ -28,11 +28,11 @@ $(document).ready(function(){
 							+'</li>'
 							+'</ul>'				
 							+'</li>'+
-							'<div class="ffs-gal-view view'+ response[i].user_id +'">'+
+							'<div class="ffs-gal-view view'+ response[i].unit_id +'">'+
 							'<h1 id="picture"></h1>'+ 
-							'<img class="ffs-gal-prev ffs-gal-nav prev' + response[i].user_id + ' nav'+ response[i].user_id +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/prev.svg" alt="Previous picture" title="Previous picture" />'+									     
-							'<img class="ffs-gal-next ffs-gal-nav next' + response[i].user_id + ' nav'+ response[i].user_id +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/next.svg" alt="Next picture" title="Next picture" />'+
-							'<img class="ffs-gal-close close'+ response[i].user_id +'"  src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/close.svg" alt="Close gallery" title="Close gallery" />'+
+							'<img class="ffs-gal-prev ffs-gal-nav prev' + response[i].unit_id + ' nav'+ response[i].unit_id +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/prev.svg" alt="Previous picture" title="Previous picture" />'+									     
+							'<img class="ffs-gal-next ffs-gal-nav next' + response[i].unit_id + ' nav'+ response[i].unit_id +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/next.svg" alt="Next picture" title="Next picture" />'+
+							'<img class="ffs-gal-close close'+ response[i].unit_id +'"  src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/close.svg" alt="Close gallery" title="Close gallery" />'+
 							'</div>'
 					);
 				}
@@ -46,7 +46,7 @@ $(document).ready(function(){
 					for (var i = 0; i < response.length; i++)
 					{			
 							$('#personalPictureNote_'+response[i].unit_id).append(
-									'<img id="no_'+ response[i].user_id +'_'+ response[i].picture_note_id +'" class="ffs-gal p'+ response[i].user_id +'" src="' + response[i].picture_note_url +'" alt="picture_note_' + response[i].picture_note_id + '" data-url="' + response[i].picture_note_url + '" />'
+									'<img id="no_'+ response[i].unit_id +'_'+ response[i].user_id+'_'+ response[i].picture_note_id +'" class="ffs-gal p'+ response[i].unit_id +'" src="' + response[i].picture_note_url +'" alt="picture_note_' + response[i].picture_note_id + '" data-url="' + response[i].picture_note_url + '" />'
 							);
 //						}
 					}

@@ -87,9 +87,9 @@ public class ForumManager {
 			System.out.println("Exception insert"+x.toString());
 		}
 		finally {
-			Close();
-			return comment;
+			Close();			
 		}
+		return comment;
 	}	
 	public String selectCommentTable(int unit_id) {
 		ArrayList<Comment> comments = new ArrayList<>();
@@ -193,10 +193,9 @@ public class ForumManager {
 			System.out.println("Exception insert"+x.toString());
 		}
 		finally {
-			Close();
-			return reply;
+			Close();			
 		}
-			
+		return reply;	
 	}	 
 	public void selectReplyTable(ArrayList<Reply> replys) {
 		try {
