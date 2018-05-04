@@ -159,9 +159,13 @@
 				},
 				success:function(result){
 //					alert(result);
+					
 		    		for(var i = 0 ;i < result.length;i++){
 //		    			alert(result[i].text_note);
-		    			
+		    			if(result[i].share == 1){
+							$('#shareNote').removeClass('btn-primary');
+				        	$('#shareNote').addClass('btn-danger');
+						}	    			
 		    			$('#text_area').append( result[i].text_note + "<br>");
 		    			text_note_id = result[i].text_note_id;
 		    			user_id = result[i].user_id;

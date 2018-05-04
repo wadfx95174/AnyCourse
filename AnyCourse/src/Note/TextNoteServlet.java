@@ -132,7 +132,8 @@ public class TextNoteServlet extends HttpServlet {
 			 
 
 			System.out.println(user_id);
-			dbnote.shareNote(unit_id,user_id);
+			dbnote.shareTextNote(unit_id,user_id);
+			dbnote.sharePictureNote(unit_id,user_id);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
 			dbnote.conClose();
@@ -148,7 +149,8 @@ public class TextNoteServlet extends HttpServlet {
 			
 
 			System.out.println(user_id);
-			dbnote.notShareNote(unit_id,user_id);
+			dbnote.notShareTextNote(unit_id,user_id);
+			dbnote.notSharePictureNote(unit_id,user_id);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
 			dbnote.conClose();
