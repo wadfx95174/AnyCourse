@@ -44,7 +44,7 @@ public class PersonalTextNoteServlet extends HttpServlet {
 		personalTextNote_json = dbpersonalNote.selectPersonalTextNoteTable((String)session.getAttribute("userId"));
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(personalTextNote_json);	
-		
+		dbpersonalNote.conClose();
 //		System.out.println(personalTextNote_json);
 	}
 

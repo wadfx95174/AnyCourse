@@ -16,6 +16,7 @@ public class PlayerInterfaceServlet extends HttpServlet {
 	{
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control","max-age=0");
 		PlayerInterfaceManager manager = new PlayerInterfaceManager();
 		HttpSession session = request.getSession();
 		
@@ -23,13 +24,14 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		
 		response.getWriter().write(manager.getVideoUrl(Integer.parseInt(request.getParameter("unitId"))));
 				/*,(String)session.getAttribute("userId"))*/
+		manager.conClose();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		PlayerInterfaceManager manager = new PlayerInterfaceManager();
 		HttpSession session = request.getSession();
-		
+		response.setHeader("Cache-Control","max-age=0");
 		if(request.getParameter("action").equals("getVideoList")) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
@@ -88,5 +90,6 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			}
 			
 		}
+		manager.conClose();
 	}
 }

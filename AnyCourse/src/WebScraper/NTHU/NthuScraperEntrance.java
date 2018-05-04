@@ -8,14 +8,14 @@ import com.google.gson.GsonBuilder;
 import WebScraper.Output.OutputFormat;
 
 public class NthuScraperEntrance {
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception {
 		NthuScraper scraper = new NthuScraper();
 		ArrayList<OutputFormat> outputs = scraper.getItems();
-		
+
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
-		
-//		System.out.println(gson.toJson(outputs));
-		
+
+		System.out.println(gson.toJson(outputs));
+
 	}
 }

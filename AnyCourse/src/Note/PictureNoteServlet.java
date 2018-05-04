@@ -37,12 +37,12 @@ public class PictureNoteServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		ArrayList<PictureNote> pictureNotes = new ArrayList<PictureNote>();
 //		System.out.println(request.getParameter("unit_id"));
-		
+		response.setHeader("Cache-Control","max-age=0");
 		String pictureNote_json = new Gson().toJson(pictureNotes);
 		pictureNote_json = dbnote.selectPictureNoteTable(Integer.parseInt(request.getParameter("unit_id")), (String)session.getAttribute("userId"));
 		response.setContentType("application/json");
 		response.getWriter().write(pictureNote_json);	
-		
+		dbnote.conClose();
 //		System.out.println(pictureNote_json);
 	}
 
@@ -54,7 +54,7 @@ public class PictureNoteServlet extends HttpServlet {
 		//doGet(request, response);
 		HttpSession session = request.getSession();
 		String state = request.getParameter("state");	
-		 
+		response.setHeader("Cache-Control","max-age=0");
 		if(state.equals("delete"))
 		{
 			System.out.println("ddd");
@@ -68,6 +68,7 @@ public class PictureNoteServlet extends HttpServlet {
 			dbnote.deletePictureNoteTable(picture_note_id);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbnote.conClose();
 		}
 		if(state.equals("insert"))
 		{
@@ -97,6 +98,7 @@ public class PictureNoteServlet extends HttpServlet {
 			response.getWriter().write(pictureNote_json);	
 //			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbnote.conClose();
 		}
 		
 	}

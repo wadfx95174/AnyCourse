@@ -21,8 +21,8 @@ public class NoteManager {
 	public String insertPictureNoteSQL = "insert into picture_note (picture_note_id,unit_id,user_id,picture_note_url,share,share_time,likes) value(null,?,?,?,?,?,?)";
 	public String selectPictureNoteSQL = "select * from picture_note where unit_id = ? and user_id= ?";
 	public String deletePictureNoteSQL = "delete from picture_note where picture_note_id = ?";
-	public String shareNoteSQL = "UPDATE picture_note SET share=1  WHERE unit_id = ? and user_id = ? and share=0 UPDATE text_note SET share=1  WHERE unit_id = ? and user_id = ? and share=0";
-	public String notShareNoteSQL = "UPDATE picture_note SET share=0  WHERE unit_id = ? and user_id = ? and share=1 UPDATE text_note SET share=0  WHERE unit_id = ? and user_id = ? and share=1";
+	public String shareNoteSQL = "UPDATE picture_note SET share=1  WHERE unit_id = ? and user_id = ? and share=0 ;UPDATE text_note SET share=1  WHERE unit_id = ? and user_id = ? and share=0;";
+	public String notShareNoteSQL = "UPDATE picture_note SET share=0  WHERE unit_id = ? and user_id = ? and share=1 ;UPDATE text_note SET share=0  WHERE unit_id = ? and user_id = ? and share=1;";
 	
 	public TextNote textNote;
 	public PictureNote pictureNote;
@@ -244,19 +244,27 @@ public class NoteManager {
 		try {
 			if(result!=null) {
 				result.close();
-				result = null;
 			}
 			if(stat!=null) {
 				stat.close();
-				stat = null;
 			}
 			if(pst!=null) {
 				pst.close();
-				pst = null;
 			}
 		}
 		catch(SQLException e) {
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
+	
+	public void conClose() {
+		try {
+			if(con!=null) {
+				con.close();
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Close Exception :" + e.toString()); 
+		}
+	}
 }

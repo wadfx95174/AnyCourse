@@ -1,4 +1,4 @@
-document.write('<script src="login.js"></script>');
+document.write('<script type="text/javascript" src="dist/js/login.js"></script>');
 
 $(document).on('click', '#logout', function logout()
 {
@@ -18,7 +18,7 @@ function checkLogin(htmlUrl, servletUrl)
 						'<li class="dropdown user user-menu"><a href="#"'
 						+'	class="dropdown-toggle" data-toggle="dropdown"> <img'
 						+'		src="http://localhost:8080/AnyCourse/AnyCourse/dist/img/user2-160x160.jpg" class="user-image"'
-						+'		alt="User Image" /> <span class="hidden-xs">'+result.nickName+'</span>'
+						+'		alt="User Image" /> <span>'+result.nickName+'</span>'
 						+'</a>'
 						+'	<ul class="dropdown-menu">'
 						+'		<!-- User image -->'
@@ -116,12 +116,12 @@ function checkLogin(htmlUrl, servletUrl)
     			$('.navbar-nav').append(
     					'<li class="dropdown user user-menu">'
     					+'<a href="'+htmlUrl+'login.html">'
-						+'  <span class="hidden-xs">登入</span>'
+						+'  <span>登入</span>'
 						+'</a>'
 						+'</li>'
     					+'<li class="dropdown user user-menu">'
     					+'<a href="'+htmlUrl+'register.html">'
-						+'  <span class="hidden-xs">註冊</span>'
+						+'  <span>註冊</span>'
 						+'</a>'
 						+'</li>'
     			);

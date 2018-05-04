@@ -20,6 +20,7 @@ public class CalendarServlet extends HttpServlet {
 		CalendarManager calendarManager = new CalendarManager();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control","max-age=0");
 		HttpSession session = request.getSession();
 		String userId = (String)session.getAttribute("userId");
 		if (request.getParameter("method").equals("getEvent"))
@@ -31,11 +32,13 @@ public class CalendarServlet extends HttpServlet {
 			CoursePlanManager coursePlanManager = new CoursePlanManager();
 			response.getWriter().write(new Gson().toJson(coursePlanManager.getCoursePlanAllList(userId)));
 		}
+		calendarManager.conClose();
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CalendarManager calendarManager = new CalendarManager();
 		CalendarDTO event = new CalendarDTO();
+		response.setHeader("Cache-Control","max-age=0");
 		String method = request.getParameter("method");
 		if (method.equals("insert"))
 		{
@@ -72,6 +75,7 @@ public class CalendarServlet extends HttpServlet {
 			System.out.println(event);
 			calendarManager.updateEvent(event);
 		}
+		calendarManager.conClose();
 	}
 
 }

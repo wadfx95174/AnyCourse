@@ -13,9 +13,9 @@ import com.google.gson.Gson;
 import Personal.WatchRecord.WatchRecord;
 
 public class PersonalNoteManager {
-	public String selectPersonalTextNoteSQL = "select * from text_note natural join unit where text_note.user_id = ? and text_note.unit_id = unit.unit_id ";
+	public String selectPersonalTextNoteSQL = "select * from text_note , unit where text_note.user_id = ? and text_note.unit_id = unit.unit_id ";
 //	public String deletePersonalTextNoteSQL = "delete from text_note where user_id = ? and unit_id = ?";
-	public String selectPersonalPictureNoteSQL = "select * from picture_note natural join unit where picture_note.user_id = ? and picture_note.unit_id = unit.unit_id ";
+	public String selectPersonalPictureNoteSQL = "select * from picture_note , unit where picture_note.user_id = ? and picture_note.unit_id = unit.unit_id ";
 //	public String deletePersonalPictureNoteSQL = "delete from picture_note where user_id = ? and unit_id = ?";
 	
 	public PersonalTextNote personalTextNote;
@@ -159,4 +159,14 @@ public class PersonalNoteManager {
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
+	public void conClose() {
+		try {
+			if(con!=null) {
+				con.close();
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Close Exception :" + e.toString()); 
+		}
+	}
 }

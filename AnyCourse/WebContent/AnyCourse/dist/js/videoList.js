@@ -108,18 +108,6 @@ $(document).ready(function() {
 									unitVideoID++;
 									unitArray[k] = new Array(3);
 								}
-//								for(var i = 0 ;i < result.length;i++){
-////						  			console.log(result[i].user_id);
-////						  			console.log(result[i].creator);
-//						  			for(var j = 0 ; j < 5;j++){
-//						  				if(j == 0)videoListArray[i][j] = result[i].courselist_id;
-//						  				else if(j == 1)videoListArray[i][j] = result[i].list_name;
-//						  				else if(j == 2)videoListArray[i][j] = result[i].user_id;
-//						  				else if(j == 3)videoListArray[i][j] = result[i].creator;
-//						  				else videoListArray[i][j] = result[i].oorder;
-////						  				console.log(videoListArray[i][j]);
-//						  			}
-//								}
 								
 					  			
 								

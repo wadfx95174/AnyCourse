@@ -35,7 +35,7 @@ public class ExchangePictureNoteServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		ExchangeManager dbnote2 = new ExchangeManager();
-		
+		response.setHeader("Cache-Control","max-age=0");
 		ArrayList<PictureNote> pictureNotes = new ArrayList<PictureNote>();
 		
 		
@@ -44,6 +44,7 @@ public class ExchangePictureNoteServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.getWriter().write(pictureNote_json);			
 //		System.out.println(pictureNote_json);
+		dbnote2.conClose();
 	}
 
 	/**

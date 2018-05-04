@@ -75,12 +75,6 @@ public class HomePage {
 	public int getOorder() {
 		return oorder;
 	}
-	public int getNum() {
-		return num;
-	}
-	public void setNum(int num) {
-		this.num = num;
-	}
 	public void setVideo_type(int video_type) {
 		this.video_type = video_type;
 	}

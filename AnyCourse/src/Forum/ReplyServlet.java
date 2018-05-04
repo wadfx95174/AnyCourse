@@ -36,7 +36,7 @@ public class ReplyServlet extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		HttpSession session = request.getSession();
 		ForumManager dbreply = new ForumManager();
-		 
+		response.setHeader("Cache-Control","max-age=0");
 		ArrayList<Reply> replys = new ArrayList<Reply>();
 
 		dbreply.selectReplyTable(replys);
@@ -44,6 +44,7 @@ public class ReplyServlet extends HttpServlet {
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(reply_json);
 //		System.out.println(reply_json);
+		dbreply.conClose();
 	}
 
 	/**
@@ -54,7 +55,7 @@ public class ReplyServlet extends HttpServlet {
 		//doGet(request, response);
 		HttpSession session = request.getSession();
 		String state = request.getParameter("state");
-		 
+		response.setHeader("Cache-Control","max-age=0");
 		if(state.equals("insert"))
 		{
 			int comment_id = Integer.parseInt(request.getParameter("comment_id"));
@@ -84,6 +85,7 @@ public class ReplyServlet extends HttpServlet {
 			String reply_json = new Gson().toJson(reply);
 			response.setContentType("application/json;charset = utf-8;");
 			response.getWriter().write(reply_json);
+			dbreply.conClose();
 		}
 		if(state.equals("update"))
 		{
@@ -109,6 +111,7 @@ public class ReplyServlet extends HttpServlet {
 			dbreply.updateReplyTable(reply);
 			PrintWriter out = response.getWriter();		
 			out.print("success");
+			dbreply.conClose();
 		}	
 		if(state.equals("delete"))
 		{
@@ -121,6 +124,7 @@ public class ReplyServlet extends HttpServlet {
 			dbreply.deleteReplyTable(reply_id);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbreply.conClose();
 		}	
 		if(state.equals("delete2"))
 		{
@@ -133,6 +137,7 @@ public class ReplyServlet extends HttpServlet {
 			dbreply.deleteReplyTable2(comment_id);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbreply.conClose();
 		}	
 	}
 

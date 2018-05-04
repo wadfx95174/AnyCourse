@@ -20,6 +20,7 @@ public class OutputFormat {
 		unitImgSrc = new ArrayList<String>();
 		lectureName = new ArrayList<String>();
 		lecture = new ArrayList<String>();
+		unitImgSrc = new ArrayList<String>();
 	}
 	
 	public void setUniversity(String university) {

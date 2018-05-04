@@ -200,22 +200,28 @@ public class KeyLabelManager
 		try {
 			if(result!=null) {
 				result.close();
-				result = null;
 			}
 			if(stat!=null) {
 				stat.close();
-				stat = null;
 			}
 			if(pst!=null) {
 				pst.close();
-				pst = null;
 			}
 		}
 		catch(SQLException e) {
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
-	
+	public void conClose() {
+		try {
+			if(con!=null) {
+				con.close();
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Close Exception :" + e.toString()); 
+		}
+	}
 //	public static void main(String []args)
 //	{
 //		KeyLabelDatabaseManager kldm = new KeyLabelDatabaseManager();

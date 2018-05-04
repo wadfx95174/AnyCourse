@@ -197,7 +197,6 @@ public class PlayerInterfaceManager
 			}
 			pst.executeUpdate();
 			
-			stat = con.createStatement();
 			result = stat.executeQuery("select * from share_likes where user_id = '"+user_id
 					+"' and unit_id = "+unit_id);
 			while(result.next()) {
@@ -270,19 +269,26 @@ public class PlayerInterfaceManager
 		try {
 			if(result!=null) {
 				result.close();
-				result = null;
 			}
 			if(stat!=null) {
 				stat.close();
-				stat = null;
 			}
 			if(pst!=null) {
 				pst.close();
-				pst = null;
 			}
 		}
 		catch(SQLException e) {
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
+	public void conClose() {
+		try {
+			if(con!=null) {
+				con.close();
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Close Exception :" + e.toString()); 
+		}
+	}
 }

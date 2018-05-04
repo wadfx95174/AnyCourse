@@ -46,7 +46,7 @@ public class WatchRecordServlet extends HttpServlet {
 		watchRecord_json = dbwatchRecord.selectWatchRecordTable((String)session.getAttribute("userId"));
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(watchRecord_json);	
-		
+		dbwatchRecord.conClose();
 //		System.out.println(watchRecord_json);
 	}
 
@@ -68,6 +68,7 @@ public class WatchRecordServlet extends HttpServlet {
 		watchRecord.setUnit_id(unit_id);	
 		
 		dbwatchRecord.deleteWatchRecordTable(user_id,unit_id);
+		dbwatchRecord.conClose();
 	}
 
 }

@@ -18,12 +18,14 @@ public class SearchServlet extends HttpServlet {
 		String searchQuery = request.getParameter("search_query");
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control","max-age=0");
 		Gson gson = new Gson();
 		response.getWriter().print(gson.toJson(manager.getCourseListByKeyword(searchQuery)));
 		
 //		request.setAttribute("search_query", searchQuery);
 //		RequestDispatcher view = request.getRequestDispatcher("/AnyCourse/pages/SearchResult.html");
 //		view.forward(request, response);
+		manager.conClose();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

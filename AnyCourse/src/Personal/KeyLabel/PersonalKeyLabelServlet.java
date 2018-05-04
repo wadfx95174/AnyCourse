@@ -13,9 +13,11 @@ public class PersonalKeyLabelServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control","max-age=0");
 		response.setContentType("application/json");
 		HttpSession seesion = request.getSession();
 		response.getWriter().print(manager.getUnitPersonalKeyLabel((String)seesion.getAttribute("userId")));
+		manager.conClose();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

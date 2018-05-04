@@ -44,6 +44,7 @@ public class ExchangeKeyLabelServlet extends HttpServlet {
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(keyLabel_json);
 //		System.out.println(keyLabel_json);
+		dbkeylabel.conClose();
 	}
 
 	/**

@@ -44,7 +44,7 @@ $(document).ready(function() {
 				if(result[i].status == 1){
 					
 					$('#wantList').append(str3
-							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type+')">'
+							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type + ',' + result[i].last_time+')">'
 							+'<div class="info-card">'
 							+'<div class="embed-responsive embed-responsive-16by9">'
 							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].video_img_src+'">' 
@@ -68,7 +68,7 @@ $(document).ready(function() {
 				//正在觀看
 				else if(result[i].status == 2){
 					$('#ingList').append(str3
-							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type+')">'
+							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type + ',' + result[i].last_time+')">'
 							+'<div class="info-card">'
 							+'<div class="embed-responsive embed-responsive-16by9">'
 							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].video_img_src+'">' 
@@ -92,7 +92,7 @@ $(document).ready(function() {
 				//已觀看完
 				else if(result[i].status == 3){
 					$('#doneList').append(str3
-							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type+')">'
+							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unit_id + ',' + result[i].video_type + ',' + result[i].last_time+')">'
 							+'<div class="info-card">'
 							+'<div class="embed-responsive embed-responsive-16by9">'
 							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].video_img_src+'">' 
@@ -176,7 +176,7 @@ $(document).ready(function() {
 	
 });
 //跳轉至播放介面
-function jumpToPlayerInterface(unit_id,type){
-    url = "../PlayerInterface.html?unit_id="+unit_id+"&type="+type;//此處拼接內容
+function jumpToPlayerInterface(unit_id,type,time){
+    url = "../PlayerInterface.html?unit_id="+unit_id+"&type="+type+"&time"+time;//此處拼接內容
     window.location.href = url;
 }

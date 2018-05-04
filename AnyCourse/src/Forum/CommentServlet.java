@@ -40,7 +40,7 @@ public class CommentServlet extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		HttpSession session = request.getSession();
 		ForumManager dbcomment = new ForumManager();
-		 
+		response.setHeader("Cache-Control","max-age=0"); 
 		ArrayList<Comment> comments = new ArrayList<Comment>();
 
 		
@@ -49,6 +49,7 @@ public class CommentServlet extends HttpServlet {
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(comment_json);
 //		System.out.println(comment_json);
+		dbcomment.conClose();
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class CommentServlet extends HttpServlet {
 		//doGet(request, response);
 		HttpSession session = request.getSession();
 		String state = request.getParameter("state");
-				 
+		response.setHeader("Cache-Control","max-age=0");		 
 		if(state.equals("insert"))
 		{
 			int unit_id = Integer.parseInt(request.getParameter("unit_id"));
@@ -88,7 +89,7 @@ public class CommentServlet extends HttpServlet {
 			String comment_json = new Gson().toJson(comment);
 			response.setContentType("application/json;charset = utf-8;");
 			response.getWriter().write(comment_json);
-			
+			dbcomment.conClose();
 		}
 		if(state.equals("update"))
 		{
@@ -113,6 +114,7 @@ public class CommentServlet extends HttpServlet {
 			dbcomment.updateCommentTable(comment);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbcomment.conClose();
 		}	
 		if(state.equals("delete"))
 		{
@@ -125,6 +127,7 @@ public class CommentServlet extends HttpServlet {
 			dbcomment.deleteCommentTable(comment_id);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbcomment.conClose();
 		}
 	}
 }
