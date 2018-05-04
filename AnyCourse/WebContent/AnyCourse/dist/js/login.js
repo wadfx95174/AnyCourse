@@ -1,4 +1,66 @@
+var isClick = false;
+ 
+$('#google_login').click(function(){
+	isClick = true;
+});
+// 初始化函数  
+function render() {  
+    gapi.signin.render('google_login', {  
+        'callback': 'signinCallback',  
+        'approvalprompt': 'auto',  
+        'clientid': '645783857059-6faluf0otn6641vrdlm2e4oc2tgagbbo.apps.googleusercontent.com',  
+        'cookiepolicy': 'single_host_origin',  
+        'requestvisibleactions': 'http://schemas.google.com/AddActivity',  
+        'scope': 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email'  
+    });  
+}  
+function signinCallback(authResult) {  
+    if (authResult && isClick) {  
+        if(authResult["error"]==undefined){  
+            gapi.client.load("oauth2","v2",function(){  
+                var request=gapi.client.oauth2.userinfo.get();  
+                request.execute(function(obj){
+                	profile = obj;
+                    $.ajax({
+           	     	 url: 'http://localhost:8080/AnyCourse/LoginVerificationServlet.do',
+           	     	 method : 'POST',
+           	     	 data: {
+           	              method : "googleLogin",
+           	              Account : profile.email.split('@')[0],
+           	              Email : profile.email,
+           	              Nickname : profile.name,
+           	              PictureUrl : profile.picture
+           	          },
+           	         success:function(result){
+           	        	  url = "../HomePage.html";//此處拼接內容
+           	        	  window.location.href = url;
+           	         },
+           	      	 error:function(){
+           	      		console.log('google login fail'); 
+           	      	 }
+           	 	 })
+                });  
+            });  
+        }  
+    }  
+}  
+      
+// 取消連結
+function disconnectUser() {  
+    var revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token=' + gapi.auth.getToken().access_token;  
+    $.ajax({  
+        type: 'GET',  
+        url: revokeUrl,  
+        async: false,  
+        contentType: "application/json",  
+        dataType: 'jsonp',  
+    });  
+}  
+
 $( document ).ready(function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;  
+    po.src = 'https://apis.google.com/js/client:plusone.js?onload=render';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);  
      $.ajax({
     	 url: 'http://140.121.197.130:8400/AnyCourse/LoginVerificationServlet.do',
     	 method : 'GET',

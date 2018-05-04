@@ -70,14 +70,15 @@ public class TextNoteServlet extends HttpServlet {
 		response.setHeader("Cache-Control","max-age=0");
 		int unit_id = Integer.parseInt(request.getParameter("unit_id"));
 		String user_id = (String)session.getAttribute("userId");
-		String text_note = request.getParameter("text_note");
-		int share = Integer.parseInt(request.getParameter("share"));
-		String share_time = request.getParameter("share_time");
-		int likes = Integer.parseInt(request.getParameter("likes")); 
+		 
 		 
 		if(state.equals("insert"))
 		{
 			NoteManager dbnote = new NoteManager();
+			String text_note = request.getParameter("text_note");
+			int share = Integer.parseInt(request.getParameter("share"));
+			String share_time = request.getParameter("share_time");
+			int likes = Integer.parseInt(request.getParameter("likes"));
 			
 			TextNote textNote = new TextNote();
 			
@@ -98,6 +99,10 @@ public class TextNoteServlet extends HttpServlet {
 		{
 			NoteManager dbnote = new NoteManager();
 			int text_note_id = Integer.parseInt(request.getParameter("text_note_id"));
+			String text_note = request.getParameter("text_note");
+			int share = Integer.parseInt(request.getParameter("share"));
+			String share_time = request.getParameter("share_time");
+			int likes = Integer.parseInt(request.getParameter("likes"));
 			
 			TextNote textNote = new TextNote();
 			textNote.setText_note_id(text_note_id);
@@ -113,6 +118,37 @@ public class TextNoteServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
 		}
+		if(state.equals("share"))
+		{
+			NoteManager dbnote = new NoteManager();
+			
+			
+			TextNote textNote = new TextNote();			
+			textNote.setUnit_id(unit_id);
+			textNote.setUser_id(user_id);
+			 
+
+			System.out.println(user_id);
+			dbnote.shareNote(unit_id,user_id);
+			PrintWriter out = response.getWriter();		
+//			out.print("success");
+		}
+		if(state.equals("notShare"))
+		{
+			NoteManager dbnote = new NoteManager();
+			
+			
+			TextNote textNote = new TextNote();			
+			textNote.setUnit_id(unit_id);
+			textNote.setUser_id(user_id);
+			
+
+			System.out.println(user_id);
+			dbnote.notShareNote(unit_id,user_id);
+			PrintWriter out = response.getWriter();		
+//			out.print("success");
+		}
+		
 		
 	}
 

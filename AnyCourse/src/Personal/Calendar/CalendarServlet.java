@@ -47,6 +47,7 @@ public class CalendarServlet extends HttpServlet {
 			event.setUrl(request.getParameter("url"));
 			event.setStart(request.getParameter("start"));
 			event.setEnd(request.getParameter("end"));
+			event.setAllDay(request.getParameter("allDay").equals("true"));
 			event.setBackgroundColor(request.getParameter("backgroundColor"));
 			event.setBorderColor(request.getParameter("borderColor"));
 			HttpSession session = request.getSession();
@@ -66,9 +67,11 @@ public class CalendarServlet extends HttpServlet {
 			event.setUrl(request.getParameter("url"));
 			event.setStart(request.getParameter("start"));
 			event.setEnd(request.getParameter("end"));
+			event.setAllDay(request.getParameter("allDay").equals("true"));
 			event.setBackgroundColor(request.getParameter("backgroundColor"));
 			event.setBorderColor(request.getParameter("borderColor"));
 			event.setId(Integer.parseInt(request.getParameter("id")));
+			System.out.println(event);
 			calendarManager.updateEvent(event);
 		}
 	}

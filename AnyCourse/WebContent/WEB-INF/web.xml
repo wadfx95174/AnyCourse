@@ -5,6 +5,18 @@
     <welcome-file>/AnyCourse/HomePage.html</welcome-file>
   </welcome-file-list>
   <servlet>
+    <servlet-name>PersonalTextNoteServlet</servlet-name>
+    <servlet-class>Personal.PersonalNote.PersonalTextNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PersonalPictureNoteServlet</servlet-name>
+    <servlet-class>Personal.PersonalNote.PersonalPictureNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>WatchRecordServlet</servlet-name>
+    <servlet-class>Personal.WatchRecord.WatchRecordServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>ExchangeTextNoteServlet</servlet-name>
     <servlet-class>Exchange.ExchangeTextNoteServlet</servlet-class>
   </servlet>
@@ -76,6 +88,18 @@
     <servlet-name>AccountServlet</servlet-name>
     <servlet-class>Account.AccountServlet</servlet-class>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>PersonalTextNoteServlet</servlet-name>
+    <url-pattern>/PersonalTextNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PersonalPictureNoteServlet</servlet-name>
+    <url-pattern>/PersonalPictureNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>WatchRecordServlet</servlet-name>
+    <url-pattern>/WatchRecordServlet.do</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ExchangeTextNoteServlet</servlet-name>
     <url-pattern>/ExchangeTextNoteServlet.do</url-pattern>

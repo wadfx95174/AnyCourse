@@ -12,9 +12,10 @@ import java.util.ArrayList;
 public class CalendarManager
 {
 	private final String selectEventsSQL = "select * from event natural join calendar where user_id = ?";
-	private final String insertEventSQL = "insert into event value (null,1,?,?,?,?,?,?)";
-	private final String updateEventSQL = "update event set title = ?,url = ?,start = ?,end = ? where event_id = ?";
+	private final String insertEventSQL = "insert into event value (null,1,?,?,?,?,?,?,?)";
+	private final String updateEventSQL = "update event set title = ?,url = ?,start = ?,end = ?,all_day = ? where event_id = ?";
 	private final String deleteEventSQL = "delete from event where event_id = ?";
+	private final String deleteCalendarSQL = "delete from calendar where event_id = ?";
 	private final String insertCalendarSQL = "insert into calendar value (?,?)";
 	private Connection con = null;
 	private Statement stat = null;
@@ -56,6 +57,7 @@ public class CalendarManager
 				dto.setEnd(result.getString("end"));
 				dto.setBackgroundColor(result.getString("background_color"));
 				dto.setBorderColor(result.getString("border_color"));
+				dto.setAllDay(result.getBoolean("all_day"));
 				list.add(dto);
 			}
 		} catch (final SQLException x)
@@ -80,6 +82,7 @@ public class CalendarManager
 			pst.setString(4, dto.getEnd());
 			pst.setString(5, dto.getBackgroundColor());
 			pst.setString(6, dto.getBorderColor());
+			pst.setBoolean(7, dto.isAllDay());
 			pst.executeUpdate();
 			ResultSet generatedKeys = pst.getGeneratedKeys();
 			if (generatedKeys.next())
@@ -110,7 +113,8 @@ public class CalendarManager
 			pst.setString(2,dto.getUrl());
 			pst.setString(3, dto.getStart());
 			pst.setString(4, dto.getEnd());
-			pst.setInt(5, dto.getId());
+			pst.setBoolean(5, dto.isAllDay());
+			pst.setInt(6, dto.getId());
 			pst.executeUpdate();
 		} catch (final SQLException x)
 		{
@@ -127,6 +131,9 @@ public class CalendarManager
 		{
 			pst = con.prepareStatement(deleteEventSQL);
 			pst.setInt(1,eventId);
+			pst.executeUpdate();
+			pst = con.prepareStatement(deleteCalendarSQL);
+			pst.setInt(1, eventId);
 			pst.executeUpdate();
 		} catch (final SQLException x)
 		{

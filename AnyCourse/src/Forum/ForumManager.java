@@ -88,8 +88,8 @@ public class ForumManager {
 		}
 		finally {
 			Close();
-			return comment;
 		}
+		return comment;
 	}	
 	public String selectCommentTable(int unit_id) {
 		ArrayList<Comment> comments = new ArrayList<>();
