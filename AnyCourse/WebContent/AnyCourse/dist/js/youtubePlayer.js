@@ -11,7 +11,7 @@ $(document).ready(function(){
 	
 	//設瀏覽紀錄，或是已經有瀏覽紀錄則加1，並檢查他是否已經有按讚
 	$.ajax({
-		url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+		url:ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
     	method: 'POST',
     	cache :false,
     	data: {
@@ -86,7 +86,7 @@ $(document).ready(function(){
 	    function addToTempKeyLabel(index)
 	    {
 			$('#keyLabel2').append('<li class="list-group-item">'
-					+ keyLabelArray[index].keyLabelName
+					+ exkeyLabelArray[index].keyLabelName
 					+'<ul class="list-group-submenu">'
 					+'<a href="javascript:void(0)" class = "temp dkl" id = "temp-dkl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>'
 					+'<a href="javascript:void(0)" class = "temp akl" id = "temp-akl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>'
@@ -126,7 +126,7 @@ $(document).ready(function(){
 	    $(document).on('click', '#deleteKlButton', function(event)
 	    {
 	    	$.ajax({
-	    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+	    		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
 	    		method : 'POST',
 	    		cache :false,
 	    	    data : {
@@ -148,7 +148,7 @@ $(document).ready(function(){
 	    	if (klName != "")
 	    	{
 	    		$.ajax({
-	        		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+	        		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
 	        		method : 'POST',
 	        		cache :false,
 	        	    data : {
@@ -202,7 +202,7 @@ $(document).ready(function(){
 	    	
 	    	
 	    	$.ajax({
-	    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+	    		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
 	    		method : 'POST',
 	    		cache :false,
 	    	    data : {
@@ -239,7 +239,7 @@ $(document).ready(function(){
 	    	//*
 	    	
 	    	$.ajax({
-	    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+	    		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
 	    		method : 'POST',
 	    		cache :false,
 	    	    data : {
@@ -261,7 +261,7 @@ $(document).ready(function(){
 	    });
 	    
 	    $.ajax({
-			url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+			url : ajax_url+'AnyCourse/KeyLabelServlet.do',
 			method : 'GET', 
 			cache :false,
 			data : {
@@ -273,37 +273,46 @@ $(document).ready(function(){
 	    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
 	    			addToSelfKeyLabel(maxIndex);
 				} // end for
-	    		exchangeKeyLabel();
+	    		
 	    	}, // end success
 			error:function(){console.log('get PersonalKeyLabel failed');}
 		});	// end ajax
 	    
-	    function exchangeKeyLabel(){    	
-		    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
-		    			if(keyLabelArray[maxIndex].share == 1)
-		    				{
-		    				$('#exchange_keylabel').append(
-			    					'<div id="exK_' + keyLabelArray[maxIndex].userId + '" class=" col-xs-12">'+
-			    					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
-			    					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + keyLabelArray[maxIndex].nick_name + '</h4>'+
-			    					'<li class="list-group-item">'+ keyLabelArray[maxIndex].keyLabelName+
-			    					'<ul class="list-group-submenu">'+
-			    					'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'+
-			    					'</ul>'+
-			    					'</li>'+
-			    					'</div>'
-			    					);
-		    				}
-		    			
-					} // end for		    				    		    
-	    }
 	    
-	 // 點選交流區的重點標籤，暫存區出現
-		$('.list-group-submenu').on('click', '.exchange', function(event) 
-		{
-			selectId = parseInt(this.getAttribute("id").split("-")[2]);
-			addToTempKeyLabel(selectId);
-		})
+	    $.ajax({
+			url : ajax_url+'AnyCourse/ExchangeKeyLabelServlet.do',
+			method : 'GET', 
+			cache :false,
+			data : {
+				"unit_id" : get("unit_id")
+			},
+			success:function(result){
+				console.log("OK");
+				exKeyLabelArray = result;
+	    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
+	    			$('#exchange_keylabel').append(
+	    					'<div id="exK_' + exKeyLabelArray[maxIndex].userId + '" class=" col-xs-12">'+
+	    					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
+	    					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + exKeyLabelArray[maxIndex].nick_name + '</h4>'+
+	    					'<li class="list-group-item">'+ exKeyLabelArray[maxIndex].keyLabelName+
+	    					'<ul class="list-group-submenu">'+
+	    					'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'+
+	    					'</ul>'+
+	    					'</li>'+
+	    					'</div>'
+	    					);
+				} // end for
+	    		
+	    		// 點選交流區的重點標籤，暫存區出現
+	    		$('.list-group-submenu').on('click', '.exchange', function(event) 
+				{
+					selectId = parseInt(this.getAttribute("id").split("-")[2]);
+					addToTempKeyLabel(selectId);
+				})
+	    	}, // end success
+			error:function(){console.log('get ExangeKeyLabel failed');}
+		});	// end ajax
+	    
 	    
 	    
 	  //---------------------------抓影片結束時間，並儲存----------------------------------------------//
@@ -334,7 +343,7 @@ $(document).ready(function(){
   function onYouTubeIframeAPIReady() {
 //	console.log(get('unit_id'));
 	$.ajax({
-		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+		url: ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
 		method: 'GET',
 		cache :false,
 		data: {
