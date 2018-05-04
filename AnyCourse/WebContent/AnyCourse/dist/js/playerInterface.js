@@ -33,6 +33,7 @@ function formatTime(seconds) {
 
 var video;
 var keyLabelArray;
+var exKeyLabelArray;
 var maxIndex = 0;
 var selectId = 0;
 var element;		//存DOM元素
