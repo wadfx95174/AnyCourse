@@ -335,44 +335,46 @@ $(document).ready(function(){
     		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
     			addToSelfKeyLabel(maxIndex);
 			} // end for
-    		
+    		exchangeKeyLabel();
     	}, // end success
 		error:function(){console.log('getPKL fail');}
 	});	// end ajax
     
-    $.ajax({
-		url : ajax_url+'AnyCourse/ExchangeKeyLabelServlet.do',
-		method : 'GET', 
-		cache :false,
-		data : {					
-			"unit_id" : get("unit_id")
-		},
-		success:function(result){
-			//alert("OK");
-			keyLabelArray = result;
-    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
-    			$('#exchange_keylabel').append(
-    					'<div id="exK_' + keyLabelArray[maxIndex].userId + '" class=" col-xs-12">'+
-    					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
-    					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + keyLabelArray[maxIndex].nick_name + '</h4>'+
-    					'<li class="list-group-item">'+ keyLabelArray[maxIndex].keyLabelName+
-    					'<ul class="list-group-submenu">'+
-    					'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'+
-    					'</ul>'+
-    					'</li>'+
-    					'</div>'
-    					);
-			} // end for
-    		
-    		// 點選交流區的重點標籤，暫存區出現
-    		$('.list-group-submenu').on('click', '.exchange', function(event) 
-			{
-				selectId = parseInt(this.getAttribute("id").split("-")[2]);
-				addToTempKeyLabel(selectId);
-			})
-    	}, // end success
-		error:function(){console.log('getEKL fail');}
-	});	// end ajax
+    function exchangeKeyLabel(){
+    	$.ajax({
+    		url : ajax_url+'AnyCourse/ExchangeKeyLabelServlet.do',
+    		method : 'GET', 
+    		cache :false,
+    		data : {					
+    			"unit_id" : get("unit_id")
+    		},
+    		success:function(result){
+    			//alert("OK");
+    			keyLabelArray = result;
+        		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
+        			$('#exchange_keylabel').append(
+        					'<div id="exK_' + keyLabelArray[maxIndex].userId + '" class=" col-xs-12">'+
+        					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
+        					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + keyLabelArray[maxIndex].nick_name + '</h4>'+
+        					'<li class="list-group-item">'+ keyLabelArray[maxIndex].keyLabelName+
+        					'<ul class="list-group-submenu">'+
+        					'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'+
+        					'</ul>'+
+        					'</li>'+
+        					'</div>'
+        					);
+    			} // end for       		
+        	}, // end success
+    		error:function(){console.log('getEKL fail');}
+    	});	// end ajax   	
+    }
+    
+ // 點選交流區的重點標籤，暫存區出現
+	$('.list-group-submenu').on('click', '.exchange', function(event) 
+	{
+		selectId = parseInt(this.getAttribute("id").split("-")[2]);
+		addToTempKeyLabel(selectId);
+	})
 
 //----------------------------------------------keyLabel----------------------------------------------//    
 //---------------------------抓影片結束時間，並儲存----------------------------------------------//
