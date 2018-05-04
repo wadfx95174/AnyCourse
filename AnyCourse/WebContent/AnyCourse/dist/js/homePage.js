@@ -15,8 +15,8 @@ $(document).ready(function(){
 		method : 'GET',
 		cache :false,
 		success:function(result){
-			console.log(result);
-			console.log(result[0][0].type);
+//			console.log(result);
+//			console.log(result[0][0].type);
 //			console.log(result.length);
 //			console.log(result.length*result.)
 			for(var i = 0;i < result.length ; i++){
@@ -329,7 +329,7 @@ $(document).ready(function(){
 				else if(result[i][0].type == 10){
 	
 				}
-				console.log(homePageList[1]);
+//				console.log(homePageList[1]);
 				var swiper = new Swiper('.swiper-container', {
 				      slidesPerView: 3,
 				      spaceBetween: 0,
@@ -347,7 +347,7 @@ $(document).ready(function(){
 			//影片新增至課程計畫
 			$('#addToCoursePlanButton').click(function(){
 				
-				alert(checkID);
+//				alert(checkID);
 				$.ajax({
 					url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
 					method : 'POST',
@@ -361,7 +361,7 @@ $(document).ready(function(){
 					}
 				})
 			});
-			
+			console.log(homePageList);
 			//清單整個新增至課程計畫
 			$('#addToCoursePlanButton_List').click(function(e){
 				e.preventDefault();
@@ -379,7 +379,7 @@ $(document).ready(function(){
 						console.log("addToCoursePlan_List Error!");
 					}
 				})
-			})
+			});
   	},
 		error:function(){}
 	});

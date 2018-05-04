@@ -21,7 +21,7 @@ public class SearchServlet extends HttpServlet {
 		response.setHeader("Cache-Control","max-age=0");
 		Gson gson = new Gson();
 		response.getWriter().print(gson.toJson(manager.getCourseListByKeyword(searchQuery)));
-		
+		System.out.println();
 //		request.setAttribute("search_query", searchQuery);
 //		RequestDispatcher view = request.getRequestDispatcher("/AnyCourse/pages/SearchResult.html");
 //		view.forward(request, response);
