@@ -207,17 +207,17 @@ public class NoteManager {
 
 	public void Close() {
 		try {
+			if(con!=null) {
+				con.close();
+			}
 			if(result!=null) {
 				result.close();
-				result = null;
 			}
 			if(stat!=null) {
 				stat.close();
-				stat = null;
 			}
 			if(pst!=null) {
 				pst.close();
-				pst = null;
 			}
 		}
 		catch(SQLException e) {

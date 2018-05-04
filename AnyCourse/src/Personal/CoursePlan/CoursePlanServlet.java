@@ -19,6 +19,7 @@ public class CoursePlanServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type","text/html;charset=UTF-8");
+		response.setHeader("Cache-Control","max-age=0");
 		CoursePlanManager coursePlanManager = new CoursePlanManager();
 		ArrayList<CoursePlan> coursePlans = null;
 		HttpSession session = request.getSession();
@@ -35,6 +36,7 @@ public class CoursePlanServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CoursePlanManager coursePlanManager = new CoursePlanManager();
+		response.setHeader("Cache-Control","max-age=0");
 		ArrayList<CoursePlan> coursePlans = null;
 		ArrayList<CoursePlan> oldCoursePlans = null;
 		CoursePlan coursePlan = new CoursePlan();

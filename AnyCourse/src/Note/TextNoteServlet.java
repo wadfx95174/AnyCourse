@@ -38,7 +38,7 @@ public class TextNoteServlet extends HttpServlet {
 		NoteManager dbnote1 = new NoteManager();
 		HttpSession session = request.getSession();
 //		Note_database dbnote2 = new Note_database();
-		 
+		response.setHeader("Cache-Control","max-age=0");
 		ArrayList<TextNote> textNotes = new ArrayList<TextNote>();
 //		PictureNote pictureNote = new PictureNote();
 		
@@ -67,7 +67,7 @@ public class TextNoteServlet extends HttpServlet {
 		//doGet(request, response);
 		HttpSession session = request.getSession();
 		String state = request.getParameter("state");
-		
+		response.setHeader("Cache-Control","max-age=0");
 		int unit_id = Integer.parseInt(request.getParameter("unit_id"));
 		String user_id = (String)session.getAttribute("userId");
 		String text_note = request.getParameter("text_note");

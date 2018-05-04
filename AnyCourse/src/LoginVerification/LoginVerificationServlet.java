@@ -18,7 +18,7 @@ public class LoginVerificationServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 		String method = request.getParameter("method");
-		
+		response.setHeader("Cache-Control","max-age=0");
 		if (method.equals("checkLogin"))
 		{
 			if (session.getAttribute("userId") == null)
@@ -49,6 +49,7 @@ public class LoginVerificationServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LoginVerificationManager manager= new LoginVerificationManager(); 
 		response.setContentType("text/html");
+		response.setHeader("Cache-Control","max-age=0");
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();

@@ -20,7 +20,7 @@ $(document).ready(function() {
 	checkLogin("../", "../../../");
 	//取得資料庫的資料
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/PersonalKeyLabelServlet.do',
+		url : 'http://140.121.197.130:8400/AnyCourse/PersonalKeyLabelServlet.do',
 		method : 'GET', 
 		cache :false,
 		data: {

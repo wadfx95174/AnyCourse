@@ -1,6 +1,6 @@
 $( document ).ready(function() {
      $.ajax({
-    	 url: 'http://localhost:8080/AnyCourse/LoginVerificationServlet.do',
+    	 url: 'http://140.121.197.130:8400/AnyCourse/LoginVerificationServlet.do',
     	 method : 'GET',
     	 cache :false,
     	 data: {

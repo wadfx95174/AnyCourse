@@ -18,6 +18,7 @@ public class SearchServlet extends HttpServlet {
 		String searchQuery = request.getParameter("search_query");
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control","max-age=0");
 		Gson gson = new Gson();
 		response.getWriter().print(gson.toJson(manager.getCourseListByKeyword(searchQuery)));
 		

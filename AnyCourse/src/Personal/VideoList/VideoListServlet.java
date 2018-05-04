@@ -14,7 +14,7 @@ public class VideoListServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type","text/html;charset=UTF-8");
-		
+		response.setHeader("Cache-Control","max-age=0");
 		HttpSession session = request.getSession();
 		ArrayList<VideoList> videoLists = new ArrayList<VideoList>();
 		ArrayList<UnitVideo> unitVideos = new ArrayList<UnitVideo>();
@@ -44,7 +44,7 @@ public class VideoListServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type","text/html;charset=UTF-8");
-		
+		response.setHeader("Cache-Control","max-age=0");
 		HttpSession session = request.getSession();
 		VideoListManager videoListDatebaseManager = new VideoListManager();
 		VideoList videoList = new VideoList();

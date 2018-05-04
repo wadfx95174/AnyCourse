@@ -13,12 +13,14 @@ public class AccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Cache-Control","max-age=0");
 		HttpSession session = request.getSession();
 		session.invalidate();
 		response.sendRedirect("AnyCourse/HomePage.html");
 		
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Cache-Control","max-age=0");
 		HttpSession session = request.getSession();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

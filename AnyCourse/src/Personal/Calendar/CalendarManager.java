@@ -137,31 +137,25 @@ public class CalendarManager
 		}
 	}
 	
-	private void Close()
-	{
-		try
-		{
-			if (result != null)
-			{
+	public void Close() {
+		try {
+			if(con!=null) {
+				con.close();
+			}
+			if(result!=null) {
 				result.close();
-				result = null;
 			}
-			if (stat != null)
-			{
+			if(stat!=null) {
 				stat.close();
-				stat = null;
 			}
-			if (pst != null)
-			{
+			if(pst!=null) {
 				pst.close();
-				pst = null;
 			}
-		} catch (final SQLException e)
-		{
-			System.out.println("Close Exception :" + e.toString());
 		}
-
-	}
+		catch(SQLException e) {
+			System.out.println("Close Exception :" + e.toString()); 
+		}		
+	} 
 	
 	public static void main(String []args)
 	{

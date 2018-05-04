@@ -36,7 +36,7 @@ public class ReplyServlet extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		HttpSession session = request.getSession();
 		ForumManager dbreply = new ForumManager();
-		 
+		response.setHeader("Cache-Control","max-age=0");
 		ArrayList<Reply> replys = new ArrayList<Reply>();
 
 		dbreply.selectReplyTable(replys);
@@ -54,7 +54,7 @@ public class ReplyServlet extends HttpServlet {
 		//doGet(request, response);
 		HttpSession session = request.getSession();
 		String state = request.getParameter("state");
-		 
+		response.setHeader("Cache-Control","max-age=0");
 		if(state.equals("insert"))
 		{
 			int comment_id = Integer.parseInt(request.getParameter("comment_id"));

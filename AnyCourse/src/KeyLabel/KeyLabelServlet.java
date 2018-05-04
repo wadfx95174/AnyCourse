@@ -16,7 +16,7 @@ public class KeyLabelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		response.setHeader("Cache-Control","max-age=0");
 		KeyLabelManager keyLabelDatebaseManager = new KeyLabelManager();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -31,7 +31,7 @@ public class KeyLabelServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		response.setHeader("Cache-Control","max-age=0");
 		KeyLabelManager keyLabelDatebaseManager = new KeyLabelManager();
 		KeyLabel keyLabel = new KeyLabel();
 		String method = request.getParameter("method");

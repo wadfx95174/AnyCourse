@@ -12,7 +12,7 @@ $(document).ready(function() {
 	
 	//取得資料庫的資料
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/SearchRecordServlet.do',
+		url : 'http://140.121.197.130:8400/AnyCourse/SearchRecordServlet.do',
 		method : 'GET', 
 		cache :false,
 		success:function(result){
@@ -55,7 +55,7 @@ $(document).ready(function() {
 	$("#deleteListButton1").click(function(e){
 	    e.preventDefault();
 	    $.ajax({
-			url : 'http://localhost:8080/AnyCourse/SearchRecordServlet.do',
+			url : 'http://140.121.197.130:8400/AnyCourse/SearchRecordServlet.do',
 			method : 'POST',
 			cache :false,
 		    data : {
@@ -76,7 +76,7 @@ $(document).ready(function() {
 //	$("#deleteListButton2").click(function(e){
 //	    e.preventDefault();
 //	    $.ajax({
-//			url : 'http://localhost:8080/AnyCourse/SearchRecordServlet.do',
+//			url : 'http://140.121.197.130:8400/AnyCourse/SearchRecordServlet.do',
 //			method : 'POST',
 //		    data : {
 //		    	"user_id" : searchRecordArray[checkID][0],

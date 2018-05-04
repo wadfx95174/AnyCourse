@@ -3,7 +3,7 @@
 	  	checkLogin("../", "../../../");
 	  
 	  	$.ajax({
-	  		url:'http://localhost:8080/AnyCourse/CalendarServlet.do',
+	  		url:'http://140.121.197.130:8400/AnyCourse/CalendarServlet.do',
 	  		method:'GET',
 	  		cache :false,
 	  		data:{
@@ -69,7 +69,7 @@
         
         // 從資料庫取得行事曆的資料，並更新至頁面
         $.ajax({
-			url: 'http://localhost:8080/AnyCourse/CalendarServlet.do',
+			url: 'http://140.121.197.130:8400/AnyCourse/CalendarServlet.do',
 			type: 'GET',
 			dataType: "json", 
 			cache :false,
@@ -109,7 +109,7 @@
 			        	    selectedObject.borderColor =  $('#selectedEvent').css('border-color'),
 			        	    // 送到資料庫更新
 			        	    $.ajax({
-			            		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
+			            		url : 'http://140.121.197.130:8400/AnyCourse/CalendarServlet.do',
 			            		method: 'POST',
 			            		cache: false,
 			            		data: {
@@ -163,7 +163,7 @@
 			            console.log(endTime);
 			            
 			            $.ajax({
-		            		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
+		            		url : 'http://140.121.197.130:8400/AnyCourse/CalendarServlet.do',
 		            		method: 'POST',
 		            		cache :false,
 		            		data: {
@@ -205,7 +205,7 @@
 				        	  if (confirm('確定要刪除 "'+event.title+'"')) 
 				        	  {
 				        		  $.ajax({
-					            		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
+					            		url : 'http://140.121.197.130:8400/AnyCourse/CalendarServlet.do',
 					            		method: 'POST',
 					            		cache :false,
 					            		data: {
@@ -244,7 +244,7 @@
 			        	 //}
 			        	    
 		        	     if (event.end != null)
-		        	        $.post("http://localhost:8080/AnyCourse/CalendarServlet.do", 
+		        	        $.post("http://140.121.197.130:8400/AnyCourse/CalendarServlet.do", 
 		        			  {
 		        		  		 id: event.id,
 		        		  		 title: event.title,
@@ -254,7 +254,7 @@
 		        		  		 method: "update"
 		        			  });
 		        	     else 
-		        		    $.post("http://localhost:8080/AnyCourse/CalendarServlet.do", 
+		        		    $.post("http://140.121.197.130:8400/AnyCourse/CalendarServlet.do", 
 		        			  {
 		        		  		 id: event.id,
 		        		  		 title: event.title,
