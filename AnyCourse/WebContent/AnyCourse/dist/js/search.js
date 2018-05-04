@@ -9,7 +9,7 @@ $(document).ready(function(){
 	$.ajax({
 		method:"GET",
 		cache :false,
-		url:'http://140.121.197.130:8400/AnyCourse/SearchServlet.do',
+		url:'http://localhost:8080/AnyCourse/SearchServlet.do',
 		data: {
 			search_query: get('search_query')
 		},

@@ -8,7 +8,7 @@ $(document).on('click', '#logout', function logout()
 function checkLogin(htmlUrl, servletUrl)
 {
 	$.ajax({
-    	url: 'http://140.121.197.130:8400/AnyCourse/AccountServlet.do',
+    	url: 'http://localhost:8080/AnyCourse/AccountServlet.do',
     	method: 'POST',
     	cache :false,
     	success: function(result){

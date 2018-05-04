@@ -11,7 +11,7 @@ $(document).ready(function(){
 		+'</div></div></section>'
 	var homePageListID = 1;
 	$.ajax({
-		url : 'http://140.121.197.130:8400/AnyCourse/HomePageServlet.do',
+		url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
 		method : 'GET',
 		cache :false,
 		success:function(result){
@@ -348,7 +348,7 @@ $(document).ready(function(){
 				
 				alert(checkID);
 				$.ajax({
-					url : 'http://140.121.197.130:8400/AnyCourse/HomePageServlet.do',
+					url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
 					method : 'POST',
 					cache: false,
 					data:{
@@ -366,7 +366,7 @@ $(document).ready(function(){
 				e.preventDefault();
 				console.log(homePageList[checkID][0]);
 				$.ajax({
-					url : 'http://140.121.197.130:8400/AnyCourse/HomePageServlet.do',
+					url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
 					method : 'POST',
 					cache: false,
 					data:{

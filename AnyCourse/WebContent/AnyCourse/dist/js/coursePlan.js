@@ -152,7 +152,7 @@ $(document).ready(function() {
 //	    		console.log(sender);
 //	    		console.log(oldIndex);
 	    		$.ajax({
-	    			url:'http://140.121.197.130:8400/AnyCourse/CoursePlanServlet.do',
+	    			url:'http://localhost:8080/AnyCourse/CoursePlanServlet.do',
 		    		method:'POST',
 		    		cache :false,
 		    		data:{
