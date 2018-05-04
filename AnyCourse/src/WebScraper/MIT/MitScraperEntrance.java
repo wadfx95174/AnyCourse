@@ -1,33 +1,22 @@
 package WebScraper.MIT;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class MitScraperEntrance {
-	public static void main(String[] args) {
-		Map<String, List<String>> columns = new HashMap<String, List<String>>();
-		List<String> rows = new ArrayList<String>();
-		 
-		// 第一筆資料
-		rows.add("a");
-		rows.add("b");
-		columns.put("1", rows);
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import WebScraper.Output.OutputFormat;
+
+public class MitScraperEntrance 
+{
+	public static void main(String[] args) 
+	{
+		MitScraper scraper = new MitScraper();
+		ArrayList<OutputFormat> outputs = scraper.getItems();
 		
-		rows=new ArrayList<String>();
-		rows.add("x");
-		rows.add("y");
-		columns.put("2", rows);
+		GsonBuilder builder = new GsonBuilder();
+		Gson gson = builder.setPrettyPrinting().create();
 		
-		
-		for(String row : columns.keySet())
-		{
-//			for(String s:columns.get(row)) {
-//				System.out.println(s);
-//			}
-			System.out.println(columns.get(row).get(0));
-		}
+		System.out.println(gson.toJson(outputs));
 	}
 }
