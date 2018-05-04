@@ -1,7 +1,12 @@
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
+
+
 document.write("<script type='text/javascript' src='dist/js/swiper.min.js'></script>");
 
 var homePageList;
 var checkID;
+
 $(document).ready(function(){
 	homePageList = new Array();
 	checkLogin("pages/", "../");
@@ -11,7 +16,7 @@ $(document).ready(function(){
 		+'</div></div></section>'
 	var homePageListID = 1;
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
+		url : ajax_url+'AnyCourse/HomePageServlet.do',
 		method : 'GET',
 		cache :false,
 		success:function(result){
@@ -349,7 +354,7 @@ $(document).ready(function(){
 				
 				alert(checkID);
 				$.ajax({
-					url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
+					url : ajax_url+'AnyCourse/HomePageServlet.do',
 					method : 'POST',
 					cache: false,
 					data:{
@@ -367,7 +372,7 @@ $(document).ready(function(){
 				e.preventDefault();
 				console.log(homePageList[checkID][0]);
 				$.ajax({
-					url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
+					url : ajax_url+'AnyCourse/HomePageServlet.do',
 					method : 'POST',
 					cache: false,
 					data:{
