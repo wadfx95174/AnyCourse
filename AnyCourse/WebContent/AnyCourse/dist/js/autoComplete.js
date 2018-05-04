@@ -2,51 +2,7 @@
   $(function() {
     var availableTags = [
 
-    	"0.1","000","01","0102","02","03","03B","04","05",
-    	"06","07","08","09","090708","090709","090714","090715","090716","090721","090722","090723","090728","090729","090730","090804","090805","090806","090811","090812",
-    	"090813","090818","090819","090820","090825","090826","090827","090917","090922","090924","090929","091001","091006","091008","091013","091015","091022","091027","091029","091103",
-    	"091105","091110","091112","091119","091203","091208","091210","091215","091217","091222","091224","091229","091231","0919","0926","0th","1.000","1.1","1.10","1.11",
-    	"1.2","1.3","1.4","1.5","1.6","1.7","1.8","1.9","10","10.1","10.2","10.3","10.4","10.5","10.6","10.7","10.8","100","100105","100107",
-    	"1003","101","101.03","101.04","101.05","1010322","1010426","1010524","1010607","1010614","1010919","1010920","1010926","1010928","1011003","1011004","1011011","1011017","1011018","1011024",
-    	"1011025","1011031","1011101","1011107","1011108","1011114","1011121","1011122","1011128","1011129","1011205","1011206","1011212","1011220","1011226","1011227","1017","102","102.04","102.05",
-    	"1020102","1020103","1020109","1020110","1020117","1020304","1020409","1020422","1020506","1020527","1021004","1021011","1021018","1021025","1021101","1021115","1021206","1021213","1021219","1021220",
-    	"1021227","1024","103","1030103","1030227","1030320","1031","104","105","106","1060427","1060502","1060504","1060509","1060511","1060518","1060523","1060525","1060601","1060606",
-    	"1060608","1060613","1060615","1060926","1060928","1061003","1061005","1061007","1061012","1061019","1061024","1061026","1061031","1061102","1061107","1061109","1061114","1061121","1061123","1061130",
-    	"1061205","1061207","1061212","1061214","1061221","1061226","1061228","107","1070102","108","109","10A","10Chapter","11","11.1","11.10","11.11","11.12","11.16","11.17",
-    	"11.19","11.2","11.23","11.3","11.30","11.4","11.5","11.6","11.7","11.8","11.9","110","1107","111","1114","112","1121","1128","113","114",
-    	"115","116","117","118","119","11The","12","12.1","12.13","12.14","12.2","12.21","12.28","12.3","12.4","12.5","12.6","12.7","120","121",
-    	"1212","1219","122","1226","123","124","125","126","127","128","129","13","13.1","13.15","13.17","13.18","13.19","13.2","13.21","13.23",
-    	"13.27","13.3","13.4","130","131","132","133","134","135","136","137","138","139","14","14.1","14.2","14.22","14.25","14.3","14.4",
-    	"14.5","14.6","14.7","14.8","140","141","142","143","144","145","146","147","148","149","15","15.1","15.10","15.19","15.2","15.21",
-    	"15.23","15.27","15.3","15.4","15.5","15.6","15.7","15.8","15.9","150","151","152","153","154","155","156","157","158","159","16",
-    	"16.1","16.2","16.25","16.3","16.4","16.5","16.6","160","161","162","163","164","1683","17","17.19","17.21","17.27","170","171","172",
-    	"173","1759","1770","1772","1788","179","1792","1795","17th","18","18.1","18.2","18.24","18.3","18.4","18.5","18.6","18.7","18.8","1806",
-    	"1809","182","1821","1822","1827","183","1830","1834","1847","1850","1865","1882","1888","1895","19","19.1","19.2","19.23","19.3","19.4",
-    	"19.5","1902","1905","1909","1939","1941","1949","1960","1965","1971","1985","1989","1990","1998","1999","1Causality","1Cofactor","1D","1Jovian","1mask",
-    	"1Matlab","1point","1st","2.1","2.10","2.11","2.12","2.13","2.14","2.18","2.19","2.2","2.23","2.3","2.4","2.5","2.6","2.7","2.8","2.9",
-    	"20","20.1","20.2","20.3","20.4","20.5","20.6","20.7","200","2002","2003","2007","2010","20100224","20100226","20100303","20100305","20100310","20100312","20100317",
-    	"20100319","20100331","20100407","20100409","20100414","20100416","20100421","20100423","20100428","20100430","20100512","20100514","20100519","20100521","20100526","20100528","20100604","20101012","20101019","20101026",
-    	"20101102","20101109","20101123","20101130","20101207","20101214","20101220","20101221","20101228","20110104","20110222","20110315","20110329","20110419","20110426","20110503","20110510","20110517","20110524","20110531",
-    	"20110607","2014","2015","20170321","20170328","20170411","20170418","20170425","20170502","20170509","20170516","20170523","20170606","20170613","202","2020","21","21.1","21.2","21.24",
-    	"21.25","21.28","21.3","21.4","21.5","21005","22","22.28","22.3","22.4","22.5","22.6","22.7","22.8","23","23.1","23.2","23.25","23.29","23.3",
-    	"23.31","23.4","23.5","23.6","23.7","24","24.1","24.2","24.3","24.4","25","25.29","25.3","25.34","25.35","25.5","25.6","26","26.3","26.33",
-    	"26.4","26.5","26.6","27","27.1","27.2","27.49","28","28.1","28.3","28.32","28.35","28.44","29","29.1","29.2","29.35","29.37","29.4","29.41",
-    	"29.5","29.6","2A","2Absorption","2B","2D","2fourier","2Jovian","2L","2nd","2pi","2point","2Rings","2x2","3.1","3.10","3.11","3.12","3.13","3.14",
-    	"3.15","3.16","3.2","3.3","3.4","3.5","3.6","3.7","3.8","3.9","30","30.1","30.2","30.3","30.39","30.4","30.6","31","31.1","31.2",
-    	"31.3","31.33","31.35","31.49","31.5","31.6","32","32.1","32.2","32.3","32.38","32.4","32.49","32.5","33","33.1","33.2","33.3","33.4","33.5",
-    	"33.6","33.7","33.8","33.9","34","34.1","34.2","34.3","34.39","34.5","35","35.38","35.41","35.53","35.6","35.7","35.8","36","36.50","37",
-    	"37.39","37.4","37.42","38","38.45","38.6","39","39.10","39.41","39.43","39.59","39.7","39.8","39.9","3a","3b","3c","3D","3fourier","3mask",
-    	"3point","3rd","3x3","4.0","4.1","4.10","4.11","4.12","4.13","4.14","4.15","4.16","4.17","4.2","4.3","4.4","4.5","4.6","4.7","4.8",
-    	"4.9","40","40.2","40.3","40.4","40.5","40.6","40.8","41","41.47","41.5","41.50","41.6","42","43","43.57","44","44.45","44.52","45",
-    	"45.48","45.50","45.55","46","46.55","47","47.53","47.57","48","48.62","49","49.54","495","499","5.1","5.10","5.11","5.12","5.13","5.14",
-    	"5.15","5.16","5.17","5.2","5.3","5.4","5.5","5.6","5.7","5.8","5.9","50","50.60","51","51.53","52","52.60","53","53.58","53.67",
-    	"54","54.57","55","56","57","57.63","57.65","57.67","58","59","59.61","59.65","59.73","5Linear","6.1","6.10","6.11","6.12","6.13","6.18",
-    	"6.2","6.3","6.4","6.5","6.6","6.7","6.8","6.9","60","61","61.70","62","63","63.65","64","64027","65","65.67","66","67",
-    	"67.69","67.75","68","69","69.94","6P","7.1","7.11","7.13","7.2","7.3","7.4","7.5","7.6","7.7","7.8","70","70s","71","71.73",
-    	"72","73","74","748","75","75.77","76","77","78","79","7Derivatives","8.1","8.10","8.11","8.12","8.16","8.2","8.3","8.4","8.5",
-    	"8.6","8.7","8.8","8.9","80","802.11","802.15","802.3","80s","81","82","83","84","85","86","87","88","89","9.1","9.13",
-    	"9.14","9.15","9.2","9.27","9.3","9.4","9.5","9.6","9.7","9.8","9.9","90","9000","91","92","93","94","95","96","97",
-    	"98","99",": '",": - ",": ‘",":「","? - ","? ─ ","?) ","?)-","??? ","?????、???","?”. ","?「","A1","Abbe","ABC","Abel","able","About",
+    	"Causality","Cofactor","Jovian","mask","Matlab","point","fourier","Linear","Derivatives","Abbe","Abel","able","About",
     	"Abrams","Absence","Absolate","Absolute","Absorption","abstract","abstraction","Abstractions","AC","Academia","Accelerated","Acceleration","Acceptance","Access","Accessible","Accompanying","according","accountability","Accumulated","Acid",
     	"Acids","Acoustic","acoustics","Acquaintance","acquisition","Acting","Action","actions","active","activit","Activities","activity","ADA","Adaptability","Adaptation","adapted","Adaption","Adaptive","Adder","Adders",
     	"Addition","Additional","Address","Addressing","Adiabatic","Adj","adjacency","Adjectifs","Adjoint","Adjusting","Administrate","adn","Adonit","Adriana","Adult","Adv","advanced","Advantages","Adverbials","Adverse",
@@ -81,11 +37,8 @@
     	"Chapter15","Chapter16","Chapter2","Chapter3","Chapter4","Chapter5","Chapter6","Chapter7","Chapter8","Character","Characteristic","Characteristics","Characterization","Characterizations","Characters","charge","charges","Charging","Charisma","Charles",
     	"Chart","Chartered","Charts","chat","Chatelier","Chatterjee","Chaucer","Che","Checksum","Chemical","Chemistry","CHEN","Cheng","Chi","Chia","chiami","Chiang","Chicago","Chien","Chih",
     	"children","Chin","China","Chinese","ching","Chiuan","Choice","Chopin","Chou","Christmas","chromosome","Chu","Chuan","Chueh","Chun","CHUNG","cide","CIGS","cinema","cinematographic",
-    	"cip","circle","Circu","circuit","Circuits","Circular","Circulation","Ciruit","cise","cities","City","Civil","Ck","ckel","claim","claims","Clairaut","Class","Class1","Class10",
-    	"Class11","Class12","Class13","Class14","Class15","Class16","Class17","Class18","Class19","Class20","Class21","Class22","Class23","Class24","Class25","Class26","Class27","Class28","Class29","Class3",
-    	"Class30","Class31","Class32","Class33","Class36","Class37","Class38","Class39","Class4","Class40","Class41","Class42","Class44","Class45","Class46","class47","Class48","Class49","Class5","Class50",
-    	"Class51","Class52","Class53","Class54","Class56","Class57","Class58","Class59","Class6","Class60","Class62","Class63","Class64","Class66","Class67","Class68","Class69","Class7","Class8","Class9",
-    	"classe","Classes","classical","Classification","Classifier","classifiers","Classifying","ClassiO","Clause","Clausius","Clicks","Climate","clinical","Clint","Clocked","clos","closure","Closures","clud","clus",
+    	"cip","circle","Circu","circuit","Circuits","Circular","Circulation","Ciruit","cise","cities","City","Civil","Ck","ckel","claim","claims","Clairaut","Classes","classical","Classification","Classifier",
+    	"classifiers","Classifying","ClassiO","Clause","Clausius","Clicks","Climate","clinical","Clint","Clocked","clos","closure","Closures","clud","clus",
     	"Clustering","CMOS","CMRR","CO2","Coal","Coastal","Cobb","Coda","code","Codes","Coding","coefficeints","Coefficient","Coefficients","Coffee","cognition","Cognitive","Coherence","Coherent","Cohomology",
     	"ColA","Coleridge","Collective","Colligative","collision","collisions","Collocation","Colonial","Color","colore","column","Columns","com","Combina","combination","Combinational","Combinations","Combining","Combustion","Come",
     	"Comfort","Comment","Comments","Commodities","common","Communicable","Communicating","Communication","Communicative","Communitists","community","Commutability","Commuting","Compact","Compactness","compagnie","companies","Comparative","Compare","Compared",
@@ -100,8 +53,7 @@
     	"Corruption","cortex","cortical","Cosine","Cosplay","cost","Costs","Coulomb","Council","Counterfactual","Counters","Counting","Countries","Country","course","Coutinuous","couvrir","CoV","Covariant","Coyle",
     	"CPM","CPP","CPT","CPU","cr","CRC32","CreAction","Creative","Creativity","crime","Criminal","crire","crisis","Criteria","Critical","Cross","Crosscutting","Crosstalk","CRT","Cry",
     	"Cryptography","Crystal","Crystalline","Crystallization","Crystallographic","crystallography","Crystals","CT","Cubic","Cullture","Culmination","Cultivation","cultural","Culture","Cultures","Curl","Currencies","Currency","current","currents",
-    	"Curvature","Curve","Curves","Cut","Cuts","Cutting","CV","CV1","CV10","CV11","CV12","CV13","CV14","CV15","CV16","CV17","CV18","CV19","CV2","CV20",
-    	"CV21","CV3","CV4","CV5","CV6","CV7","CV8","CV9","CWB","Cycle","Cyclic","Cycling","Cycloid","Cycloids","Cyclostationary","Cyclotron","Cylinders","Cylindrical","dai","Daigee",
+    	"Curvature","Curve","Curves","Cut","Cuts","Cutting","CWB","Cycle","Cyclic","Cycling","Cycloid","Cycloids","Cyclostationary","Cyclotron","Cylinders","Cylindrical","dai","Daigee",
     	"Damped","Dance","Dangers","Dantzig","Darboux","Darwin","Das","Dasar","Data","Database","Datapath","Datatype","date","Daves","dc","DCAL","DCT","DE","deadliest","Deadline",
     	"Deadlocks","deal","Dealership","Death","Debreu","debugger","debugging","Debye","Dec","Decades","Decay","Decibels","Decimal","Decision","Decoders","Decoding","Decomposition","deconstructed","Dedekind","defeated",
     	"Defect","Defects","defence","Deficit","Defined","Defining","Definite","Definiteness","Definition","definitions","Deflection","Deformable","Degeneracy","Degradation","Degradations","Degree","dehydrogenase","delete","Delirious","Delivery",
@@ -113,7 +65,7 @@
     	"Dimersional","Diode","Diodes","Dipesh","Diphthongs","Dipole","Dipoles","Dirac","direct","Direction","Directional","directions","Directory","Dirichlet","Disadvantages","Disaster","Discontinuities","Discontinuity","Discourse","Discrete",
     	"Discretized","discriminating","Discrimination","Discuss","Discussant","Discussion","Discussions","disease","diseases","Disintegration","Disjunctive","Disk","Disorders","dispersio","Dispersion","Displacements","Display","Disposal","disscussion","dissipation",
     	"dissociation","Dissolution","distance","Distances","Distributed","Distribution","Distributions","Disturbance","Divergence","Divergent","Diversified","Diversion","Diversity","Divide","Divider","Diving","division","Divisors","DMA","DNA",
-    	"DNS","do","doc","Document","Dolphins","Domain","Domains","Domani","Dominance","Dominant","Domingo","Don","Done","Donner","Donnez","Doob","Doppler","Dorian","Doris","Dorsal",
+    	"DNS","Document","Dolphins","Domain","Domains","Domani","Dominance","Dominant","Domingo","Don","Done","Donner","Donnez","Doob","Doppler","Dorian","Doris","Dorsal",
     	"Dot","Double","Douglas","Dove","Down","DPN","Dr","drain","drainage","Drawing","driven","Driver","Drivers","driving","Drop","Drude","DSSI","DTFT","du","Dual",
     	"Duality","duc","Duckietown","duckroach","due","Duhem","Duhen","dummy","duplication","Dutch","dynamic","Dynamical","Dynamics","Dyslexia","ear","Early","Earnest","Earnings","Earth","Earthquake",
     	"Easier","Eastern","Eastman","Ebola","Eccentrically","eccentricity","Eco","economic","Economics","Economies","Economy","Ecosystem","ecosystems","Eddy","Edition","Edman","eds","Education","Edward","ee",
@@ -168,8 +120,7 @@
     	"Jinn","Jiun","Jiunn","Jiwen","Jixia","John","joint","joints","Joker","Jonah","Jones","Jordan","Jordans","Joshi","Jou","journ","Joyce","Ju","Junction","Jung",
     	"Jupyter","jusqu","justice","Kac","Kalimat","kamikaze","Kant","Karhunen","Karnaugh","Kate","kdV","Keats","Keisuke","Kepler","Kernel","Ket","Ketones","Key","Khilnani","Kids",
     	"Killing","kind","Kinematic","Kinematics","kinetic","Kinetics","King","Kinoshita","Kirchhoff","Know","Knowledge","Known","Ko","KOBE","Kodak","Korean","Kowalevski","KRAMERS","Krieger","Kronecker",
-    	"Ku","Kuo","KUSO","Kutta","Kwong","KYOTO","L0","L1","L10","L11","L12","L2","L3","L4","L5","L6","L7","L8","L9","La",
-    	"Lab","Lab1","Lab12","Lab13","Lab3","Lab4","Lab5","Lab6","Lab7","Lab8","Lab9","Labor","Laboratories","Laboratory","Laborer","Lagrage","Lagrange","Lagrangian","Lagu","Lamps",
+    	"Ku","Kuo","KUSO","Kutta","Kwong","KYOTO","Labor","Laboratories","Laboratory","Laborer","Lagrage","Lagrange","Lagrangian","Lagu","Lamps",
     	"Lan","LAND","Landscape","Lane","Lanes","Langevin","language","Languages","lansing","Laozi","Laplace","Large","Larmor","Lasalle","Laser","lasers","Latches","Late","Latent","Latera",
     	"Lateral","Laterals","Latihan","Laughlin","Laurent","lavoro","Law","Laws","layer","layered","LC","LCAO","LCM","LD","lder","Le","leader","Leaders","leading","learned",
     	"Learners","learning","Least","leave","Leaving","Lebesgue","Lec","lec1","lec10","lec11","lec12","lec13","lec14","lec15","lec16","lec17","lec2","lec28","lec29","lec3",
@@ -207,12 +158,11 @@
     	"Observing","Obtain","Occipital","Ocean","Oct","OCW","Odd","odds","ODE","Odometry","odory","OFC","Off","Offering","office","offset","Ohm","Oil","Old","Oligopoly",
     	"Oneness","Online","onlinelibrary","Only","ons","Onset","op","Open","Operands","Operater","Operating","operation","Operational","operations","operator","operators","Oppenheimer","opportunies","opportunities","Opposition",
     	"Optical","Optics","Optimal","optimality","Optimization","OptimizationProblems","Optimizations","Optional","Optoelectronic","oral","Orbital","orbitals","orbits","orch","order","Ordering","Orderings","Orders","Ordinary","ore",
-    	"Orer","Organic","Organization","Organizational","Organizations","Organometallic","Orientation","orientation64027","Oriented","Origin","Origins","Orth","ortho","Orthogonal","orthogonality","Orthogonalozation","orthonormal","OS","Oscar","Oscillation",
+    	"Orer","Organic","Organization","Organizational","Organizations","Organometallic","Orientation","Oriented","Origin","Origins","Orth","ortho","Orthogonal","orthogonality","Orthogonalozation","orthonormal","OS","Oscar","Oscillation",
     	"Oscillations","oscillator","Oscillators","Osillator","OSPF","OTEC","Other","ou","Our","out","Outer","Output","Outputs","Outreach","Over","Overcoming","Overlapping","Overloading","Overseas","overturning",
     	"Overview","own","Ownership","Oxidation","Oxidative","OZ","Ozone","P2","P2P","P3","P6","paced","packet","PAFC","Page","Pai","Pairs","Pan","Panama","panel",
     	"paper","para","Parabolic","paracompact","paracompactness","Paradigm","Paradigms","Paradox","paradoxes","Parallel","Parallelism","Parameter","parameters","Parametric","Paraphrase","parietal","PARIS","Parity","Park","Parking",
-    	"Parks","Parler","Parseval","part","part1","part10","part11","part12","part13","part14","part2","part3","part4","Part5","Part6","Part7","Part8","Part9","Partha","PartI",
-    	"Partial","Particle","Particles","partie","PartII","partition","Partitioning","Parts","Pascal","Pasibutbut","pass","passions","passive","past","Path","PAths","pathways","pati","Pattern","patterning",
+    	"Parks","Parler","Parseval","Partha","Partial","Particle","Particles","partie","PartII","partition","Partitioning","Parts","Pascal","Pasibutbut","pass","passions","passive","past","Path","PAths","pathways","pati","Pattern","patterning",
     	"Patterns","Pauli","Pavilion","Payments","PBL","PC","PCA","PCL","PDE","PDEs","peace","Peano","Peek","Peer","Peformance","Pei","Peking","Pelagia","Pelagic","PEMFC",
     	"Pen","pend","Pendulum","penetrating","penetration","Peng","Peony","People","Peoples","peptide","Percentages","perception","Perceptron","Percy","perfect","Perfo","Performance","Performing","Period","periodi",
     	"Periodic","Peripherals","Permutations","Perpendicular","Perpetuities","Perron","Perrons","Personality","Personhood","personne","personnelles","perspective","PERT","Pertanyaan","perturbation","Perturbations","Peter","pH","Phantom","Pharmaceutical",
@@ -248,10 +198,7 @@
     	"Samir","sample","Sampled","samples","sampling","Samurai","samurais","San","Sandhi","Sands","sandy","Sanjay","SAP","sate","satellites","Satyanarayana","Savart","Saving","Scalar","Scale",
     	"Scaled","scaling","Scandal","scanf","scanners","scanning","Scarlar","Scattering","Scenes","SCF","Schauder","Schedulin","Scheduling","Schema","Scheme","Schmidt","Scholes","Schr","Schrodinger","Schwartz",
     	"Schwarz","Schwarzschild","Science","Scientific","Scientist","Scope","scores","Screening","scrib","script","Scrutiny","SDP","se","sea","Search","Searching","Sec","Sec3","Secant","Second",
-    	"Secondary","Secret","Secretary","sect","Section","Section11","Section12","Section13","Section14","Section15","Section16","Section17","Section18","Section19","Section21","Section22","Section23","Section24","Section26","Section29",
-    	"Section3","Section31","Section32","Section33","Section36","Section37","Section40","Section41","Section42","Section43","Section44","Section5","Section50","Section51","Section53","Section54","Section55","Section56","Section57","Section58",
-    	"Section59","Section6","Section60","Section61","Section62","Section63","Section64","Section65","Section66","Section67","Section68","Section69","Section7","Section70","Section71","Section72","Section77","Section78","Section79","Section8",
-    	"Section80","Section81","Section82","Section9","Section94","Sections","securities","Security","sed","see","Seeing","Segmentation","sei","Select","Selecting","selection","Selective","selenide","Self","Sellers",
+    	"Secondary","Secret","Secretary","sect","securities","Security","sed","see","Seeing","Segmentation","sei","Select","Selecting","selection","Selective","selenide","Self","Sellers",
     	"SEM","semantic","semantics","Semi","Semiconductor","Semigroups","Semimartingales","Sense","sensing","Sensitivity","Sensor","sensors","Sensory","Sentence","senter","senti","Separable","Separation","Sept","Sequence",
     	"Sequences","Sequential","Sequentially","SER","Serial","Series","servation","service","Services","ses","sess","Session","Set","sets","settleme","Settlement","setup","Seven","Several","severe",
     	"sex","Shan","Shang","Shape","shaped","Shaping","Shared","Sharing","Sharpening","Shaw","shear","sheet","Shelley","Shells","Sheng","Shiang","Shiao","Shift","Shih","shing",
@@ -274,7 +221,7 @@
     	"Switzerland","Syllables","Syllabus","Symbol","symbolism","symbols","Symmetric","Symmetrical","Symmetry","Symposium","Synapses","Sync","Synchronization","Synchrotron","synonyms","syntactic","syntax","synthesis","system","system64027",
     	"systems","TA","Table","tables","tach","tack","tact","TAG","Tagore","TAI","tain","Taipei","Taiwan","Taiwanese","taking","Taku","Tale","Tales","Talking","Talyor",
     	"Tamapima","Tan","tang","Tangent","Tangential","Tangents","Tao","Taps","Tar","Targets","tarjeta","Task","Taxation","taxonomy","Taylor","tb00021","TCA","TCP","TCR","TE",
-    	"Teaching","Team1","Team10","Team2","Team3","Team4","Team5","Team6","Team7","Team8","Team9","Teather","Tech","Technique","Techniques","Technologies","Technology","tect","TED","Teh",
+    	"Teaching","Teather","Tech","Technique","Techniques","Technologies","Technology","tect","TED","Teh",
     	"tel","Telerobotic","TEM","Temp","Temperature","tempo","Temporal","Ten","Tendency","tenets","Teng","Tennessee","Tennyson","Tense","Tension","tensor","Tensorflow","Terbaru","term","Terminated",
     	"Termination","terminologies","Terminology","Terms","Terrestrial","Terzaghi","tes","TESLA","Test","Testament","testing","Tests","tetrahedron","TFRI","than","Thapar","Tharu","Theater","Theatre","Their",
     	"Thematic","Theological","Theorem","theorems","Theoretical","Theories","Theorizing","Theory","Therapy","there","Thermal","thermodynamic","Thermodynamics","thermodynanics","thermodynsmics","Thermometer","Thermometers","they","Thick","Thin",
@@ -292,11 +239,10 @@
     	"Vegas","Vehicle","Vehicles","Velocity","ven","ventures","Venturi","verb","verbal","VerbNet","verbs","Veri","Verification","vers","Version","VersionI","VersionII","VersionIII","Versus","vert",
     	"Vertical","ves","VHDL","VI","via","viaggio","vibration","vibrational","vibrations","Vibronic","Vickie","Victor","victories","vid","Video","vie","View","Views","VII","VIII",
     	"ville","violation","viral","Virginia","Virtual","Virus","vis","Viscosity","Vision","Visit","Visual","visualization","Vocabulary","vocal","vocational","Voice","Voices","void","VoIP","voltage",
-    	"volume","Volumes","votre","vous","Vowel","vowels","Voyelles","VR","VRC","VRs","vs","VSEPR","VSL","vuc","vulnerability","W09CAL","W1","W10","W11","W12",
-    	"W13","W14","W15","W16","W2","W3","W4","W5","W6","W7","W8","W9","Waals","Wada","Wages","Wai","walk","Walks","Walled","walls",
+    	"volume","Volumes","votre","vous","Vowel","vowels","Voyelles","VR","VRC","VRs","vs","VSEPR","VSL","vuc","vulnerability","W09CAL",
+    	"Waals","Wada","Wages","Wai","walk","Walks","Walled","walls",
     	"Walsh","Wan","WANG","War","WARGAMING","Warming","warning","Wars","was","Washington","Waste","water","wave","Waveforms","Wavefunctions","Waveguide","Waveguides","Wavelet","Wavelets","Waves",
-    	"way","Ways","Weak","wear","Weather","Web","WEDIA","Week1","Week10","Week11","Week12","Week13","Week14","Week15","Week16","Week17","Week2","Week3","Week4","Week5",
-    	"Week6","Week7","Week8","Week9","Weel4","Wei","Weierstiass","Weierstrass","Weight","Weighted","Welfare","Well","Wen","Weng","wetting","WH","whales","What","Where","WHITE",
+    	"way","Ways","Weak","wear","Weather","Web","WEDIA","Wei","Weierstiass","Weierstrass","Weight","Weighted","Welfare","Well","Wen","Weng","wetting","WH","whales","What","Where","WHITE",
     	"whole","whores","Why","wide","widlar","Widow","Wien","Wigner","Wilcoxon","Wild","Wilde","wiley","will","William","Williams","wilson","Wimax","Wind","windows","WINWIN",
     	"Wireless","Withdraw","without","Wittgenstein","WM","WMV","Wolfe","womb","Women","Wongsatorn","Woolf","word","words","Wordsworth","Work","working","World","Worlds","Wrap","Wrapping",
     	"Write","Writers","Writing","written","Wrong","WTO","Wu","Wuthering","WWW","xi","Xiao","Xiong","Xu","Xue","Xunzi","Ya","yang","Year","Years","Yeats",
@@ -365,7 +311,7 @@
     	"動力論","動式","動態","動漫","動漫史","動物","動物循","動物權","動物行","動物觀","動物通","動畫","動畫師","動能","動脈","動詞","動貌","動量","勘根法","勘誤",
     	"勝利","勝利組","勝堅院","勝粒奈米","勝過","勞倫茲","勞倫茲力","勞動","勞工","勞林級數","勞資關","勞軍為","勻斷","勻閉包","包宗","包曼","包板","包浩斯到","包絡線","包裝",
     	"包階段","化台灣","化合物","化學","化學動","化學式","化學鍵","化後所算","化性","化生","化石","化約論","化繁","化解","化鎘","北人到","北冥有魚","北宋","北投","北曲",
-    	"北極","北極光","北極海","北部","區位","區別","區域","區的","區間","十一","十七","十三","十九","十二","十五","十五篇","十八","十六","十四","十四回",
+    	"北極","北極光","北極海","北部","區位","區別","區域","區的","區間",
     	"十大","十宅論","十有","十次","十步","十進位","千禧年","千言","千變","升降","午機","午餐","半天","半導","半導體","半空","半部","協助","協奏","協會",
     	"協調","協變","南亞","南伯子","南北朝","南廓","南東","南郭","博士","博物","博覽會","占卦","卡斯","卡方","卡方分","卡氏","卡氏積","卡洛傳記","卡羅模","卡西雅",
     	"卡諾","卡里","卦象","印尼","印度","印度教","印象","危害","危機","危險","即時","卷積","卻域","厚德","原住民","原作","原來","原函數","原則","原因",
@@ -386,8 +332,8 @@
     	"唐明皇","唐璜","唐納","唐詩","唐詩選","唯一","唯一性","唱作","唱歌","唱腔","商主","商人","商務","商品","商店","商拓樸","商攝","商映射","商業","商標權",
     	"商用","商禽","問候","問探","問答","問蒼茫","問題","啟動","啟悟","啟方","啟源","啟發","啟示","啟示錄","啟航","啟蒙","啟蒙時代","啟蒙運動","啟迪","啤酒",
     	"啼血","喜劇","喜好","喜愛的","喜歡","喪俗","喪禮","喪葬","喪足","單位","單個","單元十","單壓","單子","單字","單實","單式","單據關","單擺","單純",
-    	"單級","單調","單變數","單連通","單邊","嗜好","嗜欲","器產業","噴霧","嚴謹","嚴重","四世同堂","四個","四分","四則","四功","四十","四十三","四十五","四十八",
-    	"四十六","四十回","四史","四周","四大","四季","四庫","四維座標","四維時","四縣","回事","回填","回填土","回應","回授","回收","回歸","回盪","回眸","回至",
+    	"單級","單調","單變數","單連通","單邊","嗜好","嗜欲","器產業","噴霧","嚴謹","嚴重","四世同堂","四個","四分","四則","四功",
+    	"四史","四周","四大","四季","四庫","四維座標","四維時","四縣","回事","回填","回填土","回應","回授","回收","回歸","回盪","回眸","回至",
     	"回覆","回顧","回饋","回首","因子","因應","因斯","因為","因百對","因素","因緣","困難","固定","固態","固有","固體","固體角","圈中","圈產生","圈養",
     	"國傳統","國允","國光京劇","國內","國勤","國名","國土","國外","國學熱","國家","國家奈米","國家擬","國文","國族","國會","國民大會","國球","國立","國語","國防",
     	"國際","國際化","國際學術","圍牆","園到","園林","園的","園者","園藝","園藝學","園藝療","圓周","圓夢","圓孔","圓形","圓桿","圓為方","圓盤","圓葉","圖主義",
@@ -572,12 +518,8 @@
     	"種間","種類","稱性","稱桿件","稱矩","稱量","稼軒","稽納二極體","穆旦","穆時","積分","積分法","積分號","積應","積拓樸","積木","積測度","積體","穩壓","穩定",
     	"究竟","究腦學","穹蒼","空中","空家","空心","空樣","空氣","空的關","空腔","空間","空間資","穿衣","穿越","穿透","突出","突及","突破","突觸","突間",
     	"窮人","窯業易","窺探","竅門","立公棄","立凱","立國","立場","立恆","立憲","立憲主義精義","立方","立法","立法院","立面","立體","立體論","章回","章宇賢","童心",
-    	"童慶斌","童期","童話","端倪","端點","競爭","競爭力","竹亭","竹取","竹山","竹科","竹科奇","笑府","笑林","笛卡兒","符號","第一","第一件","第一周","第一堂",
-    	"第一本","第一次","第一章","第七","第七章","第三","第三十一章","第三十三章","第三十二章","第三十五章","第三十四章","第三十章","第三周","第三方","第三次","第三章","第九","第九章","第二","第二十",
-    	"第二十一章","第二十七章","第二十三章","第二十九章","第二十二章","第二十五章","第二十八章","第二十六章","第二十四章","第二十章","第二周","第二次","第二章","第五","第五次","第五章","第八","第八章","第六","第六十六",
-    	"第六周","第六章","第十","第十一","第十一章","第十七","第十七章","第十三","第十三章","第十九","第十九章","第十二","第十二章","第十五","第十五章","第十八章","第十六","第十六章","第十四","第十四章",
-    	"第十章","第四","第四次","第四章","第零","筆名","筆學會","筆筒","等價","等加速度","等度","等式","等效","等角投影","策展","策略","策略性","算例","算例一","算例三",
-    	"算例二","算例四","算子","算定","算式","算數","算法","算符","算術","管制","管控","管柱","管理","管理法","管理科","管理系","管管","管道","節導讀","節文",
+    	"童慶斌","童期","童話","端倪","端點","競爭","競爭力","竹亭","竹取","竹山","竹科","竹科奇","笑府","笑林","笛卡兒","符號","筆名","筆學會","筆筒","等價","等加速度","等度","等式","等效","等角投影","策展","策略","策略性",
+    	"管制","管控","管柱","管理","管理法","管理科","管理系","管管","管道","節導讀","節文",
     	"節日","節期","節水","節理","節目","範例","範圍","範型","範手機","範疇","篩選","簡上仁","簡介","簡介化學","簡介及","簡介能","簡化","簡史","簡單","簡報",
     	"簡士晶","簡愛","簡旭伸","簡易","簡練化","簡論","簡諧","簡述","簡釋","米德","米蘭","粒子","粥樣","精品","精實","精彩","精神","精緻化","精華篇","精衛",
     	"精選","精采","糧食","系列","系統","系統識","系統間","系譜","紀佳伶","紀弦","紀念","紀念性","紀念會","紀登斯","紀錄","紀錄片","約制","約翰","紅外線","紅杏",
@@ -692,8 +634,42 @@
     	"魔方","魔法","魔術","魚快","魚池","魚片","魚記","魯主義","魯曼","魯迅","鮑照","鮭魚","鯊魚","鯨豚","鱔魚","鳥瞰","鳥類","鳳梨","鳳論","鳴歌",
     	"鴻銘","鸚鵡","鹵烷","鹿憶鹿","鹿特丹","麥克森","麥實","麥斯威爾","麥汶慧","麥西度","黎明","黎曼","黎烈文","黏著語","黏貼","黑學","黑暗","黑格","黑洞","黑眼珠",
     	"黑野","黑體","默劇表現","點估","點估計","點列","點的解","點陣圖","點集","點飲料","鼻化","齊一性","齊性解","齊物論","齊納二極體","齊美爾","齊言","齊邦媛","龍主授","龍之介",
-    	"龍納","龐然","龔汝沁主講"
-    	
+    	"龍納","龐然","龔汝沁","羅錦興","丁志明","劉聖賢","林弘萍","杜怡萱","王水進","徐德修","何德華","謝佩璇副","謝淑惠","龔秀容","康信鴻","黃吉川","丘嘉慧","蕭儒棠","陳欣希","陳怡靜"
+    	,"許景淳","金木義則","黃守仁","林大惠","陳雅萍","胡維平","呂執中","曾信超","林啟禎","李輝煌","黃煌煇","楊曉瑩","蘇恆毅","陳文松","柯格鐘","柯格鐘"
+    	,"黃浩仁","侯平君","王水進","王雲哲","吳豐光","江中宙","陳恒安","郭振銘","王偉勇","馮子瑛","趙翊彤","田聰","趙可式名譽","李兆芳","王駿發","王廷峻","吳枰賢"
+    	,"呂佩融","林蜀媛","王萬睿","黃玲惠","彭貴春","楊倍昌","黃朝慶","李育杰","郭君逸","李榮耀","莊重","王夏聲","陳鄰安","林琦焜","吳培元","吳慶堂","符麥克"
+    	,"白啟光","余啟哲","微積分教學小組","羅元勳","陳育慈","連敏筠","陳登銘","蒙國光","陳俊太","李大偉","朱超原","李遠鵬","黃立心","簡紋濱","陳振芳","李威儀"
+    	,"褚德三","趙如蘋","普物教學小組","黃冠華","程登湖","楊子儀","黃安斌","曾仁杰","王維志","陳慶耀","徐雍鎣","曾院介","黃金寶","白明憲","陳智","陳俊勳"
+    	,"林源倍","王學誠","陳伯寧","楊谷洋","陳永平","邱一","鄒志偉","江蕙如","許根玉","溫宏斌","施閔雄","吳炳飛","林怡欣","蕭嬋","張金琳","唐麗英","王晉元"
+    	,"Dr.Cinzia Cirillo","孫小玲","虞孝成","任維廉","唐瓔璋","巫木誠","方述誠","莊仁輝","曹孝櫟","孫春在","鄭昌杰","彭文志","鍾崇斌","單智君","鍾崇斌","林盈達"
+    	,"李毅郎","袁賢銘","曾煜棋","易志偉","邵家健","蘭宜錚","黃植懋","陳文亮","柯立偉","陳文亮","彭慧玲","賴郁雯","龔書章","曾光宗","AlainBrossat","劉美君"
+    	,"M. Madhava Prasad","洪子誠","王俊雄","趙順良","張基義","林欽榮","蔣淑貞","潘美玲","洪鎌德","張兆恬","邱羽凡","林志潔","牛玉珍","趙錫麟","倪貴榮","陳鋕雄"
+    	,"羅仕宇","王佩迪","梁世佑","林志潔","張兆恬","金孟華","藍弘岳","曾成德","龔書章","林銘煌","楊振寰","劉龍勳","王從恕","譚經緯","郭君逸","楊永良","林志潔"
+    	,"何立行","吳究","呂理德","葉永烜","陳哲俊","任玄","董家鈞","洪如江","劉阿榮","王力堅","楊自平","馮滬祥","楊自平","卓清芬","饒瑞彬","單維彰","林瑞陽"
+    	,"劉詠華","王銘正","于振華","金嘉錫","雷立芬","趙永茂","孫震","陳竹亭","佐藤將之","方德厚","白先勇","楊宏智","謝尚賢","韓選棠","劉麗飛","傅佩榮","張文亮"
+    	,"王裕文","Antonella Tulli 圖莉","王泰升","劉仁沛","甘懷真","林義正","莊榮輝","Pang-yuan Chi","鍾國芳","洪淑苓","江簡富","湯德宗","連豊力","川合康三"
+    	,"陳志龍","黃俊傑","詹長權","王德威","沈弘俊","蕭寧馨","蘇以文","李嗣涔","周仲島","黃尹男","林火旺","吳佳儀","李明濱","孫中興","席慕蓉","陳彥元"
+    	,"李隆獻","柯永河","葉嘉瑩","楊秀芳","石明豐","謝豐舟","化學系教師","李維晏","陳榮彬","王業立","劉豐哲","鄭仰恩","朱樺","丁建均","郭鴻基","梅家玲"
+    	,"李琳山","Tai-Jen George Chen","Karen Steffen Chung ","江才健","陳嘉銘","鍾立來","趙儀珊","白先勇","林宏佳","曾宗盛","周蓮香","蘇柏青","易富國"
+    	,"陳琪芳","黃崇興","郭瑞祥","蔣明晃","姜蘭虹","梁欣榮","陳聰富","陳士元","柯慶明","歐麗娟","劉慧","宋淑萍","王道一","洪永泰","Jeu-Jenq Yuann"
+    	,"蔡耀明","齊肖琪","范光龍","張海潮","簡國龍","劉仁沛","孔令傑","蔡振家","齊震宇","鄭原忠","王瑜","陳竹亭","童元昭","陳泰然","于天立","羅竹芳"
+    	,"艾朗諾","許宗力","傅皓政","丁照棣","宋聖榮","曾永義","陳明賢","謝銘洋","蔡蘊明","施惟量","陳淳文","山口守","李紋霞","呂世浩","湯明哲","苑舉正"
+    	,"司馬中原","商偉","林明昕","歐德尼","張育森","陳右人","杜宜殷","吳俊達","李國譚","","鄭原忠","齊邦媛","化學系教師群","包宗和","方震華","羅筱鳳"
+    	,"劉格非","徐興慶","張亨","大木康","洪如江","林美聆","方瑜","Tzong-Ho Bau","洪萬生","翁秉仁","臺大化學系教師群","王根樹","謝尚賢","郭榮欽","蔡璧名"
+    	,"高涌泉","黃克孫","李心予","林明仁","王榮麟","胡哲明","陳金次","楊植勝","劉少雄","葉國良","園藝暨景觀學系","梁益堉","蘇武沛","牟中原","侯維恕"
+    	,"廖婉君","張寶棣","Francesca Pierini若遙","張順教","楊坤原","胡家紋","陳淳麗","吳森統","游適宏","許書揚","游紫華","黃騰毅","羅士哲","楊維寧"
+    	,"黃忠偉","歐立成","林宗翰","孫沛立","李宗憲","黃仁鵬","郭重明","林義旭","李東杰","蕭龍生","王派洲","林泓宏","吳敏光","黃基哲","陳美利"
+    	,"張勝麟","蕭瑞陽","林儒禮","王鶴巘","陳桂容","魏仲君","薛常慧","蔡必昌","薛清江","郭俊麟"
+    	,"應用數學系","應用化學系","電子物理系","統計學研究所","機械工程學系","材料工程學系","土木工程學系","材料科學與工程學系","環境工程研究所","機械工程學"
+    	,"電機工程學系","光電工程學系","電子工程學系","管理科學系","運輸與物流管理學系","工業工程與管理學系","科技管理研究所","經營管理研究所","資訊工程學系"
+    	,"生物科技學系","外國語文學系","建築研究所","社會與文化研究所","人文社會學系","通識教育中心","科技法律研究所","衛生保健組","通識教育委員會","華語中心"
+    	,"大氣科學系","中國文學系","農業經濟學系","政治學系","哲學所","生命科學系","臺大土木系BIM研究中心","生物環境系統工程學研究所","生物資源暨農學院農藝學系"
+    	,"哲學系","農經系","農藝系","法律學系、歷史學系","歷史學研究所","森林環境暨資源學系","電機工程系","臺灣文學研究所","歷史學系所","公共衛生學系"
+    	,"臺灣研究學程","生化科技系","台灣大學語言學研究所","電機系","文學院哲學系","社會學系","心理系","物理學系","化學系","政治系","數學系","外文系","心理學系"
+    	,"物理系","工程科學及海洋工程學系","管理學院 企業管理組","台灣研究學程","歷史系","社會學研究所","法律系","經濟學系","海洋研究所","流行病學與預防醫學研究所"
+    	,"資訊管理學研究所","藝術史研究所","人類學系","生命科學院","法律學系","地質學系","生化科技學系","財金系","生物環境系統工程學系","園藝暨景觀學系","日本語文學系"
+    	,"土木系","歷史學系","生工系","公共衛生學院","生命科學院生命科學系","生態學與演化生物學研究所","臺文所","天文物理研究所","中文系","資訊管理系","行銷與流通管理系"
+    	,"企業管理系","管理與資訊系","資訊工程系","機械工程系","光電工程系","應用英語系","創新產品設計系","資訊傳播系","休閒事業管理系"  	
     ];
     $( "#tags" ).autocomplete({
       source: availableTags

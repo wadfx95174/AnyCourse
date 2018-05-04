@@ -45,7 +45,7 @@ $(document).ready(function(){
     	error: function(){
     	},
     	success: function(response){
-    		$('#vid').append('<video controls="" name="media" id = "myvideo" ><source src="'+response.videoUrl+'" type="video/mp4"></video>');
+    		$('#vid').append('<video controls="" autoplay="autoplay" name="media" id = "myvideo" ><source src="'+response.videoUrl+'" type="video/mp4"></video>');
     		
     		$('h3')[0].append(response.unitName);
     	    video=$("#myvideo")[0];
@@ -54,6 +54,7 @@ $(document).ready(function(){
 //    	    else if(reponse.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
     	    $('#likesNum').text(response.likes);
     	    $('#introduction').append(response.courseInfo);
+    	    video.currentTime = get("time");
     	}
     });
     
