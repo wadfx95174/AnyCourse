@@ -13,8 +13,8 @@ import com.google.gson.Gson;
 
 public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private SearchManager manager = new SearchManager();
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		SearchManager manager = new SearchManager();
 		String searchQuery = request.getParameter("search_query");
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

@@ -11,21 +11,13 @@ public class OutputFormat {
 	private ArrayList<String> unitName;
 	private ArrayList<String> unitURL;
 	private ArrayList<String> unitImgSrc;
-	
-	public ArrayList<String> getUnitImgSrc() {
-		return unitImgSrc;
-	}
-
-	public void setUnitImgSrc(String unitImgSrc) {
-		this.unitImgSrc.add(unitImgSrc);
-	}
-
 	private ArrayList<String> lectureName;
 	private ArrayList<String> lecture;
 	
 	public OutputFormat() {
 		unitName = new ArrayList<String>();
 		unitURL = new ArrayList<String>();
+		unitImgSrc = new ArrayList<String>();
 		lectureName = new ArrayList<String>();
 		lecture = new ArrayList<String>();
 		unitImgSrc = new ArrayList<String>();
@@ -53,9 +45,9 @@ public class OutputFormat {
 	public void setUnitURL(String unitURL) {
 		this.unitURL.add(unitURL);
 	}
-//	public void setUnitImgSrc(String unitImgSrc) {
-//		this.unitImgSrc.add(unitImgSrc);
-//	}
+	public void setUnitImgSrc(String unitImgSrc) {
+		this.unitImgSrc.add(unitImgSrc);
+	}
 	public void setLectureName(String lectureName) {
 		this.lectureName.add(lectureName);
 	}
@@ -84,18 +76,27 @@ public class OutputFormat {
 	public ArrayList<String> getUnitURL(){
 		return unitURL;
 	}
-//	public ArrayList<String> getUnitImgSrc(){
-//		return unitImgSrc;
-//	}
+	public ArrayList<String> getUnitImgSrc(){
+		return unitImgSrc;
+	}
+
 	public ArrayList<String> getLectureName(){
 		return lectureName;
 	}
 	public ArrayList<String> getLecture(){
 		return lecture;
 	}
-	
-	public String toString() {
-		return (getUniversity()+getCourseName()+getUnitName()+getUnitURL()+getLectureName()
-		+getLecture()+getCourseInfo()/*+department+teacher*/);
+
+	@Override
+	public String toString()
+	{
+		return "OutputFormat [university=" + university + ", courseName=" + courseName + ", department=" + department
+				+ ", teacher=" + teacher + ", courseInfo=" + courseInfo + ", unitName=" + unitName + ", unitURL="
+				+ unitURL + ", unitImgSrc=" + unitImgSrc + ", lectureName=" + lectureName + ", lecture=" + lecture
+				+ "]";
 	}
+//	public String toString() {
+//		return (getUniversity()+getCourseName()+getUnitName()+getUnitURL()+getLectureName()
+//		+getLecture()+getCourseInfo()/*+department+teacher*/);
+//	}
 }
