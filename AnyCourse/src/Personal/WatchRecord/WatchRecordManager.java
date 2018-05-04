@@ -103,4 +103,14 @@ public class WatchRecordManager {
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
+	public void conClose() {
+		try {
+			if(con!=null) {
+				con.close();
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Close Exception :" + e.toString()); 
+		}
+	}
 }

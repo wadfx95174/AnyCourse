@@ -44,7 +44,7 @@ public class ExchangeTextNoteServlet extends HttpServlet {
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(textNote_json);
 //		System.out.println(textNote_json);
-						
+		dbnote1.conClose();		
 	}
 
 	/**

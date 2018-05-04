@@ -17,6 +17,7 @@ public class PersonalKeyLabelServlet extends HttpServlet {
 		response.setContentType("application/json");
 		HttpSession seesion = request.getSession();
 		response.getWriter().print(manager.getUnitPersonalKeyLabel((String)seesion.getAttribute("userId")));
+		manager.conClose();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

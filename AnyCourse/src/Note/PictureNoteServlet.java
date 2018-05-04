@@ -42,7 +42,7 @@ public class PictureNoteServlet extends HttpServlet {
 		pictureNote_json = dbnote.selectPictureNoteTable(Integer.parseInt(request.getParameter("unit_id")), (String)session.getAttribute("userId"));
 		response.setContentType("application/json");
 		response.getWriter().write(pictureNote_json);	
-		
+		dbnote.conClose();
 //		System.out.println(pictureNote_json);
 	}
 
@@ -68,6 +68,7 @@ public class PictureNoteServlet extends HttpServlet {
 			dbnote.deletePictureNoteTable(picture_note_id);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbnote.conClose();
 		}
 		if(state.equals("insert"))
 		{
@@ -97,6 +98,7 @@ public class PictureNoteServlet extends HttpServlet {
 			response.getWriter().write(pictureNote_json);	
 //			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbnote.conClose();
 		}
 		
 	}

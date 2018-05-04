@@ -198,9 +198,6 @@ public class KeyLabelManager
 	
 	public void Close() {
 		try {
-			if(con!=null) {
-				con.close();
-			}
 			if(result!=null) {
 				result.close();
 			}
@@ -215,7 +212,16 @@ public class KeyLabelManager
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
-	
+	public void conClose() {
+		try {
+			if(con!=null) {
+				con.close();
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Close Exception :" + e.toString()); 
+		}
+	}
 //	public static void main(String []args)
 //	{
 //		KeyLabelDatabaseManager kldm = new KeyLabelDatabaseManager();

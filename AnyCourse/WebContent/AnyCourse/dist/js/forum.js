@@ -170,7 +170,7 @@ function setReply(input){
 		reply_content = document.getElementById('reply_area_'+id).value;
 		$("#reply_area_"+id).val('');		
 		$.ajax({
-			url : 'http://140.121.197.130:8400/AnyCourse/ReplyServlet.do',
+			url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
 			method : 'POST',
 			cache :false,
 			data : {

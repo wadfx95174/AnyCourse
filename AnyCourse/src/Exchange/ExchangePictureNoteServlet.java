@@ -44,6 +44,7 @@ public class ExchangePictureNoteServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.getWriter().write(pictureNote_json);			
 //		System.out.println(pictureNote_json);
+		dbnote2.conClose();
 	}
 
 	/**

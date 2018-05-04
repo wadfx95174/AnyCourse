@@ -4,7 +4,7 @@
 .card-block,.embed-responsive{
 	cursor:pointer;
 }
-.card-text, .card-title{
+.card-text, .card-title,.meta{
 	width:100%;
 	overflow:hidden;
 	white-space: nowrap;

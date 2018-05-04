@@ -267,9 +267,6 @@ public class PlayerInterfaceManager
 	
 	public void Close() {
 		try {
-			if(con!=null) {
-				con.close();
-			}
 			if(result!=null) {
 				result.close();
 			}
@@ -284,4 +281,14 @@ public class PlayerInterfaceManager
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
+	public void conClose() {
+		try {
+			if(con!=null) {
+				con.close();
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Close Exception :" + e.toString()); 
+		}
+	}
 }

@@ -25,6 +25,7 @@ public class SearchServlet extends HttpServlet {
 //		request.setAttribute("search_query", searchQuery);
 //		RequestDispatcher view = request.getRequestDispatcher("/AnyCourse/pages/SearchResult.html");
 //		view.forward(request, response);
+		manager.conClose();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

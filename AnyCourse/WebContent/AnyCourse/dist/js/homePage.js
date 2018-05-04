@@ -15,7 +15,8 @@ $(document).ready(function(){
 		method : 'GET',
 		cache :false,
 		success:function(result){
-//			console.log(result[0][0].type);
+			console.log(result);
+			console.log(result[0][0].type);
 //			console.log(result.length);
 //			console.log(result.length*result.)
 			for(var i = 0;i < result.length ; i++){
@@ -54,7 +55,7 @@ $(document).ready(function(){
 							+'</figure>'
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<h4 class="card-title" >' + result[i][j].unit_name + '</h4>'
-							+'<div class="card-text">清單名稱:'+ result[i][j].list_name +'</div>'
+							+'<div class="card-text">清單:'+ result[i][j].list_name +'</div>'
 							+'<div class="meta">'
 							+'<a>'+ result[i][j].school_name +'&nbsp;&nbsp;'+ result[i][j].teacher +'教師</a>'
 							+'</div>'
@@ -229,7 +230,7 @@ $(document).ready(function(){
 							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<h4 class="card-title" >' + result[i][j].unit_name + '</h4>'
-							+'<div class="card-text">清單名稱:'+ result[i][j].list_name +'</div>'
+							+'<div class="card-text">清單:'+ result[i][j].list_name +'</div>'
 							+'<div class="meta">'
 							+'<a>'+ result[i][j].school_name +'&nbsp;&nbsp;'+ result[i][j].teacher +'教師</a>'
 							+'</div>'
@@ -285,7 +286,7 @@ $(document).ready(function(){
 							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<h4 class="card-title" >' + result[i][j].unit_name + '</h4>'
-							+'<div class="card-text">清單名稱:'+ result[i][j].list_name +'</div>'
+							+'<div class="card-text">清單:'+ result[i][j].list_name +'</div>'
 							+'<div class="meta">'
 							+'<a>'+ result[i][j].school_name +'&nbsp;&nbsp;'+ result[i][j].teacher +'教師</a>'
 							+'</div>'
