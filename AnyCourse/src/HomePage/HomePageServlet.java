@@ -49,6 +49,7 @@ public class HomePageServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(homePages));
 		System.out.println(gson.toJson(homePages));
+		homePageDatabaseManager.conClose();
 	}
 
 	
@@ -69,6 +70,7 @@ public class HomePageServlet extends HttpServlet {
 					,Integer.parseInt(request.getParameter("unit_id")),
 					Integer.parseInt(request.getParameter("courselist_id")));
 		}
+		homePageDatabaseManager.conClose();
 	}
 
 }

@@ -44,6 +44,7 @@ public class LoginVerificationServlet extends HttpServlet {
 			String json = new Gson().toJson(userProfile);
 			response.getWriter().write(json);
 		}
+		manager.conClose();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -69,7 +70,7 @@ public class LoginVerificationServlet extends HttpServlet {
 				session.setAttribute("userId", user.getUserId());
 				session.setAttribute("nickName", user.getNickName());
 				session.setAttribute("pictureUrl", user.getPictureUrl());
-				
+				System.out.println("aaa");
 				response.sendRedirect("AnyCourse/HomePage.html");
 			}
 		}
@@ -100,6 +101,7 @@ public class LoginVerificationServlet extends HttpServlet {
 			session.setAttribute("pictureUrl", "");
 			response.sendRedirect("AnyCourse/HomePage.html");
 		}
+		manager.conClose();
 	}
 
 }

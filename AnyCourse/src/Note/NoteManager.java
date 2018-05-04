@@ -242,9 +242,6 @@ public class NoteManager {
 
 	public void Close() {
 		try {
-			if(con!=null) {
-				con.close();
-			}
 			if(result!=null) {
 				result.close();
 			}
@@ -259,4 +256,15 @@ public class NoteManager {
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
+	
+	public void conClose() {
+		try {
+			if(con!=null) {
+				con.close();
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Close Exception :" + e.toString()); 
+		}
+	}
 }

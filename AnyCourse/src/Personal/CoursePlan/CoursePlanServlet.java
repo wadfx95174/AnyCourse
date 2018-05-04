@@ -32,6 +32,7 @@ public class CoursePlanServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(coursePlans));
 //		System.out.println(gson.toJson(coursePlans));
+		coursePlanManager.conClose();
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -89,6 +90,7 @@ public class CoursePlanServlet extends HttpServlet {
 			///////////////////////////更新移動前的清單的排序/////////////////////////////////////////////
 			
 		}
+		coursePlanManager.conClose();
 	}
 
 }

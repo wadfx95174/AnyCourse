@@ -25,6 +25,7 @@ public class SearchRecordServlet extends HttpServlet{
 		
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(searchRecords));
+		searchRecordDatebaseManager.conClose();
 //		System.out.println(gson.toJson(searchRecords));
 	}
 	@Override
@@ -40,5 +41,6 @@ public class SearchRecordServlet extends HttpServlet{
 		searchRecord.setSearchTime(request.getParameter("search_time"));
 		
 		searchRecordDatebaseManager.deleteSearchRecordTable(searchRecord);
+		searchRecordDatebaseManager.conClose();
 	}
 }

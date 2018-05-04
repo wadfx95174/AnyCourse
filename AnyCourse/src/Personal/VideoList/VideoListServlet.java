@@ -36,7 +36,7 @@ public class VideoListServlet extends HttpServlet{
 			response.getWriter().write(gson.toJson(unitVideos));
 		}
 		
-		
+		videoListDatebaseManager.conClose();
 		
 //		System.out.println(gson.toJson(videoLists));
 	}
@@ -74,6 +74,7 @@ public class VideoListServlet extends HttpServlet{
 			videoList.setListName(request.getParameter("list_name"));
 			videoListDatebaseManager.updateCourseListTable(videoList);
 		}
+		videoListDatebaseManager.conClose();
 	}
 	
 

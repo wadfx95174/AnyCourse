@@ -57,6 +57,7 @@ public class TextNoteServlet extends HttpServlet {
 //		response.getWriter().write(pictureNote_json);	
 		
 //		System.out.println(pictureNote_json);
+		dbnote1.conClose();
 	}
 
 	/**
@@ -94,6 +95,7 @@ public class TextNoteServlet extends HttpServlet {
 			response.setContentType("application/json");
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbnote.conClose();
 		}
 		if(state.equals("update"))
 		{
@@ -117,6 +119,7 @@ public class TextNoteServlet extends HttpServlet {
 			dbnote.updateTextNoteTable(textNote);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbnote.conClose();
 		}
 		if(state.equals("share"))
 		{
@@ -132,6 +135,7 @@ public class TextNoteServlet extends HttpServlet {
 			dbnote.shareNote(unit_id,user_id);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbnote.conClose();
 		}
 		if(state.equals("notShare"))
 		{
@@ -147,6 +151,7 @@ public class TextNoteServlet extends HttpServlet {
 			dbnote.notShareNote(unit_id,user_id);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbnote.conClose();
 		}
 		
 		

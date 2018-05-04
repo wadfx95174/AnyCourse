@@ -44,6 +44,7 @@ public class ReplyServlet extends HttpServlet {
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(reply_json);
 //		System.out.println(reply_json);
+		dbreply.conClose();
 	}
 
 	/**
@@ -84,6 +85,7 @@ public class ReplyServlet extends HttpServlet {
 			String reply_json = new Gson().toJson(reply);
 			response.setContentType("application/json;charset = utf-8;");
 			response.getWriter().write(reply_json);
+			dbreply.conClose();
 		}
 		if(state.equals("update"))
 		{
@@ -109,6 +111,7 @@ public class ReplyServlet extends HttpServlet {
 			dbreply.updateReplyTable(reply);
 			PrintWriter out = response.getWriter();		
 			out.print("success");
+			dbreply.conClose();
 		}	
 		if(state.equals("delete"))
 		{
@@ -121,6 +124,7 @@ public class ReplyServlet extends HttpServlet {
 			dbreply.deleteReplyTable(reply_id);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbreply.conClose();
 		}	
 		if(state.equals("delete2"))
 		{
@@ -133,6 +137,7 @@ public class ReplyServlet extends HttpServlet {
 			dbreply.deleteReplyTable2(comment_id);
 			PrintWriter out = response.getWriter();		
 //			out.print("success");
+			dbreply.conClose();
 		}	
 	}
 

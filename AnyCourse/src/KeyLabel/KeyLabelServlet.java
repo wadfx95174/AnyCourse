@@ -28,6 +28,7 @@ public class KeyLabelServlet extends HttpServlet {
 		}
 		else if (method.equals("getEKL"))
 			response.getWriter().write(keyLabelDatebaseManager.getExangeKeyLabel(Integer.parseInt(request.getParameter("unit_id"))));
+		keyLabelDatebaseManager.conClose();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -61,6 +62,7 @@ public class KeyLabelServlet extends HttpServlet {
 		else if (method.equals("delete"))
 		{
 			keyLabelDatebaseManager.deleteKeyLabel(Integer.parseInt(request.getParameter("keyLabelId")));
+			
 		}
 //		response.setContentType("application/json");
 //		response.setCharacterEncoding("UTF-8");
@@ -76,6 +78,7 @@ public class KeyLabelServlet extends HttpServlet {
 //			event.setId(Integer.parseInt(request.getParameter("id")));
 //			calendarManager.updateEvent(event);
 //		}
+		keyLabelDatebaseManager.conClose();
 	}
 
 }

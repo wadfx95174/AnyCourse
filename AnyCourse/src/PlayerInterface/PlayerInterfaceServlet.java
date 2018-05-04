@@ -24,6 +24,7 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		
 		response.getWriter().write(manager.getVideoUrl(Integer.parseInt(request.getParameter("unitId"))));
 				/*,(String)session.getAttribute("userId"))*/
+		manager.conClose();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
@@ -89,5 +90,6 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			}
 			
 		}
+		manager.conClose();
 	}
 }

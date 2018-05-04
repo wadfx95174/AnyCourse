@@ -53,6 +53,7 @@ public class CoursePlanManager {
 				coursePlan.setList_name(result.getString("courselist.list_name"));
 				coursePlan.setUnit_name(result.getString("unit.unit_name"));
 				coursePlan.setSchool_name(result.getString("courselist.school_name"));
+				coursePlan.setLast_time(result.getInt("personal_plan.last_time"));
 				coursePlan.setTeacher(result.getString("courselist.teacher"));
 //				coursePlan.setCourselist_id(result.getInt("courselist.courselist_id"));
 				coursePlan.setLikes(result.getInt("unit.likes"));
@@ -181,9 +182,6 @@ public class CoursePlanManager {
 	
 	public void Close() {
 		try {
-			if(con!=null) {
-				con.close();
-			}
 			if(result!=null) {
 				result.close();
 			}
@@ -198,4 +196,14 @@ public class CoursePlanManager {
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
+	public void conClose() {
+		try {
+			if(con!=null) {
+				con.close();
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Close Exception :" + e.toString()); 
+		}
+	}
 }

@@ -41,7 +41,7 @@ public class PersonalPictureNoteServlet extends HttpServlet {
 		personalPictureNote_json = dbpersonalNote.selectPersonalPictureNoteTable((String)session.getAttribute("userId"));
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(personalPictureNote_json);	
-		
+		dbpersonalNote.conClose();
 //		System.out.println(personalTextNote_json);
 	}
 

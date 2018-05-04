@@ -32,6 +32,7 @@ public class CalendarServlet extends HttpServlet {
 			CoursePlanManager coursePlanManager = new CoursePlanManager();
 			response.getWriter().write(new Gson().toJson(coursePlanManager.getCoursePlanAllList(userId)));
 		}
+		calendarManager.conClose();
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -74,6 +75,7 @@ public class CalendarServlet extends HttpServlet {
 			System.out.println(event);
 			calendarManager.updateEvent(event);
 		}
+		calendarManager.conClose();
 	}
 
 }
