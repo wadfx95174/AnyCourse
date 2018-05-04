@@ -83,7 +83,7 @@ $(document).ready(function(){
     if (get('list_id') != undefined)
     {
     	$.ajax({
-        	url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+        	url: 'http://140.121.197.130:8400/AnyCourse/PlayerInterfaceServlet.do',
         	method: 'POST',
         	cache :false,
         	data: {
@@ -156,7 +156,7 @@ $(document).ready(function(){
         	$('#likesIcon').addClass('fa-heart');
 //        	console.log(get('unit_id'));
         	$.ajax({
-        		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+        		url: 'http://140.121.197.130:8400/AnyCourse/PlayerInterfaceServlet.do',
             	method: 'POST',
             	cache :false,
             	data:{
@@ -179,7 +179,7 @@ $(document).ready(function(){
     		$('#likesIcon').removeClass('fa-heart');
         	$('#likesIcon').addClass('fa-heart-o');
         	$.ajax({
-        		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+        		url: 'http://140.121.197.130:8400/AnyCourse/PlayerInterfaceServlet.do',
             	method: 'POST',
             	cache :false,
             	data:{

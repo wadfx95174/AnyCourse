@@ -29,6 +29,7 @@ public class HomePageManager {
 	
 	private Map<Integer, HomePage> map;
 	private HomePage homePage;
+	private ArrayList<HomePage> homePages;
 	
 	private Connection con = null;
 	private Statement stat = null;
@@ -59,11 +60,42 @@ public class HomePageManager {
 		homePages.add(selectCoursePlanING(user_id));
 		return homePages;
 	}
+	//訪客模式及新的用戶隨機抓
 	public ArrayList<Map<Integer, HomePage>> getRandVideo(){
 		ArrayList<Map<Integer, HomePage>> homePages = new ArrayList<Map<Integer, HomePage>>();
 		homePages.add(selectRandVideo());
 		homePages.add(selectRandList());
 		return homePages;
+	}
+	//檢查該使用者在rating有沒有資料以及課程清單、想要觀看、正在觀看有無資料，有的話回傳true
+	public boolean checkUser(String user_id) {
+		try {
+			pst = con.prepareStatement("select unit_id from recommended_result where user_id = ?");
+			pst.setString(1, user_id);
+			result = pst.executeQuery();
+			if(result.next()){ 	
+				return true;
+			}
+			pst = con.prepareStatement("select courselist_id from list where user_id = ?");
+			pst.setString(1, user_id);
+			result = pst.executeQuery();
+			if(result.next()) {
+				return true;
+			}
+			pst = con.prepareStatement("select unit_id from personal_plan where user_id = ?");
+			pst.setString(1, user_id);
+			result = pst.executeQuery();
+			if(result.next()) {
+				return true;
+			}
+		}
+		catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return false;
 	}
 	//隨機抓20個影片
 	public Map<Integer, HomePage> selectRandVideo(){
@@ -161,7 +193,7 @@ public class HomePageManager {
 		int count = 0;//map的key
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery(selectRecommend + user_id + " '");
+			result = stat.executeQuery(selectRecommend + user_id + "'");
 			while(result.next()) {
 				homePage = new HomePage();
 				homePage.setUser_id(result.getString("recommended_result.user_id"));
@@ -206,10 +238,18 @@ public class HomePageManager {
 		map = new HashMap<Integer, HomePage>();
 		int count = 0;//map的key
 //		int listNum = 1;//計算有幾個清單
-//			int max = 0;
+		int max = 0;
 		int check = 0;//0代表是第一次跑這個清單，不是0代表這個清單已經跑過，就不需要再存了
 		try {
 			stat = con.createStatement();
+			//該
+			result = stat.executeQuery("select MAX(oorder) from list where user_id = '" + user_id+"'");
+			while(result.next()) {
+				max = result.getInt("MAX(oorder)");
+				//檢查有沒有資料
+				if(max == 0)return null;
+			}
+			
 			result = stat.executeQuery(selectRecommend + user_id +"' order by customlist_video.oorder ASC");
 			while(result.next()) {
 				if(check == 0 || check!=result.getInt("customlist_video.courselist_id")) {
@@ -263,18 +303,34 @@ public class HomePageManager {
 		try {
 			//找oorder來當最大值
 			stat = con.createStatement();
+			//檢查清單列表有沒有清單
 			result = stat.executeQuery("select MAX(oorder) from list where user_id = '" + user_id+"'");
 			while(result.next()) {
 				max = result.getInt("MAX(oorder)");
 				//檢查有沒有資料
 				if(max == 0)return null;
 			}
-			
+			max = 0;
+			//看有幾個清單是有內容的，有才可以出現在首頁
 			result = stat.executeQuery("select * from customlist_video,unit,list,courselist where "
 					+"customlist_video.courselist_id = list.courselist_id and "
 					+"customlist_video.unit_id = unit.unit_id and "
 					+"list.courselist_id = courselist.courselist_id and "
 					+"list.user_id ='" + user_id+"'");
+			while(result.next()) {
+				if(check == 0 || check!=result.getInt("customlist_video.courselist_id")) {
+					max++;
+					check = result.getInt("customlist_video.courselist_id");
+				}
+					
+			}
+			//將清單有影片的顯示出來
+			result = stat.executeQuery("select * from customlist_video,unit,list,courselist where "
+					+"customlist_video.courselist_id = list.courselist_id and "
+					+"customlist_video.unit_id = unit.unit_id and "
+					+"list.courselist_id = courselist.courselist_id and "
+					+"list.user_id ='" + user_id+"'");
+			count = 0;
 			while(result.next()) {
 				if(check == 0 || check!=result.getInt("customlist_video.courselist_id")) {
 					homePage = new HomePage();
@@ -285,7 +341,8 @@ public class HomePageManager {
 					homePage.setCourselist_id(result.getInt("list.courselist_id"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
 					homePage.setUnit_id(result.getInt("customlist_video.unit_id"));
-					homePage.setNum(max);
+//					System.out.println(max);
+					homePage.setOorder(max);
 					homePage.setType(3);//代表課程清單
 					if(result.getString("unit.video_img_src") == "") {
 						homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
@@ -424,23 +481,70 @@ public class HomePageManager {
 		
 		return map;
 	}
+	//將首頁的單元影片加入課程計畫中
+	public void addToCoursePlan(String user_id,int unit_id){
+		int maxOrder = 0;
+		try {
+			stat = con.createStatement();
+			result = stat.executeQuery(selectPlanMax+" 1 and user_id = '" + user_id+"'");
+			while(result.next()) {
+				maxOrder = result.getInt("MAX(oorder)");
+			}
+			pst = con.prepareStatement("insert into personal_plan (user_id,unit_id,last_time,status,oorder) value(?,?,0,1,?)");
+			pst.setString(1, user_id);
+			pst.setInt(2, unit_id);
+			pst.setInt(3, ++maxOrder);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
+	//將首頁的清單中的所有單元影片加入課程計畫中
+	public void addToCoursePlan_List(String user_id,int unit_id,int courselist_id){
+		homePages = new ArrayList<HomePage>();
+		homePage = new HomePage();
+		int maxOrder = 0;
+		try {
+			stat = con.createStatement();
+			result = stat.executeQuery(selectPlanMax+" 1 and user_id = '" + user_id+"'");
+			while(result.next()) {
+				maxOrder = result.getInt("MAX(oorder)");
+			}
+			pst = con.prepareStatement("insert into personal_plan (user_id,unit_id,last_time,status,oorder) value(?,?,0,1,?)");
+			pst.setString(1, user_id);
+			pst.setInt(2, unit_id);
+			pst.setInt(3, ++maxOrder);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
 	public void Close() {
 		try {
+			if(con!=null) {
+				con.close();
+			}
 			if(result!=null) {
 				result.close();
-				result = null;
 			}
 			if(stat!=null) {
 				stat.close();
-				stat = null;
 			}
 			if(pst!=null) {
 				pst.close();
-				pst = null;
 			}
 		}
 		catch(SQLException e) {
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
-	}
+	} 
 }

@@ -35,7 +35,7 @@ public class ExchangeTextNoteServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		ExchangeManager dbnote1 = new ExchangeManager();
-				 
+		response.setHeader("Cache-Control","max-age=0");		 
 		ArrayList<TextNote> textNotes = new ArrayList<TextNote>();
 			
 		

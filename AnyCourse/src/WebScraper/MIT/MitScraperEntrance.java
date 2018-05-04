@@ -1,33 +1,31 @@
 package WebScraper.MIT;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.mahout.cf.taste.common.TasteException;
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
+
+import RecommenderSystem.RecommendationResult;
+
 public class MitScraperEntrance {
-	public static void main(String[] args) {
-		Map<String, List<String>> columns = new HashMap<String, List<String>>();
-		List<String> rows = new ArrayList<String>();
-		 
-		// 第一筆資料
-		rows.add("a");
-		rows.add("b");
-		columns.put("1", rows);
+	public static void main(String[] args) throws IOException, SQLException {
+		try {
+			List<RecommendedItem> test = RecommendationResult.designatedItemRecommendedResult(1,284,20);
+			for(RecommendedItem r:test) {
+				System.out.println(r.getItemID());
+			}
+			RecommendationResult.Evaluate();
+			RecommendationResult.EvaluateBooleanPref();
+		} catch (TasteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		
-		rows=new ArrayList<String>();
-		rows.add("x");
-		rows.add("y");
-		columns.put("2", rows);
-		
-		
-		for(String row : columns.keySet())
-		{
-//			for(String s:columns.get(row)) {
-//				System.out.println(s);
-//			}
-			System.out.println(columns.get(row).get(0));
 		}
 	}
 }

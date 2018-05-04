@@ -64,7 +64,7 @@
 
 				
 				$.ajax({
-					url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
+					url : 'http://140.121.197.130:8400/AnyCourse/PictureNoteServlet.do',
 					method : 'POST',
 					cache :false,
 					data : {
@@ -147,7 +147,7 @@
 		 
 		$(document).ready(function() {
 			$.ajax({
-				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
+				url : 'http://140.121.197.130:8400/AnyCourse/TextNoteServlet.do',
 				method : 'GET',
 				cache :false,
 				data : {					
@@ -217,7 +217,7 @@
 		
 		function printPicture(){
 			$.ajax({
-				url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
+				url : 'http://140.121.197.130:8400/AnyCourse/PictureNoteServlet.do',
 				method : 'GET',
 				cache :false,
 				data : {					
@@ -270,7 +270,7 @@
 			//document.getElementById("text_area").innerHTML += document.getElementById('text_note').value + "<br>";
 			text_note = document.getElementById('text_area').value;
 			$.ajax({
-				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
+				url : 'http://140.121.197.130:8400/AnyCourse/TextNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {
@@ -288,7 +288,7 @@
 				},
 			});
 			$.ajax({
-				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
+				url : 'http://140.121.197.130:8400/AnyCourse/TextNoteServlet.do',
 				method : 'GET',
 				cache :false,
 				data : {					
@@ -314,7 +314,7 @@
 //			alert(text_note);
 //			alert(text_note_id);
 			$.ajax({  
-				url : 'http://localhost:8080/AnyCourse/TextNoteServlet.do',
+				url : 'http://140.121.197.130:8400/AnyCourse/TextNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {
@@ -345,7 +345,7 @@
 			var id = zzz.split('_')[2];
 //			alert(id);
 			$.ajax({
-				url : 'http://localhost:8080/AnyCourse/PictureNoteServlet.do',
+				url : 'http://140.121.197.130:8400/AnyCourse/PictureNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {

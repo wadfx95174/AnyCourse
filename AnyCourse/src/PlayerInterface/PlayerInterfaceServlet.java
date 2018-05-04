@@ -16,6 +16,7 @@ public class PlayerInterfaceServlet extends HttpServlet {
 	{
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control","max-age=0");
 		PlayerInterfaceManager manager = new PlayerInterfaceManager();
 		HttpSession session = request.getSession();
 		
@@ -29,7 +30,7 @@ public class PlayerInterfaceServlet extends HttpServlet {
 	{
 		PlayerInterfaceManager manager = new PlayerInterfaceManager();
 		HttpSession session = request.getSession();
-		
+		response.setHeader("Cache-Control","max-age=0");
 		if(request.getParameter("action").equals("getVideoList")) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");

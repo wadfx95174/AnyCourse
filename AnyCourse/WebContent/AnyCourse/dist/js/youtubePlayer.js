@@ -11,7 +11,7 @@ $(document).ready(function(){
 	
 	//設瀏覽紀錄，或是已經有瀏覽紀錄則加1，並檢查他是否已經有按讚
 	$.ajax({
-		url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+		url:'http://140.121.197.130:8400/AnyCourse/PlayerInterfaceServlet.do',
     	method: 'POST',
     	cache :false,
     	data: {
@@ -126,7 +126,7 @@ $(document).ready(function(){
 	    $(document).on('click', '#deleteKlButton', function(event)
 	    {
 	    	$.ajax({
-	    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+	    		url : 'http://140.121.197.130:8400/AnyCourse/KeyLabelServlet.do',
 	    		method : 'POST',
 	    		cache :false,
 	    	    data : {
@@ -148,7 +148,7 @@ $(document).ready(function(){
 	    	if (klName != "")
 	    	{
 	    		$.ajax({
-	        		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+	        		url : 'http://140.121.197.130:8400/AnyCourse/KeyLabelServlet.do',
 	        		method : 'POST',
 	        		cache :false,
 	        	    data : {
@@ -202,7 +202,7 @@ $(document).ready(function(){
 	    	
 	    	
 	    	$.ajax({
-	    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+	    		url : 'http://140.121.197.130:8400/AnyCourse/KeyLabelServlet.do',
 	    		method : 'POST',
 	    		cache :false,
 	    	    data : {
@@ -239,7 +239,7 @@ $(document).ready(function(){
 	    	//*
 	    	
 	    	$.ajax({
-	    		url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+	    		url : 'http://140.121.197.130:8400/AnyCourse/KeyLabelServlet.do',
 	    		method : 'POST',
 	    		cache :false,
 	    	    data : {
@@ -261,7 +261,7 @@ $(document).ready(function(){
 	    });
 	    
 	    $.ajax({
-			url : 'http://localhost:8080/AnyCourse/KeyLabelServlet.do',
+			url : 'http://140.121.197.130:8400/AnyCourse/KeyLabelServlet.do',
 			method : 'GET', 
 			cache :false,
 			data : {
@@ -279,7 +279,7 @@ $(document).ready(function(){
 		});	// end ajax
 	    
 	    $.ajax({
-			url : 'http://localhost:8080/AnyCourse/ExchangeKeyLabelServlet.do',
+			url : 'http://140.121.197.130:8400/AnyCourse/ExchangeKeyLabelServlet.do',
 			method : 'GET', 
 			cache :false,
 			data : {					
@@ -321,7 +321,7 @@ $(document).ready(function(){
 	    	var duration = youTubePlayer.getDuration();
 	        console.log(Math.floor(duration));
 	        $.ajax({
-	        	url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+	        	url:'http://140.121.197.130:8400/AnyCourse/PlayerInterfaceServlet.do',
 	        	method: 'POST',
 	        	cache :false,
 	        	data:{
@@ -342,7 +342,7 @@ $(document).ready(function(){
   function onYouTubeIframeAPIReady() {
 //	console.log(get('unit_id'));
 	$.ajax({
-		url: 'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+		url: 'http://140.121.197.130:8400/AnyCourse/PlayerInterfaceServlet.do',
 		method: 'GET',
 		cache :false,
 		data: {

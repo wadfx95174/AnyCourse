@@ -10,7 +10,16 @@ public class OutputFormat {
 	private String courseInfo;
 	private ArrayList<String> unitName;
 	private ArrayList<String> unitURL;
-//	private ArrayList<String> unitImgSrc;
+	private ArrayList<String> unitImgSrc;
+	
+	public ArrayList<String> getUnitImgSrc() {
+		return unitImgSrc;
+	}
+
+	public void setUnitImgSrc(String unitImgSrc) {
+		this.unitImgSrc.add(unitImgSrc);
+	}
+
 	private ArrayList<String> lectureName;
 	private ArrayList<String> lecture;
 	
@@ -19,6 +28,7 @@ public class OutputFormat {
 		unitURL = new ArrayList<String>();
 		lectureName = new ArrayList<String>();
 		lecture = new ArrayList<String>();
+		unitImgSrc = new ArrayList<String>();
 	}
 	
 	public void setUniversity(String university) {

@@ -30,7 +30,7 @@ $(document).ready(function() {
   var unitVideoID = 1;
   	//取得資料庫的資料(courselist&list)
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+		url : 'http://140.121.197.130:8400/AnyCourse/VideoListServlet.do',
 		method : 'GET',
 		cache :false,
 		data:{
@@ -58,7 +58,7 @@ $(document).ready(function() {
 				  $("#videoListID_"+videoListID).on("click" , function(){
 					  unitVideoID = 1;
 					  $.ajax({
-							url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+							url : 'http://140.121.197.130:8400/AnyCourse/VideoListServlet.do',
 							method : 'GET',
 							cache :false,
 						    data : {
@@ -108,18 +108,6 @@ $(document).ready(function() {
 									unitVideoID++;
 									unitArray[k] = new Array(3);
 								}
-//								for(var i = 0 ;i < result.length;i++){
-////						  			console.log(result[i].user_id);
-////						  			console.log(result[i].creator);
-//						  			for(var j = 0 ; j < 5;j++){
-//						  				if(j == 0)videoListArray[i][j] = result[i].courselist_id;
-//						  				else if(j == 1)videoListArray[i][j] = result[i].list_name;
-//						  				else if(j == 2)videoListArray[i][j] = result[i].user_id;
-//						  				else if(j == 3)videoListArray[i][j] = result[i].creator;
-//						  				else videoListArray[i][j] = result[i].oorder;
-////						  				console.log(videoListArray[i][j]);
-//						  			}
-//								}
 								
 					  			
 								
@@ -158,7 +146,7 @@ $(document).ready(function() {
 	  }
 	  else{
 		  $.ajax({
-			  url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+			  url : 'http://140.121.197.130:8400/AnyCourse/VideoListServlet.do',
 			  method : 'POST', 
 			  cache :false,
 			  data : {
@@ -184,7 +172,7 @@ $(document).ready(function() {
 				  $("#videoListUL").on("click","#videoListID_"+videoListID, function(){
 					  unitVideoID = 1;
 					  $.ajax({
-							url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+							url : 'http://140.121.197.130:8400/AnyCourse/VideoListServlet.do',
 							method : 'GET',
 							cache :false,
 						    data : {
@@ -275,7 +263,7 @@ $(document).ready(function() {
 	}
 	else{
 		$.ajax({
-			url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+			url : 'http://140.121.197.130:8400/AnyCourse/VideoListServlet.do',
 			method : 'POST',
 			cache :false,
 		    data : {
@@ -312,7 +300,7 @@ $(document).ready(function() {
 //    console.log(videoListArray[checkID-1][3]);
 //    console.log(videoListArray[checkID-1][4]);
     $.ajax({
-		url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+		url : 'http://140.121.197.130:8400/AnyCourse/VideoListServlet.do',
 		method : 'POST',
 		cache :false,
 	    data : {

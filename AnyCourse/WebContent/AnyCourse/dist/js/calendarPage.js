@@ -156,6 +156,7 @@ function addEvent(event)
 			  $.ajax({
         		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
         		method: 'POST',
+        		cache:false,
         		data: {
         			eventId: event.id,
         		  		method: "delete"

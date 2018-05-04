@@ -62,7 +62,7 @@ $( document ).ready(function() {
     po.src = 'https://apis.google.com/js/client:plusone.js?onload=render';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);  
      $.ajax({
-    	 url: 'http://localhost:8080/AnyCourse/LoginVerificationServlet.do',
+    	 url: 'http://140.121.197.130:8400/AnyCourse/LoginVerificationServlet.do',
     	 method : 'GET',
     	 cache :false,
     	 data: {

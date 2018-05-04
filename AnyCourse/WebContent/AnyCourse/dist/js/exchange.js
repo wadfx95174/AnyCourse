@@ -8,7 +8,7 @@ function get(name)
 
 $(document).ready(function() {
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/ExchangeTextNoteServlet.do',
+		url : 'http://140.121.197.130:8400/AnyCourse/ExchangeTextNoteServlet.do',
 		method : 'GET',
 		cache :false,
 		data : {					
@@ -45,7 +45,7 @@ $(document).ready(function() {
     			
 			}	
     		$.ajax({
-    			url : 'http://localhost:8080/AnyCourse/ExchangePictureNoteServlet.do',
+    			url : 'http://140.121.197.130:8400/AnyCourse/ExchangePictureNoteServlet.do',
     			method : 'GET',
     			cache :false,
     			data : {					
@@ -97,7 +97,7 @@ $(document).ready(function() {
 
 
 //$.ajax({
-//	url : 'http://localhost:8080/AnyCourse/ExchangeKeyLabelServlet.do',
+//	url : 'http://140.121.197.130:8400/AnyCourse/ExchangeKeyLabelServlet.do',
 //	method : 'GET', 
 //	cache :false,
 //	
