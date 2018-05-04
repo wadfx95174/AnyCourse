@@ -359,6 +359,10 @@ $(document).ready(function(){
 			      height: '390',
 			      width: '640',
 			      videoId: uid,     //影片ID
+			      playerVars: {
+			          autoplay: 1,
+			          start: get("time")
+			        },
 			      events: {                   //哪些狀態執行哪些func
 			        'onReady': onPlayerReady,   //ready後會執行 onPlayerReady func
 			      }
