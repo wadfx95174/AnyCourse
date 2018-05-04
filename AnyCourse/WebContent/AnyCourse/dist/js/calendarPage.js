@@ -288,6 +288,24 @@ $(function () {
             index++;
           });
         }
+        
+
+        function ini_event(ele) {
+        	console.log(ele.text());
+	        // 宣告EventObject (可以不用start跟end)
+	        var eventObject = {
+	          title: ele.text(),
+	        };
+	
+	        // 把eventObject存到DOM裡面，之後就可以取得
+	        ele.data('eventObject', eventObject);
+	        
+	        ele.click(function(){
+	        	console.log(ele.data('eventObject'));		//********************************
+	        	$('#selectedEvent').text(ele.text());
+	        	$('#selectedEvent').data(ele.data());
+	        });
+	    }
 
         // ----初始化行事曆----
         
@@ -484,14 +502,14 @@ $(function () {
 			        		  return false;
 				          }
 			        	  // 前往該事件網址
-				          else if (event.url) 
+				          else if (event.url && event.url != 'undefined/undefined') 
 			        	  {
 				        	  var urls = event.url.split('/');
 				        	  url = "../PlayerInterface.html?unit_id="+urls[0]+"&type="+urls[1];//此處拼接內容
 				        	  window.location.href = url;
 			        	      return false;
 			        	  }
-
+				          return false;
 			          }
 			          ,eventResize: function(event){
 			        	  console.log(event);
@@ -573,13 +591,11 @@ $(function () {
           }
 
           //Create events
-          var event = $("<div />");
-          event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
-          event.html(val);
-          $('#external-events').prepend(event);
-
+          $('#external-events').append(
+	  		  '<li><a href="javascript:void(0)">'+val+'</a></li>'
+	  	  );
           //Add draggable funtionality
-          ini_events(event);
+	      ini_event($('#external-events li').last());
 
           //Remove event from text input
           $("#new-event").val("");
