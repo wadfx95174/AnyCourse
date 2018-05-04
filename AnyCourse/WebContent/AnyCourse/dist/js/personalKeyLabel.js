@@ -1,3 +1,7 @@
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
+
+
 function check_all(obj,cName) 
 { 
     var checkboxs = document.getElementsByName(cName); 
@@ -20,7 +24,7 @@ $(document).ready(function() {
 	checkLogin("../", "../../../");
 	//取得資料庫的資料
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/PersonalKeyLabelServlet.do',
+		url : ajax_url+'AnyCourse/PersonalKeyLabelServlet.do',
 		method : 'GET', 
 		cache :false,
 		data: {
