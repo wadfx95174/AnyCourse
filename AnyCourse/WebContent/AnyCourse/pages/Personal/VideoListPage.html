@@ -105,26 +105,6 @@
 			<!-- /.sidebar -->
 		</aside>
 		<div class="content-wrapper">
-					<section class="content col-md-8">
-						<div class="box box-primary">
-							<!-- box-header -->
-							<div class="box-header ui-sortable-handle">
-								<i class="ion  ion-ios-film-outline"></i>
-								<h3 class="box-title">
-									<strong>課程影片</strong>
-								</h3>
-							</div>
-							<!-- /.box-header -->
-							<!-- box-body -->
-							<div class="box-body">
-								<ul class="todo-list ui-sortable" style="height: 480px;" id="unit">
-									<!-- 顯示相對應的單元影片 -->
-								</ul>
-							</div>
-							<!-- /.box-body -->
-							<div class="box-footer clearfix no-border"></div>
-						</div>
-					</section>
 					<section class="content col-md-4">
 						<div class="box box-primary">
 							<div class="box-header ui-sortable-handle">
@@ -149,6 +129,26 @@
 								</button>
 							</div>
 
+						</div>
+					</section>
+					<section class="content col-md-8" id="unitSection">
+						<div class="box box-primary">
+							<!-- box-header -->
+							<div class="box-header ui-sortable-handle">
+								<i class="ion  ion-ios-film-outline"></i>
+								<h3 class="box-title">
+									<strong>課程影片</strong>
+								</h3>
+							</div>
+							<!-- /.box-header -->
+							<!-- box-body -->
+							<div class="box-body">
+								<ul class="todo-list ui-sortable" style="height: 480px;" id="unit">
+									<!-- 顯示相對應的單元影片 -->
+								</ul>
+							</div>
+							<!-- /.box-body -->
+							<div class="box-footer clearfix no-border"></div>
 						</div>
 					</section>
 				</div>
@@ -317,5 +317,32 @@
 	<div id="unAdd" title="新增錯誤">
 	  <p>請輸入清單名稱</p>
 	</div>
+	
+	
+	
+	<!--addToCoursePlan_List-->
+	<!--要將整個清淡的單元影片都加進coursePlan-->
+	<div class="modal fade" id="addToCoursePlan_List" tabindex="-1" role="dialog"
+		aria-labelledby=addToCoursePlan_List aria-hidden="true">
+		
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+			    	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			    	<span aria-hidden="true">×</span>
+			    	</button>
+			    	<b class="modal-title" style="font-size:24px;">提示</b>
+			    </div>
+				<div class="modal-body">
+					<b>已新增至課程計畫</b>
+				</div>
+				<div class="modal-footer">
+					<button id="addToCoursePlanButton_List" type="button"
+						class="btn btn-primary" data-dismiss="modal">關閉</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 </body>
 </html>

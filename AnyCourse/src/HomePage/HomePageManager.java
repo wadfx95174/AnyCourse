@@ -505,7 +505,7 @@ public class HomePageManager {
 	}
 	
 	//將首頁的清單中的所有單元影片加入課程計畫中
-	public void addToCoursePlan_List(String user_id,int unit_id,int courselist_id){
+	public void addToCoursePlan_List(String user_id,int courselist_id){
 		homePages = new ArrayList<HomePage>();
 		homePage = new HomePage();
 		int maxOrder = 0;
@@ -519,20 +519,23 @@ public class HomePageManager {
 					+ " = customlist_video.unit_id and customlist_video.courselist_id ="
 					+ " courselist.courselist_id and courselist.courselist_id = "+ courselist_id);
 			while(result.next()) {
+				homePage = new HomePage();
 				homePage.setUnit_id(result.getInt("unit.unit_id"));
+//				System.out.println(result.getInt("unit.unit_id"));
 				homePages.add(homePage);
 			}
 			
 			System.out.println(homePages.size());
+			pst = con.prepareStatement("insert ignore into personal_plan (user_id,unit_id,last_time,status,oorder) value(?,?,0,1,?)");
 			for(int i = 0;i < homePages.size();i++) {
-				pst = con.prepareStatement("insert ignore into personal_plan (user_id,unit_id,last_time,status,oorder) value(?,?,0,1,?)");
+				
 				pst.setString(1, user_id);
 				pst.setInt(2, homePages.get(i).getUnit_id());
 				pst.setInt(3, ++maxOrder);
-				pst.executeUpdate();
-				
+				pst.addBatch();
+//				System.out.println(homePages.get(i).getUnit_id());
 			}
-			
+			pst.executeBatch();
 		}
 		catch(SQLException x){
 			System.out.println("Exception select"+x.toString());

@@ -4,6 +4,11 @@ $('#unit').slimScroll({
 $('#list').slimScroll({
     height: '400px;'
   });
+
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
+
+
 var checkID;
 var videoListArray;
 var unitArray;
@@ -30,7 +35,7 @@ $(document).ready(function() {
   var unitVideoID = 1;
   	//取得資料庫的資料(courselist&list)
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+		url : ajax_url+'AnyCourse/VideoListServlet.do',
 		method : 'GET',
 		cache :false,
 		data:{
@@ -39,18 +44,23 @@ $(document).ready(function() {
 		success:function(result){
 			videoListArray = new Array(result.length);
 	  		for(var i = 0 ;i < result.length;i++){
-	  			$('#videoListUL').append('<li id = "videoListID_'+videoListID+'" onclick="getID('+videoListID+')">'
-	                    +'<span class="handle ui-sortable-handle">'
-	                    +'<i class="fa fa-ellipsis-v">'
-	                    +'</i><i class="fa fa-ellipsis-v"></i>'
-	                    +'</span>'
-	                    +'<span class="text" id="videoListText_'+videoListID+'">'+result[i].list_name+'</span>'
-	                    +'<div class="tools">'
-	                    +'<button type="button" data-toggle="tooltip" data-placement="top" title="新增至課程清單"><i class="fa fa-plus"></i></button>'
-	                    +'<button type="button" data-toggle="modal" data-target="#editModal" onclick="getID('+videoListID+')"><i class="fa fa-edit"  data-toggle="tooltip" data-placement="top" title="編輯"></i></button>'
-	                    +'<button type="button" data-toggle="modal" data-target="#deleteModal1" onclick="getID('+videoListID+')"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除"></i></button>'
+	  			$('#videoListUL').append('<li id = "videoListID_'+videoListID+'" onclick="getID('+videoListID+')" <a href="#unitSection" style="color:black;">'
+	                    +'<div class="row">'
+	  					+'<div class="handle ui-sortable-handle col-xs-1 col-md-1">'
+	                    +'<i class="fa fa-ellipsis-v"></i>'
 	                    +'</div>'
-	                    +'</li>');
+	                    +'<div class="text col-xs-8 col-md-8" id="videoListText_'+videoListID+'">'+result[i].list_name+'</div>'
+	                    
+	                    
+	                    +'<div class="btn-group col-xs-1 col-md-1">'
+						+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' 
+						+'<span class="caret caret-up"></span></button><ul class="dropdown-menu dropdown-menu-right" role="menu">'
+						+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlan_List" onclick="getID('+videoListID+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程計畫</a></li>'
+						+'<li><a href="#" data-toggle="modal" data-target="#editModal" onclick="getID('+videoListID+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
+						+'<li><a href="#" data-toggle="modal" data-target="#deleteModal1" onclick="getID('+videoListID+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
+						+'</ul></div>'
+	                    
+	                    +'</a></li>');
 	  			//把modal設為空
 				  $('#named').val("");
 				  
@@ -58,7 +68,7 @@ $(document).ready(function() {
 				  $("#videoListID_"+videoListID).on("click" , function(){
 					  unitVideoID = 1;
 					  $.ajax({
-							url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+							url : ajax_url+'AnyCourse/VideoListServlet.do',
 							method : 'GET',
 							cache :false,
 						    data : {
@@ -74,12 +84,25 @@ $(document).ready(function() {
 								}); 
 								unitArray = new Array(resultUnit.length);
 								for(var k = 0 ;k < resultUnit.length;k++){
-									console.log(resultUnit[k].videoType);
+//									console.log(resultUnit[k].videoType);
 									$("#unit").append(
 											'<li id="videoItem_'+unitVideoID+'">'
 											+'<span class="handle ui-sortable-handle">' 
 											+'<i class="fa fa-ellipsis-h"></i>'
 											+'</span>' 
+											+'<div class="btn-group" style="top: -5px;">'
+											+'<button type="button" class="btn btn-noColor dropdown-toggle"'
+											+'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+											+'<span class="caret"></span>'
+											+'</button>'
+											+'<ul class="dropdown-menu">'
+											+'<li>'
+											+'<a href="#" class=" waves-effect waves-block" data-toggle="modal" data-target="#deleteModal1" onclick="getID('+unitVideoID+')">'
+											+'<i class="ion ion-clipboard"></i>新增至課程計畫'
+											+'</a>'
+											+'</li>'
+											+'</ul>'
+											+'</div>'
 											+'<span class="pull-right">'
 											+'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal2"'
 											+'onclick="getID('+unitVideoID+')" style="cursor: pointer;"></i>'
@@ -106,9 +129,10 @@ $(document).ready(function() {
 											+'</a></li>'
 									);
 									unitVideoID++;
-									unitArray[k] = new Array(3);
 								}
-								
+								for(var z = 0;z < resultUnit.length;z++){
+									unitArray[z] = resultUnit[z].unit_id;
+								}
 					  			
 								
 					    	},
@@ -146,7 +170,7 @@ $(document).ready(function() {
 	  }
 	  else{
 		  $.ajax({
-			  url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+			  url : ajax_url+'AnyCourse/VideoListServlet.do',
 			  method : 'POST', 
 			  cache :false,
 			  data : {
@@ -172,7 +196,7 @@ $(document).ready(function() {
 				  $("#videoListUL").on("click","#videoListID_"+videoListID, function(){
 					  unitVideoID = 1;
 					  $.ajax({
-							url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+							url : ajax_url+'AnyCourse/VideoListServlet.do',
 							method : 'GET',
 							cache :false,
 						    data : {
@@ -263,7 +287,7 @@ $(document).ready(function() {
 	}
 	else{
 		$.ajax({
-			url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+			url : ajax_url+'AnyCourse/VideoListServlet.do',
 			method : 'POST',
 			cache :false,
 		    data : {
@@ -300,7 +324,7 @@ $(document).ready(function() {
 //    console.log(videoListArray[checkID-1][3]);
 //    console.log(videoListArray[checkID-1][4]);
     $.ajax({
-		url : 'http://localhost:8080/AnyCourse/VideoListServlet.do',
+		url : ajax_url+'AnyCourse/VideoListServlet.do',
 		method : 'POST',
 		cache :false,
 	    data : {
@@ -332,7 +356,22 @@ $(document).ready(function() {
     $("#videoItem_"+checkID).remove();
   });
   
-  ;
+  	//清單整個新增至課程計畫
+	$('#addToCoursePlanButton_List').click(function(e){
+		e.preventDefault();
+		$.ajax({
+			url : ajax_url+'AnyCourse/HomePageServlet.do',
+			method : 'POST',
+			cache: false,
+			data:{
+				action:'addToCoursePlan_List',
+				courselist_id:videoListArray[checkID][0]
+			},
+			error:function(e){
+				console.log("addToCoursePlan_List Error!");
+			}
+		})
+	});
   
   //編輯時沒有輸入新的清單名稱
   $("#unNewEdit").dialog({

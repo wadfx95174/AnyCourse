@@ -348,7 +348,7 @@ $(document).ready(function(){
 				    });
 			}
 			//因為放在外面的話跟初始化首頁的ajax(就是這個外面的ajax)會同時跑，這個會跑比較快，所以抓不到陣列
-			console.log(homePageList);
+//			console.log(homePageList);
 			//影片新增至課程計畫
 			$('#addToCoursePlanButton').click(function(){
 				
@@ -366,7 +366,7 @@ $(document).ready(function(){
 					}
 				})
 			});
-			console.log(homePageList);
+//			console.log(homePageList);
 			//清單整個新增至課程計畫
 			$('#addToCoursePlanButton_List').click(function(e){
 				e.preventDefault();
@@ -377,7 +377,6 @@ $(document).ready(function(){
 					cache: false,
 					data:{
 						action:'addToCoursePlan_List',
-						unit_id:homePageList[checkID][0],
 						courselist_id:homePageList[checkID][1]
 					},
 					error:function(e){
