@@ -7,7 +7,7 @@ $('.box-body').slimScroll({
 var listArray;
 $(document).ready(function() {
 	checkLogin("../", "../../../");
-	var str3='<li class="portlet">'
+	var str3='<li class="portlet" style="cursor:pointer;">'
 		+'<span class="handle portlet-header">'
 		+'<i class="fa fa-ellipsis-h"></i>'
 		+'</span>'
@@ -57,7 +57,7 @@ $(document).ready(function() {
 							+'<div class="info-card-detail">'
 							+'<p>授課教師:'+result[i].teacher+'</p>'
 							+'<p>清單名稱:'+result[i].list_name+'</p>'
-							+'<p>'+result[i].list_name+'人喜歡</p>'
+							+'<p>'+result[i].likes+'人喜歡</p>'
 							+'</div>'
 							+'</div>'
 							+'</div>'
@@ -81,7 +81,7 @@ $(document).ready(function() {
 							+'<div class="info-card-detail">'
 							+'<p>授課教師:'+result[i].teacher+'</p>'
 							+'<p>清單名稱:'+result[i].list_name+'</p>'
-							+'<p>'+result[i].list_name+'人喜歡</p>'
+							+'<p>'+result[i].likes+'人喜歡</p>'
 							+'</div>'
 							+'</div>'
 							+'</div>'
@@ -105,7 +105,7 @@ $(document).ready(function() {
 							+'<div class="info-card-detail">'
 							+'<p>授課教師:'+result[i].teacher+'</p>'
 							+'<p>清單名稱:'+result[i].list_name+'</p>'
-							+'<p>'+result[i].list_name+'人喜歡</p>'
+							+'<p>'+result[i].likes+'人喜歡</p>'
 							+'</div>'
 							+'</div>'
 							+'</div>'

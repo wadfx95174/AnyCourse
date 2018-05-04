@@ -48,7 +48,7 @@ public class HomePageServlet extends HttpServlet {
 		Gson gson = builder.setPrettyPrinting().create();
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(homePages));
-		System.out.println(gson.toJson(homePages));
+//		System.out.println(gson.toJson(homePages));
 		homePageDatabaseManager.conClose();
 	}
 
@@ -61,11 +61,11 @@ public class HomePageServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		HomePageManager homePageDatabaseManager = new HomePageManager();
 		
-		if(request.getParameter("action").equals("addToCoursePlan")) {
+		if(request.getParameter("action").equals("addToCoursePlan")&&(String)session.getAttribute("userId")!=null) {
 			homePageDatabaseManager.addToCoursePlan((String)session.getAttribute("userId")
 					,Integer.parseInt(request.getParameter("unit_id")));
 		}
-		if(request.getParameter("action").equals("addToCoursePlan_List")) {
+		if(request.getParameter("action").equals("addToCoursePlan_List")&&(String)session.getAttribute("userId")!=null) {
 			homePageDatabaseManager.addToCoursePlan_List((String)session.getAttribute("userId")
 					,Integer.parseInt(request.getParameter("unit_id")),
 					Integer.parseInt(request.getParameter("courselist_id")));

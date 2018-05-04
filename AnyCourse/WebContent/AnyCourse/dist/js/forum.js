@@ -8,6 +8,8 @@ var comment_time;
 var comment_content;
 var reply_time;
 var reply_content;
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
 
 function get(name)
 {
@@ -21,7 +23,7 @@ function setComment(){
 		comment_content = document.getElementById('comment_area').value;
 		$("#comment_area").val('');
 		$.ajax({
-			url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
+			url : ajax_url+'AnyCourse/CommentServlet.do',
 			method : 'POST',
 			cache :false,
 			data : {
@@ -74,7 +76,7 @@ function setComment(){
 
 $(document).ready(function() {
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
+		url : ajax_url+'AnyCourse/CommentServlet.do',
 		method : 'GET',
 		cache :false,
 		data : {
@@ -104,7 +106,7 @@ $(document).ready(function() {
 	    			);    			
 			}	
     		$.ajax({
-    			url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
+    			url : ajax_url+'AnyCourse/ReplyServlet.do',
     			method : 'GET',
     			cache :false,
 //    			data : {
@@ -170,7 +172,7 @@ function setReply(input){
 		reply_content = document.getElementById('reply_area_'+id).value;
 		$("#reply_area_"+id).val('');		
 		$.ajax({
-			url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
+			url : ajax_url+'AnyCourse/ReplyServlet.do',
 			method : 'POST',
 			cache :false,
 			data : {
@@ -228,7 +230,7 @@ function delete_reply(input){
 	var id = input.split('_')[1];
 	
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
+		url : ajax_url+'AnyCourse/ReplyServlet.do',
 		method : 'POST',
 		cache :false,
 		data : {
@@ -245,7 +247,7 @@ function delete_comment(input){
 	var id = input.split('_')[1];
 	
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
+		url : ajax_url+'AnyCourse/CommentServlet.do',
 		method : 'POST',
 		cache :false,
 		data : {
@@ -255,7 +257,7 @@ function delete_comment(input){
 		success : function(data) {
 			$("#com_"+id).remove();
 			$.ajax({
-				url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
+				url : ajax_url+'AnyCourse/ReplyServlet.do',
 				method : 'POST',
 				data : {
 					"state" : "delete2",
@@ -296,7 +298,7 @@ function update_comment(input){
 	comment_content = document.getElementById('comment_'+id).value;
 
 	$.ajax({  
-		url : 'http://localhost:8080/AnyCourse/CommentServlet.do',
+		url : ajax_url+'AnyCourse/CommentServlet.do',
 		method : 'POST',
 		cache :false,
 		data : {
@@ -352,7 +354,7 @@ function update_reply(input){
 	reply_content = document.getElementById('reply_'+id).value;
 
 	$.ajax({  
-		url : 'http://localhost:8080/AnyCourse/ReplyServlet.do',
+		url : ajax_url+'AnyCourse/ReplyServlet.do',
 		method : 'POST',
 		cache :false,
 		data : {

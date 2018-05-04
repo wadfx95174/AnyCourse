@@ -1,7 +1,12 @@
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
+
+
 document.write("<script type='text/javascript' src='dist/js/swiper.min.js'></script>");
 
 var homePageList;
 var checkID;
+
 $(document).ready(function(){
 	homePageList = new Array();
 	checkLogin("pages/", "../");
@@ -11,12 +16,12 @@ $(document).ready(function(){
 		+'</div></div></section>'
 	var homePageListID = 1;
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
+		url : ajax_url+'AnyCourse/HomePageServlet.do',
 		method : 'GET',
 		cache :false,
 		success:function(result){
-			console.log(result);
-			console.log(result[0][0].type);
+//			console.log(result);
+//			console.log(result[0][0].type);
 //			console.log(result.length);
 //			console.log(result.length*result.)
 			for(var i = 0;i < result.length ; i++){
@@ -329,7 +334,7 @@ $(document).ready(function(){
 				else if(result[i][0].type == 10){
 	
 				}
-				console.log(homePageList[1]);
+//				console.log(homePageList[1]);
 				var swiper = new Swiper('.swiper-container', {
 				      slidesPerView: 3,
 				      spaceBetween: 0,
@@ -343,13 +348,13 @@ $(document).ready(function(){
 				    });
 			}
 			//因為放在外面的話跟初始化首頁的ajax(就是這個外面的ajax)會同時跑，這個會跑比較快，所以抓不到陣列
-//			console.log(homePageList);
+			console.log(homePageList);
 			//影片新增至課程計畫
 			$('#addToCoursePlanButton').click(function(){
 				
-				alert(checkID);
+//				alert(checkID);
 				$.ajax({
-					url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
+					url : ajax_url+'AnyCourse/HomePageServlet.do',
 					method : 'POST',
 					cache: false,
 					data:{
@@ -361,13 +366,13 @@ $(document).ready(function(){
 					}
 				})
 			});
-			
+			console.log(homePageList);
 			//清單整個新增至課程計畫
 			$('#addToCoursePlanButton_List').click(function(e){
 				e.preventDefault();
 				console.log(homePageList[checkID][0]);
 				$.ajax({
-					url : 'http://localhost:8080/AnyCourse/HomePageServlet.do',
+					url : ajax_url+'AnyCourse/HomePageServlet.do',
 					method : 'POST',
 					cache: false,
 					data:{
@@ -379,7 +384,7 @@ $(document).ready(function(){
 						console.log("addToCoursePlan_List Error!");
 					}
 				})
-			})
+			});
   	},
 		error:function(){}
 	});

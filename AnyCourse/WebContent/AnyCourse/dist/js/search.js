@@ -1,3 +1,6 @@
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
+
 function get(name)
 {
    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
@@ -9,7 +12,7 @@ $(document).ready(function(){
 	$.ajax({
 		method:"GET",
 		cache :false,
-		url:'http://localhost:8080/AnyCourse/SearchServlet.do',
+		url:ajax_url+'AnyCourse/SearchServlet.do',
 		data: {
 			search_query: get('search_query')
 		},

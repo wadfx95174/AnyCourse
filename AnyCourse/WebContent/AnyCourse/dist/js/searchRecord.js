@@ -1,3 +1,6 @@
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
+
 function check_all(obj,cName) 
 { 
     var checkboxs = document.getElementsByName(cName); 
@@ -12,7 +15,7 @@ $(document).ready(function() {
 	
 	//取得資料庫的資料
 	$.ajax({
-		url : 'http://localhost:8080/AnyCourse/SearchRecordServlet.do',
+		url : ajax_url+'AnyCourse/SearchRecordServlet.do',
 		method : 'GET', 
 		cache :false,
 		success:function(result){
@@ -55,7 +58,7 @@ $(document).ready(function() {
 	$("#deleteListButton1").click(function(e){
 	    e.preventDefault();
 	    $.ajax({
-			url : 'http://localhost:8080/AnyCourse/SearchRecordServlet.do',
+			url : ajax_url+'AnyCourse/SearchRecordServlet.do',
 			method : 'POST',
 			cache :false,
 		    data : {
