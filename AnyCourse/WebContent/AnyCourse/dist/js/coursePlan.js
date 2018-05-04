@@ -7,7 +7,7 @@ $('.box-body').slimScroll({
 var listArray;
 $(document).ready(function() {
 	checkLogin("../", "../../../");
-	var str3='<li class="portlet">'
+	var str3='<li class="portlet" style="cursor:pointer;">'
 		+'<span class="handle portlet-header">'
 		+'<i class="fa fa-ellipsis-h"></i>'
 		+'</span>'

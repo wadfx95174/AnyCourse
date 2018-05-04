@@ -5,8 +5,9 @@ var video;
 //var keyLabels = [];
 var keyLabelArray;
 var maxIndex = 0;
-var selectId = 0;
+var selectId = 0;   //暫存 id (keylabel)
 var element;		//存DOM元素
+var editKL = false;	//編輯 keylabel
 
 $(document).ready(function(){
 	function get(name)
@@ -145,12 +146,13 @@ $(document).ready(function(){
     // 設置個人重點標籤
     function addToSelfKeyLabel(index)
     {
+    	var share = keyLabelArray[index].share ? '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>' : '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item muted">收回</li></a>'
     	$('#keyLabel1').append('<li class="list-group-item">'
 				+ keyLabelArray[index].keyLabelName
 				+'<ul class="list-group-submenu">'
-				+'<a href="#" class = "self dkl" id = "self-dkl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klDeleteModal"><li class="list-group-submenu-item">刪除</li></a>'
-				+'<a href="#" class = "self ekl" id = "self-ekl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klEditModal"><li class="list-group-submenu-item primary">編輯</li></a>'
-				+'<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
+				+'<a href="#" class = "self dkl" id = "self-dkl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klDeleteModal"><li class="list-group-submenu-item danger">刪除</li></a>'
+				+'<a href="#" class = "self ekl" id = "self-ekl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">編輯</li></a>'
+				+ share
 				+'<a href="#" class = "self ukl" id = "self-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
 				+'</ul>'
 				+'</li>');
@@ -211,30 +213,37 @@ $(document).ready(function(){
     	var klEndTime = $( "#slider-range" ).slider( "values", 1 );
     	if (klName != "")
     	{
-    		$.ajax({
-        		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
-        		method : 'POST',
-        	    data : {
-        	    	"method" : "insert",
-        	    	"keyLabelName" : klName,
-        	    	"beginTime" : klBeginTime,
-        	    	"endTime" : klEndTime,
-        	    	"unitId" : get("unit_id")
-        		},
-        		dataType : 'json',
-        		cache: false,
-        		success:function(result){
-        			keyLabelArray[maxIndex] = result;
-            		addToSelfKeyLabel(maxIndex++);
-            		//alert('新增成功');
+        	if (editKL)
+        	{
+        		
+        	}
+        	else
+        	{
+        		$.ajax({
+            		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
+            		method : 'POST',
+            	    data : {
+            	    	"method" : "insert",
+            	    	"keyLabelName" : klName,
+            	    	"beginTime" : klBeginTime,
+            	    	"endTime" : klEndTime,
+            	    	"unitId" : get("unit_id")
+            		},
+            		dataType : 'json',
+            		cache: false,
+            		success:function(result){
+            			keyLabelArray[maxIndex] = result;
+                		addToSelfKeyLabel(maxIndex++);
+                		//alert('新增成功');
 
-                	video.currentTime = klBeginTime;
-                	$('.keyLabelDiv').css('margin-left', (klBeginTime / video['duration'] * 100) + '%');
-                	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / video['duration'] * 100) + '%');
-                	$('.keyLabelDiv').attr('data-original-title', klName);
-            	},
-        		error:function(){console.log('failed');}
-        	});
+                    	video.currentTime = klBeginTime;
+                    	$('.keyLabelDiv').css('margin-left', (klBeginTime / video['duration'] * 100) + '%');
+                    	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / video['duration'] * 100) + '%');
+                    	$('.keyLabelDiv').attr('data-original-title', klName);
+                	},
+            		error:function(){console.log('failed');}
+            	});
+        	}
     	}
     	else
     	{
@@ -249,11 +258,25 @@ $(document).ready(function(){
     // 點擊個人標籤編輯按鈕，可編輯名稱
     $(document).on('click', '.ekl', function(event) 
     {
+    	$("#slider").toggle();
     	element = $(this).parent().parent();
     	selectId = parseInt(this.getAttribute("id").split("-")[2]);
-    	$('#eKeyLabelName').val(keyLabelArray[selectId].keyLabelName);
-    	$('#eBeginTime').val(keyLabelArray[selectId].beginTime);
-    	$('#eEndTime').val(keyLabelArray[selectId].endTime);
+//    	$('#eKeyLabelName').val(keyLabelArray[selectId].keyLabelName);
+//    	$('#eBeginTime').val(keyLabelArray[selectId].beginTime);
+//    	$('#eEndTime').val(keyLabelArray[selectId].endTime);
+    	
+
+	    // 設置slider的最大時間
+	    $( "#slider-range" ).slider( "option", "max", Math.floor(video["duration"]));
+		$( "#slider-range" ).slider( "values", [ keyLabelArray[selectId].beginTime,  keyLabelArray[selectId].endTime]);
+		$( "#keyLabelName" ).val(keyLabelArray[selectId].keyLabelNam);
+
+	    // 調整slider會跳至影片該處
+	    $( "#slider-range" ).slider({
+	  	    stop: function( event, ui ) {
+	  		    video.currentTime = (Math.floor(ui.value));
+		    }
+	    });
     });
     
     // 送去資料庫更新

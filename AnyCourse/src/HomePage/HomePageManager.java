@@ -515,11 +515,24 @@ public class HomePageManager {
 			while(result.next()) {
 				maxOrder = result.getInt("MAX(oorder)");
 			}
-			pst = con.prepareStatement("insert into personal_plan (user_id,unit_id,last_time,status,oorder) value(?,?,0,1,?)");
-			pst.setString(1, user_id);
-			pst.setInt(2, unit_id);
-			pst.setInt(3, ++maxOrder);
-			pst.executeUpdate();
+			result = stat.executeQuery("select * from unit,customlist_video,courselist where unit.unit_id"
+					+ " = customlist_video.unit_id and customlist_video.courselist_id ="
+					+ " courselist.courselist_id and courselist.courselist_id = "+ courselist_id);
+			while(result.next()) {
+				homePage.setUnit_id(result.getInt("unit.unit_id"));
+				homePages.add(homePage);
+			}
+			
+			System.out.println(homePages.size());
+			for(int i = 0;i < homePages.size();i++) {
+				pst = con.prepareStatement("insert ignore into personal_plan (user_id,unit_id,last_time,status,oorder) value(?,?,0,1,?)");
+				pst.setString(1, user_id);
+				pst.setInt(2, homePages.get(i).getUnit_id());
+				pst.setInt(3, ++maxOrder);
+				pst.executeUpdate();
+				
+			}
+			
 		}
 		catch(SQLException x){
 			System.out.println("Exception select"+x.toString());
