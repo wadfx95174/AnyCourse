@@ -5,6 +5,7 @@ var video;
 //var keyLabels = [];
 var keyLabelArray;
 var maxIndex = 0;
+var exmaxIndex = 0;
 var selectId = 0;
 var element;		//存DOM元素
 
@@ -54,7 +55,7 @@ $(document).ready(function(){
 //    	    else if(reponse.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
     	    $('#likesNum').text(response.likes);
     	    $('#introduction').append(response.courseInfo);
-    	    video.currentTime = get("time");
+    	    video.currentTime = get("time") == null ? 0 : parseInt(get("time"));
     	}
     });
     
@@ -145,17 +146,31 @@ $(document).ready(function(){
     // 設置個人重點標籤
     function addToSelfKeyLabel(index)
     {
+    	var share = keyLabelArray[index].share ? '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item muted">收回</li></a>' : '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
+
     	$('#keyLabel1').append('<li class="list-group-item">'
 				+ keyLabelArray[index].keyLabelName
 				+'<ul class="list-group-submenu">'
-				+'<a href="#" class = "self dkl" id = "self-dkl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klDeleteModal"><li class="list-group-submenu-item">刪除</li></a>'
-				+'<a href="#" class = "self ekl" id = "self-ekl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klEditModal"><li class="list-group-submenu-item primary">編輯</li></a>'
-				+'<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
+				+'<a href="#" class = "self dkl" id = "self-dkl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klDeleteModal"><li class="list-group-submenu-item danger">刪除</li></a>'
+				+'<a href="#" class = "self ekl" id = "self-ekl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">編輯</li></a>'
+				+ share
 				+'<a href="#" class = "self ukl" id = "self-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
 				+'</ul>'
 				+'</li>');
     }
-
+    
+    // 設置暫存重點標籤
+    function addToTempKeyLabel(index)
+    {
+		$('#keyLabel2').append('<li class="list-group-item">'
+				+ exKeyLabelArray[index].keyLabelName
+				+'<ul class="list-group-submenu">'
+				+'<a href="javascript:void(0)" class = "temp dkl" id = "temp-dkl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item danger">刪除</li></a>'
+				+'<a href="javascript:void(0)" class = "temp akl" id = "temp-akl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>'
+				+'<a href="#" class = "temp ukl" id = "temp-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
+				+'</ul>'
+				+'</li>');
+    }
     
   //重點標籤 從右滑出
     $(document).on('mouseover', '.list-group-item', function(event) {
@@ -169,8 +184,8 @@ $(document).ready(function(){
     });
 
     // 設定重點標籤的事件
-    // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
-    $(document).on('click', '.ukl', function(event) 
+    // 點擊個人重點標籤後，影片(currentTime)跳至該位置beginTime
+    $(document).on('click', '.self.ukl', function(event) 
     {
     	selectId = parseInt(this.getAttribute("id").split("-")[2]);
     	var beginTime = keyLabelArray[selectId].beginTime;
@@ -179,6 +194,17 @@ $(document).ready(function(){
     	$('.keyLabelDiv').css('margin-left', (beginTime / video['duration'] * 100) + '%');
     	$('.keyLabelDiv').css('width', ((endTime - beginTime) / video['duration'] * 100) + '%');
     	$('.keyLabelDiv').attr('data-original-title', keyLabelArray[selectId].keyLabelName);
+    });
+    // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
+    $(document).on('click', '.temp.ukl ,.exchange', function(event) 
+    {
+    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
+    	var beginTime = exKeyLabelArray[selectId].beginTime;
+    	var endTime = exKeyLabelArray[selectId].endTime;
+    	video.currentTime = beginTime;
+    	$('.keyLabelDiv').css('margin-left', (beginTime / video['duration'] * 100) + '%');
+    	$('.keyLabelDiv').css('width', ((endTime - beginTime) / video['duration'] * 100) + '%');
+    	$('.keyLabelDiv').attr('data-original-title', exKeyLabelArray[selectId].keyLabelName);
     });
     // 點擊個人標籤刪除按鈕，設置在變數
     $(document).on('click', '.self.dkl', function(event) 
@@ -246,6 +272,29 @@ $(document).ready(function(){
     {
     	$(this).parent().parent().remove();
     });
+    // 點擊個人標籤分享按鈕
+    $(document).on('click', '.skl', function(event) 
+    {
+    	var ele = $(this).find('li');	// 存該重點標籤的物件
+    	element = $(this).parent().parent();
+    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
+    	$.ajax({
+    		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
+    		method : 'POST',
+    	    data : {
+    	    	"method" : "share",
+    	    	"keyLabelId" : keyLabelArray[selectId].keyLabelId,
+    	    	"share" : (keyLabelArray[selectId].share + 1) % 2
+    		},
+    		cache: false,
+    		success:function(){
+    			keyLabelArray[selectId].share = (keyLabelArray[selectId].share + 1) % 2
+    			ele.toggleClass('muted info');
+    			ele.text(shareState[keyLabelArray[selectId].share]);
+        	},
+    		error:function(){console.log('share failed');}
+    	});
+    });
     // 點擊個人標籤編輯按鈕，可編輯名稱
     $(document).on('click', '.ekl', function(event) 
     {
@@ -306,10 +355,10 @@ $(document).ready(function(){
     		cache :false,
     	    data : {
     	    	"method" : "insert",
-    	    	"keyLabelName" : keyLabelArray[selectId].keyLabelName,
-    	    	"beginTime" : keyLabelArray[selectId].beginTime,
-    	    	"endTime" : keyLabelArray[selectId].endTime,
-    	    	"unitId" : keyLabelArray[selectId].unitId
+    	    	"keyLabelName" : exKeyLabelArray[selectId].keyLabelName,
+    	    	"beginTime" : exKeyLabelArray[selectId].beginTime,
+    	    	"endTime" : exKeyLabelArray[selectId].endTime,
+    	    	"unitId" : exKeyLabelArray[selectId].unitId
     		},
     		dataType : 'json',
     		cache: false,
@@ -335,46 +384,44 @@ $(document).ready(function(){
     		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
     			addToSelfKeyLabel(maxIndex);
 			} // end for
-    		exchangeKeyLabel();
     	}, // end success
 		error:function(){console.log('getPKL fail');}
 	});	// end ajax
     
-    function exchangeKeyLabel(){
-    	$.ajax({
-    		url : ajax_url+'AnyCourse/ExchangeKeyLabelServlet.do',
-    		method : 'GET', 
-    		cache :false,
-    		data : {					
-    			"unit_id" : get("unit_id")
-    		},
-    		success:function(result){
-    			//alert("OK");
-    			keyLabelArray = result;
-        		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
-        			$('#exchange_keylabel').append(
-        					'<div id="exK_' + keyLabelArray[maxIndex].userId + '" class=" col-xs-12">'+
-        					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
-        					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + keyLabelArray[maxIndex].nick_name + '</h4>'+
-        					'<li class="list-group-item">'+ keyLabelArray[maxIndex].keyLabelName+
-        					'<ul class="list-group-submenu">'+
-        					'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'+
-        					'</ul>'+
-        					'</li>'+
-        					'</div>'
-        					);
-    			} // end for       		
-        	}, // end success
-    		error:function(){console.log('getEKL fail');}
-    	});	// end ajax   	
-    }
+    $.ajax({
+		url : ajax_url+'AnyCourse/ExchangeKeyLabelServlet.do',
+		method : 'GET', 
+		cache :false,
+		data : {
+			"unit_id" : get("unit_id")
+		},
+		success:function(result){
+			console.log("OK");
+			exKeyLabelArray = result;
+    		for(exmaxIndex = 0 ;exmaxIndex < result.length; exmaxIndex++){
+    			$('#exchange_keylabel').append(
+    					'<div id="exK_' + exKeyLabelArray[exmaxIndex].userId + '" class=" col-xs-12">'+
+    					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
+    					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + exKeyLabelArray[exmaxIndex].nick_name + '</h4>'+
+    					'<li class="list-group-item">'+ exKeyLabelArray[exmaxIndex].keyLabelName+
+    					'<ul class="list-group-submenu">'+
+    					'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + exmaxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'+
+    					'</ul>'+
+    					'</li>'+
+    					'</div>'
+    					);
+			} // end for
+    		
+    		// 點選交流區的重點標籤，暫存區出現
+    		$('.list-group-submenu').on('click', '.exchange', function(event) 
+			{
+				selectId = parseInt(this.getAttribute("id").split("-")[2]);
+				addToTempKeyLabel(selectId);
+			})
+    	}, // end success
+		error:function(){console.log('get ExangeKeyLabel failed');}
+	});	// end ajax
     
- // 點選交流區的重點標籤，暫存區出現
-	$('.list-group-submenu').on('click', '.exchange', function(event) 
-	{
-		selectId = parseInt(this.getAttribute("id").split("-")[2]);
-		addToTempKeyLabel(selectId);
-	})
 
 //----------------------------------------------keyLabel----------------------------------------------//    
 //---------------------------抓影片結束時間，並儲存----------------------------------------------//

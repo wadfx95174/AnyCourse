@@ -33,9 +33,11 @@ function formatTime(seconds) {
 
 var video;
 var keyLabelArray;
+var exKeyLabelArray;
 var maxIndex = 0;
 var selectId = 0;
 var element;		//存DOM元素
+var shareState = ['分享','收回'];
 
 $(document).ready(function(){
     checkLogin("", "../../");
@@ -147,7 +149,6 @@ $(document).ready(function(){
     oHead.appendChild(oScript); 
     
 //----------------------------------------------keyLabel----------------------------------------------//   
-    
 
 //----------------------------------------------按讚----------------------------------------------// 
     
