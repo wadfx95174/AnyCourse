@@ -159,9 +159,14 @@
 				},
 				success:function(result){
 //					alert(result);
+					
 		    		for(var i = 0 ;i < result.length;i++){
 //		    			alert(result[i].text_note);
-		    			
+		    			if(result[i].share == 1){
+		    				$('#shareNote').text("已分享");
+							$('#shareNote').removeClass('btn-primary');
+				        	$('#shareNote').addClass('btn-danger');
+						}	    			
 		    			$('#text_area').append( result[i].text_note + "<br>");
 		    			text_note_id = result[i].text_note_id;
 		    			user_id = result[i].user_id;
@@ -406,12 +411,13 @@
 		$('#shareNote').click(function(){
 			if($('#shareNote').hasClass('btn-primary')){
 //				alert(typeof(user_id));
+				$('#shareNote').text("已分享");
 				$('#shareNote').removeClass('btn-primary');
 	        	$('#shareNote').addClass('btn-danger');
 	        	shareNote();
 	        	
 			}
-			else{
+			else{$('#shareNote').text("分享");
 				$('#shareNote').removeClass('btn-danger');
 	        	$('#shareNote').addClass('btn-primary');
 	        	notShareNote();
