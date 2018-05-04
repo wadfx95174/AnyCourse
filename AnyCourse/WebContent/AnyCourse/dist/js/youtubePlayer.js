@@ -86,7 +86,7 @@ $(document).ready(function(){
 	    function addToTempKeyLabel(index)
 	    {
 			$('#keyLabel2').append('<li class="list-group-item">'
-					+ exkeyLabelArray[index].keyLabelName
+					+ exKeyLabelArray[index].keyLabelName
 					+'<ul class="list-group-submenu">'
 					+'<a href="javascript:void(0)" class = "temp dkl" id = "temp-dkl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>'
 					+'<a href="javascript:void(0)" class = "temp akl" id = "temp-akl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>'
@@ -106,7 +106,7 @@ $(document).ready(function(){
 	    });
 	 // 設定重點標籤的事件
 	    // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
-	    $(document).on('click', '.ukl', function(event) 
+	    $(document).on('click', '.self.ukl', function(event) 
 	    {
 	    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
 	    	var beginTime = keyLabelArray[selectId].beginTime;
@@ -115,6 +115,17 @@ $(document).ready(function(){
 	    	$('.keyLabelDiv').css('margin-left', (beginTime / youTubePlayer.getDuration() * 100) + '%');
 	    	$('.keyLabelDiv').css('width', ((endTime - beginTime) / youTubePlayer.getDuration() * 100) + '%');
 	    	$('.keyLabelDiv').attr('data-original-title', keyLabelArray[selectId].keyLabelName);
+	    });
+	    // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
+	    $(document).on('click', '.temp.ukl ,.exchange', function(event) 
+	    {
+	    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
+	    	var beginTime = exKeyLabelArray[selectId].beginTime;
+	    	var endTime = exKeyLabelArray[selectId].endTime;
+	    	changeTo(beginTime);
+	    	$('.keyLabelDiv').css('margin-left', (beginTime / youTubePlayer.getDuration() * 100) + '%');
+	    	$('.keyLabelDiv').css('width', ((endTime - beginTime) / youTubePlayer.getDuration() * 100) + '%');
+	    	$('.keyLabelDiv').attr('data-original-title', exKeyLabelArray[selectId].keyLabelName);
 	    });
 	    // 點擊個人標籤刪除按鈕，設置在變數
 	    $(document).on('click', '.self.dkl', function(event) 
@@ -244,10 +255,10 @@ $(document).ready(function(){
 	    		cache :false,
 	    	    data : {
 	    	    	"method" : "insert",
-	    	    	"keyLabelName" : keyLabelArray[selectId].keyLabelName,
-	    	    	"beginTime" : keyLabelArray[selectId].beginTime,
-	    	    	"endTime" : keyLabelArray[selectId].endTime,
-	    	    	"unitId" : keyLabelArray[selectId].unitId
+	    	    	"keyLabelName" : exKeyLabelArray[selectId].keyLabelName,
+	    	    	"beginTime" : exKeyLabelArray[selectId].beginTime,
+	    	    	"endTime" : exKeyLabelArray[selectId].endTime,
+	    	    	"unitId" : exKeyLabelArray[selectId].unitId
 	    		},
 	    		dataType : 'json',
 	    		cache: false,
@@ -273,9 +284,8 @@ $(document).ready(function(){
 	    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
 	    			addToSelfKeyLabel(maxIndex);
 				} // end for
-	    		
 	    	}, // end success
-			error:function(){console.log('get PersonalKeyLabel failed');}
+			error:function(){console.log('getPKL fail');}
 		});	// end ajax
 	    
 	    
@@ -289,14 +299,14 @@ $(document).ready(function(){
 			success:function(result){
 				console.log("OK");
 				exKeyLabelArray = result;
-	    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
+	    		for(exmaxIndex = 0 ;exmaxIndex < result.length; exmaxIndex++){
 	    			$('#exchange_keylabel').append(
-	    					'<div id="exK_' + exKeyLabelArray[maxIndex].userId + '" class=" col-xs-12">'+
+	    					'<div id="exK_' + exKeyLabelArray[exmaxIndex].userId + '" class=" col-xs-12">'+
 	    					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
-	    					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + exKeyLabelArray[maxIndex].nick_name + '</h4>'+
-	    					'<li class="list-group-item">'+ exKeyLabelArray[maxIndex].keyLabelName+
+	    					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + exKeyLabelArray[exmaxIndex].nick_name + '</h4>'+
+	    					'<li class="list-group-item">'+ exKeyLabelArray[exmaxIndex].keyLabelName+
 	    					'<ul class="list-group-submenu">'+
-	    					'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'+
+	    					'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + exmaxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'+
 	    					'</ul>'+
 	    					'</li>'+
 	    					'</div>'

@@ -55,7 +55,7 @@ $(document).ready(function(){
 //    	    else if(reponse.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
     	    $('#likesNum').text(response.likes);
     	    $('#introduction').append(response.courseInfo);
-    	    video.currentTime = get("time");
+    	    video.currentTime = get("time") == null ? 0 : parseInt(get("time"));
     	}
     });
     
@@ -182,8 +182,8 @@ $(document).ready(function(){
     });
 
     // 設定重點標籤的事件
-    // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
-    $(document).on('click', '.ukl', function(event) 
+    // 點擊個人重點標籤後，影片(currentTime)跳至該位置beginTime
+    $(document).on('click', '.self.ukl', function(event) 
     {
     	selectId = parseInt(this.getAttribute("id").split("-")[2]);
     	var beginTime = keyLabelArray[selectId].beginTime;
@@ -192,6 +192,17 @@ $(document).ready(function(){
     	$('.keyLabelDiv').css('margin-left', (beginTime / video['duration'] * 100) + '%');
     	$('.keyLabelDiv').css('width', ((endTime - beginTime) / video['duration'] * 100) + '%');
     	$('.keyLabelDiv').attr('data-original-title', keyLabelArray[selectId].keyLabelName);
+    });
+    // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
+    $(document).on('click', '.temp.ukl ,.exchange', function(event) 
+    {
+    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
+    	var beginTime = exKeyLabelArray[selectId].beginTime;
+    	var endTime = exKeyLabelArray[selectId].endTime;
+    	video.currentTime = beginTime;
+    	$('.keyLabelDiv').css('margin-left', (beginTime / video['duration'] * 100) + '%');
+    	$('.keyLabelDiv').css('width', ((endTime - beginTime) / video['duration'] * 100) + '%');
+    	$('.keyLabelDiv').attr('data-original-title', exKeyLabelArray[selectId].keyLabelName);
     });
     // 點擊個人標籤刪除按鈕，設置在變數
     $(document).on('click', '.self.dkl', function(event) 
@@ -258,6 +269,12 @@ $(document).ready(function(){
     $(document).on('click', '.temp.dkl', function(event) 
     {
     	$(this).parent().parent().remove();
+    });
+    // 點擊個人標籤分享按鈕
+    $(document).on('click', '.self.dkl', function(event) 
+    {
+    	element = $(this).parent().parent();
+    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
     });
     // 點擊個人標籤編輯按鈕，可編輯名稱
     $(document).on('click', '.ekl', function(event) 
