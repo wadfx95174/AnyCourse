@@ -255,6 +255,12 @@ $(document).ready(function(){
     {
     	$(this).parent().parent().remove();
     });
+    // 點擊個人標籤分享按鈕
+    $(document).on('click', '.self.dkl', function(event) 
+    {
+    	element = $(this).parent().parent();
+    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
+    });
     // 點擊個人標籤編輯按鈕，可編輯名稱
     $(document).on('click', '.ekl', function(event) 
     {
