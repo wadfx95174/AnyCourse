@@ -163,6 +163,7 @@
 		    		for(var i = 0 ;i < result.length;i++){
 //		    			alert(result[i].text_note);
 		    			if(result[i].share == 1){
+		    				$('#shareNote').text("已分享");
 							$('#shareNote').removeClass('btn-primary');
 				        	$('#shareNote').addClass('btn-danger');
 						}	    			
@@ -410,12 +411,13 @@
 		$('#shareNote').click(function(){
 			if($('#shareNote').hasClass('btn-primary')){
 //				alert(typeof(user_id));
+				$('#shareNote').text("已分享");
 				$('#shareNote').removeClass('btn-primary');
 	        	$('#shareNote').addClass('btn-danger');
 	        	shareNote();
 	        	
 			}
-			else{
+			else{$('#shareNote').text("分享");
 				$('#shareNote').removeClass('btn-danger');
 	        	$('#shareNote').addClass('btn-primary');
 	        	notShareNote();
