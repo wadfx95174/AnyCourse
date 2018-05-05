@@ -1,14 +1,20 @@
 package PlayerInterface;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.mahout.cf.taste.common.TasteException;
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
+
 import com.google.gson.Gson;
+
+import RecommenderSystem.RecommendationResult;
 
 public class PlayerInterfaceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -63,12 +69,6 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			response.getWriter().write(gson.toJson(unit));
 //			System.out.println(gson.toJson(unit));
 		}
-//		else if(request.getParameter("action").equals("unlike")) {
-//			response.setContentType("application/json");
-//			response.setCharacterEncoding("UTF-8");
-//			Unit unit = new Unit();
-//			unit = manager.setUnLike((String)session.getAttribute("userId"),Integer.parseInt(request.getParameter("unit_id")));
-//		}
 		else if(request.getParameter("action").equals("setIsBrowse")) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
@@ -89,6 +89,17 @@ public class PlayerInterfaceServlet extends HttpServlet {
 //				System.out.println(gson.toJson(unit));
 			}
 			
+		}
+		
+		else if(request.getParameter("action").equals("getRecommendation")) {
+			
+//			try {
+//				List<RecommendedItem> test = RecommendationResult.designatedItemRecommendedResult(
+//						(String)session.getAttribute("userId"),request.getParameter("unit_id")
+//						,10);
+//			} catch (TasteException e) {
+//				e.printStackTrace();
+//			}
 		}
 		manager.conClose();
 	}

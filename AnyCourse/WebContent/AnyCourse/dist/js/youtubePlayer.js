@@ -1,8 +1,8 @@
 var youTubePlayer;
 var uid;
 
-//var ajax_url="http://140.121.197.130:8400/";
-var ajax_url="http://localhost:8080/";
+var ajax_url="http://140.121.197.130:8400/";
+//var ajax_url="http://localhost:8080/";
 function get(name)
 {
    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
@@ -360,7 +360,7 @@ $(document).ready(function(){
 	    	var duration = youTubePlayer.getDuration();
 	        console.log(Math.floor(duration));
 	        $.ajax({
-	        	url:'http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do',
+	        	url:ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
 	        	method: 'POST',
 	        	cache :false,
 	        	data:{

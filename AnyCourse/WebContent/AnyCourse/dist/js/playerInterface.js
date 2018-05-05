@@ -1,5 +1,5 @@
-//var ajax_url="http://140.121.197.130:8400/";
-var ajax_url="http://localhost:8080/";
+var ajax_url="http://140.121.197.130:8400/";
+//var ajax_url="http://localhost:8080/";
 
 
 $('#noteArea').slimScroll({
@@ -201,4 +201,25 @@ $(document).ready(function(){
         	})
     	}
     })
+//----------------------------------------------按讚----------------------------------------------// 
+//----------------------------------------------播放介面之推薦影片----------------------------------------------// 
+    $.ajax({
+    	url: ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
+    	method: 'POST',
+    	cache :false,
+    	data:{
+    		action:'getRecommendation',
+    		unit_id:get('unit_id'),
+    	},
+    	success:function(result){
+    		console.log(result);
+//    		$('#likesNum').text(result.likes);
+    	},
+    	error:function(){
+    		console.log("Like Fail!");
+    	}
+    })
+    
+    
+    
 });
