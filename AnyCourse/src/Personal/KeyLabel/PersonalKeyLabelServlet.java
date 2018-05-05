@@ -9,9 +9,9 @@ import javax.servlet.http.HttpSession;
 
 public class PersonalKeyLabelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private PersonalKeyLabelManager manager = new PersonalKeyLabelManager();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PersonalKeyLabelManager manager = new PersonalKeyLabelManager();
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
 		response.setContentType("application/json");

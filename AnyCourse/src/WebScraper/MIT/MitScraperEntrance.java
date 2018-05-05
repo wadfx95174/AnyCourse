@@ -13,7 +13,6 @@ public class MitScraperEntrance
 	{
 		MitScraper scraper = new MitScraper();
 		ArrayList<OutputFormat> outputs = scraper.getItems();
-		
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		

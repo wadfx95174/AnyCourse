@@ -43,15 +43,20 @@ public class MitScraper {
 		{
 			// 抓首頁
 			documentAll = jsoupProcess(SCHOOL_URL + HOMEPAGE_URL);
-			courseToken = documentAll.select(".courseRow .courseNumCol a");
-			//	抓所有課程去掉多的(重複的)
-			for (Element token:courseToken)
+		} catch (IOException e)
+		{
+			return outputs;
+		}
+		
+		courseToken = documentAll.select(".courseRow .courseNumCol a");
+		//	抓所有課程去掉多的(重複的)
+		for (Element token:courseToken)
+		{
+			if (ID_SET.contains(token.text()))
 			{
-				if (ID_SET.contains(token.text()))
-				{
-					courseListUrls.add(token.attr("href"));
-				}
+				courseListUrls.add(token.attr("href"));
 			}
+		}
 			
 			
 			for (String courseListUrl: courseListUrls)
@@ -59,7 +64,13 @@ public class MitScraper {
 				OutputFormat output = new OutputFormat();
 				
 				//	抓取課程
-				documentCourse = jsoupProcess(SCHOOL_URL + courseListUrl);
+				try
+				{
+					documentCourse = jsoupProcess(SCHOOL_URL + courseListUrl);
+				} catch (IOException e)
+				{
+					continue;
+				}
 				
 				//	學校名稱
 				output.setUniversity("MIT");
@@ -90,20 +101,46 @@ public class MitScraper {
 				if (innerUrl != null)
 				{
 					//	抓單元項目
-					documentInnerCourse = jsoupProcess(SCHOOL_URL + innerUrl);
+					try
+					{
+						documentInnerCourse = jsoupProcess(SCHOOL_URL + innerUrl);
+					} catch (IOException e)
+					{
+						continue;
+					}
 					
 					//	進入單元網頁
 					for (String videoUrl: documentInnerCourse.select(".medialisting > a").eachAttr("href"))
 					{
 						//	抓取單元頁面
-						documentUnit = jsoupProcess(SCHOOL_URL + videoUrl);
+						try
+						{
+							documentUnit = jsoupProcess(SCHOOL_URL + videoUrl);
+						} catch (IOException e)
+						{
+							continue;
+						}
 						//	單元名稱
 						output.setUnitName(documentUnit.select("#parent-fieldname-title").text());
 						//  切 youtube uid
 						String url = documentUnit.select("#vid_index .related-media-thumbnail-nolink img").attr("src");
+						
 						if (url != null)
 						{
-							String vid = url.split("/")[4];
+							String vid = "";
+							if (!url.startsWith("https://img"))
+							{
+								url = documentUnit.select("#vid_related>ul>li>a").attr("href");
+								if (url != null)
+								{
+									String[]tokens = url.split("/");
+									vid = tokens[tokens.length - 1];
+									if (vid.endsWith(".jpg"))
+										vid = vid.split(".")[0];
+								}
+							}
+							else
+								vid = url.split("/")[4];
 							//  圖片ID
 							output.setUnitImgSrc(IMAGE_URL + vid + IMAGE_PARAM);
 							//  影片ID
@@ -114,10 +151,6 @@ public class MitScraper {
 				outputs.add(output);
 //				System.out.println(output);
 			} // end for
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
 		return outputs;
 	}
 
