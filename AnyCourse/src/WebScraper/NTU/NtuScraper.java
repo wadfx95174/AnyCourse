@@ -10,9 +10,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import WebScraper.Output.CourseList;
 import WebScraper.Output.OutputFormat;
 
-public class NtuScraper {
+public class NtuScraper implements CourseList{
 	private ArrayList<OutputFormat> outputs = new ArrayList<OutputFormat>();
 	//台灣大學開放式課程官網
 	private static final String TARGET_URL = "http://ocw.aca.ntu.edu.tw/ntu-ocw/ocw/cou/";
@@ -138,7 +139,8 @@ public class NtuScraper {
 			outputs.add(output);
 		}
 	}
-	public ArrayList<OutputFormat> getItems() {
+	@Override
+	public ArrayList<OutputFormat> getCourseList() {
 		return outputs;
 	}
 }

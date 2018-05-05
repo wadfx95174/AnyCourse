@@ -1,9 +1,14 @@
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
+
 $('#unit').slimScroll({
     height: '420px;'
     });
 $('.box-body').slimScroll({
 	  height: '420px;'
 	  });
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
 var listArray;
 $(document).ready(function() {
 	checkLogin("../", "../../../");
@@ -29,7 +34,7 @@ $(document).ready(function() {
 		+'</span>';
 	var videoID = 1;
 	$.ajax({
-		url:'http://localhost:8080/AnyCourse/CoursePlanServlet.do',
+		url:ajax_url+'AnyCourse/CoursePlanServlet.do',
 		method:'GET',
 		cache :false,
 //		data:{
@@ -152,7 +157,7 @@ $(document).ready(function() {
 //	    		console.log(sender);
 //	    		console.log(oldIndex);
 	    		$.ajax({
-	    			url:'http://localhost:8080/AnyCourse/CoursePlanServlet.do',
+	    			url:ajax_url+'AnyCourse/CoursePlanServlet.do',
 		    		method:'POST',
 		    		cache :false,
 		    		data:{

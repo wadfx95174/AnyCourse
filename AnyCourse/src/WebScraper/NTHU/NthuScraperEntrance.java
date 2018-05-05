@@ -10,7 +10,7 @@ import WebScraper.Output.OutputFormat;
 public class NthuScraperEntrance {
 	public static void main(String[] args) throws Exception {
 		NthuScraper scraper = new NthuScraper();
-		ArrayList<OutputFormat> outputs = scraper.getItems();
+		ArrayList<OutputFormat> outputs = scraper.getCourseList();
 
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();

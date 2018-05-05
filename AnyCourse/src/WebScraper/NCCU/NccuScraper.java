@@ -1,5 +1,6 @@
 package WebScraper.NCCU;
 
+import WebScraper.Output.CourseList;
 import WebScraper.Output.OutputFormat;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class NccuScraper {
+public class NccuScraper implements CourseList{
 	private ArrayList<OutputFormat> outputs = new ArrayList<OutputFormat>();
 	//政治大學開放式課程官網
 	private static final String TARGET_URL = "http://ctld.video.nccu.edu.tw";
@@ -235,7 +236,8 @@ public class NccuScraper {
 			outputs.add(output);
 		}
 	}
-	public ArrayList<OutputFormat> getItems() {
+	@Override
+	public ArrayList<OutputFormat> getCourseList() {
 		return outputs;
 	}
 }

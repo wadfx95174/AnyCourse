@@ -11,7 +11,7 @@ import WebScraper.Output.OutputFormat;
 public class NtuScraperEntrance {
 	public static void main(String[] args) throws Exception{
 		NtuScraper scraper = new NtuScraper();
-		ArrayList<OutputFormat> outputs = scraper.getItems();
+		ArrayList<OutputFormat> outputs = scraper.getCourseList();
 		
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
