@@ -18,7 +18,7 @@ $(document).ready(function(){
     	method: 'POST',
     	cache :false,
     	data: {
-    		"action": 'like',
+    		"action": 'setIsBrowse',
     		"unitId": get('unit_id')
     	},
     	error: function(){

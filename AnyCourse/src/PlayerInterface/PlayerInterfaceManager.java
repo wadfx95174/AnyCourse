@@ -141,13 +141,22 @@ public class PlayerInterfaceManager
 			if(check == true) { 
 				
 				//判斷結束了沒，currentTime+5秒代表5秒內會結束的都改變status
-//				if(currentTime+5 > duration) {
-//					
-//				}
-				pst = con.prepareStatement("update personal_plan set last_time = ? where user_id = ? and unit_id = ? ");
-				pst.setInt(1,currentTime);
-				pst.setString(2,user_id);
-				pst.setInt(3, unit_id);
+				if(currentTime+5 > duration) {
+					pst = con.prepareStatement("update personal_plan set last_time = ? and status = ? where user_id = ? and unit_id = ? ");
+					pst.setInt(1,currentTime);
+					pst.setInt(2,3);
+					pst.setString(3,user_id);
+					System.out.println("coursePlan");
+					pst.setInt(4, unit_id);
+				}
+				else {
+					pst = con.prepareStatement("update personal_plan set last_time = ? and status = ? where user_id = ? and unit_id = ? ");
+					pst.setInt(1,currentTime);
+					pst.setInt(2,2);
+					pst.setString(3,user_id);
+					pst.setInt(4, unit_id);
+					
+				}
 				pst.executeUpdate();
 			}
 			
@@ -218,6 +227,8 @@ public class PlayerInterfaceManager
 		}
 		return unit;
 	}
+	
+	
 	//按讚，更新2個選取1個
 	//更新1:unit的likes
 	//更新2:share_likes的isLike

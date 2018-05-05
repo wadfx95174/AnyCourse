@@ -370,7 +370,7 @@
 		}
 		
 		function shareNote(){
-			alert("oK");
+//			alert("oK");
 			$.ajax({  
 				url : ajax_url+'AnyCourse/TextNoteServlet.do',
 				method : 'POST',
@@ -381,10 +381,10 @@
 //					"user_id" : user_id					
 				},				
 				success : function(data) {
-					alert("成功成功1");
+//					alert("成功成功1");
 				},
 				error : function() {
-					alert("error1");
+//					alert("error1");
 				}
 			});
 
@@ -400,10 +400,10 @@
 //					"user_id" : user_id					
 				},				
 				success : function(data) {
-					alert("成功成功2");
+//					alert("成功成功2");
 				},
 				error : function() {
-					alert("error2");
+//					alert("error2");
 				}
 			});
 		}

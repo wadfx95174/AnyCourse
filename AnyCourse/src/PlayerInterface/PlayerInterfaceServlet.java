@@ -58,9 +58,10 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			Unit unit = new Unit();
-			System.out.println(Integer.parseInt(request.getParameter("unitId")));
+			System.out.println(Integer.parseInt(request.getParameter("unit_id")));
+			System.out.println(Integer.parseInt(request.getParameter("like")));
 			unit = manager.setLike((String)session.getAttribute("userId")
-					, Integer.parseInt(request.getParameter("unitId"))
+					, Integer.parseInt(request.getParameter("unit_id"))
 					,Integer.parseInt(request.getParameter("like")));
 //			System.out.println(Integer.parseInt(request.getParameter("like")));
 			Gson gson = new Gson();
