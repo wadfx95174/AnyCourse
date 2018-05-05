@@ -1,3 +1,5 @@
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
 document.write('<script type="text/javascript" src="dist/js/login.js"></script>');
 
 $(document).on('click', '#logout', function logout()
@@ -8,7 +10,7 @@ $(document).on('click', '#logout', function logout()
 function checkLogin(htmlUrl, servletUrl)
 {
 	$.ajax({
-    	url: 'http://localhost:8080/AnyCourse/AccountServlet.do',
+    	url: ajax_url+'AnyCourse/AccountServlet.do',
     	method: 'POST',
     	cache :false,
     	success: function(result){
@@ -104,7 +106,7 @@ function checkLogin(htmlUrl, servletUrl)
     					+'</a>'
     					+'</li>'
     					+'<li class="treeview">'
-    					+'<a href="#"> '
+    					+'<a href="'+ htmlUrl +'Instructions.html"> '
     					+'<i class="fa fa-question-circle"></i> '
     					+'<span>說明</span>'
     					+'</a>'
@@ -134,7 +136,7 @@ function checkLogin(htmlUrl, servletUrl)
     					+'</a>'
     					+'</li>'
     					+'<li class="treeview">'
-    					+'<a href="#"> '
+    					+'<a href="'+ htmlUrl +'Instructions.html"> '
     					+'<i class="fa fa-question-circle"></i> '
     					+'<span>說明</span>'
     					+'</a>'
