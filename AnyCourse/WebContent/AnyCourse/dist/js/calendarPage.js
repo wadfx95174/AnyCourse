@@ -10,6 +10,10 @@ var API_KEY = 'AIzaSyAz3zOHiCMMnShglhMhAvFsRl10juJs2oo';
 // Array of API discovery doc URLs for APIs used by the quickstart
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
+
+
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
 var SCOPES = "https://www.googleapis.com/auth/calendar";
@@ -154,7 +158,7 @@ function addEvent(event)
               response.eventType = 'g';
 	          
 			  $.ajax({
-        		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
+        		url : ajax_url+'AnyCourse/CalendarServlet.do',
         		method: 'POST',
         		cache:false,
         		data: {
@@ -236,7 +240,7 @@ $(function () {
 	  	checkLogin("../", "../../../");
 	  
 	  	$.ajax({
-	  		url:'http://localhost:8080/AnyCourse/CalendarServlet.do',
+	  		url:ajax_url+'AnyCourse/CalendarServlet.do',
 	  		method:'GET',
 	  		cache :false,
 	  		data:{
@@ -320,7 +324,7 @@ $(function () {
         
         // 從資料庫取得行事曆的資料，並更新至頁面
         $.ajax({
-			url: 'http://localhost:8080/AnyCourse/CalendarServlet.do',
+			url: ajax_url+'AnyCourse/CalendarServlet.do',
 			type: 'GET',
 			dataType: "json", 
 			cache :false,
@@ -370,7 +374,7 @@ $(function () {
 			        	    selectedObject.url = selectedObject.unitId + '/' + selectedObject.type;
 			        	    // 送到資料庫更新
 			        	    $.ajax({
-			            		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
+			            		url : ajax_url+'AnyCourse/CalendarServlet.do',
 			            		method: 'POST',
 			            		cache: false,
 			            		data: {
@@ -426,7 +430,7 @@ $(function () {
 //			            console.log(!date.hasTime());
 			            
 			            $.ajax({
-		            		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
+		            		url : ajax_url+'AnyCourse/CalendarServlet.do',
 		            		method: 'POST',
 		            		cache :false,
 		            		data: {
@@ -471,7 +475,7 @@ $(function () {
 				        		  if (event.eventType != 'g')
 				        		  {
 					        		  $.ajax({
-						            		url : 'http://localhost:8080/AnyCourse/CalendarServlet.do',
+						            		url : ajax_url+'AnyCourse/CalendarServlet.do',
 						            		method: 'POST',
 						            		cache :false,
 						            		data: {
@@ -520,7 +524,7 @@ $(function () {
 		        		  }
 			        	  else
 			        	  {
-			        		  $.post("http://localhost:8080/AnyCourse/CalendarServlet.do", 
+			        		  $.post(ajax_url+"AnyCourse/CalendarServlet.do", 
 				        			  {
 					        		  		 id: event.id,
 					        		  		 title: event.title,
@@ -545,7 +549,7 @@ $(function () {
 			        		 updateEvent(event);
 		        		 }
 			        	 else if (event.end != null)
-		        	        $.post("http://localhost:8080/AnyCourse/CalendarServlet.do", 
+		        	        $.post(ajax_url+"AnyCourse/CalendarServlet.do", 
 		        			  {
 		        		  		 id: event.id,
 		        		  		 title: event.title,
@@ -556,7 +560,7 @@ $(function () {
 		        		  		 method: "update"
 		        			  });
 		        	     else 
-		        		    $.post("http://localhost:8080/AnyCourse/CalendarServlet.do", 
+		        		    $.post(ajax_url+"AnyCourse/CalendarServlet.do", 
 		        			  {
 		        		  		 id: event.id,
 		        		  		 title: event.title,

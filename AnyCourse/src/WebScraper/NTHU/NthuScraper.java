@@ -54,7 +54,7 @@ public class NthuScraper {
 		
 		int x;
 		// 總共有14個頁面，並把每個課程的後段URL都存進courseURLLists，以便後續利用
-		for (int i = 1; i <= 14; ++i) {
+		for (int i = 0; i <= 5; ++i) {
 			// 連官網的14個頁面
 			res = Jsoup.connect(TARGET_URL + i)
 					.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0")
@@ -133,9 +133,9 @@ public class NthuScraper {
 				catch(Exception e) {
 					e.printStackTrace();
 				}
-//				System.out.println(videoURLToken);
+				System.out.println(videoURLToken);
 				
-//				System.out.println(unitNameFirstHalf);
+				System.out.println(unitNameFirstHalf);
 				unitNameLists.add(unitNameFirstHalf);
 			
 				try {
@@ -179,8 +179,8 @@ public class NthuScraper {
 						try {
 							String temp1 = videoIframe.split("=")[2].split("&")[0];
 							String temp2 = videoIframe.split("=")[3].split("&")[0];
-//							System.out.println(VIDEO_IMG_URL+temp1+"/"+temp2);
-//							System.out.println(VIDEO_IMG_URL+temp1+"/cover.png");
+							System.out.println(VIDEO_IMG_URL+temp1+"/"+temp2);
+							System.out.println(VIDEO_IMG_URL+temp1+"/cover.png");
 							output.setUnitURL(VIDEO_IMG_URL+temp1+"/"+temp2);
 							output.setUnitImgSrc(VIDEO_IMG_URL+temp1+"/cover.png");
 						}

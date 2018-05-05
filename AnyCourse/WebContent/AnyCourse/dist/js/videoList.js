@@ -55,7 +55,7 @@ $(document).ready(function() {
 	                    +'<div class="btn-group col-xs-1 col-md-1">'
 						+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' 
 						+'<span class="caret caret-up"></span></button><ul class="dropdown-menu dropdown-menu-right" role="menu">'
-						+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlan_List" onclick="getID('+videoListID+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程計畫</a></li>'
+						+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlan_List" onclick="getID('+videoListID+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
 						+'<li><a href="#" data-toggle="modal" data-target="#editModal" onclick="getID('+videoListID+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
 						+'<li><a href="#" data-toggle="modal" data-target="#deleteModal1" onclick="getID('+videoListID+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
 						+'</ul></div>'
@@ -86,7 +86,7 @@ $(document).ready(function() {
 								for(var k = 0 ;k < resultUnit.length;k++){
 //									console.log(resultUnit[k].videoType);
 									$("#unit").append(
-											'<li id="videoItem_'+unitVideoID+'">'
+											'<li id="videoItem_'+unitVideoID+'"><a href="#unitSection" style="color:black;">'
 											+'<span class="handle ui-sortable-handle">' 
 											+'<i class="fa fa-ellipsis-h"></i>'
 											+'</span>' 
@@ -97,7 +97,7 @@ $(document).ready(function() {
 											+'</button>'
 											+'<ul class="dropdown-menu">'
 											+'<li>'
-											+'<a href="#" class=" waves-effect waves-block" data-toggle="modal" data-target="#deleteModal1" onclick="getID('+unitVideoID+')">'
+											+'<a href="#" class=" waves-effect waves-block" data-toggle="modal" data-target="#addToCoursePlan" onclick="getID('+unitVideoID+')">'
 											+'<i class="ion ion-clipboard"></i>新增至課程計畫'
 											+'</a>'
 											+'</li>'
@@ -108,22 +108,23 @@ $(document).ready(function() {
 											+'onclick="getID('+unitVideoID+')" style="cursor: pointer;"></i>'
 											+'</span>'
 											+'<a class="list-group-item" onclick="jumpToPlayerInterface('+ resultUnit[k].unit_id + ',' + resultUnit[k].videoType+')">'
-											+'<div class="media">'
 											
-											+'<div class="media-body">'
-											+'<div class="col-xs-4 pull-left" style="padding-left: 0px;">'
-											+'<div class="embed-responsive embed-responsive-16by9">'
-											+'<img id="img" class="style-scope yt-img-shadow" alt="" width="230"'
+											+'<div class="media">'
+											+'<div class="pull-left" style="padding-left: 0px;">'
+											+'<div class="embed-responsive embed-responsive-16by9 col-xs-12">'
+											+'<img id="img" class="style-scope yt-img-shadow" alt="" width="250"'
 											+'src="' + resultUnit[k].video_img_src + '">' 
 											+'</div>'
 											+'</div>'
-											+'<h4 class="media-heading">'
+											+'<div class="media-body">'
+											
+											+'<h4 class="unitUi">'
 											+'<b>影片名稱:' + resultUnit[k].unit_name + '</b>'
 											+'</h4>'
-											+'<p style="margin-bottom: 5px;">開課大學:' + resultUnit[k].school_name + '</p>'
-											+'<p style="margin-bottom: 5px;">授課教師:' + resultUnit[k].teacher + '老師</p>'
-											+'<p style="margin-bottom: 5px;">讚數:' + resultUnit[k].likes.toLocaleString() +'</p>'
-											+'<p style="margin-bottom: 5px;">課程簡介:' + resultUnit[k].course_info + '</p>'
+											+'<p class="unitUi">開課大學:' + resultUnit[k].school_name + '</p>'
+											+'<p class="unitUi">授課教師:' + resultUnit[k].teacher + '老師</p>'
+											+'<p class="unitUi">讚數:' + resultUnit[k].likes.toLocaleString() +'</p>'
+											+'<p class="unitUi">課程簡介:' + resultUnit[k].course_info + '</p>'
 											+'</div>'
 											+'</div>'
 											+'</a></li>'
@@ -132,9 +133,26 @@ $(document).ready(function() {
 								}
 								for(var z = 0;z < resultUnit.length;z++){
 									unitArray[z] = resultUnit[z].unit_id;
+//									console.log(unitArray[z]);
 								}
 					  			
-								
+								//影片新增至課程計畫
+								$('#addToCoursePlanButton').click(function(){
+									
+//									alert(checkID);
+									$.ajax({
+										url : ajax_url+'AnyCourse/HomePageServlet.do',
+										method : 'POST',
+										cache: false,
+										data:{
+											action:'addToCoursePlan',
+											unit_id:unitArray[checkID-1]
+										},
+										error:function(){
+											console.log("addToCoursePlan Error!");
+										}
+									})
+								});
 					    	},
 							error:function(){console.log('failed');}
 						});
@@ -184,11 +202,13 @@ $(document).ready(function() {
 	                    +'</i><i class="fa fa-ellipsis-v"></i>'
 	                    +'</span>'
 	                    +'<span class="text" id="videoListText_'+videoListID+'"'+'>'+$("#named").val()+'</span>'
-	                    +'<div class="tools">'
-	                    +'<button type="button" data-toggle="tooltip" data-placement="top" title="新增至課程計畫"><i class="fa fa-plus"></i></button>'
-	                    +'<button type="button" data-toggle="modal" data-target="#editModal" onclick="getID('+videoListID+')"><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="編輯"></i></button>'
-	                    +'<button type="button" data-toggle="modal" data-target="#deleteModal1" onclick="getID('+videoListID+')"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除"></i></button>'
-	                    +'</div>'
+	                    +'<div class="btn-group col-xs-1 col-md-1">'
+						+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' 
+						+'<span class="caret caret-up"></span></button><ul class="dropdown-menu dropdown-menu-right" role="menu">'
+						+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlan_List" onclick="getID('+videoListID+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+						+'<li><a href="#" data-toggle="modal" data-target="#editModal" onclick="getID('+videoListID+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
+						+'<li><a href="#" data-toggle="modal" data-target="#deleteModal1" onclick="getID('+videoListID+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
+						+'</ul></div>'
 	                    +'</li>');
 				  //把modal設為空
 				  $('#named').val("");
@@ -217,13 +237,26 @@ $(document).ready(function() {
 											+'<span class="handle ui-sortable-handle">' 
 											+'<i class="fa fa-ellipsis-h"></i>'
 											+'</span>' 
+											+'<div class="btn-group" style="top: -5px;">'
+											+'<button type="button" class="btn btn-noColor dropdown-toggle"'
+											+'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+											+'<span class="caret"></span>'
+											+'</button>'
+											+'<ul class="dropdown-menu">'
+											+'<li>'
+											+'<a href="#" class=" waves-effect waves-block" data-toggle="modal" data-target="#addToCoursePlanButton" onclick="getID('+unitVideoID+')">'
+											+'<i class="ion ion-clipboard"></i>新增至課程計畫'
+											+'</a>'
+											+'</li>'
+											+'</ul>'
+											+'</div>'
 											+'<span class="pull-right">'
 											+'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal2"'
 											+'onclick="getID('+unitVideoID+')" style="cursor: pointer;"></i>'
 											+'</span>'
 											+'<a class="list-group-item" onclick="jumpToPlayerInterface('+ resultUnit[k].unit_id + ',' + resultUnit[k].videoType+')">'
 											+'<div class="media">'
-											+'<div class="col-xs-4 pull-left" style="padding-left: 0px;">'
+											+'<div class="pull-left" style="padding-left: 0px;">'
 											+'<div class="embed-responsive embed-responsive-16by9">'
 											+'<img id="img" class="style-scope yt-img-shadow" alt="" width="230"'
 											+'src="' + resultUnit[k].video_img_src + '">' 
@@ -233,10 +266,10 @@ $(document).ready(function() {
 											+'<h4 class="media-heading">'
 											+'<b>影片名稱:' + resultUnit[k].unit_name + '</b>'
 											+'</h4>'
-											+'<p style="margin-bottom: 5px;">開課大學:' + resultUnit[k].school_name + '</p>'
-											+'<p style="margin-bottom: 5px;">授課教師:' + resultUnit[k].teacher + '老師</p>'
-											+'<p style="margin-bottom: 5px;">課程簡介:' + resultUnit[k].course_info + '</p>'
-											+'<p style="margin-bottom: 5px;">讚數:' + resultUnit[k].likes.toLocaleString() +'</p>'
+											+'<p class="unitUi">開課大學:' + resultUnit[k].school_name + '</p>'
+											+'<p class="unitUi">授課教師:' + resultUnit[k].teacher + '老師</p>'
+											+'<p class="unitUi">課程簡介:' + resultUnit[k].course_info + '</p>'
+											+'<p class="unitUi">讚數:' + resultUnit[k].likes.toLocaleString() +'</p>'
 											+'</div>'
 											+'</div>'
 											+'</a></li>'
@@ -365,13 +398,15 @@ $(document).ready(function() {
 			cache: false,
 			data:{
 				action:'addToCoursePlan_List',
-				courselist_id:videoListArray[checkID][0]
+				courselist_id:videoListArray[checkID-1][0]
 			},
 			error:function(e){
 				console.log("addToCoursePlan_List Error!");
 			}
 		})
 	});
+	
+	
   
   //編輯時沒有輸入新的清單名稱
   $("#unNewEdit").dialog({
