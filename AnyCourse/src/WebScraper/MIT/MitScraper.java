@@ -100,11 +100,15 @@ public class MitScraper {
 						//	單元名稱
 						output.setUnitName(documentUnit.select("#parent-fieldname-title").text());
 						//  切 youtube uid
-						String vid = documentUnit.select("#vid_index .related-media-thumbnail-nolink img").attr("src").split("/")[4];
-						//  圖片ID
-						output.setUnitImgSrc(IMAGE_URL + vid + IMAGE_PARAM);
-						//  影片ID
-						output.setUnitURL(YOUTUBE_URL + vid);
+						String url = documentUnit.select("#vid_index .related-media-thumbnail-nolink img").attr("src");
+						if (url != null)
+						{
+							String vid = url.split("/")[4];
+							//  圖片ID
+							output.setUnitImgSrc(IMAGE_URL + vid + IMAGE_PARAM);
+							//  影片ID
+							output.setUnitURL(YOUTUBE_URL + vid);
+						}
 					}
 				}
 				outputs.add(output);
@@ -120,7 +124,7 @@ public class MitScraper {
 	// 判斷開頭是否為 http://
 	private String urlProcess(String url)
 	{
-		if (!url.substring(0,1).equals("/"))
+		if (url!= null && !url.substring(0,1).equals("/"))
 		{
 			String subUrl = url.split("/")[2];
 			// 去掉無法爬的網址
