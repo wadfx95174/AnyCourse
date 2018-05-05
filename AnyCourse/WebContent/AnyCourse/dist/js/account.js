@@ -105,7 +105,7 @@ function checkLogin(htmlUrl, servletUrl)
     					+'</ul>'
     					+'</li>'
     					+'<li class="treeview">'
-    					+'<a href="#"> '
+    					+'<a href="'+ htmlUrl +'Setting.html">'
     					+'<i class="fa fa-cog"></i>'
     					+'<span>設定</span>'
     					+'</a>'

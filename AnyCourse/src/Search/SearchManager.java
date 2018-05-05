@@ -87,7 +87,6 @@ public class SearchManager
 
 		ArrayList<Search> outputList = new ArrayList<Search>(); 
 		try {
-
 			pst = con.prepareStatement(selectCourseKeywordSQL);
 			if (keyword.length() == 2)
 			{
