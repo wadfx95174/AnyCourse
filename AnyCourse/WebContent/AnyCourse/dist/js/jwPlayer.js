@@ -1,5 +1,5 @@
-var ajax_url="http://140.121.197.130:8400/";
-//var ajax_url="http://localhost:8080/";
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
 
 var video;
 //var keyLabels = [];
@@ -21,7 +21,7 @@ $(document).ready(function(){
     	method: 'POST',
     	cache :false,
     	data: {
-    		"action": 'setIsBrowse',
+    		"action": 'like',
     		"unitId": get('unit_id')
     	},
     	error: function(){

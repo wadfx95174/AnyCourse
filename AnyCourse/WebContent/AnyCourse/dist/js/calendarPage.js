@@ -1,5 +1,5 @@
-var ajax_url="http://140.121.197.130:8400/";
-//var ajax_url="http://localhost:8080/";
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
 document.write('<script async defer src="https://apis.google.com/js/api.js"'
       +'onload="this.onload=function(){};handleClientLoad()"'
       +'onreadystatechange="if (this.readyState === "complete") this.onload()">'

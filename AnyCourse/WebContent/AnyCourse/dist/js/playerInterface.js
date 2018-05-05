@@ -1,5 +1,5 @@
-var ajax_url="http://140.121.197.130:8400/";
-//var ajax_url="http://localhost:8080/";
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
 
 
 $('#noteArea').slimScroll({
@@ -41,6 +41,12 @@ var shareState = ['分享','收回'];
 
 $(document).ready(function(){
     checkLogin("", "../../");
+    
+    
+    
+    
+    
+    
     
     $( "#slider-range" ).slider({
         range: true,
@@ -202,7 +208,7 @@ $(document).ready(function(){
     	}
     })
 //----------------------------------------------按讚----------------------------------------------// 
-//----------------------------------------------播放介面之推薦影片----------------------------------------------// 
+//----------------------------------------------播放介面之推薦影片-------------------------------// 
     $.ajax({
     	url: ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
     	method: 'POST',
@@ -213,6 +219,48 @@ $(document).ready(function(){
     	},
     	success:function(result){
     		console.log(result);
+    		for(var i = 0;i < result.length; i++){
+    			$('#recommendList').append(
+        				'<li>'
+    					+'<a class="list-group-item" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].type+')">'
+    					
+    					+'<div class="media">'
+    					+'<div class="pull-left" style="padding-left: 0px;">'
+    					+'<div class="embed-responsive embed-responsive-16by9 col-xs-12">'
+    					+'<img id="img" class="style-scope yt-img-shadow" alt="" width="250"'
+    					+'src="' + result[i].videoImgSrc + '">' 
+    					+'</div>'
+    					+'</div>'
+    					+'<div class="media-body">'
+    					
+    					+'<h5 class="unitUi">'
+    					+'<b>影片名稱:' + result[i].unitName + '</b>'
+    					+'</h5>'
+    					+'<p class="unitUi">開課大學:' + result[i].schoolName + '</p>'
+    					+'<p class="unitUi">授課教師:' + result[i].teacher + '老師</p>'
+    					+'<p class="unitUi">讚數:' + result[i].likes.toLocaleString() +'</p>'
+    					+'</div>'
+    					+'</div>'
+    					+'</a></li>'
+        				
+        				///////////
+//        				+'<a href="PlayerInterface.html" class="list-group-item">'
+//        				+'<div class="media">'
+//        				+'<div class="col-xs-6 pull-left" style="padding-left: 0px;">'
+//        				+'<div class="embed-responsive embed-responsive-16by9">'
+//        				+'<img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">'   
+//        				+'</div>'
+//        				+'</div>'
+//        				+'<div class="media-body">'
+//        				+'<h3 class="media-heading">導涵式公式的推廣</h3>'
+//        				+'<p>中央大學 王老師</p>'
+//        				+'<p>讚數:216,165</p>'
+//        				+'</div>'
+//        				+'</div>'
+//        				+'</a>'
+        		);
+    		}
+    		
 //    		$('#likesNum').text(result.likes);
     	},
     	error:function(){
@@ -220,6 +268,12 @@ $(document).ready(function(){
     	}
     })
     
-    
+//----------------------------------------------播放介面之推薦影片------------------------------------// 
     
 });
+
+
+function jumpToPlayerInterface(unit_id,type){
+    url = "../PlayerInterface.html?unit_id="+unit_id+"&type="+type;//此處拼接內容
+    window.location.href = url;
+}

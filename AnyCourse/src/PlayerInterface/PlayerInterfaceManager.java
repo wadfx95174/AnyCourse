@@ -1,17 +1,21 @@
 package PlayerInterface;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.TimeZone;
+import java.util.List;
+
+import org.apache.mahout.cf.taste.common.TasteException;
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 
 import com.google.gson.Gson;
+
+import RecommenderSystem.RecommendationResult;
 
 public class PlayerInterfaceManager
 {
@@ -264,6 +268,107 @@ public class PlayerInterfaceManager
 		}
 		return unit;
 	}
+	//拿account_id
+	public int getAccountID(String user_id) {
+		int account_id = 0;
+		try {
+//			System.out.println("1");
+			pst = con.prepareStatement("select account.account_id from rating,account where "
+					+ "account.account_id = rating.account_id and account.user_id = ?");
+			pst.setString(1,user_id);
+			result = pst.executeQuery();
+			while(result.next()) {
+				account_id = result.getInt("account.account_id");
+//				System.out.println(result.getInt("account.account_id"));
+			}
+		}
+		catch(SQLException x) {
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return account_id;
+	}
+	
+	//拿推薦給該使用者的影片
+	public ArrayList<Unit> getRecommendList(int account_id, long unit_id) throws IOException,TasteException{
+		ArrayList<Unit> units = new ArrayList<Unit>();
+		Unit unit = null;
+//		ArrayList<Integer> list = new ArrayList<Integer>();
+		try {
+			try {
+				List<RecommendedItem> test = RecommendationResult.designatedItemBooleanRecommendedResult(
+						(long)account_id,unit_id,10);
+				pst = con.prepareStatement("select * from unit,courselist,customlist_video where "
+						+ "unit.unit_id = customlist_video.unit_id and customlist_video.courselist_id"
+						+ " = courselist.courselist_id and unit.unit_id = ?");
+				for(RecommendedItem r: test) {
+		    		System.out.println(r);
+					
+					pst.setInt(1,(int)r.getItemID());
+					result = pst.executeQuery();
+					while(result.next()) {
+						unit = new Unit();
+//						System.out.println(result.getString("unit.unit_name"));
+						unit.setUnitName(result.getString("unit.unit_name"));
+						unit.setUnitId(result.getInt("unit.unit_id"));
+						unit.setVideoImgSrc(result.getString("unit.video_img_src"));
+						unit.setTeacher(result.getString("courselist.teacher"));
+						unit.setSchoolName(result.getString("courselist.school_name"));
+						unit.setLikes(result.getInt("unit.likes"));
+						if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
+							unit.setType(1);//youtube
+						}
+						else {
+							unit.setType(2);//jwplayer
+						}
+						units.add(unit);
+					}
+//		    		list.add((int)r.getItemID());
+		    	}
+			} catch (TasteException e) {
+				e.printStackTrace();
+			}	
+		}
+		catch(SQLException x) {
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return units;
+		
+	}
+	
+	//進入播放介面時，先設定isBrowse，以此來判斷有沒有看過讚
+	public void setBrowse(int account_id,int unit_id) {
+		try {
+			stat = con.createStatement();
+			result = stat.executeQuery("select * from rating where account_id = '"+account_id
+					+"' and unit_id = "+unit_id);
+			boolean check = false;//檢查watch_record裡面有沒有這筆單元影片的資料，false為沒有
+			while(result.next()) {
+				check = true;
+				}
+			//如果沒有，就塞資料
+			if(check == false) {
+				pst = con.prepareStatement("insert into rating (account_id,unit_id,score) value(?,?,4)");
+				pst.setInt(1,account_id);
+				pst.setInt(2,unit_id);
+				System.out.println("insert");
+			}
+			pst.executeUpdate();
+				
+		}
+		catch(SQLException x) {
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
 	
 	public void Close() {
 		try {
