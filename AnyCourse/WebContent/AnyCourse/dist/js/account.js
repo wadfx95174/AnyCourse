@@ -1,5 +1,3 @@
-document.write('<script type="text/javascript" src="dist/js/login.js"></script>');
-
 $(document).on('click', '#logout', function logout()
 {
     disconnectUser();
