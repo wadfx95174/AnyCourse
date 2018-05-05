@@ -1,3 +1,4 @@
+
 $(document).on('click', '#logout', function logout()
 {
     disconnectUser();
@@ -110,7 +111,7 @@ function checkLogin(htmlUrl, servletUrl)
     					+'</a>'
     					+'</li>'
     					+'<li class="treeview">'
-    					+'<a href="#"> '
+    					+'<a href="'+ htmlUrl +'Instructions.html"> '
     					+'<i class="fa fa-question-circle"></i> '
     					+'<span>說明</span>'
     					+'</a>'
@@ -140,7 +141,7 @@ function checkLogin(htmlUrl, servletUrl)
     					+'</a>'
     					+'</li>'
     					+'<li class="treeview">'
-    					+'<a href="#"> '
+    					+'<a href="'+ htmlUrl +'Instructions.html"> '
     					+'<i class="fa fa-question-circle"></i> '
     					+'<span>說明</span>'
     					+'</a>'

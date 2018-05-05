@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AnyCourse</title>
+<!-- AnyCourseLogo -->
+<link rel="icon" type="image/x-icon" href="../AnyCourseLogo.ico" />
+<meta
+	content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+	name='viewport'>
+<!-- Bootstrap 3.3.2 -->
+<link href="../bootstrap/css/bootstrap.css" rel="stylesheet"
+	type="text/css" />
+<!-- FontAwesome 4.3.0 -->
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css" />
+<!-- Ionicons 2.0.0 -->
+<link
+	href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css"
+	rel="stylesheet" type="text/css" />
+<!-- Theme style -->
+<link href="../dist/css/AdminLTE.css" rel="stylesheet"
+	type="text/css" />
+<!-- AdminLTE Skins. Choose a skin from the css/skins 
+            folder instead of downloading all of them to reduce the load. -->
+<link href="../dist/css/skins/_all-skins.css" rel="stylesheet"
+	type="text/css" />
+<!-- iCheck -->
+<link href="../plugins/iCheck/flat/blue.css" rel="stylesheet"
+	type="text/css" />
+<!-- Morris chart -->
+<link href="../plugins/morris/morris.css" rel="stylesheet"
+	type="text/css" />
+<!-- jvectormap -->
+<link href="../plugins/jvectormap/jquery-jvectormap-1.2.2.css"
+	rel="stylesheet" type="text/css" />
+<!-- Date Picker -->
+<link href="../plugins/datepicker/datepicker3.css" rel="stylesheet"
+	type="text/css" />
+<!-- Daterange picker -->
+<link href="../plugins/daterangepicker/daterangepicker-bs3.css"
+	rel="stylesheet" type="text/css" />
+<!-- AutoComplete style -->
+<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+<!-- bootstrap wysihtml5 - text editor -->
+<link
+	href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"
+	rel="stylesheet" type="text/css" />
+<link href="../dist/css/instructions.css" rel="stylesheet" type="text/css">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+</head>
+<body class="skin-blue">
+
+	<div class="wrapper">
+		<header class="main-header">
+			<!-- Logo -->
+			<a href="../HomePage.html" class="logo"><img src="../dist/img/AnyCourseLogo.png" width="42px;" height="42px;" style="margin-right:15px;"><b>AnyCourse</b></a>
+			<!-- Header Navbar: style can be found in header.less -->
+			<nav class="navbar navbar-static-top" role="navigation">
+				<!-- Sidebar toggle button-->
+				<a href="#" class="sidebar-toggle" data-toggle="offcanvas"
+					role="button"> <span class="sr-only">Toggle navigation</span>
+				</a>
+				<!-- search form -->
+				<div class="col-xs-5">
+					<form action="../SearchResult.html" method="get" class="sidebar-form">
+						<div class="input-group">
+							<input id="tags" type="text" name="search_query" class="form-control"
+								placeholder="Search..." /> <span class="input-group-btn">
+								<button type='submit' id='search-btn'
+									class="btn btn-flat">
+									<i class="fa fa-search"></i>
+								</button>
+							</span>
+						</div>
+					</form>
+				</div>
+				<!-- /.search form -->
+				<div class="navbar-custom-menu">
+					<ul class="nav navbar-nav">
+						
+						
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<!-- Left side column. contains the logo and sidebar -->
+		<aside class="main-sidebar bs3-grid-col-wrapper" style="height: 100%;">
+			<!-- sidebar: style can be found in sidebar.less -->
+			<section class="sidebar">
+				<!-- Sidebar user panel -->
+				<div class="user-panel">
+					<div class="pull-left image">
+						<img src="../dist/img/user2-160x160.jpg" class="img-circle"
+							alt="User Image" />
+					</div>
+					<div class="pull-left info">
+						<h4><span id="user-name">訪客</span>，您好!</h4>
+					</div>
+				</div>
+				<!-- sidebar menu: : style can be found in sidebar.less -->
+				<ul class="sidebar-menu">
+				</ul>
+			</section>
+			<!-- /.sidebar -->
+		</aside>
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content">
+				<div class="row">
+					<section class="content col-md-12">
+						<div class="nav-tabs-custom">								
+								<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;說明</h2>
+								<ul class="nav nav-tabs">
+									<li class="active"><a href="#instructions1"
+										data-toggle="tab" aria-expanded="true">系統簡介</a></li>
+									<li class=""><a href="#instructions2" data-toggle="tab"
+										aria-expanded="false">首頁</a></li>
+									<li class=""><a href="#instructions3" data-toggle="tab"
+										aria-expanded="false">播放介面</a></li>
+									<li class=""><a href="#instructions4" data-toggle="tab"
+										aria-expanded="false">個人頁面</a></li>							
+								</ul>
+								<div class="tab-content">
+									<!--Introduction & Exchange & Forum-->
+									<div class="tab-pane active instruction"  id="instructions1">
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本作品整合台灣開放課程之行動學習應用系統「AnyCourse」的目標是要讓高中生、大學生或社會人士，透過本系統整合之開放式課程(Open Course)，搭配多種方便友善的功能，讓使用者更有效率地管理及學習。</p>
+										</div>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本團隊發現，現有課程影片資源往往散佈在各個不同網站中，目前並沒有一個便利的開放課程資源之彙整、搜尋與管理系統，所以使用者不僅需要花許多時間去搜尋開放課程，也無法有效地管理自己有興趣的學習資源。</p>
+										</div>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本團隊還發現，即使部分開放課程系統提供特定之課程管理與瀏覽功能，但目前並無系統提供行事曆功能，使用者往往需要自己額外搭配使用各種行事曆，如Google日曆等，當，當有問題時無人可討論，導致學習效果不佳。<a href="https://drive.google.com/open?id=1tQ5cQSeoAH-LFDkPuzatinyoIbtESS8r" target="_blank">(現有之開放課程APP及網頁分析調查報告)</a></p>
+										</div>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;綜合上述兩點，本團隊針對以上的缺點加以改進，基於上述議題，本研究計畫提出一個整合台灣開放式課程之行動學習應用系統，稱為AnyCourse，將依循軟體工程流程方法，規劃建置一個友善的開放式課程整合平台，此系統將蒐集台灣各大學及國外知名大學開放式課程，讓自學者可以利用搜尋工具及推薦系統快速地獲取需要的課程資源，並可利用課程計畫及行事曆規劃學習進度，亦可使用筆記、重點標籤、交流區及討論區功能，搭配群組功能與其他使用者互動來達到教學相長的效果，進一步提升學習效率。</p>
+										</div>
+									</div>
+									<!-- /.tab-pane -->
+									<div class="list-group tab-pane instruction"  id="instructions2">
+										<label>登入 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者使用Google帳號登入or本系統之帳號登入此系統。</p>
+										</div>
+										<label>註冊 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者輸入帳號、密碼、信箱、暱稱，可選填照片來註冊。</p>
+										</div>
+										<label>查詢 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可輸入關鍵字搜尋影片、清單，而在輸入時有自動完成功能，系統將顯示關鍵字查詢出的影片列表。</p>
+										</div>
+										<label>訪客模式 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系統只提供使用者查詢、觀看影片、觀看他人筆記、使用他人標籤、推薦影片，無法使用上傳筆記、課程清單、課程計畫、行事曆、標籤區中的個人標籤等功能。</p>
+										</div>
+										<label>課程列表 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系統顯示推薦影片、推薦清單、想要觀看、正在觀看、課程清單之影片列表。</p>
+										</div>
+										<label>推薦影片 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系統依照使用者的觀看紀錄推薦課程影片；若無觀看紀錄則會隨機列出課程影片。</p>
+										</div>
+										<label>推薦清單 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系統依照使用者的觀看紀錄推薦課程清單；若無觀看紀錄則會隨機列出清單。</p>
+										</div>
+										<label>想要觀看 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系統顯示使用者課程計畫中「想要觀看」內容，如果使用者無任何「想要觀看」，則不會顯示。</p>
+										</div>
+										<label>正在觀看 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系統顯示使用者課程計畫中「正在觀看」內容，如果使用者無任何「正在觀看」，則不會顯示。</p>
+										</div>
+										<label>課程清單 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系統顯示使用者「課程清單」內容，如果使用者無任何課程清單，則不會顯示。</p>
+										</div>
+									</div>
+									<!-- /.tab-pane -->
+									<div class="list-group tab-pane instruction"  id="instructions3">
+										<label>播放器 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系統提供影片播放功能。</p>
+										</div>
+										<label>推薦影片 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系統依照當前影片的類型，推薦使用者相關影片。</p>
+										</div>
+										<label>影片簡介 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可了解課程簡介、開課大學、授課老師、單元名稱、系所、講義、按讚數等課程資訊。</p>
+										</div>
+										<label>個人筆記 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可使用筆記相關功能，如分享、上傳筆記等功能。</p>
+										</div>
+										<label>交流區 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可觀看、評論、評價他人分享之筆記、使用重點標籤、加入至暫存標籤等功能，可依照讚數或上傳時間將筆記及重點標籤分開排序。</p>
+										</div>
+										<label>討論區 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可發問、回答、編輯、刪除問題。</p>
+										</div>
+										<label>標籤區塊 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系統在該區塊中提供個人標籤及暫存標籤，個人標籤為使用者個人的重點標籤，暫存標籤為使用者點擊其他使用者之重點標籤後，所暫存的重點標籤。</p>
+										</div>
+										<label>清單列表 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系統顯示清單中的所有影片，使用者可直接點擊任一影片並觀看，亦可在列表旁對該清單按讚，若該影片非某個清單中的影片，則不會顯示。</p>
+										</div>
+										<label>按讚 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可對此影片按讚。</p>
+										</div>
+										<label>新增至課程清單 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可將該影片或清單新增至課程清單之指定清單中，亦可在此時另外新增清單。</p>
+										</div>
+									</div>
+									<!-- /.tab-pane -->
+									<div class="list-group tab-pane instruction"  id="instructions4">
+										<label>課程清單 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可檢視所有的課程清單，並可在此使用課程清單功能。</p>
+										</div>
+										<label>課程計畫 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可檢視所有的個人課程計畫，並可在此使用課程計畫功能。</p>
+										</div>
+										<label>行事曆 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可依照課程計畫新增、編輯、刪除行事曆之行程。</p>
+										</div>
+										<label>筆記 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可檢視所有的個人筆記及按讚過的筆記，並可在此使用筆記功能。</p>
+										</div>
+										<label>重點標籤 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可檢視所有的重點標籤及按讚過的標籤，點擊標籤可直接跳至該影片對應時間段，亦可在此編輯重點標籤。</p>
+										</div>
+										<label>觀看紀錄 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可檢視曾經觀看過的影片列表，並可刪除觀看紀錄。</p>
+										</div>
+										<label>查詢紀錄 : </label>
+										<div>
+											<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用者可檢視曾經查詢哪些關鍵字，並可以直接進行查詢，亦可刪除查詢紀錄。</p>
+										</div>
+									</div>									
+									<!-- /.tab-pane -->
+								</div>
+								<!-- /.tab-content -->
+							</div>
+					</section>
+					
+				</div>
+			</section>
+		</div>
+		<!-- /.content-wrapper -->
+	</div>
+	<!-- ./wrapper -->
+	<!-- ./wrapper -->
+	<!-- jQuery 2.1.3 -->
+	<script src="../plugins/jQuery/jQuery-2.1.3.min.js"></script>
+	<!-- jQuery UI 1.11.2 -->
+	<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js"
+		type="text/javascript"></script>
+	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+	<script>
+		$.widget.bridge('uibutton', $.ui.button);
+	</script>
+	<!-- Bootstrap 3.3.2 JS -->
+	<script src="../bootstrap/js/bootstrap.min.js"
+		type="text/javascript"></script>
+	<!-- Morris.js charts -->
+	<script
+		src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+	<script src="../plugins/morris/morris.min.js" type="text/javascript"></script>
+	<!-- Sparkline -->
+	<script src="../plugins/sparkline/jquery.sparkline.min.js"
+		type="text/javascript"></script>
+	<!-- jvectormap -->
+	<script src="../plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"
+		type="text/javascript"></script>
+	<script
+		src="../plugins/jvectormap/jquery-jvectormap-world-mill-en.js"
+		type="text/javascript"></script>
+	<!-- jQuery Knob Chart -->
+	<script src="../plugins/knob/jquery.knob.js" type="text/javascript"></script>
+	<!-- daterangepicker -->
+	<script src="../plugins/daterangepicker/daterangepicker.js"
+		type="text/javascript"></script>
+	<!-- datepicker -->
+	<script src="../plugins/datepicker/bootstrap-datepicker.js"
+		type="text/javascript"></script>
+	<!-- Bootstrap WYSIHTML5 -->
+	<script
+		src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
+		type="text/javascript"></script>
+	<!-- iCheck -->
+	<script src="../plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+	<!-- Slimscroll -->
+	<script src="../plugins/slimScroll/jquery.slimscroll.min.js"
+		type="text/javascript"></script>
+	<!-- FastClick -->
+	<script src='../plugins/fastclick/fastclick.min.js'></script>
+	<!-- AdminLTE App -->
+	<script src="../dist/js/app.js" type="text/javascript"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script src="../dist/js/demo.js" type="text/javascript"></script>
+	<!-- AutoComplete -->
+	<script src="../dist/js/autoComplete.js" type="text/javascript"></script>
+	<!-- Account -->
+	<script src="../dist/js/account.js" type="text/javascript"></script>	
+	<script src="../dist/js/instructions.js" type="text/javascript"></script>	
+</body>
+</html>
