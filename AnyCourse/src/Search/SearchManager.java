@@ -17,6 +17,7 @@ public class SearchManager
 	private final String selectUnitByCourseIdSQL = "select * from unit natural join customlist_video where courselist_id = ?";
 	private final String selectTeacherSQL = "select distinct teacher from courselist where teacher is not null";
 	private final String selectDepartmentSQL = "select distinct department_name from courselist where department_name is not null";
+	private final String selectPlanMaxSQL = "select MAX(oorder) from personal_plan where status = 1 and user_id = ?";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -215,7 +216,66 @@ public class SearchManager
 		conClose();
 		return outputList;
 	}
-	
+	//將搜尋的單元影片加入課程計畫中
+		public void addToCoursePlan(String user_id,int unit_id){
+			int maxOrder = 0;
+			try {
+				pst = con.prepareStatement(selectPlanMaxSQL);
+				pst.setString(1, user_id);
+				result = pst.executeQuery();
+				while(result.next()) {
+					maxOrder = result.getInt("MAX(oorder)");
+				}
+				pst = con.prepareStatement("insert into personal_plan (user_id,unit_id,last_time,status,oorder) value(?,?,0,1,?)");
+				pst.setString(1, user_id);
+				pst.setInt(2, unit_id);
+				pst.setInt(3, ++maxOrder);
+				pst.executeUpdate();
+			}
+			catch(SQLException x){
+				System.out.println("Exception select"+x.toString());
+			}
+			finally {
+				Close();
+			}
+		}
+		//將搜尋的清單中的所有單元影片加入課程計畫中
+		public void addToCoursePlan_List(String user_id,int courselist_id){
+			ArrayList<Integer> plans = new ArrayList<Integer>();
+			int maxOrder = 0;
+			try {
+				pst = con.prepareStatement(selectPlanMaxSQL);
+				pst.setString(1, user_id);
+				result = pst.executeQuery();
+				while(result.next()) {
+					maxOrder = result.getInt("MAX(oorder)");
+				}
+				result = stat.executeQuery("select * from unit,customlist_video,courselist where unit.unit_id"
+						+ " = customlist_video.unit_id and customlist_video.courselist_id ="
+						+ " courselist.courselist_id and courselist.courselist_id = "+ courselist_id);
+				while(result.next()) {
+					plans.add(result.getInt("unit.unit_id"));
+//					System.out.println(result.getInt("unit.unit_id"));
+				}
+				
+				pst = con.prepareStatement("insert ignore into personal_plan (user_id,unit_id,last_time,status,oorder) value(?,?,0,1,?)");
+				for(int i = 0;i < plans.size();i++) {
+					
+					pst.setString(1, user_id);
+					pst.setInt(2, plans.get(i));
+					pst.setInt(3, ++maxOrder);
+					pst.addBatch();
+//					System.out.println(homePages.get(i).getUnit_id());
+				}
+				pst.executeBatch();
+			}
+			catch(SQLException x){
+				System.out.println("Exception select"+x.toString());
+			}
+			finally {
+				Close();
+			}
+		}
 	public void Close() {
 		try {
 			if(result!=null) {
