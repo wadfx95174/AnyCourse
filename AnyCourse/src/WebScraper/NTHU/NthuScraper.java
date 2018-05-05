@@ -53,9 +53,12 @@ public class NthuScraper {
 		String videoURL;
 		
 		int x;
+
 		// 蝮賢���14��嚗蒂����玨蝔��挾URL�摮�淆ourseURLLists嚗誑靘踹���
-		for (int i = 8; i <= 14; ++i) {
+		for (int i = 0; i <= 14; ++i) {
 			// ��摰雯���14��
+
+
 			res = Jsoup.connect(TARGET_URL + i)
 					.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0")
 					.method(Method.GET).execute();
@@ -133,9 +136,9 @@ public class NthuScraper {
 				catch(Exception e) {
 					e.printStackTrace();
 				}
-//				System.out.println(videoURLToken);
+				System.out.println(videoURLToken);
 				
-//				System.out.println(unitNameFirstHalf);
+				System.out.println(unitNameFirstHalf);
 				unitNameLists.add(unitNameFirstHalf);
 			
 				try {
@@ -179,8 +182,8 @@ public class NthuScraper {
 						try {
 							String temp1 = videoIframe.split("=")[2].split("&")[0];
 							String temp2 = videoIframe.split("=")[3].split("&")[0];
-//							System.out.println(VIDEO_IMG_URL+temp1+"/"+temp2);
-//							System.out.println(VIDEO_IMG_URL+temp1+"/cover.png");
+							System.out.println(VIDEO_IMG_URL+temp1+"/"+temp2);
+							System.out.println(VIDEO_IMG_URL+temp1+"/cover.png");
 							output.setUnitURL(VIDEO_IMG_URL+temp1+"/"+temp2);
 							output.setUnitImgSrc(VIDEO_IMG_URL+temp1+"/cover.png");
 						}

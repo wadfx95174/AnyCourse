@@ -18,6 +18,7 @@ public class KeyLabelManager
 	private String updateKeyLabelSQL = "update keylabel set keylabel_name = ?, begin_time = ?, end_time = ? where keylabel_id = ?";
 	private String insertKeyLabelSQL = "insert into keylabel value (null,?,?,?,?,?,?,?,?)";
 	private String deleteKeyLabelSQL = "delete from keylabel where keylabel_id = ?";
+	private String shareKeyLabelSQL = "update keylabel set share = ? where keylabel_id = ?";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -186,6 +187,22 @@ public class KeyLabelManager
 		try {
 			pst = con.prepareStatement(deleteKeyLabelSQL);
 			pst.setInt(1,keyLabelId);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("Exception delete"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
+	public void shareKeyLabel(int keyLabelId, int share)
+	{
+		try {
+			pst = con.prepareStatement(shareKeyLabelSQL);
+			pst.setInt(1, share);
+			pst.setInt(2,keyLabelId);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){

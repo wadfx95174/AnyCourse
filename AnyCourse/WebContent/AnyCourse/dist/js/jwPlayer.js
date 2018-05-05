@@ -146,12 +146,14 @@ $(document).ready(function(){
     // 設置個人重點標籤
     function addToSelfKeyLabel(index)
     {
+    	var share = keyLabelArray[index].share ? '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item muted">收回</li></a>' : '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
+
     	$('#keyLabel1').append('<li class="list-group-item">'
 				+ keyLabelArray[index].keyLabelName
 				+'<ul class="list-group-submenu">'
-				+'<a href="#" class = "self dkl" id = "self-dkl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klDeleteModal"><li class="list-group-submenu-item">刪除</li></a>'
-				+'<a href="#" class = "self ekl" id = "self-ekl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klEditModal"><li class="list-group-submenu-item primary">編輯</li></a>'
-				+'<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
+				+'<a href="#" class = "self dkl" id = "self-dkl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klDeleteModal"><li class="list-group-submenu-item danger">刪除</li></a>'
+				+'<a href="#" class = "self ekl" id = "self-ekl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">編輯</li></a>'
+				+ share
 				+'<a href="#" class = "self ukl" id = "self-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
 				+'</ul>'
 				+'</li>');
@@ -163,7 +165,7 @@ $(document).ready(function(){
 		$('#keyLabel2').append('<li class="list-group-item">'
 				+ exKeyLabelArray[index].keyLabelName
 				+'<ul class="list-group-submenu">'
-				+'<a href="javascript:void(0)" class = "temp dkl" id = "temp-dkl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item">刪除</li></a>'
+				+'<a href="javascript:void(0)" class = "temp dkl" id = "temp-dkl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item danger">刪除</li></a>'
 				+'<a href="javascript:void(0)" class = "temp akl" id = "temp-akl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">添加</li></a>'
 				+'<a href="#" class = "temp ukl" id = "temp-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
 				+'</ul>'
@@ -271,10 +273,27 @@ $(document).ready(function(){
     	$(this).parent().parent().remove();
     });
     // 點擊個人標籤分享按鈕
-    $(document).on('click', '.self.dkl', function(event) 
+    $(document).on('click', '.skl', function(event) 
     {
+    	var ele = $(this).find('li');	// 存該重點標籤的物件
     	element = $(this).parent().parent();
     	selectId = parseInt(this.getAttribute("id").split("-")[2]);
+    	$.ajax({
+    		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
+    		method : 'POST',
+    	    data : {
+    	    	"method" : "share",
+    	    	"keyLabelId" : keyLabelArray[selectId].keyLabelId,
+    	    	"share" : (keyLabelArray[selectId].share + 1) % 2
+    		},
+    		cache: false,
+    		success:function(){
+    			keyLabelArray[selectId].share = (keyLabelArray[selectId].share + 1) % 2
+    			ele.toggleClass('muted info');
+    			ele.text(shareState[keyLabelArray[selectId].share]);
+        	},
+    		error:function(){console.log('share failed');}
+    	});
     });
     // 點擊個人標籤編輯按鈕，可編輯名稱
     $(document).on('click', '.ekl', function(event) 

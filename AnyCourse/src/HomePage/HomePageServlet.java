@@ -67,8 +67,7 @@ public class HomePageServlet extends HttpServlet {
 		}
 		if(request.getParameter("action").equals("addToCoursePlan_List")&&(String)session.getAttribute("userId")!=null) {
 			homePageDatabaseManager.addToCoursePlan_List((String)session.getAttribute("userId")
-					,Integer.parseInt(request.getParameter("unit_id")),
-					Integer.parseInt(request.getParameter("courselist_id")));
+					,Integer.parseInt(request.getParameter("courselist_id")));
 		}
 		homePageDatabaseManager.conClose();
 	}

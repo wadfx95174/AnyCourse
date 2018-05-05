@@ -62,7 +62,10 @@ public class KeyLabelServlet extends HttpServlet {
 		else if (method.equals("delete"))
 		{
 			keyLabelDatebaseManager.deleteKeyLabel(Integer.parseInt(request.getParameter("keyLabelId")));
-			
+		}
+		else if (method.equals("share"))
+		{
+			keyLabelDatebaseManager.shareKeyLabel(Integer.parseInt(request.getParameter("keyLabelId")), Integer.parseInt(request.getParameter("share")));
 		}
 //		response.setContentType("application/json");
 //		response.setCharacterEncoding("UTF-8");
