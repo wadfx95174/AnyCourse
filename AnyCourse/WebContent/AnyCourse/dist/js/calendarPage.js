@@ -337,16 +337,17 @@ $(function () {
 			success: function(response){
 				console.log(response);
 				$('#calendar').fullCalendar({
+					  height: 650,
 			          header: {
 			            left: 'prev,next today',
 			            center:  'title',
 			            right: 'month,agendaWeek,agendaDay'
 			          },
 			          buttonText: {
-			            today: 'today',
-			            month: 'month',
-			            week: 'week',
-			            day: 'day'
+			            today: '今天',
+			            month: '月',
+			            week: '周',
+			            day: '天'
 			          },
 			          googleCalendarApiKey: 'AIzaSyAz3zOHiCMMnShglhMhAvFsRl10juJs2oo',
 			          eventSources: 
