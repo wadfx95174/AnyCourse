@@ -1,5 +1,6 @@
 package WebScraper.STUST;
 
+import WebScraper.Output.CourseList;
 import WebScraper.Output.OutputFormat;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class StustScraper {
+public class StustScraper implements CourseList{
 	private ArrayList<OutputFormat> outputs = new ArrayList<OutputFormat>();
 	//南台科技大學開放式課程官網
 	private static final String TARGET_URL = "http://ocw.stust.edu.tw/tc/node/";
@@ -182,7 +183,8 @@ public class StustScraper {
 			outputs.add(output);
 		}
 	}
-	public ArrayList<OutputFormat> getItems() {
+	@Override
+	public ArrayList<OutputFormat> getCourseList() {
 		return outputs;
 	}
 }

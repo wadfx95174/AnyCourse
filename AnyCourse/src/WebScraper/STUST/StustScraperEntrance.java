@@ -10,7 +10,7 @@ import WebScraper.Output.OutputFormat;
 public class StustScraperEntrance {
 	public static void main(String[] args) throws Exception{
 		StustScraper scraper = new StustScraper();
-		ArrayList<OutputFormat> outputs = scraper.getItems();
+		ArrayList<OutputFormat> outputs = scraper.getCourseList();
 		
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();

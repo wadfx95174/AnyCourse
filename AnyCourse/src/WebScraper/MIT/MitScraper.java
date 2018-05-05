@@ -12,9 +12,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import WebScraper.Output.CourseList;
 import WebScraper.Output.OutputFormat;
 
-public class MitScraper {
+public class MitScraper implements CourseList{
 	//	固定格式url
 	private static final String SCHOOL_URL = "https://ocw.mit.edu";
 	private static final String HOMEPAGE_URL = "/courses/audio-video-courses/";
@@ -27,8 +28,8 @@ public class MitScraper {
 	//	初始化
 	private Connection.Response res;
 	private ArrayList<OutputFormat> outputs = new ArrayList<OutputFormat>();
-
-	public ArrayList<OutputFormat> getItems() {
+	@Override
+	public ArrayList<OutputFormat> getCourseList() {
 		Document documentAll = null;
 		Document documentCourse = null;
 		Document documentInnerCourse = null;

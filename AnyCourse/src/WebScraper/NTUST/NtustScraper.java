@@ -1,4 +1,5 @@
 package WebScraper.NTUST;
+import WebScraper.Output.CourseList;
 import WebScraper.Output.OutputFormat;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class NtustScraper {
+public class NtustScraper implements CourseList{
 	private ArrayList<OutputFormat> outputs = new ArrayList<OutputFormat>();
 	//台灣科技大學開放式課程官網
 	private static final String TARGET_URL = "http://ocw.ntust.edu.tw/index.php/frontend/show/info_page1/";
@@ -63,7 +64,8 @@ public class NtustScraper {
 			outputs.add(output);
 		}
 	}
-	public ArrayList<OutputFormat> getItems() {
+	@Override
+	public ArrayList<OutputFormat> getCourseList() {
 		return outputs;
 	}
 }

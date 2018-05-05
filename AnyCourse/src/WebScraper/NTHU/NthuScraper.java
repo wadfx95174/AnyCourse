@@ -1,5 +1,6 @@
 package WebScraper.NTHU;
 
+import WebScraper.Output.CourseList;
 import WebScraper.Output.OutputFormat;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class NthuScraper {
+public class NthuScraper implements CourseList{
 	private ArrayList<OutputFormat> outputs = new ArrayList<OutputFormat>();
 	// 課程後面的URL
 	private ArrayList<String> courseURLLists;
@@ -204,7 +205,8 @@ public class NthuScraper {
 				// }
 				// output.setLecture("null");
 				// outputs.add(output);
-	public ArrayList<OutputFormat> getItems() {
+	@Override
+	public ArrayList<OutputFormat> getCourseList() {
 		return outputs;
 	}
 }
