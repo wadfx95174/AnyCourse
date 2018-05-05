@@ -56,7 +56,7 @@ public class NthuScraper implements CourseList{
 		int x;
 
 		// 蝮賢���14��嚗蒂����玨蝔��挾URL�摮�淆ourseURLLists嚗誑靘踹���
-		for (int i = 0; i <= 14; ++i) {
+		for (int i = 1; i <= 3; ++i) {
 			// ��摰雯���14��
 
 

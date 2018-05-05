@@ -4,7 +4,8 @@ var ajax_url="http://localhost:8080/";
 // 各欄位正確與否 :boolean 
 var nickNameCheck =false;
 var userIdCheck = false;
-var passwordCheck = false;
+var oldPasswordCheck = false;
+var newPasswordCheck = false;
 var confirmPwCheck = false;
 var emailCheck = false;
 
@@ -13,7 +14,8 @@ $(document).ready(function() {
 	checkLogin("", "../../");	
 	  if ($('#nickName').val())nickName();
 	  if ($('#email').val())email();
-	  if ($('#password').val())password();
+	  if ($('#oldPasswordCheck').val())oldPassword();
+	  if ($('#newPasswordCheck').val())newPassword();
 	  if ($('#confirmPw').val())confirmPw();
 })
 
@@ -35,48 +37,40 @@ $('#nickName').change(function nickName(){
 		return true;
 	}
 });
-
-//檢查"密碼"欄位
-$('#password').change(function password(){
+//檢查"舊密碼"欄位
+$('#oldPassword').change(function oldPassword(){
 	confirmPw();
-	passwordCheck = false;
-    var userPwd = $('#password').val();
+	oldPasswordCheck = false;
+    var userPwd = $('#oldPassword').val();
     
     if (userPwd == "") {
-        $("#passwordPrompt").html("密碼不能為空！");
+        $("#oldPasswordPrompt").html("密碼不能為空！");
         return false;
     } else if (userPwd.length < 3 || userPwd.length > 16) {
-        $("#passwordPrompt").html("長度不符合！");
+        $("#oldPasswordPrompt").html("長度不符合！");
         return false;
     } else {
-    	var userFlag = false;
-        $.ajaxSetup({
-            async : false
-        });
-        $.ajax({
-            url : ajax_url+"AnyCourse/LoginVerificationServlet.do",
-            cache :false,
-            data : {
-          	    method : "checkPassword",
-                userId : $("#userId").val()
-                passWord
-            },
-            success : function(data) {
-                if (data.userId != null) {
-                    $("#userIdPrompt").html("此帳號已存在！");
-                } else {
-                    $("#userIdPrompt").html("");
-                    userIdCheck = true;
-                    return userFlag = true;
-                }
-            },
-            error : function()
-            {
-          	  //alert("fail");
-            }
-        }); // end ajax
+        $("#oldPasswordPrompt").html("");
+        oldPasswordCheck = true;
+        return true;
+    } 
+});
+
+//檢查"新密碼"欄位
+$('#newPassword').change(function newPassword(){
+	confirmPw();
+	newPasswordCheck = false;
+    var userPwd = $('#newPassword').val();
+    
+    if (userPwd == "") {
+        $("#newPasswordPrompt").html("密碼不能為空！");
+        return false;
+    } else if (userPwd.length < 3 || userPwd.length > 16) {
+        $("#newPasswordPrompt").html("長度不符合！");
+        return false;
+    } else {
         $("#passwordPrompt").html("");
-    	passwordCheck = true;
+        newPasswordCheck = true;
         return true;
     } 
 });
@@ -128,14 +122,14 @@ function checkInput(form){
 		alert("請再填寫一次暱稱！");
 		return false;
 	}
-	if (!userIdCheck)
+	if (!oldPasswordCheck)
 	{
-		alert("請再填寫一次帳號！");
+		alert("請再填寫一次舊密碼！");
 		return false;
 	}
-	if (!passwordCheck)
+	if (!newPasswordCheck)
 	{
-		alert("請再填寫一次密碼！");
+		alert("請再填寫一次新密碼！");
 		return false;
 	}
 	if (!confirmPwCheck)

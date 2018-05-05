@@ -103,5 +103,4 @@ public class LoginVerificationServlet extends HttpServlet {
 		}
 		manager.conClose();
 	}
-
 }

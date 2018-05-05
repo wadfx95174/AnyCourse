@@ -12,7 +12,7 @@ public class LoginVerificationManager
 	private String selectPasswordSQL = "select password from account where user_id = ? or email = ?";
 	private String selectUserSQL = "select * from account where user_id = ? or email = ?";
 	private String selectUserIdSQL = "select user_id from account where user_id = ? or email = ?";
-	private String insertAccountTableSQL = "insert into account value (?,null,?,null,?,?,null)";
+	private String insertAccountTableSQL = "insert into account value (null,?,null,?,null,?,?,null)";
 	private String insertFavoriteCourseSQL = "insert into favorite_course value(?,?)";
 	private String insertGoogleAccountSQL = "insert ignore into account (user_id,email,nick_name,picture_url) values (?,?,?,?)";
 	private Connection con = null;
