@@ -1,11 +1,13 @@
+//////////////localhost用來測試、IP那個用來部屬再tomcat///////////////////////
 var ajax_url="http://140.121.197.130:8400/";
 //var ajax_url="http://localhost:8080/";
-
-
+///////////////////////////////////////////////////////////////////////
+/////////////////////////引用swiper這個套件///////////////////////////////
 document.write("<script type='text/javascript' src='dist/js/swiper.min.js'></script>");
 
-var homePageList;
-var checkID;
+
+var homePageList;//Array，用來存影片、清單的資訊
+var checkID;//用來存使用者點擊哪個物件的ID，用這個ID與homePageList這個Array搭配使用，就可以對該物件操作，像是新增、刪除等等
 
 $(document).ready(function(){
 	homePageList = new Array();
@@ -14,16 +16,14 @@ $(document).ready(function(){
 	//swiper-button
 	var str2 = '</div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div>'
 		+'</div></div></section>'
-	var homePageListID = 1;
+	var homePageListID = 1;//每個card的ID
+	//首頁初始化，推薦影片、清單等等
 	$.ajax({
 		url : ajax_url+'AnyCourse/HomePageServlet.do',
 		method : 'GET',
 		cache :false,
 		success:function(result){
 			console.log(result);
-//			console.log(result[0][0].type);
-//			console.log(result.length);
-//			console.log(result.length*result.)
 			for(var i = 0;i < result.length ; i++){
 				//推薦影片
 				if(result[i][0].type == 1){
@@ -51,11 +51,9 @@ $(document).ready(function(){
 						$('#courseList_1').append(
 							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
 							+'<div class="card">'
-							
 							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].video_img_src+'">'
 							+'</div>'
-							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<h4 class="card-title" >' + result[i][j].unit_name + '</h4>'
 							+'<div class="card-text">清單:'+ result[i][j].list_name +'</div>'
@@ -83,7 +81,6 @@ $(document).ready(function(){
 //						console.log(homePageList[1][1]);
 						homePageListID++;
 					}
-					
 				}
 				//推薦清單
 				else if(result[i][0].type == 2){
@@ -111,8 +108,6 @@ $(document).ready(function(){
 							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unit_id + ',' + result[i][j].video_type +',' + result[i][j].courselist_id + ')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].video_img_src+'">'
 							+'</div>'
-							
-							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unit_id + ',' + result[i][j].video_type +',' + result[i][j].courselist_id + ')">'
 							+'<h4 class="card-title" >' + result[i][j].list_name + '</h4>'
 							+'<div class="meta">'
@@ -136,7 +131,6 @@ $(document).ready(function(){
 						homePageList[homePageListID][1] = result[i][j].courselist_id;
 						homePageListID++;
 					}
-					
 				}
 				//課程清單
 				else if(result[i][0].type == 3){
@@ -159,14 +153,12 @@ $(document).ready(function(){
 						result[i][j] = course_info;
 					}
 					for(var j = 0 ;j < result[i][0].num;j++){
-						
 						$('#courseList_3').append(
 							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
 							+'<div class="card">'
 							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unit_id + ',' + result[i][j].video_type +',' + result[i][j].courselist_id + ')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].video_img_src+'">'
 							+'</div>'
-							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unit_id + ',' + result[i][j].video_type +',' + result[i][j].courselist_id + ')">'
 							+'<h4 class="card-title" >' + result[i][j].list_name + '</h4>'
 							+'<div class="meta">'
@@ -219,7 +211,6 @@ $(document).ready(function(){
 							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].video_img_src+'">'
 							+'</div>'
-							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<h4 class="card-title" >' + result[i][j].unit_name + '</h4>'
 							+'<div class="card-text">清單:'+ result[i][j].list_name +'</div>'
@@ -271,7 +262,6 @@ $(document).ready(function(){
 							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].video_img_src+'">'
 							+'</div>'
-							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<h4 class="card-title" >' + result[i][j].unit_name + '</h4>'
 							+'<div class="card-text">清單:'+ result[i][j].list_name +'</div>'
@@ -317,7 +307,8 @@ $(document).ready(function(){
 				else if(result[i][0].type == 10){
 	
 				}
-//				console.log(homePageList[1]);
+				
+				//初始化swiper套件
 				var swiper = new Swiper('.swiper-container', {
 				      slidesPerView: 3,
 				      spaceBetween: 0,
@@ -331,11 +322,8 @@ $(document).ready(function(){
 				    });
 			}
 			//因為放在外面的話跟初始化首頁的ajax(就是這個外面的ajax)會同時跑，這個會跑比較快，所以抓不到陣列
-//			console.log(homePageList);
 			//影片新增至課程計畫
 			$('#addToCoursePlanButton').click(function(){
-				
-//				alert(checkID);
 				$.ajax({
 					url : ajax_url+'AnyCourse/HomePageServlet.do',
 					method : 'POST',
@@ -349,7 +337,6 @@ $(document).ready(function(){
 					}
 				})
 			});
-//			console.log(homePageList);
 			//清單整個新增至課程計畫
 			$('#addToCoursePlanButton_List').click(function(e){
 				e.preventDefault();
@@ -370,28 +357,26 @@ $(document).ready(function(){
   	},
 		error:function(){}
 	});
-	
-	
-	
-	 
- }());
-//跳轉至播放介面
+ });
+//跳轉至播放介面，且是單個影片
+//需要傳影片ID、影片類型兩個參數，且放在網址後面
 function jumpToPlayerInterface(unit_id,type){
     url = "pages/PlayerInterface.html?unit_id="+unit_id+"&type="+type;//此處拼接內容
     window.location.href = url;
 }
 //跳轉至播放介面，且是清單
+//需要傳影片ID、影片類型、清單ID三個參數，且放在網址後面
 function jumpToPlayerInterfaceWithList(unit_id,type,list_id){
 	url = "pages/PlayerInterface.html?unit_id="+unit_id+"&type="+type+"&list_id="+list_id;
 	window.location.href = url;
 }
-//才能知道要對哪個ID做動作
+//取得某個物件的ID，才能知道要對誰做動作
 function getID(id){
     checkID = id;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////進到首頁時，就自動重新整理(使用的方法為在網址上多加#loaded這段網址)//////////////////////////////////////////
 
 window.onload = function() {
     if(!window.location.hash) {

@@ -563,6 +563,7 @@ public class HomePageManager {
 			}
 		}
 		catch(SQLException e) {
+			System.out.println("HomePage Close Error");
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
