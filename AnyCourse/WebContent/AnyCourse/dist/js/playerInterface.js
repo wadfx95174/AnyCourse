@@ -1,6 +1,12 @@
 //var ajax_url="http://140.121.197.130:8400/";
 var ajax_url="http://localhost:8080/";
-
+var video;		// 播放器
+var keyLabelArray;		// 存放個人標籤
+var exKeyLabelArray;	// 存放交流標籤
+var maxIndex = 0;		// 標籤的Index
+var selectId = 0;		// 暫存已選擇的項目
+var element;			// 存DOM元素
+var shareState = ['分享','收回'];		// 分享的狀態
 
 $('#noteArea').slimScroll({
     height: '200px'
@@ -15,13 +21,16 @@ $('#keyLabel2').slimScroll({
     height: '130px'
   });
 
-
+// 取得url的參數
 function get(name)
 {
    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
-      return decodeURIComponent(name[1]);
-	}
-function formatTime(seconds) {
+       return decodeURIComponent(name[1]);
+}
+
+// 將秒數設為固定格式 (hh:mm:ss)
+function formatTime(seconds) 
+{
     return [
         parseInt(seconds / 60 / 60),
         parseInt(seconds / 60 % 60),
@@ -31,25 +40,12 @@ function formatTime(seconds) {
         .replace(/\b(\d)\b/g, "0$1");
 }
 
-var video;
-var keyLabelArray;
-var exKeyLabelArray;
-var maxIndex = 0;
-var selectId = 0;
-var element;		//存DOM元素
-var shareState = ['分享','收回'];
-
 $(document).ready(function(){
     checkLogin("", "../../");
     
-
 	var $progress = $('.progress'),
     $duration = $('.duration'),
     $currentTime = $('.current-time');
-    
-    
-    
-    
     
     $( "#slider-range" ).slider({
         range: true,
@@ -93,7 +89,7 @@ $(document).ready(function(){
 	    }).disableSelection();
     });
 
-//----------------------------------------------video----------------------------------------------//
+//------------------------------------------執行哪個js----video----------------------------------------------//
     if (get('list_id') != undefined)
     {
     	$.ajax({
@@ -150,7 +146,7 @@ $(document).ready(function(){
     	  });
     }
     
-    
+    // 判斷要
     var oHead = document.getElementsByTagName('HEAD').item(0); 
     var oScript= document.createElement("script"); 
     oScript.type = "text/javascript"; 
@@ -158,34 +154,36 @@ $(document).ready(function(){
     oHead.appendChild(oScript); 
     
 //----------------------------------------------keyLabel----------------------------------------------//   
+    // 取資料庫個人標籤
     $.ajax({
 		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
 		method : 'GET', 
 		cache :false,
-		data : {
+		data : 
+		{
 			"method" : "getPKL",
 			"unit_id" : get("unit_id")
 		},
 		success:function(result){
 			keyLabelArray = result;
-    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
+    		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++)
+    		{
     			addToSelfKeyLabel(maxIndex);
-			} // end for
-    	}, // end success
+			}
+    	},
 		error:function(){console.log('getPKL fail');}
 	});	// end ajax
     
+    // 取資料庫交流標籤
     $.ajax({
 		url : ajax_url+'AnyCourse/ExchangeKeyLabelServlet.do',
 		method : 'GET', 
 		cache :false,
-		data : {
-			"unit_id" : get("unit_id")
-		},
+		data : {"unit_id" : get("unit_id")},
 		success:function(result){
-			console.log("OK");
 			exKeyLabelArray = result;
-    		for(exmaxIndex = 0 ;exmaxIndex < result.length; exmaxIndex++){
+    		for(exmaxIndex = 0 ;exmaxIndex < result.length; exmaxIndex++)
+    		{
     			$('#exchange_keylabel').append(
     					'<div id="exK_' + exKeyLabelArray[exmaxIndex].userId + '" class=" col-xs-12">'+
     					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
@@ -210,7 +208,7 @@ $(document).ready(function(){
 	});	// end ajax
     
     
-    
+    // 設置個人重點標籤
     function addToSelfKeyLabel(index)
     {
     	var share = keyLabelArray[index].share ? '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item muted">收回</li></a>' : '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
@@ -238,7 +236,8 @@ $(document).ready(function(){
 				+'</ul>'
 				+'</li>');
     }
-  //重點標籤 從右滑出
+    
+    //重點標籤 從右滑出
     $(document).on('mouseover', '.list-group-item', function(event) {
         event.preventDefault();
         $(this).closest('li').addClass('open');
@@ -249,7 +248,8 @@ $(document).ready(function(){
         $(this).closest('li').removeClass('open');
     });
  
- // 設定重點標籤的事件
+//----------------------------------------------keyLabel event----------------------------------------------//   
+    
     // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
     $(document).on('click', '.self.ukl', function(event) 
     {
@@ -261,6 +261,7 @@ $(document).ready(function(){
     	$('.keyLabelDiv').css('width', ((endTime - beginTime) / getDuration() * 100) + '%');
     	$('.keyLabelDiv').attr('data-original-title', keyLabelArray[selectId].keyLabelName);
     });
+    
     // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
     $(document).on('click', '.temp.ukl ,.exchange', function(event) 
     {
@@ -272,12 +273,14 @@ $(document).ready(function(){
     	$('.keyLabelDiv').css('width', ((endTime - beginTime) / getDuration() * 100) + '%');
     	$('.keyLabelDiv').attr('data-original-title', exKeyLabelArray[selectId].keyLabelName);
     });
+    
     // 點擊個人標籤刪除按鈕，設置在變數
     $(document).on('click', '.self.dkl', function(event) 
     {
     	element = $(this).parent().parent();
     	selectId = parseInt(this.getAttribute("id").split("-")[2]);
     });
+    
     // 送去資料庫刪除 
     $(document).on('click', '#deleteKlButton', function(event)
     {
@@ -295,6 +298,7 @@ $(document).ready(function(){
     		error:function(){console.log('failed');}
     	});
     });
+    
     // 新增重點標籤
     $(document).on('click', '#submitKL', function(event)
     {
@@ -334,11 +338,13 @@ $(document).ready(function(){
     		console.log("標籤名稱不可為空!!");
     	}
     })
+    
     // 點擊暫存標籤刪除按鈕，消除該標籤
     $(document).on('click', '.temp.dkl', function(event) 
     {
     	$(this).parent().parent().remove();
     });
+    
     // 點擊個人標籤分享按鈕
     $(document).on('click', '.skl', function(event) 
     {
@@ -362,6 +368,7 @@ $(document).ready(function(){
     		error:function(){console.log('share failed');}
     	});
     });
+    
     // 點擊個人標籤編輯按鈕，可編輯名稱
     $(document).on('click', '.ekl', function(event) 
     {
@@ -442,47 +449,51 @@ $(document).ready(function(){
 
     // 按下添加標籤按鈕，隱藏按鈕並顯示slider
     $("#addKeyLabel").click(function(){
+    	
   	    // 設置slider的最大時間
-  	  $( "#slider-range" ).slider( "option", "max", getDuration());
-  	  $( "#slider-range" ).slider( "values", [ 0, getDuration() ] );
+  	    $( "#slider-range" ).slider( "option", "max", getDuration());
+  	    $( "#slider-range" ).slider( "values", [ 0, getDuration() ] );
   		
-
-  	  // 調整slider會跳至影片該處
-  	  $( "#slider-range" ).slider({
-  		  stop: function( event, ui ) {
-  			  seekTo(Math.floor(ui.value));
-  		  }
-  	  });
+  	    // 調整slider會跳至影片該處
+  	    $( "#slider-range" ).slider({
+  		    stop: function( event, ui ) {
+  			    seekTo(Math.floor(ui.value));
+  		    }
+  	    });
     });
  //----------------------------------------------進度條----------------------------------------------// 
     
- // 點選progress, seek to 該位置
+    // 點選progress, seek to 該位置
     $progress.on('click', function(e){
-      var percent = ((e.pageX-$progress.offset().left)/$progress.width());
-      var seek = percent*getDuration();
-      $('.meter').css('width', percent*100 + '%');
-      seekTo(seek);
+        var percent = ((e.pageX-$progress.offset().left)/$progress.width());
+        var seek = percent*getDuration();
+        $('.meter').css('width', percent*100 + '%');
+        seekTo(seek);
     });
-	
+    
+    // 滑鼠移開進度條回復原狀
 	var animateUp = function(){
-      $(this).animate({
-        height:5,
-        duration:10
-      }, function(){
-        $progress.removeClass('open');
-        $progress.one('mouseenter', animateDown);
-      });
+        $(this).animate({
+            height:5,		// 高度
+            duration:10		// 寬度
+        }, function(){
+            $progress.removeClass('open');
+            $progress.one('mouseenter', animateDown);
+        });
     };
-
+    
+    // 滑鼠移上去進度條增寬
     var animateDown = function(){
-      $(this).animate({
-        height:20,
-        duration:10
-      }, function(){
-        $progress.addClass('open');
-        $progress.one('mouseleave', animateUp);
-      });
+        $(this).animate({
+            height:20,		//高度
+            duration:10		//寬度
+        }, function(){
+            $progress.addClass('open');
+            $progress.one('mouseleave', animateUp);
+        });
     };
+    
+    // 預設為沒open
     $progress.one('mouseenter', animateDown);
 
 //----------------------------------------------按讚----------------------------------------------// 
