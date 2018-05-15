@@ -38,8 +38,10 @@ public class HomePageServlet extends HttpServlet {
 		boolean check;
 		//檢查該使用者有沒有推薦資料、課程清單、想要觀看、正在觀看
 		check = homePageDatabaseManager.checkUser((String)session.getAttribute("userId"));
+//		System.out.println((String)session.getAttribute("userId"));
 		if((String)session.getAttribute("userId") == null || check == false ) {
 			homePages = homePageDatabaseManager.getRandVideo();
+//			System.out.println("1");
 		}
 		else {
 			homePages = homePageDatabaseManager.getAllVideo((String)session.getAttribute("userId"));
@@ -48,7 +50,7 @@ public class HomePageServlet extends HttpServlet {
 		Gson gson = builder.setPrettyPrinting().create();
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(homePages));
-//		System.out.println(gson.toJson(homePages));
+		System.out.println(gson.toJson(homePages));
 		homePageDatabaseManager.conClose();
 	}
 

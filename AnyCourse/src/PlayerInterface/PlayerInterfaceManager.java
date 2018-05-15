@@ -113,7 +113,8 @@ public class PlayerInterfaceManager
 			result = stat.executeQuery("select * from watch_record where user_id = '"+user_id
 					+"' and unit_id = "+unit_id);
 			boolean check = false;//檢查watch_record裡面有沒有這筆單元影片的資料，false為沒有
-//			System.out.println("currentTime: " + currentTime);
+			System.out.println("currentTime: " + currentTime);
+			System.out.println("duration: " + duration);
 //			System.out.println("unit_id: " + unit_id);
 //			System.out.println("user_id: " + user_id);
 			while(result.next()) {check = true;}
@@ -142,7 +143,7 @@ public class PlayerInterfaceManager
 				
 				//判斷結束了沒，currentTime+5秒代表5秒內會結束的都改變status
 				if(currentTime+5 > duration) {
-					pst = con.prepareStatement("update personal_plan set last_time = ? and status = ? where user_id = ? and unit_id = ? ");
+					pst = con.prepareStatement("update personal_plan set last_time = ?,status = ? where user_id = ? and unit_id = ? ");
 					pst.setInt(1,currentTime);
 					pst.setInt(2,3);
 					pst.setString(3,user_id);
@@ -150,7 +151,7 @@ public class PlayerInterfaceManager
 					pst.setInt(4, unit_id);
 				}
 				else {
-					pst = con.prepareStatement("update personal_plan set last_time = ? and status = ? where user_id = ? and unit_id = ? ");
+					pst = con.prepareStatement("update personal_plan set last_time = ?,status = ? where user_id = ? and unit_id = ? ");
 					pst.setInt(1,currentTime);
 					pst.setInt(2,2);
 					pst.setString(3,user_id);
@@ -315,7 +316,7 @@ public class PlayerInterfaceManager
 						+ "unit.unit_id = customlist_video.unit_id and customlist_video.courselist_id"
 						+ " = courselist.courselist_id and unit.unit_id = ?");
 				for(RecommendedItem r: test) {
-		    		System.out.println(r);
+//		    		System.out.println(r);
 					
 					pst.setInt(1,(int)r.getItemID());
 					result = pst.executeQuery();

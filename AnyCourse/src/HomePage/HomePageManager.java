@@ -16,7 +16,7 @@ public class HomePageManager {
 			+"recommended_result.unit_id = unit.unit_id and "
 			+"customlist_video.unit_id = unit.unit_id and "
 			+"customlist_video.courselist_id = courselist.courselist_id and "
-			+"recommended_result.user_id = '";
+			+"recommended_result.account_id = '";
 	private String selectPlan="select * from customlist_video,unit,personal_plan,courselist "
 			+"where personal_plan.unit_id = unit.unit_id and "
 			+"customlist_video.unit_id = unit.unit_id and "
@@ -50,6 +50,7 @@ public class HomePageManager {
 			System.out.println("Exception" + x.toString());
 		}
 	}
+	//登入之後取得所有推薦影片及課程清單、想要觀看等等的影片或清單
 	public ArrayList<Map<Integer, HomePage>> getAllVideo(String user_id) {
 		ArrayList<Map<Integer, HomePage>> homePages = new ArrayList<Map<Integer, HomePage>>();
 		 
@@ -58,44 +59,49 @@ public class HomePageManager {
 		homePages.add(selectVideoList(user_id));
 		homePages.add(selectCoursePlanWant(user_id));
 		homePages.add(selectCoursePlanING(user_id));
+		
 		return homePages;
 	}
-	//訪客模式及新的用戶隨機抓
+	//訪客模式及新的用戶隨機抓影片
 	public ArrayList<Map<Integer, HomePage>> getRandVideo(){
 		ArrayList<Map<Integer, HomePage>> homePages = new ArrayList<Map<Integer, HomePage>>();
 		homePages.add(selectRandVideo());
 		homePages.add(selectRandList());
+		
 		return homePages;
 	}
-	//檢查該使用者在rating有沒有資料以及課程清單、想要觀看、正在觀看有無資料，有的話回傳true
+	//檢查該使用者在recommended_result有沒有資料以及課程清單、想要觀看、正在觀看有無資料，有的話回傳true
 	public boolean checkUser(String user_id) {
+		boolean check = false;
 		try {
-			pst = con.prepareStatement("select unit_id from recommended_result where user_id = ?");
-			pst.setString(1, user_id);
+			pst = con.prepareStatement("select recommended_result.unit_id from recommended_result,account "
+					+ "where account.account_id = recommended_result.account_id and account.user_id = ?");
+			pst.setString(1,user_id);
 			result = pst.executeQuery();
-			if(result.next()){ 	
-				return true;
+			if(result.next()) {
+				check = true;
 			}
 			pst = con.prepareStatement("select courselist_id from list where user_id = ?");
 			pst.setString(1, user_id);
 			result = pst.executeQuery();
 			if(result.next()) {
-				return true;
+				check = true;
 			}
 			pst = con.prepareStatement("select unit_id from personal_plan where user_id = ?");
 			pst.setString(1, user_id);
 			result = pst.executeQuery();
 			if(result.next()) {
-				return true;
+				check = true;
 			}
 		}
 		catch(SQLException x){
+			System.out.println("HomePage Recommend");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		return false;
+		return check;
 	}
 	//隨機抓20個影片
 	public Map<Integer, HomePage> selectRandVideo(){
@@ -106,38 +112,39 @@ public class HomePageManager {
 			result = stat.executeQuery(selectRand);
 			while(result.next()) {
 				homePage = new HomePage();
-				homePage.setList_name(result.getString("courselist.list_name"));
-				homePage.setUnit_name(result.getString("unit.unit_name"));
-				homePage.setSchool_name(result.getString("courselist.school_name"));
+				homePage.setListName(result.getString("courselist.list_name"));
+				homePage.setUnitName(result.getString("unit.unit_name"));
+				homePage.setSchoolName(result.getString("courselist.school_name"));
 				homePage.setTeacher(result.getString("courselist.teacher"));
-				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
+				homePage.setCourselistID(result.getInt("courselist.courselist_id"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
-				homePage.setUnit_id(result.getInt("unit.unit_id"));
+				homePage.setUnitID(result.getInt("unit.unit_id"));
+				//沒有圖片就塞預設的
 				if(result.getString("unit.video_img_src") == "") {
-					homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+					homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
 				else {
-					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+					homePage.setVideoImgSrc(result.getString("unit.video_img_src"));
 				}
 				
 				homePage.setType(1);//代表推薦影片
 				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
-					homePage.setVideo_type(1);//youtube
+					homePage.setVideoType(1);//youtube
 				}
 				else {
-					homePage.setVideo_type(2);//jwplayer
+					homePage.setVideoType(2);//jwplayer
 				}
 				map.put(count, homePage);
 				count++;
 			} 
 		}
 		catch(SQLException x){
+			System.out.println("selectRandVideo");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		
 		return map;
 	}
 	
@@ -150,147 +157,150 @@ public class HomePageManager {
 			result = stat.executeQuery(selectRand);
 			while(result.next()) {
 				homePage = new HomePage();
-				homePage.setList_name(result.getString("courselist.list_name"));
-				homePage.setUnit_name(result.getString("unit.unit_name"));
-				homePage.setSchool_name(result.getString("courselist.school_name"));
+				homePage.setListName(result.getString("courselist.list_name"));
+				homePage.setUnitName(result.getString("unit.unit_name"));
+				homePage.setSchoolName(result.getString("courselist.school_name"));
 				homePage.setTeacher(result.getString("courselist.teacher"));
-				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
+				homePage.setCourselistID(result.getInt("courselist.courselist_id"));
 				homePage.setListLikes(result.getInt("courselist.likes"));
-				homePage.setUnit_id(result.getInt("unit.unit_id"));
+				homePage.setUnitID(result.getInt("unit.unit_id"));
 				if(result.getString("unit.video_img_src") == "") {
-					homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+					homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
 				else {
-					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+					homePage.setVideoImgSrc(result.getString("unit.video_img_src"));
 				}
 				
 				homePage.setType(2);//代表推薦影片
 				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
-					homePage.setVideo_type(1);//youtube
+					homePage.setVideoType(1);//youtube
 				}
 				else {
-					homePage.setVideo_type(2);//jwplayer
+					homePage.setVideoType(2);//jwplayer
 				}
 				map.put(count, homePage);
 				count++;
 			} 
 		}
 		catch(SQLException x){
+			System.out.println("selectRandList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		
 		return map;
 	}
-	
-	
 	
 	//推薦影片
 	public Map<Integer, HomePage> selectRecommendVideo(String user_id){
 		map = new HashMap<Integer, HomePage>();
 		int count = 0;//map的key
+		int account_id = 0;
 		try {
+			pst = con.prepareStatement("select * from recommended_result,account where "
+					+ "account.account_id = recommended_result.account_id and account.user_id = ?");
+			pst.setString(1,user_id);
+			result = pst.executeQuery();
+			if(result.next()) {
+				account_id = result.getInt("account.account_id");
+			}
+			
 			stat = con.createStatement();
-			result = stat.executeQuery(selectRecommend + user_id + "'");
+			result = stat.executeQuery(selectRecommend + account_id + "'");
 			while(result.next()) {
 				homePage = new HomePage();
-				homePage.setUser_id(result.getString("recommended_result.user_id"));
-				homePage.setList_name(result.getString("courselist.list_name"));
-				homePage.setUnit_name(result.getString("unit.unit_name"));
-				homePage.setSchool_name(result.getString("courselist.school_name"));
+				homePage.setAccountID(result.getInt("recommended_result.account_id"));
+				homePage.setListName(result.getString("courselist.list_name"));
+				homePage.setUnitName(result.getString("unit.unit_name"));
+				homePage.setSchoolName(result.getString("courselist.school_name"));
 				homePage.setTeacher(result.getString("courselist.teacher"));
-				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
+				homePage.setCourselistID(result.getInt("courselist.courselist_id"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
-				homePage.setUnit_id(result.getInt("unit.unit_id"));
+				homePage.setUnitID(result.getInt("unit.unit_id"));
 				if(result.getString("unit.video_img_src") == "") {
-					homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+					homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
 				else {
-					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+					homePage.setVideoImgSrc(result.getString("unit.video_img_src"));
 				}
 				
 				homePage.setType(1);//代表推薦影片
 				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
-					homePage.setVideo_type(1);//youtube
+					homePage.setVideoType(1);//youtube
 				}
 				else {
-					homePage.setVideo_type(2);//jwplayer
+					homePage.setVideoType(2);//jwplayer
 				}
 				map.put(count, homePage);
 				count++;
 			} 
 		}
 		catch(SQLException x){
+			System.out.println("selectRecommendVideo");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		
 		return map;
 	}
-	
 	
 	//推薦清單
 	public Map<Integer, HomePage> selectRecommendList(String user_id){
 		map = new HashMap<Integer, HomePage>();
 		int count = 0;//map的key
-//		int listNum = 1;//計算有幾個清單
-		int max = 0;
-		int check = 0;//0代表是第一次跑這個清單，不是0代表這個清單已經跑過，就不需要再存了
+		int check = 0;//0代表是第一次跑這個清單，不是0代表這個清單已經跑過
+		int account_id = 0;
 		try {
-			stat = con.createStatement();
-			//該
-			result = stat.executeQuery("select MAX(oorder) from list where user_id = '" + user_id+"'");
-			while(result.next()) {
-				max = result.getInt("MAX(oorder)");
-				//檢查有沒有資料
-				if(max == 0)return null;
+			pst = con.prepareStatement("select * from recommended_result,account where "
+					+ "account.account_id = recommended_result.account_id and account.user_id = ?");
+			pst.setString(1,user_id);
+			result = pst.executeQuery();
+			if(result.next()) {
+				account_id = result.getInt("account.account_id");
 			}
+			else return null;
 			
-			result = stat.executeQuery(selectRecommend + user_id +"' order by customlist_video.oorder ASC");
+			result = stat.executeQuery(selectRecommend + account_id +"' order by customlist_video.oorder ASC");
 			while(result.next()) {
 				if(check == 0 || check!=result.getInt("customlist_video.courselist_id")) {
 					homePage = new HomePage();
-					homePage.setUser_id(result.getString("recommended_result.user_id"));
-					homePage.setList_name(result.getString("courselist.list_name"));
-//						homePage.setUnit_name(result.getString("unit.unit_name"));
-					homePage.setSchool_name(result.getString("courselist.school_name"));
+					homePage.setAccountID(result.getInt("recommended_result.account_id"));
+					homePage.setListName(result.getString("courselist.list_name"));
+					homePage.setSchoolName(result.getString("courselist.school_name"));
 					homePage.setTeacher(result.getString("courselist.teacher"));
-					homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
+					homePage.setCourselistID(result.getInt("courselist.courselist_id"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
-					homePage.setUnit_id(result.getInt("unit.unit_id"));
-//					homePage.setNum(listNum);
+					homePage.setUnitID(result.getInt("unit.unit_id"));
 					if(result.getString("unit.video_img_src") == "") {
-						homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+						homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 					}
 					else {
-						homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+						homePage.setVideoImgSrc(result.getString("unit.video_img_src"));
 					}
 					
 					homePage.setType(2);//代表推薦清單
 					if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
-						homePage.setVideo_type(1);//youtube
+						homePage.setVideoType(1);//youtube
 					}
 					else {
-						homePage.setVideo_type(2);//jwplayer
+						homePage.setVideoType(2);//jwplayer
 					}
 					map.put(count, homePage);
-//					listNum++;
+					
 					count++;
 				}
 				check = result.getInt("customlist_video.courselist_id");
 			} 
 		}
 		catch(SQLException x){
+			System.out.println("selectRecommendList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		
 		return map;
 	}
 	
@@ -311,7 +321,7 @@ public class HomePageManager {
 				if(max == 0)return null;
 			}
 			max = 0;
-			//看有幾個清單是有內容的，有才可以出現在首頁
+			//看有幾個清單是有內容的，有才可以顯示在首頁
 			result = stat.executeQuery("select * from customlist_video,unit,list,courselist where "
 					+"customlist_video.courselist_id = list.courselist_id and "
 					+"customlist_video.unit_id = unit.unit_id and "
@@ -324,7 +334,7 @@ public class HomePageManager {
 				}
 					
 			}
-			//將清單有影片的顯示出來
+			//將清單有影片的找出來
 			result = stat.executeQuery("select * from customlist_video,unit,list,courselist where "
 					+"customlist_video.courselist_id = list.courselist_id and "
 					+"customlist_video.unit_id = unit.unit_id and "
@@ -334,27 +344,26 @@ public class HomePageManager {
 			while(result.next()) {
 				if(check == 0 || check!=result.getInt("customlist_video.courselist_id")) {
 					homePage = new HomePage();
-					homePage.setUser_id(result.getString("list.user_id"));
-					homePage.setList_name(result.getString("courselist.list_name"));
-					homePage.setSchool_name(result.getString("courselist.school_name"));
+					homePage.setUserID(result.getString("list.user_id"));
+					homePage.setListName(result.getString("courselist.list_name"));
+					homePage.setSchoolName(result.getString("courselist.school_name"));
 					homePage.setTeacher(result.getString("courselist.teacher"));
-					homePage.setCourselist_id(result.getInt("list.courselist_id"));
+					homePage.setCourselistID(result.getInt("list.courselist_id"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
-					homePage.setUnit_id(result.getInt("customlist_video.unit_id"));
-//					System.out.println(max);
-					homePage.setOorder(max);
+					homePage.setUnitID(result.getInt("customlist_video.unit_id"));
+					homePage.setNum(max);
 					homePage.setType(3);//代表課程清單
 					if(result.getString("unit.video_img_src") == "") {
-						homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+						homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 					}
 					else {
-						homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+						homePage.setVideoImgSrc(result.getString("unit.video_img_src"));
 					}
 					if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
-						homePage.setVideo_type(1);//youtube
+						homePage.setVideoType(1);//youtube
 					}
 					else {
-						homePage.setVideo_type(2);//jwplayer
+						homePage.setVideoType(2);//jwplayer
 					}
 					map.put(count, homePage);
 					count++;
@@ -363,15 +372,14 @@ public class HomePageManager {
 			} 
 		}
 		catch(SQLException x){
+			System.out.println("selectVideoList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		
 		return map;
 	}
-	
 	
 	//找使用者的課程計畫中的"想要觀看"
 	public Map<Integer, HomePage> selectCoursePlanWant(String user_id){
@@ -391,42 +399,41 @@ public class HomePageManager {
 			result = stat.executeQuery(selectPlan+ "1 and personal_plan.user_id = '" + user_id+"'");
 			while(result.next()) {
 				homePage = new HomePage();
-				homePage.setUser_id(result.getString("personal_plan.user_id"));
-				homePage.setUnit_name(result.getString("unit.unit_name"));
-				homePage.setList_name(result.getString("courselist.list_name"));
-				homePage.setSchool_name(result.getString("courselist.school_name"));
+				homePage.setUserID(result.getString("personal_plan.user_id"));
+				homePage.setUnitName(result.getString("unit.unit_name"));
+				homePage.setListName(result.getString("courselist.list_name"));
+				homePage.setSchoolName(result.getString("courselist.school_name"));
 				homePage.setTeacher(result.getString("courselist.teacher"));
-				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
+				homePage.setCourselistID(result.getInt("courselist.courselist_id"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
-				homePage.setUnit_id(result.getInt("unit.unit_id"));
-				homePage.setOorder(max);
+				homePage.setUnitID(result.getInt("unit.unit_id"));
+				homePage.setNum(max);
 				homePage.setType(4);//代表想要觀看
 				if(result.getString("unit.video_img_src") == "") {
-					homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+					homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
 				else {
-					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+					homePage.setVideoImgSrc(result.getString("unit.video_img_src"));
 				}
 				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
-					homePage.setVideo_type(1);//youtube
+					homePage.setVideoType(1);//youtube
 				}
 				else {
-					homePage.setVideo_type(2);//jwplayer
+					homePage.setVideoType(2);//jwplayer
 				}
 				map.put(count, homePage);
 				count++;
 			} 
 		}
 		catch(SQLException x){
+			System.out.println("selectCoursePlanWant");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		
 		return map;
 	}
-	
 	
 	//找使用者的課程計畫中的"正在觀看"
 	public Map<Integer, HomePage> selectCoursePlanING(String user_id){
@@ -446,39 +453,39 @@ public class HomePageManager {
 			result = stat.executeQuery(selectPlan+ "2 and personal_plan.user_id = '" + user_id+"'");
 			while(result.next()) {
 				homePage = new HomePage();
-				homePage.setUser_id(result.getString("personal_plan.user_id"));
-				homePage.setUnit_name(result.getString("unit.unit_name"));
-				homePage.setList_name(result.getString("courselist.list_name"));
-				homePage.setSchool_name(result.getString("courselist.school_name"));
+				homePage.setUserID(result.getString("personal_plan.user_id"));
+				homePage.setUnitName(result.getString("unit.unit_name"));
+				homePage.setListName(result.getString("courselist.list_name"));
+				homePage.setSchoolName(result.getString("courselist.school_name"));
 				homePage.setTeacher(result.getString("courselist.teacher"));
-				homePage.setCourselist_id(result.getInt("courselist.courselist_id"));
+				homePage.setCourselistID(result.getInt("courselist.courselist_id"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
-				homePage.setUnit_id(result.getInt("unit.unit_id"));
-				homePage.setOorder(max);
+				homePage.setUnitID(result.getInt("unit.unit_id"));
+				homePage.setNum(max);
 				homePage.setType(5);//代表想要觀看
 				if(result.getString("unit.video_img_src") == "") {
-					homePage.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+					homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
 				else {
-					homePage.setVideo_img_src(result.getString("unit.video_img_src"));
+					homePage.setVideoImgSrc(result.getString("unit.video_img_src"));
 				}
 				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
-					homePage.setVideo_type(1);//youtube
+					homePage.setVideoType(1);//youtube
 				}
 				else {
-					homePage.setVideo_type(2);//jwplayer
+					homePage.setVideoType(2);//jwplayer
 				}
 				map.put(count, homePage);
 				count++;
 			} 
 		}
 		catch(SQLException x){
+			System.out.println("selectCoursePlanING");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		
 		return map;
 	}
 	//將首頁的單元影片加入課程計畫中
@@ -497,6 +504,7 @@ public class HomePageManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("addToCoursePlan");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -520,24 +528,22 @@ public class HomePageManager {
 					+ " courselist.courselist_id and courselist.courselist_id = "+ courselist_id);
 			while(result.next()) {
 				homePage = new HomePage();
-				homePage.setUnit_id(result.getInt("unit.unit_id"));
-//				System.out.println(result.getInt("unit.unit_id"));
+				homePage.setUnitID(result.getInt("unit.unit_id"));
 				homePages.add(homePage);
 			}
-			
-			System.out.println(homePages.size());
 			pst = con.prepareStatement("insert ignore into personal_plan (user_id,unit_id,last_time,status,oorder) value(?,?,0,1,?)");
 			for(int i = 0;i < homePages.size();i++) {
 				
 				pst.setString(1, user_id);
-				pst.setInt(2, homePages.get(i).getUnit_id());
+				pst.setInt(2, homePages.get(i).getUnitID());
 				pst.setInt(3, ++maxOrder);
+				//先放到batch，等迴圈跑完再一次新增
 				pst.addBatch();
-//				System.out.println(homePages.get(i).getUnit_id());
 			}
 			pst.executeBatch();
 		}
 		catch(SQLException x){
+			System.out.println("addToCoursePlan_List");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -567,6 +573,7 @@ public class HomePageManager {
 			}
 		}
 		catch(SQLException e) {
+			System.out.println("Connection Error");
 			System.out.println("Close Exception :" + e.toString()); 
 		}
 	}

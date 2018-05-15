@@ -1,5 +1,5 @@
-//var ajax_url="http://140.121.197.130:8400/";
-var ajax_url="http://localhost:8080/";
+var ajax_url="http://140.121.197.130:8400/";
+//var ajax_url="http://localhost:8080/";
 
 
 document.write("<script type='text/javascript' src='dist/js/swiper.min.js'></script>");
@@ -20,7 +20,7 @@ $(document).ready(function(){
 		method : 'GET',
 		cache :false,
 		success:function(result){
-//			console.log(result);
+			console.log(result);
 //			console.log(result[0][0].type);
 //			console.log(result.length);
 //			console.log(result.length*result.)
@@ -51,13 +51,11 @@ $(document).ready(function(){
 						$('#courseList_1').append(
 							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
 							+'<div class="card">'
-							+'<figure class="snip1492">'
+							
 							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].video_img_src+'">'
 							+'</div>'
-							+'<i class="fa fa-play"></i>'
-							+'<a href="#" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')"></a>'
-							+'</figure>'
+							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<h4 class="card-title" >' + result[i][j].unit_name + '</h4>'
 							+'<div class="card-text">清單:'+ result[i][j].list_name +'</div>'
@@ -110,13 +108,10 @@ $(document).ready(function(){
 						$('#courseList_2').append(
 							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
 							+'<div class="card">'
-							+'<figure class="snip1492">'
 							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unit_id + ',' + result[i][j].video_type +',' + result[i][j].courselist_id + ')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].video_img_src+'">'
 							+'</div>'
-							+'<i class="fa fa-play"></i>'
-							+'<a href="#" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unit_id + ',' + result[i][j].video_type +',' + result[i][j].courselist_id + ')"></a>'
-							+'</figure>'
+							
 							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unit_id + ',' + result[i][j].video_type +',' + result[i][j].courselist_id + ')">'
 							+'<h4 class="card-title" >' + result[i][j].list_name + '</h4>'
@@ -156,25 +151,21 @@ $(document).ready(function(){
 							+str2);
 					//亂數決定順序
 					var temp;
-//					console.log(result[2][0].oorder);
-					for(var j = 0 ;j < result[i][0].oorder;j++){
-						temp = Math.floor(Math.random()*result[i][0].oorder);
+//					console.log(result[2][0].num);
+					for(var j = 0 ;j < result[i][0].num;j++){
+						temp = Math.floor(Math.random()*result[i][0].num);
 						var course_info = result[i][temp];
 						result[i][temp] = result[i][j];
 						result[i][j] = course_info;
 					}
-					for(var j = 0 ;j < result[i][0].oorder;j++){
+					for(var j = 0 ;j < result[i][0].num;j++){
 						
 						$('#courseList_3').append(
 							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
 							+'<div class="card">'
-							+'<figure class="snip1492">'
 							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unit_id + ',' + result[i][j].video_type +',' + result[i][j].courselist_id + ')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].video_img_src+'">'
 							+'</div>'
-							+'<i class="fa fa-play"></i>'
-							+'<a href="#" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unit_id + ',' + result[i][j].video_type +',' + result[i][j].courselist_id + ')"></a>'
-							+'</figure>'
 							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unit_id + ',' + result[i][j].video_type +',' + result[i][j].courselist_id + ')">'
 							+'<h4 class="card-title" >' + result[i][j].list_name + '</h4>'
@@ -214,24 +205,20 @@ $(document).ready(function(){
 							+str2);
 					//亂數決定順序
 					var temp;
-//					console.log(result[i][0].oorder);
-					for(var j = 0 ;j < result[i][0].oorder;j++){
-						temp = Math.floor(Math.random()*result[i][0].oorder);
+//					console.log(result[i][0].num);
+					for(var j = 0 ;j < result[i][0].num;j++){
+						temp = Math.floor(Math.random()*result[i][0].num);
 						var course_info = result[i][temp];
 						result[i][temp] = result[i][j];
 						result[i][j] = course_info;
 					}
-					for(var j = 0 ;j < result[i][0].oorder;j++){
+					for(var j = 0 ;j < result[i][0].num;j++){
 						$('#courseList_4').append(
 							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
 							+'<div class="card">'
-							+'<figure class="snip1492">'
 							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].video_img_src+'">'
 							+'</div>'
-							+'<i class="fa fa-play"></i>'
-							+'<a href="#" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')"></a>'
-							+'</figure>'
 							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<h4 class="card-title" >' + result[i][j].unit_name + '</h4>'
@@ -271,23 +258,19 @@ $(document).ready(function(){
 							+str2);
 					//亂數決定順序
 					var temp;
-					for(var j = 0 ;j < result[i][0].oorder;j++){
-						temp = Math.floor(Math.random()*result[i][0].oorder);
+					for(var j = 0 ;j < result[i][0].num;j++){
+						temp = Math.floor(Math.random()*result[i][0].num);
 						var course_info = result[i][temp];
 						result[i][temp] = result[i][j];
 						result[i][j] = course_info;
 					}
-					for(var j = 0 ;j < result[i][0].oorder;j++){
+					for(var j = 0 ;j < result[i][0].num;j++){
 						$('#courseList_5').append(
 							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
 							+'<div class="card">'
-							+'<figure class="snip1492">'
 							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].video_img_src+'">'
 							+'</div>'
-							+'<i class="fa fa-play"></i>'
-							+'<a href="#" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')"></a>'
-							+'</figure>'
 							
 							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unit_id + ',' + result[i][j].video_type+')">'
 							+'<h4 class="card-title" >' + result[i][j].unit_name + '</h4>'

@@ -6,8 +6,8 @@ $('#unit').slimScroll({
 $('.box-body').slimScroll({
 	  height: '420px;'
 	  });
-//var ajax_url="http://140.121.197.130:8400/";
-var ajax_url="http://localhost:8080/";
+var ajax_url="http://140.121.197.130:8400/";
+//var ajax_url="http://localhost:8080/";
 var listArray;
 $(document).ready(function() {
 	checkLogin("../", "../../../");
@@ -41,9 +41,10 @@ $(document).ready(function() {
 //			
 //		},
 		success:function(result){
+			console.log(result);
 			listArray = new Array(result.length);
 			for(var i = 0;i < result.length; i++){
-//				console.log(result[i].teacher);
+				
 				//想要觀看
 				if(result[i].status == 1){
 					
@@ -181,6 +182,6 @@ $(document).ready(function() {
 });
 //跳轉至播放介面
 function jumpToPlayerInterface(unit_id,type,time){
-    url = "../PlayerInterface.html?unit_id="+unit_id+"&type="+type+"&time"+time;//此處拼接內容
+    url = "../PlayerInterface.html?unit_id="+unit_id+"&type="+type+"&time="+time;//此處拼接內容
     window.location.href = url;
 }

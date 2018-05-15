@@ -43,11 +43,12 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		}
 		else if(request.getParameter("action").equals("setVideoCloseTime")
 				&&(String)session.getAttribute("userId") != null) {
-//			System.out.println(Integer.parseInt(request.getParameter("unitId")));
-//			System.out.println(Integer.parseInt(request.getParameter("currentTime")));
-//			System.out.println(Integer.parseInt(request.getParameter("duration")));
+			PlayerInterfaceManager playerInterfaceManager = new PlayerInterfaceManager();
+			System.out.println(Integer.parseInt(request.getParameter("unitId")));
+			System.out.println(Integer.parseInt(request.getParameter("currentTime")));
+			System.out.println(Integer.parseInt(request.getParameter("duration")));
 			
-			manager.setVideoEndTime(Integer.parseInt(request.getParameter("currentTime"))
+			playerInterfaceManager.setVideoEndTime(Integer.parseInt(request.getParameter("currentTime"))
 					, Integer.parseInt(request.getParameter("unitId")), (String)session.getAttribute("userId")
 					,Integer.parseInt(request.getParameter("duration")));
 			
@@ -103,7 +104,7 @@ public class PlayerInterfaceServlet extends HttpServlet {
 				account_id = manager.getAccountID((String)session.getAttribute("userId"));
 			}
 			System.out.println("account_id:"+account_id);
-			manager.setBrowse(account_id,Integer.parseInt(request.getParameter("unitId")));
+			manager.setBrowse(account_id,Integer.parseInt(request.getParameter("unit_id")));
 //			System.out.println(account_id);
 			ArrayList<Unit> units = new ArrayList<Unit>();
 			response.setContentType("application/json");
@@ -117,7 +118,7 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			}
 			Gson gson = new Gson();
 			response.getWriter().write(gson.toJson(units));
-			System.out.println(gson.toJson(units));
+//			System.out.println(gson.toJson(units));
 		}
 		manager.conClose();
 	}
