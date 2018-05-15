@@ -672,6 +672,10 @@
     	,"企業管理系","管理與資訊系","資訊工程系","機械工程系","光電工程系","應用英語系","創新產品設計系","資訊傳播系","休閒事業管理系"  	
     ];
     $( "#tags" ).autocomplete({
-      source: availableTags
+        source: availableTags,
+        select: function(event, ui) { 
+            $("#tags").val(ui.item.label);
+            $(this).closest("form").submit();
+        }
     });
   });

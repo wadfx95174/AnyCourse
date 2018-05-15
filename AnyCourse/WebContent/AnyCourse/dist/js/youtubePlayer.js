@@ -100,7 +100,7 @@ function onYouTubeIframeAPIReady() {
 	});
     
 }
-  //  ready後用到的func
+// ready後用到的func
 function onPlayerReady(event) {   
     player.setPlaybackRate(1);   //影片速率
     event.target.playVideo();   //  播放
@@ -120,7 +120,7 @@ function stopVideo()
     player.stopVideo();
 }
 
-  //  跳轉到幾秒
+// 跳轉到幾秒
 function seekTo(sec)
 {
     player.seekTo(sec, true);
@@ -141,13 +141,13 @@ function changeId(videoid)
 	player.loadVideoById("videoid", 0, "default");
 }
 
-  //  timechange會用到
+// timechange會用到
 function youTubePlayerActive() 
 {
     return player && player.hasOwnProperty('getPlayerState');
 }
 
-  //  移動完後影片跳轉到該位置
+// 移動完後影片跳轉到該位置
 function youTubePlayerCurrentTimeChange(currentTime) 
 {
     player.personalPlayer.currentTimeSliding = false;
@@ -156,7 +156,7 @@ function youTubePlayerCurrentTimeChange(currentTime)
     }
 }
 
-  //  移動中
+// 移動中
 function youTubePlayerCurrentTimeSlide() 
 {
     player.personalPlayer.currentTimeSliding = true;
