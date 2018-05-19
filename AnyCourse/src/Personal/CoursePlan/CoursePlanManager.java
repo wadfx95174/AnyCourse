@@ -22,8 +22,7 @@ public class CoursePlanManager {
 	private ResultSet result = null;
 	private PreparedStatement pst = null;
 
-	public CoursePlanManager()
-	{
+	public CoursePlanManager(){
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");// 註冊Driver
@@ -39,7 +38,7 @@ public class CoursePlanManager {
 		}
 	}
 	//拿該使用者課程計畫所有影片
-	public ArrayList<CoursePlan> getCoursePlanAllList(String user_id){
+	public ArrayList<CoursePlan> getCoursePlanAllList(String userID){
 		coursePlans = new ArrayList<CoursePlan>();
 		try {
 			stat = con.createStatement();
@@ -47,35 +46,35 @@ public class CoursePlanManager {
 					+ "personal_plan.unit_id = unit.unit_id and "
 					+ "unit.unit_id = customlist_video.unit_id and "
 					+ "customlist_video.courselist_id = courselist.courselist_id and "
-					+ "personal_plan.user_id = '"+user_id +"' order by personal_plan.oorder ASC");
+					+ "personal_plan.user_id = '"+userID +"' order by personal_plan.oorder ASC");
 			while(result.next()) {
 				coursePlan = new CoursePlan();
-				coursePlan.setList_name(result.getString("courselist.list_name"));
-				coursePlan.setUnit_name(result.getString("unit.unit_name"));
-				coursePlan.setSchool_name(result.getString("courselist.school_name"));
-				coursePlan.setLast_time(result.getInt("personal_plan.last_time"));
+				coursePlan.setListName(result.getString("courselist.list_name"));
+				coursePlan.setUnitName(result.getString("unit.unit_name"));
+				coursePlan.setSchoolName(result.getString("courselist.school_name"));
+				coursePlan.setLastTime(result.getInt("personal_plan.last_time"));
 				coursePlan.setTeacher(result.getString("courselist.teacher"));
-//				coursePlan.setCourselist_id(result.getInt("courselist.courselist_id"));
 				coursePlan.setLikes(result.getInt("unit.likes"));
-				coursePlan.setUnit_id(result.getInt("unit.unit_id"));
+				coursePlan.setUnitID(result.getInt("unit.unit_id"));
 				coursePlan.setStatus(result.getInt("personal_plan.status"));//狀態
 				coursePlan.setOorder(result.getInt("oorder"));
 				if(result.getString("unit.video_img_src") == "") {
-					coursePlan.setVideo_img_src("https://i.imgur.com/eKSYvRv.png");
+					coursePlan.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
 				else {
-					coursePlan.setVideo_img_src(result.getString("unit.video_img_src"));
+					coursePlan.setVideoImgSrc(result.getString("unit.video_img_src"));
 				}
 				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
-					coursePlan.setVideo_type(1);//youtube
+					coursePlan.setVideoType(1);//youtube
 				}
 				else {
-					coursePlan.setVideo_type(2);//jwplayer
+					coursePlan.setVideoType(2);//jwplayer
 				}
 				coursePlans.add(coursePlan);
 			} 
 		}
 		catch(SQLException x){
+			System.out.println("getCoursePlanAllList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -84,26 +83,26 @@ public class CoursePlanManager {
 		return coursePlans;
 	}
 	//獲取原本該狀態列表的資料
-	public ArrayList<CoursePlan> getCoursePlanOrder(String user_id,String received){
-		ArrayList<CoursePlan> coursePlans = new ArrayList<CoursePlan>();
-		CoursePlan coursePlan;
+	public ArrayList<CoursePlan> getCoursePlanOrder(String userID,String received){
+		coursePlans = new ArrayList<CoursePlan>();
 		int status = 0;
 		if(received.equals("wantList"))status = 1;
 		else if(received.equals("ingList"))status = 2;
 		else if(received.equals("doneList"))status = 3;
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from personal_plan where user_id = '" + user_id + "' and status = " + status);
+			result = stat.executeQuery("select * from personal_plan where user_id = '" + userID + "' and status = " + status);
 			while(result.next()) {
 				coursePlan = new CoursePlan();
-				coursePlan.setUser_id(result.getString("user_id"));
-				coursePlan.setUnit_id(result.getInt("unit_id"));
+				coursePlan.setUserID(result.getString("user_id"));
+				coursePlan.setUnitID(result.getInt("unit_id"));
 				coursePlan.setStatus(result.getInt("status"));
 				coursePlan.setOorder(result.getInt("oorder"));
 				coursePlans.add(coursePlan);
 			}
 		}
 		catch(SQLException x){
+			System.out.println("getCoursePlanOrder");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -117,13 +116,14 @@ public class CoursePlanManager {
 			//1:想要觀看。2:正在觀看。3:已觀看完
 			pst = con.prepareStatement("update personal_plan set status = ? , oorder = ? where user_id = ? and unit_id = ? ");
 			
-			pst.setString(3,coursePlan.getUser_id());
-			pst.setInt(4,coursePlan.getUnit_id());
+			pst.setString(3,coursePlan.getUserID());
+			pst.setInt(4,coursePlan.getUnitID());
 			pst.setInt(1,coursePlan.getStatus());
 			pst.setInt(2,coursePlan.getOorder());
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("updateCoursePlanList");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -131,33 +131,33 @@ public class CoursePlanManager {
 		}
 	}
 	//獲取移動前的清單的資料
-	public ArrayList<CoursePlan> getOldCoursePlanOrder(String user_id,String sender){
-		ArrayList<CoursePlan> oldCoursePlans = new ArrayList<CoursePlan>();
-		CoursePlan oldCoursePlan;
+	public ArrayList<CoursePlan> getOldCoursePlanOrder(String userID,String sender){
+		coursePlans = new ArrayList<CoursePlan>();
 		int status = 0;
 		if(sender.equals("wantList"))status = 1;
 		else if(sender.equals("ingList"))status = 2;
 		else if(sender.equals("doneList"))status = 3;
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from personal_plan where user_id = '" + user_id + "' and status = " + status);
+			result = stat.executeQuery("select * from personal_plan where user_id = '" + userID + "' and status = " + status);
 			while(result.next()) {
-				oldCoursePlan = new CoursePlan();
-				oldCoursePlan.setUser_id(result.getString("user_id"));
-				oldCoursePlan.setUnit_id(result.getInt("unit_id"));
-				oldCoursePlan.setStatus(result.getInt("status"));
-				oldCoursePlan.setOorder(result.getInt("oorder"));
+				coursePlan = new CoursePlan();
+				coursePlan.setUserID(result.getString("user_id"));
+				coursePlan.setUnitID(result.getInt("unit_id"));
+				coursePlan.setStatus(result.getInt("status"));
+				coursePlan.setOorder(result.getInt("oorder"));
 //				System.out.println(oldCoursePlan.getOorder());
-				oldCoursePlans.add(oldCoursePlan);
+				coursePlans.add(coursePlan);
 			}
 		}
 		catch(SQLException x){
+			System.out.println("getOldCoursePlanOrder");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		return oldCoursePlans;
+		return coursePlans;
 	}
 	//更新移動前的清單的排序
 	public void updateOldStatusList(CoursePlan oldCoursePlan) {
@@ -165,20 +165,20 @@ public class CoursePlanManager {
 			//1:想要觀看。2:正在觀看。3:已觀看完
 			pst = con.prepareStatement("update personal_plan set status = ? , oorder = ? where user_id = ? and unit_id = ? ");
 			
-			pst.setString(3,oldCoursePlan.getUser_id());
-			pst.setInt(4,oldCoursePlan.getUnit_id());
+			pst.setString(3,oldCoursePlan.getUserID());
+			pst.setInt(4,oldCoursePlan.getUnitID());
 			pst.setInt(1,oldCoursePlan.getStatus());
 			pst.setInt(2,oldCoursePlan.getOorder());
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("updateOldStatusList");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
 			Close();
 		}
 	}
-	
 	
 	public void Close() {
 		try {
@@ -193,9 +193,11 @@ public class CoursePlanManager {
 			}
 		}
 		catch(SQLException e) {
+			System.out.println("CoursePlanManager Close Error");
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
+	//關閉connection
 	public void conClose() {
 		try {
 			if(con!=null) {
@@ -203,6 +205,7 @@ public class CoursePlanManager {
 			}
 		}
 		catch(SQLException e) {
+			System.out.println("CoursePlanManager Close Error");
 			System.out.println("Close Exception :" + e.toString()); 
 		}
 	}
