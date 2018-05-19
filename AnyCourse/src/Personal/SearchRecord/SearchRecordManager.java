@@ -12,6 +12,7 @@ public class SearchRecordManager {
 	private String selectSearchRecordSQL = "select * from search_record ";
 	private String deleteSearchRecordSQL = "delete from search_record where user_id = ? and search_word = ? and search_time = ?";
 	private SearchRecord searchRecord;
+	private ArrayList<SearchRecord> searchRecords;
 	
 	private Connection con = null;
 	private Statement stat = null;
@@ -34,8 +35,8 @@ public class SearchRecordManager {
 		}
 	}
 	//選取要呈現的搜尋紀錄
-	public void selectSearchRecordTable(ArrayList<SearchRecord> searchRecords) {
-		
+	public ArrayList<SearchRecord> selectSearchRecordTable() {
+		searchRecords = new ArrayList<SearchRecord>();
 		try {
 			stat = con.createStatement();
 			result = stat.executeQuery(selectSearchRecordSQL);
@@ -54,14 +55,15 @@ public class SearchRecordManager {
 		finally {
 			Close();
 		}
+		return searchRecords;
 	}
 	//刪除指定搜尋資料
-	public void deleteSearchRecordTable(SearchRecord searchRecord) {
+	public void deleteSearchRecordTable(String userID,String searchWord,String searchTime) {
 		try {
 			pst = con.prepareStatement(deleteSearchRecordSQL);
-			pst.setString(1,searchRecord.getUserID());
-			pst.setString(2,searchRecord.getSearchWord());
-			pst.setString(3,searchRecord.getSearchTime());
+			pst.setString(1,userID);
+			pst.setString(2,searchWord);
+			pst.setString(3,searchTime);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){

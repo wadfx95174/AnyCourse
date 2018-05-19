@@ -21,12 +21,12 @@ public class SearchRecordServlet extends HttpServlet{
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		
-		searchRecordDatebaseManager.selectSearchRecordTable(searchRecords);
+		searchRecords = searchRecordDatebaseManager.selectSearchRecordTable();
 		
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(searchRecords));
+		//關閉connection
 		searchRecordDatebaseManager.conClose();
-//		System.out.println(gson.toJson(searchRecords));
 	}
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,13 +34,10 @@ public class SearchRecordServlet extends HttpServlet{
 		response.setHeader("content-type","text/html;charset=UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
 		SearchRecordManager searchRecordDatebaseManager = new SearchRecordManager();
-		SearchRecord searchRecord = new SearchRecord();
 		
-		searchRecord.setUserID(request.getParameter("user_id"));
-		searchRecord.setSearchWord(request.getParameter("search_word"));
-		searchRecord.setSearchTime(request.getParameter("search_time"));
-		
-		searchRecordDatebaseManager.deleteSearchRecordTable(searchRecord);
+		searchRecordDatebaseManager.deleteSearchRecordTable(request.getParameter("userID"),
+				request.getParameter("searchWord"),request.getParameter("searchTime"));
+		//關閉connection
 		searchRecordDatebaseManager.conClose();
 	}
 }
