@@ -14,14 +14,14 @@ public class SearchRecordServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
-		response.setHeader("content-type","text/html;charset=UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
+		HttpSession session = request.getSession();
 		ArrayList<SearchRecord> searchRecords = new ArrayList<SearchRecord>(); 
 		SearchRecordManager searchRecordDatebaseManager = new SearchRecordManager();
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		
-		searchRecords = searchRecordDatebaseManager.selectSearchRecordTable();
+		searchRecords = searchRecordDatebaseManager.selectSearchRecordTable((String)session.getAttribute("userId"));
 		
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(searchRecords));
@@ -31,11 +31,11 @@ public class SearchRecordServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
-		response.setHeader("content-type","text/html;charset=UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
+		HttpSession session = request.getSession();
 		SearchRecordManager searchRecordDatebaseManager = new SearchRecordManager();
 		
-		searchRecordDatebaseManager.deleteSearchRecordTable(request.getParameter("userID"),
+		searchRecordDatebaseManager.deleteSearchRecordTable((String)session.getAttribute("userId"),
 				request.getParameter("searchWord"),request.getParameter("searchTime"));
 		//關閉connection
 		searchRecordDatebaseManager.conClose();

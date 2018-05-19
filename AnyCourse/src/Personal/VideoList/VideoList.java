@@ -1,63 +1,79 @@
 package Personal.VideoList;
 
 public class VideoList {
-	private int courselist_id;
-	private String list_name;
-	private String creator;
-	private String user_id;
-	private String school_name;
-	private int share = 0;
-	private int likes = 0;
-	private int oorder;
+	private int courselistID;//
+	private String listName;//
+	private String creator;//
+	private String userID;//
+	private String schoolName;//
+	private int share;
+	private int likes;
+	private int oorder;//
 	
 	public VideoList() {}
-	
-	public void setCourselistID(int courselist_id) {
-		this.courselist_id = courselist_id;
-	}
-	public void setListName(String list_name) {
-		this.list_name = list_name;
-	}
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
-	public void setUserID(String user_id) {
-		this.user_id = user_id;
-	}
-	public void setSchoolName(String school_name) {
-		this.school_name = school_name;
-	}
-	public void setShare(int share) {
-		this.share = share;
-	}
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
-	public void setOorder(int oorder) {
-		this.oorder = oorder;
-	}
+
 	public int getCourselistID() {
-		return courselist_id;
+		return courselistID;
 	}
+
+	public void setCourselistID(int courselistID) {
+		this.courselistID = courselistID;
+	}
+
 	public String getListName() {
-		return list_name;
+		return listName;
 	}
+
+	public void setListName(String listName) {
+		this.listName = listName;
+	}
+
 	public String getCreator() {
 		return creator;
 	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
 	public String getUserID() {
-		return user_id;
+		return userID;
 	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
 	public String getSchoolName() {
-		return school_name;
+		return schoolName;
 	}
+
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+
 	public int getShare() {
 		return share;
 	}
+
+	public void setShare(int share) {
+		this.share = share;
+	}
+
 	public int getLikes() {
 		return likes;
 	}
+
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
+
 	public int getOorder() {
 		return oorder;
 	}
+
+	public void setOorder(int oorder) {
+		this.oorder = oorder;
+	}
+	
 }

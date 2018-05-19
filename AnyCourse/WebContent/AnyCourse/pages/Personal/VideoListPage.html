@@ -105,52 +105,49 @@
 			<!-- /.sidebar -->
 		</aside>
 		<div class="content-wrapper">
-					<section class="content col-md-4">
-						<div class="box box-primary">
-							<div class="box-header ui-sortable-handle">
-								<i class="ion ion-clipboard"></i>
-								<h3 class="box-title">
-									<strong>課程清單</strong>
-								</h3>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body" style="height: 465px;" id="list">
-								<ul class="todo-list ui-sortable" id="videoListUL">
-									<!--新增清單-->
-									
-									<!--/.新增清單-->
-								</ul>
-							</div>
-							<!-- /.box-body -->
-							<div class="box-footer clearfix no-border">
-								<button type="button" class="btn btn-default pull-right"
-									data-toggle="modal" data-target="#addModal">
-									<i class="fa fa-plus"></i> 新增清單
-								</button>
-							</div>
-
-						</div>
-					</section>
-					<section class="content col-md-8" id="unitSection">
-						<div class="box box-primary">
-							<!-- box-header -->
-							<div class="box-header ui-sortable-handle">
-								<i class="ion  ion-ios-film-outline"></i>
-								<h3 class="box-title">
-									<strong>課程影片</strong>
-								</h3>
-							</div>
-							<!-- /.box-header -->
-							<!-- box-body -->
-							<div class="box-body">
-								<ul class="todo-list" style="height: 480px;" id="unit">
-									<!-- 顯示相對應的單元影片 -->
-								</ul>
-							</div>
-							<!-- /.box-body -->
-							<div class="box-footer clearfix no-border"></div>
-						</div>
-					</section>
+			<section class="content col-md-4">
+				<div class="box box-primary">
+					<div class="box-header ui-sortable-handle">
+						<i class="ion ion-clipboard"></i>
+						<h3 class="box-title">
+							<strong>課程清單</strong>
+						</h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body" style="height: 465px;" id="list">
+						<ul class="todo-list ui-sortable" id="videoListUL">
+							<!--新增清單-->
+							
+							<!--/.新增清單-->
+						</ul>
+					</div>
+					<!-- /.box-body -->
+					<div class="box-footer clearfix no-border">
+						<button type="button" class="btn btn-default pull-right"
+							data-toggle="modal" data-target="#addModal">
+							<i class="fa fa-plus"></i> 新增清單
+						</button>
+					</div>
+				</div>
+			</section>
+			<section class="content col-md-8" id="unitSection">
+				<div class="box box-primary">
+					<!-- box-header -->
+					<div class="box-header ui-sortable-handle">
+						<i class="ion  ion-ios-film-outline"></i>
+						<h3 class="box-title">
+							<strong>課程影片</strong>
+						</h3>
+					</div>
+					<!-- /.box-header -->
+					<!-- box-body -->
+					<div class="box-body">
+						<ul class="todo-list" style="height: 480px;" id="unit">
+							<!-- 顯示相對應的單元影片 -->
+						</ul>
+					</div>
+					<!-- /.box-body -->
+					<div class="box-footer clearfix no-border"></div>
 				</div>
 			</section>
 		</div>
@@ -313,6 +310,11 @@
 	<!-- 沒有輸入清單名稱 -->
 	<div id="unNewEdit" title="編輯錯誤">
 	  <p>請輸入新的清單名稱</p>
+	</div>
+	
+	<!-- 無法編輯 -->
+	<div id="canNotEdit" title="編輯錯誤">
+	  <p>不是您的清單，無法編輯</p>
 	</div>
 	
 	<!-- 沒有輸入清單名稱 -->

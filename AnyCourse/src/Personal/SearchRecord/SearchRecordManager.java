@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SearchRecordManager {
-	private String selectSearchRecordSQL = "select * from search_record ";
 	private String deleteSearchRecordSQL = "delete from search_record where user_id = ? and search_word = ? and search_time = ?";
 	private SearchRecord searchRecord;
 	private ArrayList<SearchRecord> searchRecords;
@@ -35,21 +34,20 @@ public class SearchRecordManager {
 		}
 	}
 	//選取要呈現的搜尋紀錄
-	public ArrayList<SearchRecord> selectSearchRecordTable() {
+	public ArrayList<SearchRecord> selectSearchRecordTable(String userID) {
 		searchRecords = new ArrayList<SearchRecord>();
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery(selectSearchRecordSQL);
+			result = stat.executeQuery("select * from search_record where user_id = '" + userID + "'");
 			 while(result.next()) 
 		     { 	
 				 searchRecord = new SearchRecord();
-				 searchRecord.setUserID(result.getString("user_id"));
 				 searchRecord.setSearchWord(result.getString("search_word"));
 				 searchRecord.setSearchTime(result.getString("search_time"));
 				 searchRecords.add(searchRecord);
 		     }
-		}
-			 catch(SQLException x){
+		}catch(SQLException x){
+			System.out.println("SearchRecord-selectSearchRecordTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -67,6 +65,7 @@ public class SearchRecordManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("SearchRecord-deleteSearchRecordTable");
 			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
@@ -87,6 +86,7 @@ public class SearchRecordManager {
 			}
 		}
 		catch(SQLException e) {
+			System.out.println("SearchRecord Close Error");
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
@@ -97,6 +97,7 @@ public class SearchRecordManager {
 			}
 		}
 		catch(SQLException e) {
+			System.out.println("SearchRecord Connection Close Error");
 			System.out.println("Close Exception :" + e.toString()); 
 		}
 	}

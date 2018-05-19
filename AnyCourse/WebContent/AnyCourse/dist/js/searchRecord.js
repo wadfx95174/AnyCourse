@@ -36,13 +36,12 @@ $(document).ready(function() {
 						+'</div>'
 						+'</div></li>');
     			for(var j = 0 ; j < 3;j++){
-    				searchRecordArray[i] = new Array(3);
+    				searchRecordArray[i] = new Array(2);
     			}
 			}
     		for(var i = 0 ;i < result.length;i++){
-    			for(var j = 0 ; j < 3;j++){
-    				if(j == 0)searchRecordArray[(i+1)][j] = result[i].userID;
-    				else if(j == 1)searchRecordArray[(i+1)][j] = result[i].searchWord;
+    			for(var j = 0 ; j < 2;j++){
+    				if(j == 0)searchRecordArray[(i+1)][j] = result[i].searchWord;
     				else searchRecordArray[(i+1)][j] = result[i].searchTime
     			}
     		}
@@ -63,9 +62,8 @@ $(document).ready(function() {
 			method : 'POST',
 			cache :false,
 		    data : {
-		    	"userID" : searchRecordArray[checkID][0],
-		    	"searchWord" : searchRecordArray[checkID][1],
-				"searchTime" : searchRecordArray[checkID][2]
+		    	"searchWord" : searchRecordArray[checkID][0],
+				"searchTime" : searchRecordArray[checkID][1]
 			},
 			success:function(result){
 	    		$("#searchRecordID_"+checkID).remove();
@@ -82,9 +80,8 @@ $(document).ready(function() {
 //			url : 'http://localhost:8080/AnyCourse/SearchRecordServlet.do',
 //			method : 'POST',
 //		    data : {
-//		    	"userID" : searchRecordArray[checkID][0],
-//		    	"searchWord" : searchRecordArray[checkID][1],
-//				"searchTime" : searchRecordArray[checkID][2]
+//		    	"searchWord" : searchRecordArray[checkID][0],
+//				"searchTime" : searchRecordArray[checkID][1]
 //			},
 //			success:function(result){
 //	    		$("#searchRecordID_"+checkID).remove();

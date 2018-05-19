@@ -1,85 +1,106 @@
 package Personal.VideoList;
 
 public class UnitVideo {
-	private String user_id;
-	private String unit_name;
-	private String course_info;
-	private String school_name;
+	private String userID;
+	private String unitName;
+	private String courseInfo;
+	private String schoolName;
 	private String teacher;
-	private String video_img_src;
+	private String videoImgSrc;
 	private int videoType;//1:youtube。2:jwplayer
-	private int courselist_id;
+	private int courselistID;
 	private int oorder;
 	private int likes;
-	private int unit_id;
-	
+	private int unitID;
 	
 	public UnitVideo() {}
-	
-	public void setUserID(String user_id) {
-		this.user_id = user_id;
-	}
-	public void setUnitName(String unit_name) {
-		this.unit_name = unit_name;
-	}
-	public void setCourselistID(int courselist_id) {
-		this.courselist_id = courselist_id;
-	}
-	public void setOorder(int oorder) {
-		this.oorder = oorder;
-	}
-	public void setCourseInfo(String course_info) {
-		this.course_info = course_info;
-	}
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
-	public void setSchoolName(String school_name) {
-		this.school_name = school_name;
-	}
-	public void setTeacher(String teacher) {
-		this.teacher = teacher;
-	}
-	public void setUnitID(int unit_id) {
-		this.unit_id = unit_id;
-	}
-	public void setVideoImgSrc(String video_img_src) {
-		this.video_img_src = video_img_src;
-	}
-	public void setVideoType(int videoType) {
-		this.videoType = videoType;
-	}
+
 	public String getUserID() {
-		return user_id;
+		return userID;
 	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
 	public String getUnitName() {
-		return unit_name;
+		return unitName;
 	}
-	public int getCourselistID() {
-		return courselist_id;
+
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
 	}
-	public int getOorder() {
-		return oorder;
-	}
+
 	public String getCourseInfo() {
-		return course_info;
+		return courseInfo;
 	}
-	public int getLikes() {
-		return likes;
+
+	public void setCourseInfo(String courseInfo) {
+		this.courseInfo = courseInfo;
 	}
+
 	public String getSchoolName() {
-		return school_name;
+		return schoolName;
 	}
+
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+
 	public String getTeacher() {
 		return teacher;
 	}
-	public int getUnitID() {
-		return unit_id;
+
+	public void setTeacher(String teacher) {
+		this.teacher = teacher;
 	}
+
 	public String getVideoImgSrc() {
-		return video_img_src;
+		return videoImgSrc;
 	}
+
+	public void setVideoImgSrc(String videoImgSrc) {
+		this.videoImgSrc = videoImgSrc;
+	}
+
 	public int getVideoType() {
 		return videoType;
 	}
+
+	public void setVideoType(int videoType) {
+		this.videoType = videoType;
+	}
+
+	public int getCourselistID() {
+		return courselistID;
+	}
+
+	public void setCourselistID(int courselistID) {
+		this.courselistID = courselistID;
+	}
+
+	public int getOorder() {
+		return oorder;
+	}
+
+	public void setOorder(int oorder) {
+		this.oorder = oorder;
+	}
+
+	public int getLikes() {
+		return likes;
+	}
+
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
+
+	public int getUnitID() {
+		return unitID;
+	}
+
+	public void setUnitID(int unitID) {
+		this.unitID = unitID;
+	}
+	
 }

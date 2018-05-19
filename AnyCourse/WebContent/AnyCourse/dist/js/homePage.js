@@ -1,5 +1,5 @@
 //////////////localhost用來測試、IP那個用來部屬再tomcat///////////////////////
-var ajaxURL="http://140.121.197.130:8400/";
+var ajaxURL="http://140.121.197.130:8400/AnyCourse/HomePageServlet.do";
 //var ajaxURL="http://localhost:8080/";
 ///////////////////////////////////////////////////////////////////////
 /////////////////////////引用swiper這個套件///////////////////////////////
@@ -19,7 +19,7 @@ $(document).ready(function(){
 	var homePageListID = 1;//每個card的ID
 	//首頁初始化，推薦影片、清單等等
 	$.ajax({
-		url : ajaxURL+'AnyCourse/HomePageServlet.do',
+		url : ajaxURL,
 		method : 'GET',
 		cache :false,
 		success:function(result){
@@ -163,7 +163,7 @@ $(document).ready(function(){
 			//影片新增至課程計畫
 			$('#addToCoursePlanButton').click(function(){
 				$.ajax({
-					url : ajaxURL+'AnyCourse/HomePageServlet.do',
+					url : ajaxURL,
 					method : 'POST',
 					cache: false,
 					data:{
@@ -180,7 +180,7 @@ $(document).ready(function(){
 				e.preventDefault();
 				console.log(homePageList[checkID][0]);
 				$.ajax({
-					url : ajaxURL+'AnyCourse/HomePageServlet.do',
+					url : ajaxURL,
 					method : 'POST',
 					cache: false,
 					data:{

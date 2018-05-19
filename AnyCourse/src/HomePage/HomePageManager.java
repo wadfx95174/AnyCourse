@@ -95,7 +95,7 @@ public class HomePageManager {
 			}
 		}
 		catch(SQLException x){
-			System.out.println("HomePage Recommend");
+			System.out.println("HomePage-checkUser");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -139,7 +139,7 @@ public class HomePageManager {
 			} 
 		}
 		catch(SQLException x){
-			System.out.println("selectRandVideo");
+			System.out.println("HomePage-selectRandVideo");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -183,7 +183,7 @@ public class HomePageManager {
 			} 
 		}
 		catch(SQLException x){
-			System.out.println("selectRandList");
+			System.out.println("HomePage-selectRandList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -237,7 +237,7 @@ public class HomePageManager {
 			} 
 		}
 		catch(SQLException x){
-			System.out.println("selectRecommendVideo");
+			System.out.println("HomePage-selectRecommendVideo");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -295,7 +295,7 @@ public class HomePageManager {
 			} 
 		}
 		catch(SQLException x){
-			System.out.println("selectRecommendList");
+			System.out.println("HomePage-selectRecommendList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -372,7 +372,7 @@ public class HomePageManager {
 			} 
 		}
 		catch(SQLException x){
-			System.out.println("selectVideoList");
+			System.out.println("HomePage-selectVideoList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -426,7 +426,7 @@ public class HomePageManager {
 			} 
 		}
 		catch(SQLException x){
-			System.out.println("selectCoursePlanWant");
+			System.out.println("HomePage-selectCoursePlanWant");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -480,7 +480,7 @@ public class HomePageManager {
 			} 
 		}
 		catch(SQLException x){
-			System.out.println("selectCoursePlanING");
+			System.out.println("HomePage-selectCoursePlanING");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -504,7 +504,7 @@ public class HomePageManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
-			System.out.println("addToCoursePlan");
+			System.out.println("HomePage-addToCoursePlan");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -543,7 +543,7 @@ public class HomePageManager {
 			pst.executeBatch();
 		}
 		catch(SQLException x){
-			System.out.println("addToCoursePlan_List");
+			System.out.println("HomePage-addToCoursePlan_List");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -574,7 +574,7 @@ public class HomePageManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Connection Error");
+			System.out.println("HomePage Connection Close Error");
 			System.out.println("Close Exception :" + e.toString()); 
 		}
 	}

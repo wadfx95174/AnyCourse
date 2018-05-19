@@ -74,7 +74,7 @@ public class CoursePlanManager {
 			} 
 		}
 		catch(SQLException x){
-			System.out.println("getCoursePlanAllList");
+			System.out.println("CoursePlan-getCoursePlanAllList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -102,7 +102,7 @@ public class CoursePlanManager {
 			}
 		}
 		catch(SQLException x){
-			System.out.println("getCoursePlanOrder");
+			System.out.println("CoursePlan-getCoursePlanOrder");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -123,7 +123,7 @@ public class CoursePlanManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
-			System.out.println("updateCoursePlanList");
+			System.out.println("CoursePlan-updateCoursePlanList");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -146,12 +146,11 @@ public class CoursePlanManager {
 				coursePlan.setUnitID(result.getInt("unit_id"));
 				coursePlan.setStatus(result.getInt("status"));
 				coursePlan.setOorder(result.getInt("oorder"));
-//				System.out.println(oldCoursePlan.getOorder());
 				coursePlans.add(coursePlan);
 			}
 		}
 		catch(SQLException x){
-			System.out.println("getOldCoursePlanOrder");
+			System.out.println("CoursePlan-getOldCoursePlanOrder");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -172,7 +171,7 @@ public class CoursePlanManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
-			System.out.println("updateOldStatusList");
+			System.out.println("CoursePlan-updateOldStatusList");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -205,7 +204,7 @@ public class CoursePlanManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("CoursePlanManager Close Error");
+			System.out.println("CoursePlanManager Connection Close Error");
 			System.out.println("Close Exception :" + e.toString()); 
 		}
 	}

@@ -1,5 +1,5 @@
-var ajax_url="http://140.121.197.130:8400/";
-//var ajax_url="http://localhost:8080/";
+var ajaxURL="http://140.121.197.130:8400/";
+//var ajaxURL="http://localhost:8080/";
 
 function get(name)
 {
@@ -16,7 +16,7 @@ $(document).ready(function(){
 	$.ajax({
 		method:"GET",
 		cache :false,
-		url:ajax_url+'AnyCourse/SearchServlet.do',
+		url:ajaxURL+'AnyCourse/SearchServlet.do',
 		data: {
 			search_query: get('search_query')
 		},
@@ -106,7 +106,7 @@ $(document).ready(function(){
 			$('#addToCoursePlanButton').click(function(){
 				
 				$.ajax({
-					url : ajax_url+'AnyCourse/SearchServlet.do',
+					url : ajaxURL+'AnyCourse/SearchServlet.do',
 					method : 'POST',
 					cache: false,
 					data:{
@@ -123,7 +123,7 @@ $(document).ready(function(){
 				e.preventDefault();
 				console.log(array[checkID]["units"][checkID]["unitId"]);
 				$.ajax({
-					url : ajax_url+'AnyCourse/HomePageServlet.do',
+					url : ajaxURL+'AnyCourse/HomePageServlet.do',
 					method : 'POST',
 					cache: false,
 					data:{
