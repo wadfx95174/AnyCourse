@@ -1,6 +1,11 @@
 //////////////localhost用來測試、IP那個用來部屬再tomcat///////////////////////
+<<<<<<< HEAD
 //var ajaxURL="http://140.121.197.130:8400/";
 var ajaxURL="http://localhost:8080/";
+=======
+//var ajaxURL="http://140.121.197.130:8400/AnyCourse/HomePageServlet.do";
+var ajaxURL="http://localhost:8080/AnyCourse/HomePageServlet.do";
+>>>>>>> branch 'master' of https://github.com/wadfx95174/AnyCourse.git
 ///////////////////////////////////////////////////////////////////////
 /////////////////////////引用swiper這個套件///////////////////////////////
 document.write("<script type='text/javascript' src='dist/js/swiper.min.js'></script>");

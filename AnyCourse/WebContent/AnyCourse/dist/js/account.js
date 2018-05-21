@@ -3,8 +3,13 @@ $(document).on('click', '#logout', function logout()
 {
     disconnectUser();
 })
+<<<<<<< HEAD
 //var ajaxURL="http://140.121.197.130:8400/";
 var ajaxURL="http://localhost:8080/";
+=======
+//var ajax_url="http://140.121.197.130:8400/";
+var ajax_url="http://localhost:8080/";
+>>>>>>> branch 'master' of https://github.com/wadfx95174/AnyCourse.git
 
 
 $(document).on('click', '#logout', function logout()

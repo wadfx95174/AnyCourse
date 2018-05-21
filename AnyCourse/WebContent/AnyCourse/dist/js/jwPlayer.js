@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 //var ajaxURL="http://140.121.197.130:8400/";
 var ajaxURL="http://localhost:8080/";
+=======
+//var ajaxURL="http://140.121.197.130:8400/AnyCourse/PlayerInterfaceServlet.do";
+var ajaxURL="http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do";
+>>>>>>> branch 'master' of https://github.com/wadfx95174/AnyCourse.git
 
 var player;
 //var keyLabels = [];

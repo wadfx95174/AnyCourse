@@ -1,6 +1,10 @@
 //////////////localhost用來測試、IP那個用來部屬再tomcat///////////////////////
 //var ajaxURL="http://140.121.197.130:8400/AnyCourse/CoursePlanServlet.do";
+<<<<<<< HEAD
 var ajaxURL="http://localhost:8080/";
+=======
+var ajaxURL="http://localhost:8080/AnyCourse/CoursePlanServlet.do";
+>>>>>>> branch 'master' of https://github.com/wadfx95174/AnyCourse.git
 ///////////////////////////////////////////////////////////////////////
 //////////////////////////////設置拉霸///////////////////////////////////
 $('#unit').slimScroll({
@@ -9,7 +13,6 @@ $('#unit').slimScroll({
 $('.box-body').slimScroll({
 	  height: '420px;'
 	  });
-///////////////////////////////////////////////////////////////////////
 var listArray;//用來儲存影片的unitID
 $(document).ready(function() {
 	checkLogin("../", "../../../");

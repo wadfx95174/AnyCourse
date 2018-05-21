@@ -72,7 +72,7 @@ public class CalendarServlet extends HttpServlet {
 			event.setBackgroundColor(request.getParameter("backgroundColor"));
 			event.setBorderColor(request.getParameter("borderColor"));
 			event.setId(Integer.parseInt(request.getParameter("id")));
-			System.out.println(event);
+//			System.out.println(event);
 			calendarManager.updateEvent(event);
 		}
 		calendarManager.conClose();

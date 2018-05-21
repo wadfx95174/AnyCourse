@@ -8,6 +8,10 @@ var selectId = 0;		// 暫存已選擇的項目
 var element;			// 存DOM元素
 var shareState = ['分享','收回'];		// 分享的狀態
 
+var $progress = $('.progress'),
+$duration = $('.duration'),
+$currentTime = $('.current-time');
+
 $('#noteArea').slimScroll({
     height: '200px'
   });
@@ -43,9 +47,6 @@ function formatTime(seconds)
 $(document).ready(function(){
     checkLogin("", "../../");
     
-	var $progress = $('.progress'),
-    $duration = $('.duration'),
-    $currentTime = $('.current-time');
     
     $( "#slider-range" ).slider({
         range: true,
@@ -89,7 +90,7 @@ $(document).ready(function(){
 	    }).disableSelection();
     });
 
-//------------------------------------------執行哪個js----video----------------------------------------------//
+//----------------------------------------------video----------------------------------------------//
     if (get('list_id') != undefined)
     {
     	$.ajax({
@@ -146,7 +147,7 @@ $(document).ready(function(){
     	  });
     }
     
-    // 判斷要
+    // 判斷要執行哪個js
     var oHead = document.getElementsByTagName('HEAD').item(0); 
     var oScript= document.createElement("script"); 
     oScript.type = "text/javascript"; 
