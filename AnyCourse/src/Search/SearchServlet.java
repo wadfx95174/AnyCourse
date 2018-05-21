@@ -13,18 +13,16 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 
 public class SearchServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		SearchManager manager = new SearchManager();
-		String searchQuery = request.getParameter("search_query");
+		String searchQuery = request.getParameter("searchQuery");
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
 		Gson gson = new Gson();
 		response.getWriter().print(gson.toJson(manager.getCourseListByKeyword(searchQuery)));
 		System.out.println();
-//		request.setAttribute("search_query", searchQuery);
-//		RequestDispatcher view = request.getRequestDispatcher("/AnyCourse/pages/SearchResult.html");
-//		view.forward(request, response);
 		manager.conClose();
 	}
 
@@ -36,13 +34,13 @@ public class SearchServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		SearchManager manager = new SearchManager();
 		
-		if(request.getParameter("action").equals("addToCoursePlan")&&(String)session.getAttribute("userId")!=null) {
-			manager.addToCoursePlan((String)session.getAttribute("userId")
-					,Integer.parseInt(request.getParameter("unit_id")));
+		if(request.getParameter("action").equals("addToCoursePlan")&&(String)session.getAttribute("userID")!=null) {
+			manager.addToCoursePlan((String)session.getAttribute("userID")
+					,Integer.parseInt(request.getParameter("unitID")));
 		}
-		if(request.getParameter("action").equals("addToCoursePlan_List")&&(String)session.getAttribute("userId")!=null) {
-			manager.addToCoursePlan_List((String)session.getAttribute("userId")
-					,Integer.parseInt(request.getParameter("courselist_id")));
+		if(request.getParameter("action").equals("addToCoursePlanList")&&(String)session.getAttribute("userID")!=null) {
+			manager.addToCoursePlanList((String)session.getAttribute("userID")
+					,Integer.parseInt(request.getParameter("courselistID")));
 		}
 		manager.conClose();
 	}

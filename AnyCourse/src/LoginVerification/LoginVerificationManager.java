@@ -9,12 +9,12 @@ import java.sql.Statement;
 
 public class LoginVerificationManager
 {
-	private String selectPasswordSQL = "select password from account where user_id = ? or email = ?";
-	private String selectUserSQL = "select * from account where user_id = ? or email = ?";
-	private String selectUserIdSQL = "select user_id from account where user_id = ? or email = ?";
+	private String selectPasswordSQL = "select password from account where userID = ? or email = ?";
+	private String selectUserSQL = "select * from account where userID = ? or email = ?";
+	private String selectUserIDSQL = "select userID from account where userID = ? or email = ?";
 	private String insertAccountTableSQL = "insert into account value (null,?,null,?,null,?,?,null)";
-	private String insertFavoriteCourseSQL = "insert into favorite_course value(?,?)";
-	private String insertGoogleAccountSQL = "insert ignore into account (user_id,email,nick_name,picture_url) values (?,?,?,?)";
+	private String insertFavoriteCourseSQL = "insert into favoriteCourse value(?,?)";
+	private String insertGoogleAccountSQL = "insert ignore into account (userID,email,nickName,pictureUrl) values (?,?,?,?)";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -53,15 +53,15 @@ public class LoginVerificationManager
 		}
 		return null;
 	}
-	public String getUserId(String param) {
+	public String getUserID(String param) {
 		try {
-			pst = con.prepareStatement(selectUserIdSQL);
+			pst = con.prepareStatement(selectUserIDSQL);
 			pst.setString(1, param);
 			pst.setString(2, param);
 			result = pst.executeQuery();
 			if(result.next()) 
 			{ 	
-				return result.getString("user_id");
+				return result.getString("userID");
 			}
 		}
 			catch(SQLException x){
@@ -82,9 +82,9 @@ public class LoginVerificationManager
 			result = pst.executeQuery();
 			if(result.next()) 
 			{ 	
-				user.setUserId(result.getString("user_id"));
-				user.setNickName(result.getString("nick_name"));
-				user.setPictureUrl(result.getString("picture_url"));
+				user.setUserID(result.getString("userID"));
+				user.setNickName(result.getString("nickName"));
+				user.setPictureUrl(result.getString("pictureUrl"));
 				return user;
 			}
 		}
@@ -102,7 +102,7 @@ public class LoginVerificationManager
 		try
 		{
 			pst = con.prepareStatement(insertAccountTableSQL);
-			pst.setString(1, userProfile.getUserId());
+			pst.setString(1, userProfile.getUserID());
 			pst.setString(2, userProfile.getPassword());
 			pst.setString(3, userProfile.getEmail());
 			pst.setString(4, userProfile.getNickName());
@@ -124,7 +124,7 @@ public class LoginVerificationManager
 			pst = con.prepareStatement(insertFavoriteCourseSQL);
 			for (String str: userProfile.getFavoriteCourses())
 			{
-				pst.setString(1, userProfile.getUserId());
+				pst.setString(1, userProfile.getUserID());
 				pst.setString(2, str);
 				pst.executeUpdate();
 			}
@@ -143,7 +143,7 @@ public class LoginVerificationManager
 		try
 		{
 			pst = con.prepareStatement(insertGoogleAccountSQL);
-			pst.setString(1, userProfile.getUserId());
+			pst.setString(1, userProfile.getUserID());
 			pst.setString(2, userProfile.getEmail());
 			pst.setString(3, userProfile.getNickName());
 			pst.setString(4, userProfile.getPictureUrl());

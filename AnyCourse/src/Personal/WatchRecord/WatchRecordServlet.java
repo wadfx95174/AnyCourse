@@ -17,57 +17,34 @@ import Note.PictureNote;
 import Personal.SearchRecord.SearchRecord;
 import Personal.SearchRecord.SearchRecordManager;
 
-/**
- * Servlet implementation class WatchRecordServlet
- */
-@WebServlet("/WatchRecordServlet")
 public class WatchRecordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public WatchRecordServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		WatchRecordManager dbwatchRecord = new WatchRecordManager();	
 		HttpSession session = request.getSession();
 		ArrayList<WatchRecord> watchRecords = new ArrayList<>();
 		
-		String watchRecord_json = new Gson().toJson(watchRecords);
-		watchRecord_json = dbwatchRecord.selectWatchRecordTable((String)session.getAttribute("userId"));
+		String watchRecordJson = new Gson().toJson(watchRecords);
+		watchRecordJson = dbwatchRecord.selectWatchRecordTable((String)session.getAttribute("userID"));
 		response.setContentType("application/json;charset = utf-8;");
-		response.getWriter().write(watchRecord_json);	
+		response.getWriter().write(watchRecordJson);	
 		dbwatchRecord.conClose();
-//		System.out.println(watchRecord_json);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
 		HttpSession session = request.getSession();
-		String user_id = (String)session.getAttribute("userId");
-		int unit_id = Integer.parseInt(request.getParameter("unit_id"));
+		String userID = (String)session.getAttribute("userID");
+		int unitID = Integer.parseInt(request.getParameter("unitID"));
 		
 		
 		WatchRecordManager dbwatchRecord = new WatchRecordManager();
 		WatchRecord watchRecord = new WatchRecord();
 				
-		watchRecord.setUser_id(user_id);
-		watchRecord.setUnit_id(unit_id);	
+		watchRecord.setUserID(userID);
+		watchRecord.setUnitID(unitID);	
 		
-		dbwatchRecord.deleteWatchRecordTable(user_id,unit_id);
+		dbwatchRecord.deleteWatchRecordTable(userID,unitID);
 		dbwatchRecord.conClose();
 	}
 

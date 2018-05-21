@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class SearchRecordServlet extends HttpServlet{
-	
+	private static final long serialVersionUID = 1L;
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -21,7 +21,7 @@ public class SearchRecordServlet extends HttpServlet{
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		
-		searchRecords = searchRecordDatebaseManager.selectSearchRecordTable((String)session.getAttribute("userId"));
+		searchRecords = searchRecordDatebaseManager.selectSearchRecordTable((String)session.getAttribute("userID"));
 		
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(searchRecords));
@@ -35,7 +35,7 @@ public class SearchRecordServlet extends HttpServlet{
 		HttpSession session = request.getSession();
 		SearchRecordManager searchRecordDatebaseManager = new SearchRecordManager();
 		
-		searchRecordDatebaseManager.deleteSearchRecordTable((String)session.getAttribute("userId"),
+		searchRecordDatebaseManager.deleteSearchRecordTable((String)session.getAttribute("userID"),
 				request.getParameter("searchWord"),request.getParameter("searchTime"));
 		//關閉connection
 		searchRecordDatebaseManager.conClose();

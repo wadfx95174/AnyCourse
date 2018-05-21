@@ -12,8 +12,8 @@ import com.google.gson.Gson;
 
 
 public class WatchRecordManager {
-	public String selectWatchRecordSQL = "select * from watch_record natural join unit where watch_record.user_id = ? and watch_record.unit_id = unit.unit_id ";
-	public String deleteWatchRecordSQL = "delete from watch_record where user_id = ? and unit_id = ?";
+	public String selectWatchRecordSQL = "select * from watchRecord natural join unit where watchRecord.userID = ? and watchRecord.unitID = unit.unitID ";
+	public String deleteWatchRecordSQL = "delete from watchRecord where userID = ? and unitID = ?";
 	public WatchRecord watchRecord;
 	
 	public Connection con = null;
@@ -23,10 +23,10 @@ public class WatchRecordManager {
 	
 	public WatchRecordManager() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");//閮餃�river
+			Class.forName("com.mysql.jdbc.Driver");
 
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
-					, "root", "peter");//���onnection
+					, "root", "peter");
 			
 		}
 		catch(ClassNotFoundException e){
@@ -36,26 +36,23 @@ public class WatchRecordManager {
 			System.out.println("Exception" + x.toString());
 		}
 	}
-	//�������������
-	public String selectWatchRecordTable(String user_id) {
+	public String selectWatchRecordTable(String userID) {
 		ArrayList<WatchRecord> watchRecords = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectWatchRecordSQL);
-			pst.setString(1, user_id);
+			pst.setString(1, userID);
 			result = pst.executeQuery();
-//			stat = con.createStatement();
-//			result = stat.executeQuery(selectWatchRecordSQL);
 			 while(result.next()) 
 		     { 	
 				 watchRecord = new WatchRecord();
-				 watchRecord.setUser_id(result.getString("user_id"));
-				 watchRecord.setUnit_id(result.getInt("unit_id"));
-				 watchRecord.setWatch_time(result.getString("watch_time"));
-				 watchRecord.setSchool_name(result.getString("school_name"));
-				 watchRecord.setUnit_name(result.getString("unit_name"));
-				 watchRecord.setVideo_url(result.getString("video_url"));
+				 watchRecord.setUserID(result.getString("userID"));
+				 watchRecord.setUnitID(result.getInt("unitID"));
+				 watchRecord.setWatchTime(result.getString("watchTime"));
+				 watchRecord.setSchoolName(result.getString("schoolName"));
+				 watchRecord.setUnitName(result.getString("unitName"));
+				 watchRecord.setVideoUrl(result.getString("videoUrl"));
 				 watchRecord.setLikes(result.getInt("likes"));
-				 watchRecord.setVideo_img_src(result.getString("video_img_src"));
+				 watchRecord.setVideoImgSrc(result.getString("videoImgSrc"));
 				 watchRecords.add(watchRecord);
 		     }
 		}
@@ -68,12 +65,11 @@ public class WatchRecordManager {
 		String json = new Gson().toJson(watchRecords);
 		return json;
 	}
-	//����������
-	public void deleteWatchRecordTable(String user_id,int unit_id) {
+	public void deleteWatchRecordTable(String userID,int unitID) {
 		try {
 			pst = con.prepareStatement(deleteWatchRecordSQL);
-			pst.setString(1,user_id);
-			pst.setInt(2,unit_id);
+			pst.setString(1,userID);
+			pst.setInt(2,unitID);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){

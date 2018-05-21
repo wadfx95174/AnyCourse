@@ -2,61 +2,60 @@ package Note;
    
 public class TextNote {
 	
-	public int text_note_id;
-	public int unit_id;
-	public String user_id;
-	public String nick_name;
-	public String text_note;
+	public int textNoteID;
+	public int unitID;
+	public String userID;
+	public String nickName;
+	public String textNote;
 	public int share;
-	public String share_time;
+	public String shareTime;
 	public int likes;
 	
-	public String getNick_name() {
-		return nick_name;
+	public String getNickName() {
+		return nickName;
 	}
 
-
-	public void setNick_name(String nick_name) {
-		this.nick_name = nick_name;
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 	
-	public int getText_note_id() {
-		return text_note_id;
+	public int getTextNoteID() {
+		return textNoteID;
 	}
 
 
-	public void setText_note_id(int text_note_id) {
-		this.text_note_id = text_note_id;
+	public void setTextNoteID(int textNoteID) {
+		this.textNoteID = textNoteID;
 	}
 
 
-	public int getUnit_id() {
-		return unit_id;
+	public int getUnitID() {
+		return unitID;
 	}
 
 
-	public void setUnit_id(int unit_id) {
-		this.unit_id = unit_id;
+	public void setUnitID(int unitID) {
+		this.unitID = unitID;
 	}
 
 
-	public String getUser_id() {
-		return user_id;
+	public String getUserID() {
+		return userID;
 	}
 
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
 
 
-	public String getText_note() {
-		return text_note;
+	public String getTextNote() {
+		return textNote;
 	}
 
 
-	public void setText_note(String text_note) {
-		this.text_note = text_note;
+	public void setTextNote(String textNote) {
+		this.textNote = textNote;
 	}
 
 
@@ -70,13 +69,13 @@ public class TextNote {
 	}
 
 
-	public String getShare_time() {
-		return share_time;
+	public String getShareTime() {
+		return shareTime;
 	}
 
 
-	public void setShare_time(String share_time) {
-		this.share_time = share_time;
+	public void setShareTime(String shareTime) {
+		this.shareTime = shareTime;
 	}
 
 
@@ -92,8 +91,8 @@ public class TextNote {
 
 	@Override
 	public String toString() {
-		return "TextNote [text_note_id=" + text_note_id + ", unit_id=" + unit_id + ", user_id=" + user_id
-				+ ", text_note=" + text_note + ", share=" + share + ", share_time=" + share_time + ", likes=" + likes
+		return "TextNote [textNoteID=" + textNoteID + ", unitID=" + unitID + ", userID=" + userID
+				+ ", textNote=" + textNote + ", share=" + share + ", shareTime=" + shareTime + ", likes=" + likes
 				+ "]";
 	}
 	

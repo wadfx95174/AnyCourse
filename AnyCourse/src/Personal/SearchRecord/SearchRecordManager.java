@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SearchRecordManager {
-	private String deleteSearchRecordSQL = "delete from search_record where user_id = ? and search_word = ? and search_time = ?";
+	private String deleteSearchRecordSQL = "delete from searchRecord where userID = ? and searchWord = ? and searchTime = ?";
 	private SearchRecord searchRecord;
 	private ArrayList<SearchRecord> searchRecords;
 	
@@ -38,12 +38,12 @@ public class SearchRecordManager {
 		searchRecords = new ArrayList<SearchRecord>();
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from search_record where user_id = '" + userID + "'");
+			result = stat.executeQuery("select * from searchRecord where userID = '" + userID + "'");
 			 while(result.next()) 
 		     { 	
 				 searchRecord = new SearchRecord();
-				 searchRecord.setSearchWord(result.getString("search_word"));
-				 searchRecord.setSearchTime(result.getString("search_time"));
+				 searchRecord.setSearchWord(result.getString("searchWord"));
+				 searchRecord.setSearchTime(result.getString("searchTime"));
 				 searchRecords.add(searchRecord);
 		     }
 		}catch(SQLException x){

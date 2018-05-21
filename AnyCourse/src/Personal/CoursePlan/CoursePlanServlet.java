@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class CoursePlanServlet extends HttpServlet {
-	
+	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type","text/html;charset=UTF-8");
@@ -23,7 +23,7 @@ public class CoursePlanServlet extends HttpServlet {
 		CoursePlanManager coursePlanManager = new CoursePlanManager();
 		ArrayList<CoursePlan> coursePlans = null;
 		HttpSession session = request.getSession();
-		coursePlans = coursePlanManager.getCoursePlanAllList((String)session.getAttribute("userId"));
+		coursePlans = coursePlanManager.getCoursePlanAllList((String)session.getAttribute("userID"));
 		
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
@@ -44,7 +44,7 @@ public class CoursePlanServlet extends HttpServlet {
 		//紀錄排序
 		if(request.getParameter("action").equals("sortable")) {
 			////////////////////////////更新移動後的清單的排序/////////////////////////////////////////////
-			coursePlans = coursePlanManager.getCoursePlanOrder((String)session.getAttribute("userId")
+			coursePlans = coursePlanManager.getCoursePlanOrder((String)session.getAttribute("userID")
 					, request.getParameter("received"));
 			//將原本那個狀態列表的資料都抓出來存在ArrayList
 			for(int i = 0;i < coursePlans.size();i++) {
@@ -53,7 +53,7 @@ public class CoursePlanServlet extends HttpServlet {
 				}
 			}
 			//將被移動的item的屬性塞進coursePlan
-			coursePlan.setUserID((String)session.getAttribute("userId"));
+			coursePlan.setUserID((String)session.getAttribute("userID"));
 			coursePlan.setUnitID(Integer.parseInt(request.getParameter("unitID")));
 			if(request.getParameter("received").equals("wantList"))coursePlan.setStatus(1);
 			else if(request.getParameter("received").equals("ingList"))coursePlan.setStatus(2);
@@ -71,9 +71,8 @@ public class CoursePlanServlet extends HttpServlet {
 			
 			////////////////////////////更新移動前的清單的排序/////////////////////////////////////////////
 			//將原本舊的狀態列表的資料都抓出來存在ArrayList
-			oldCoursePlans = coursePlanManager.getOldCoursePlanOrder((String)session.getAttribute("userId")
+			oldCoursePlans = coursePlanManager.getOldCoursePlanOrder((String)session.getAttribute("userID")
 					, request.getParameter("sender"));
-//			System.out.println(Integer.parseInt(request.getParameter("oldIndex")));
 			for(int i = 0;i < oldCoursePlans.size();i++) {
 				System.out.println(oldCoursePlans.get(i).getOorder());
 				if(oldCoursePlans.get(i).getOorder() > Integer.parseInt(request.getParameter("oldIndex"))) {

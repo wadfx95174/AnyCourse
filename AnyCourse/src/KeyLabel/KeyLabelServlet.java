@@ -24,10 +24,10 @@ public class KeyLabelServlet extends HttpServlet {
 		if (method.equals("getPKL"))
 		{
 			HttpSession session = request.getSession();
-			response.getWriter().write(keyLabelDatebaseManager.getPersonalKeyLabel(Integer.parseInt(request.getParameter("unit_id")), (String)session.getAttribute("userId")));
+			response.getWriter().write(keyLabelDatebaseManager.getPersonalKeyLabel(Integer.parseInt(request.getParameter("unitID")), (String)session.getAttribute("userID")));
 		}
 		else if (method.equals("getEKL"))
-			response.getWriter().write(keyLabelDatebaseManager.getExangeKeyLabel(Integer.parseInt(request.getParameter("unit_id"))));
+			response.getWriter().write(keyLabelDatebaseManager.getExangeKeyLabel(Integer.parseInt(request.getParameter("unitID"))));
 		keyLabelDatebaseManager.conClose();
 	}
 
@@ -41,12 +41,12 @@ public class KeyLabelServlet extends HttpServlet {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			HttpSession session = request.getSession();
-			keyLabel.setUserId((String)session.getAttribute("userId"));
-			keyLabel.setUnitId(Integer.parseInt(request.getParameter("unitId")));
+			keyLabel.setUserID((String)session.getAttribute("userID"));
+			keyLabel.setUnitID(Integer.parseInt(request.getParameter("unitID")));
 			keyLabel.setKeyLabelName(request.getParameter("keyLabelName"));
 			keyLabel.setBeginTime(Integer.parseInt(request.getParameter("beginTime")));
 			keyLabel.setEndTime(Integer.parseInt(request.getParameter("endTime")));
-			keyLabel.setKeyLabelId(keyLabelDatebaseManager.insertKeyLabel(keyLabel));
+			keyLabel.setKeyLabelID(keyLabelDatebaseManager.insertKeyLabel(keyLabel));
 			Gson gson = new Gson();
 			String json = gson.toJson(keyLabel);
 			response.getWriter().write(json);
@@ -56,29 +56,29 @@ public class KeyLabelServlet extends HttpServlet {
 			keyLabel.setKeyLabelName(request.getParameter("keyLabelName"));
 			keyLabel.setBeginTime(Integer.parseInt(request.getParameter("beginTime")));
 			keyLabel.setEndTime(Integer.parseInt(request.getParameter("endTime")));
-			keyLabel.setKeyLabelId(Integer.parseInt(request.getParameter("keyLabelId")));
+			keyLabel.setKeyLabelID(Integer.parseInt(request.getParameter("keyLabelID")));
 			keyLabelDatebaseManager.updateKeyLabel(keyLabel);
 		}
 		else if (method.equals("delete"))
 		{
-			keyLabelDatebaseManager.deleteKeyLabel(Integer.parseInt(request.getParameter("keyLabelId")));
+			keyLabelDatebaseManager.deleteKeyLabel(Integer.parseInt(request.getParameter("keyLabelID")));
 		}
 		else if (method.equals("share"))
 		{
-			keyLabelDatebaseManager.shareKeyLabel(Integer.parseInt(request.getParameter("keyLabelId")), Integer.parseInt(request.getParameter("share")));
+			keyLabelDatebaseManager.shareKeyLabel(Integer.parseInt(request.getParameter("keyLabelID")), Integer.parseInt(request.getParameter("share")));
 		}
 //		response.setContentType("application/json");
 //		response.setCharacterEncoding("UTF-8");
 //		if (request.getParameter("method").equals("insert"))
 //		{
-//			int newId = calendarManager.insertEvent(event);
-//			System.out.println(newId);
-//			String json = new Gson().toJson(newId);
+//			int newID = calendarManager.insertEvent(event);
+//			System.out.println(newID);
+//			String json = new Gson().toJson(newID);
 //			response.getWriter().write(json);
 //		}
 //		else
 //		{
-//			event.setId(Integer.parseInt(request.getParameter("id")));
+//			event.setID(Integer.parseInt(request.getParameter("id")));
 //			calendarManager.updateEvent(event);
 //		}
 		keyLabelDatebaseManager.conClose();

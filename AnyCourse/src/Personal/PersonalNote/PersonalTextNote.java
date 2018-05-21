@@ -1,40 +1,40 @@
 package Personal.PersonalNote;
 
 public class PersonalTextNote {
-	public int text_note_id;
-	public int unit_id;
-	public String user_id;
-	public String text_note;
+	public int textNoteID;
+	public int unitID;
+	public String userID;
+	public String textNote;
 	public int share;
-	public String share_time;
+	public String shareTime;
 	public int likes;
-	public String school_name;
-	public String unit_name;
-	public String video_url;
+	public String schoolName;
+	public String unitName;
+	public String videoUrl;
 	
-	public int getText_note_id() {
-		return text_note_id;
+	public int getTextNoteID() {
+		return textNoteID;
 	}
-	public void setText_note_id(int text_note_id) {
-		this.text_note_id = text_note_id;
+	public void setTextNoteID(int textNoteID) {
+		this.textNoteID = textNoteID;
 	}
-	public int getUnit_id() {
-		return unit_id;
+	public int getUnitID() {
+		return unitID;
 	}
-	public void setUnit_id(int unit_id) {
-		this.unit_id = unit_id;
+	public void setUnitID(int unitID) {
+		this.unitID = unitID;
 	}
-	public String getUser_id() {
-		return user_id;
+	public String getUserID() {
+		return userID;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
-	public String getText_note() {
-		return text_note;
+	public String getTextNote() {
+		return textNote;
 	}
-	public void setText_note(String text_note) {
-		this.text_note = text_note;
+	public void setTextNote(String textNote) {
+		this.textNote = textNote;
 	}
 	public int getShare() {
 		return share;
@@ -42,11 +42,11 @@ public class PersonalTextNote {
 	public void setShare(int share) {
 		this.share = share;
 	}
-	public String getShare_time() {
-		return share_time;
+	public String getShareTime() {
+		return shareTime;
 	}
-	public void setShare_time(String share_time) {
-		this.share_time = share_time;
+	public void setShareTime(String shareTime) {
+		this.shareTime = shareTime;
 	}
 	public int getLikes() {
 		return likes;
@@ -54,23 +54,23 @@ public class PersonalTextNote {
 	public void setLikes(int likes) {
 		this.likes = likes;
 	}
-	public String getSchool_name() {
-		return school_name;
+	public String getSchoolName() {
+		return schoolName;
 	}
-	public void setSchool_name(String school_name) {
-		this.school_name = school_name;
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
-	public String getUnit_name() {
-		return unit_name;
+	public String getUnitName() {
+		return unitName;
 	}
-	public void setUnit_name(String unit_name) {
-		this.unit_name = unit_name;
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
 	}
-	public String getVideo_url() {
-		return video_url;
+	public String getVideoUrl() {
+		return videoUrl;
 	}
-	public void setVideo_url(String video_url) {
-		this.video_url = video_url;
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
 	}
 	
 }

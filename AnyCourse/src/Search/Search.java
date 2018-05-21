@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Search
 {
-	private int courselistId;
+	private int courselistID;
 	private String schoolName;
 	private String listName;
 	private String teacher;
@@ -18,13 +18,13 @@ public class Search
 	{
 		units = new ArrayList<Unit>();
 	}
-	public int getCourselistId()
+	public int getCourselistID()
 	{
-		return courselistId;
+		return courselistID;
 	}
-	public void setCourselistId(int courselistId)
+	public void setCourselistID(int courselistID)
 	{
-		this.courselistId = courselistId;
+		this.courselistID = courselistID;
 	}
 	public String getSchoolName()
 	{
@@ -105,7 +105,7 @@ public class Search
 	@Override
 	public String toString()
 	{
-		return "Search [courselistId=" + courselistId + ", schoolName=" + schoolName + ", listName=" + listName
+		return "Search [courselistID=" + courselistID + ", schoolName=" + schoolName + ", listName=" + listName
 				+ ", teacher=" + teacher + ", departmentName=" + departmentName + ", creator=" + creator + ", share=" + share + ", likes=" + likes + ", units=" + units + "]";
 	}
 	/*", courseInfo=" + courseInfo + */

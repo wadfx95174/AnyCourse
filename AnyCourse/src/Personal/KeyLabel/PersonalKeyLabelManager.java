@@ -12,8 +12,8 @@ import com.google.gson.Gson;
 
 public class PersonalKeyLabelManager
 {
-	private String selectPersonalKeyLabelSQL = "select * from keylabel natural join unit where user_id = ?";
-	private String deleteKeyLabelSQL = "delete from keylabel where keylabel_id = ?";
+	private String selectPersonalKeyLabelSQL = "select * from keylabel natural join unit where userID = ?";
+	private String deleteKeyLabelSQL = "delete from keylabel where keylabelID = ?";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -43,16 +43,16 @@ public class PersonalKeyLabelManager
 			while(result.next()) 
 			{ 	
 				PersonalKeyLabel keyLabel = new PersonalKeyLabel();
-				keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
-				keyLabel.setUnitId(result.getInt("unit_id"));
-				keyLabel.setUnitName(result.getString("unit_name"));
-				keyLabel.setUserId(result.getString("user_id"));
-				keyLabel.setKeyLabelName(result.getString("keylabel_name"));
-				keyLabel.setUrl(result.getString("video_url"));
-				keyLabel.setBeginTime(result.getInt("begin_time"));
-				keyLabel.setEndTime(result.getInt("end_time"));
+				keyLabel.setKeyLabelID(result.getInt("keylabelID"));
+				keyLabel.setUnitID(result.getInt("unitID"));
+				keyLabel.setUnitName(result.getString("unitName"));
+				keyLabel.setUserID(result.getString("userID"));
+				keyLabel.setKeyLabelName(result.getString("keylabelName"));
+				keyLabel.setUrl(result.getString("videoUrl"));
+				keyLabel.setBeginTime(result.getInt("beginTime"));
+				keyLabel.setEndTime(result.getInt("endTime"));
 				keyLabel.setShare(result.getInt("share"));
-				keyLabel.setShareTime(result.getString("share_time"));
+				keyLabel.setShareTime(result.getString("shareTime"));
 				keyLabel.setLikes(result.getInt("likes"));
 				outputList.add(keyLabel);
 			}
@@ -67,11 +67,11 @@ public class PersonalKeyLabelManager
 		return json;
 	}
 	
-	public void deleteKeyLabel(int keyLabelId)
+	public void deleteKeyLabel(int keyLabelID)
 	{
 		try {
 			pst = con.prepareStatement(deleteKeyLabelSQL);
-			pst.setInt(1,keyLabelId);
+			pst.setInt(1,keyLabelID);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){

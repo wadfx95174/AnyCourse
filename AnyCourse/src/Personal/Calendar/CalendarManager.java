@@ -11,11 +11,11 @@ import java.util.ArrayList;
 
 public class CalendarManager
 {
-	private final String selectEventsSQL = "select * from event natural join calendar where user_id = ?";
+	private final String selectEventsSQL = "select * from event natural join calendar where userID = ?";
 	private final String insertEventSQL = "insert into event value (null,1,?,?,?,?,?,?,?)";
-	private final String updateEventSQL = "update event set title = ?,url = ?,start = ?,end = ?,all_day = ? where event_id = ?";
-	private final String deleteEventSQL = "delete from event where event_id = ?";
-	private final String deleteCalendarSQL = "delete from calendar where event_id = ?";
+	private final String updateEventSQL = "update event set title = ?,url = ?,start = ?,end = ?,allDay = ? where eventID = ?";
+	private final String deleteEventSQL = "delete from event where eventID = ?";
+	private final String deleteCalendarSQL = "delete from calendar where eventID = ?";
 	private final String insertCalendarSQL = "insert into calendar value (?,?)";
 	private Connection con = null;
 	private Statement stat = null;
@@ -50,14 +50,14 @@ public class CalendarManager
 			while (result.next())
 			{
 				CalendarDTO dto = new CalendarDTO();
-				dto.setId(result.getInt("event_id"));
+				dto.setId(result.getInt("eventID"));
 				dto.setTitle(result.getString("title"));
 				dto.setUrl(result.getString("url"));
 				dto.setStart(result.getString("start"));
 				dto.setEnd(result.getString("end"));
-				dto.setBackgroundColor(result.getString("background_color"));
-				dto.setBorderColor(result.getString("border_color"));
-				dto.setAllDay(result.getBoolean("all_day"));
+				dto.setBackgroundColor(result.getString("backgroundColor"));
+				dto.setBorderColor(result.getString("borderColor"));
+				dto.setAllDay(result.getBoolean("allDay"));
 				list.add(dto);
 			}
 		} catch (final SQLException x)

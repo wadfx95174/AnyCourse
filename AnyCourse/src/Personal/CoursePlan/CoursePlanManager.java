@@ -42,29 +42,29 @@ public class CoursePlanManager {
 		coursePlans = new ArrayList<CoursePlan>();
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from personal_plan,unit,customlist_video,courselist where "
-					+ "personal_plan.unit_id = unit.unit_id and "
-					+ "unit.unit_id = customlist_video.unit_id and "
-					+ "customlist_video.courselist_id = courselist.courselist_id and "
-					+ "personal_plan.user_id = '"+userID +"' order by personal_plan.oorder ASC");
+			result = stat.executeQuery("select * from personalPlan,unit,customlistVideo,courselist where "
+					+ "personalPlan.unitID = unit.unitID and "
+					+ "unit.unitID = customlistVideo.unitID and "
+					+ "customlistVideo.courselistID = courselist.courselistID and "
+					+ "personalPlan.userID = '"+userID +"' order by personalPlan.oorder ASC");
 			while(result.next()) {
 				coursePlan = new CoursePlan();
-				coursePlan.setListName(result.getString("courselist.list_name"));
-				coursePlan.setUnitName(result.getString("unit.unit_name"));
-				coursePlan.setSchoolName(result.getString("courselist.school_name"));
-				coursePlan.setLastTime(result.getInt("personal_plan.last_time"));
+				coursePlan.setListName(result.getString("courselist.listName"));
+				coursePlan.setUnitName(result.getString("unit.unitName"));
+				coursePlan.setSchoolName(result.getString("courselist.schoolName"));
+				coursePlan.setLastTime(result.getInt("personalPlan.lastTime"));
 				coursePlan.setTeacher(result.getString("courselist.teacher"));
 				coursePlan.setLikes(result.getInt("unit.likes"));
-				coursePlan.setUnitID(result.getInt("unit.unit_id"));
-				coursePlan.setStatus(result.getInt("personal_plan.status"));//狀態
+				coursePlan.setUnitID(result.getInt("unit.unitID"));
+				coursePlan.setStatus(result.getInt("personalPlan.status"));//狀態
 				coursePlan.setOorder(result.getInt("oorder"));
-				if(result.getString("unit.video_img_src") == "") {
+				if(result.getString("unit.videoImgSrc") == "") {
 					coursePlan.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
 				else {
-					coursePlan.setVideoImgSrc(result.getString("unit.video_img_src"));
+					coursePlan.setVideoImgSrc(result.getString("unit.videoImgSrc"));
 				}
-				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
+				if(result.getString("unit.videoUrl").split("/")[2].equals("www.youtube.com")) {
 					coursePlan.setVideoType(1);//youtube
 				}
 				else {
@@ -91,11 +91,11 @@ public class CoursePlanManager {
 		else if(received.equals("doneList"))status = 3;
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from personal_plan where user_id = '" + userID + "' and status = " + status);
+			result = stat.executeQuery("select * from personalPlan where userID = '" + userID + "' and status = " + status);
 			while(result.next()) {
 				coursePlan = new CoursePlan();
-				coursePlan.setUserID(result.getString("user_id"));
-				coursePlan.setUnitID(result.getInt("unit_id"));
+				coursePlan.setUserID(result.getString("userID"));
+				coursePlan.setUnitID(result.getInt("unitID"));
 				coursePlan.setStatus(result.getInt("status"));
 				coursePlan.setOorder(result.getInt("oorder"));
 				coursePlans.add(coursePlan);
@@ -114,7 +114,7 @@ public class CoursePlanManager {
 	public void updateCoursePlanList(CoursePlan coursePlan) {
 		try {
 			//1:想要觀看。2:正在觀看。3:已觀看完
-			pst = con.prepareStatement("update personal_plan set status = ? , oorder = ? where user_id = ? and unit_id = ? ");
+			pst = con.prepareStatement("update personalPlan set status = ? , oorder = ? where userID = ? and unitID = ? ");
 			
 			pst.setString(3,coursePlan.getUserID());
 			pst.setInt(4,coursePlan.getUnitID());
@@ -139,11 +139,11 @@ public class CoursePlanManager {
 		else if(sender.equals("doneList"))status = 3;
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from personal_plan where user_id = '" + userID + "' and status = " + status);
+			result = stat.executeQuery("select * from personalPlan where userID = '" + userID + "' and status = " + status);
 			while(result.next()) {
 				coursePlan = new CoursePlan();
-				coursePlan.setUserID(result.getString("user_id"));
-				coursePlan.setUnitID(result.getInt("unit_id"));
+				coursePlan.setUserID(result.getString("userID"));
+				coursePlan.setUnitID(result.getInt("unitID"));
 				coursePlan.setStatus(result.getInt("status"));
 				coursePlan.setOorder(result.getInt("oorder"));
 				coursePlans.add(coursePlan);
@@ -162,7 +162,7 @@ public class CoursePlanManager {
 	public void updateOldStatusList(CoursePlan oldCoursePlan) {
 		try {
 			//1:想要觀看。2:正在觀看。3:已觀看完
-			pst = con.prepareStatement("update personal_plan set status = ? , oorder = ? where user_id = ? and unit_id = ? ");
+			pst = con.prepareStatement("update personalPlan set status = ? , oorder = ? where userID = ? and unitID = ? ");
 			
 			pst.setString(3,oldCoursePlan.getUserID());
 			pst.setInt(4,oldCoursePlan.getUnitID());

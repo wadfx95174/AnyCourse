@@ -1,14 +1,14 @@
 package Personal.VideoList;
 
 public class VideoList {
-	private int courselistID;//
-	private String listName;//
-	private String creator;//
-	private String userID;//
-	private String schoolName;//
+	private int courselistID;
+	private String listName;
+	private String creator;
+	private String userID;
+	private String schoolName;
 	private int share;
 	private int likes;
-	private int oorder;//
+	private int oorder;
 	
 	public VideoList() {}
 

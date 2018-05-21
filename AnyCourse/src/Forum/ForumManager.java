@@ -15,16 +15,16 @@ import Forum.Comment;
 import Forum.Reply;;
 
 public class ForumManager {
-	public String insertCommentSQL = "insert into comment (comment_id,unit_id,user_id,nick_name,comment_time,comment_content) value(null,?,?,?,null,?)";
-	public String selectCommentSQL = "select * from comment where unit_id= ? ";
-	public String deleteCommentSQL = "delete from comment where comment_id = ?";
-	public String updateCommentSQL = "update comment set unit_id = ?,user_id = ?,nick_name = ?,comment_time = ?,comment_content = ? where comment_id = ?";
+	public String insertCommentSQL = "insert into comment (commentID,unitID,userID,nickName,commentTime,commentContent) value(null,?,?,?,null,?)";
+	public String selectCommentSQL = "select * from comment where unitID= ? ";
+	public String deleteCommentSQL = "delete from comment where commentID = ?";
+	public String updateCommentSQL = "update comment set unitID = ?,userID = ?,nickName = ?,commentTime = ?,commentContent = ? where commentID = ?";
 	
-	public String insertReplySQL = "insert into reply (reply_id,comment_id,user_id,nick_name,reply_time,reply_content) value(null,?,?,?,null,?)";
+	public String insertReplySQL = "insert into reply (replyID,commentID,userID,nickName,replyTime,replyContent) value(null,?,?,?,null,?)";
 	public String selectReplySQL = "select * from reply";
-	public String deleteReplySQL = "delete from reply where reply_id = ?";
-	public String deleteReplySQL2 = "delete from reply where comment_id = ?";
-	public String updateReplySQL = "update reply set comment_id = ?,user_id = ?,nick_name = ?,reply_time = ?,reply_content = ? where reply_id = ?";
+	public String deleteReplySQL = "delete from reply where replyID = ?";
+	public String deleteReplySQL2 = "delete from reply where commentID = ?";
+	public String updateReplySQL = "update reply set commentID = ?,userID = ?,nickName = ?,replyTime = ?,replyContent = ? where replyID = ?";
 	
 	public Comment comment;
 	public Reply reply;
@@ -38,7 +38,7 @@ public class ForumManager {
 	
 	public ForumManager(){
 		try {
-			Class.forName("com.mysql.jdbc.Driver");//?��餃�??�river
+			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5", "root", "peter");//���onnection			   
 		}
 		catch(ClassNotFoundException e){
@@ -52,34 +52,28 @@ public class ForumManager {
 	public Comment insertCommentTable(Comment comment){
 		try {
 			pst = con.prepareStatement(insertCommentSQL,Statement.RETURN_GENERATED_KEYS);
-			//pst.setInt(1,);
-			//pst.setInt(1,comment.getComment_id());
-			pst.setInt(1,comment.getUnit_id());
-			pst.setString(2,comment.getUser_id());
-			pst.setString(3,comment.getNick_name());
-			//pst.setString(3,comment.comment_time);
-			pst.setString(4,comment.getComment_content());
+			pst.setInt(1,comment.getUnitID());
+			pst.setString(2,comment.getUserID());
+			pst.setString(3,comment.getNickName());
+			pst.setString(4,comment.getCommentContent());
 			pst.executeUpdate();
 			ResultSet generatedKeys = pst.getGeneratedKeys();
 			if (generatedKeys.next())
 			{
 				int id =generatedKeys.getInt(1);
-				pst = con.prepareStatement("SELECT * FROM comment WHERE comment_id = ?");
+				pst = con.prepareStatement("SELECT * FROM comment WHERE commentID = ?");
 				pst.setInt(1,id);
 				result = pst.executeQuery();
 				 while(result.next()) 
 			     { 
 				 comment = new Comment();
-				 comment.setComment_id(result.getInt("comment_id"));
-				 comment.setUnit_id(result.getInt("unit_id"));
-				 comment.setUser_id(result.getString("user_id"));
-				 comment.setNick_name(result.getString("nick_name"));
-				 comment.setComment_time(result.getString("comment_time"));
-				 comment.setComment_content(result.getString("comment_content"));
+				 comment.setCommentID(result.getInt("commentID"));
+				 comment.setUnitID(result.getInt("unitID"));
+				 comment.setUserID(result.getString("userID"));
+				 comment.setNickName(result.getString("nickName"));
+				 comment.setCommentTime(result.getString("commentTime"));
+				 comment.setCommentContent(result.getString("commentContent"));
 			     }
-//				 System.out.println(result.getInt("comment_id"));
-//				 System.out.println(result.getString("comment_time"));
-				//return generatedKeys.getInt(1);
 				 return comment;
 			}
 		}
@@ -91,26 +85,23 @@ public class ForumManager {
 		}
 		return comment;
 	}	
-	public String selectCommentTable(int unit_id) {
+	public String selectCommentTable(int unitID) {
 		ArrayList<Comment> comments = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectCommentSQL);
-			pst.setInt(1, unit_id);
+			pst.setInt(1, unitID);
 			result = pst.executeQuery();
-//			stat = con.createStatement();
-//			result = stat.executeQuery(selectCommentSQL);
 			 while(result.next()) 
 		     { 	
 				 comment = new Comment();
-				 comment.setComment_id(result.getInt("comment_id"));
-				 comment.setUnit_id(result.getInt("unit_id"));
-				 comment.setUser_id(result.getString("user_id"));
-				 comment.setNick_name(result.getString("nick_name"));
-				 comment.setComment_time(result.getString("comment_time"));
-				 comment.setComment_content(result.getString("comment_content"));
+				 comment.setCommentID(result.getInt("commentID"));
+				 comment.setUnitID(result.getInt("unitID"));
+				 comment.setUserID(result.getString("userID"));
+				 comment.setNickName(result.getString("nickName"));
+				 comment.setCommentTime(result.getString("commentTime"));
+				 comment.setCommentContent(result.getString("commentContent"));
 				 comments.add(comment);
 		     }
-//			 System.out.println(comments);
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());
@@ -121,10 +112,10 @@ public class ForumManager {
 		String json = new Gson().toJson(comments);
 		return json;
 	}
-	public void deleteCommentTable(int comment_id) {
+	public void deleteCommentTable(int commentID) {
 		try {
 			pst = con.prepareStatement(deleteCommentSQL);
-			pst.setInt(1,comment_id);
+			pst.setInt(1,commentID);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
@@ -137,12 +128,12 @@ public class ForumManager {
 	public void updateCommentTable(Comment comment){
 		try {
 			pst = con.prepareStatement(updateCommentSQL);	
-			pst.setInt(6,comment.getComment_id());
-			pst.setInt(1,comment.getUnit_id());
-			pst.setString(2,comment.getUser_id());
-			pst.setString(3,comment.getNick_name());
-			pst.setString(4,comment.getComment_time());
-			pst.setString(5,comment.getComment_content());
+			pst.setInt(6,comment.getCommentID());
+			pst.setInt(1,comment.getUnitID());
+			pst.setString(2,comment.getUserID());
+			pst.setString(3,comment.getNickName());
+			pst.setString(4,comment.getCommentTime());
+			pst.setString(5,comment.getCommentContent());
 			
 			pst.executeUpdate();
 		}
@@ -158,34 +149,28 @@ public class ForumManager {
 	public Reply insertReplyTable(Reply reply){
 		try {
 			pst = con.prepareStatement(insertReplySQL,Statement.RETURN_GENERATED_KEYS);
-			//pst.setInt(1,);
-			//pst.setInt(1,reply.getReply_id());
-			pst.setInt(1,reply.getComment_id());
-			pst.setString(2,reply.getUser_id());
-			pst.setString(3,reply.getNick_name());
-			//pst.setString(4,reply.getReply_time());
-			pst.setString(4,reply.getReply_content());
+			pst.setInt(1,reply.getCommentID());
+			pst.setString(2,reply.getUserID());
+			pst.setString(3,reply.getNickName());
+			pst.setString(4,reply.getReplyContent());
 			pst.executeUpdate();
 			ResultSet generatedKeys = pst.getGeneratedKeys();
 			if (generatedKeys.next())
 			{
 				int id =generatedKeys.getInt(1);
-				pst = con.prepareStatement("SELECT * FROM reply WHERE reply_id = ?");
+				pst = con.prepareStatement("SELECT * FROM reply WHERE replyID = ?");
 				pst.setInt(1,id);
 				result = pst.executeQuery();
 				 while(result.next()) 
 			     { 
 				 reply = new Reply();
-				 reply.setReply_id(result.getInt("reply_id"));
-				 reply.setComment_id(result.getInt("comment_id"));
-				 reply.setUser_id(result.getString("user_id"));
-				 reply.setNick_name(result.getString("nick_name"));
-				 reply.setReply_time(result.getString("reply_time"));
-				 reply.setReply_content(result.getString("reply_content"));
+				 reply.setReplyID(result.getInt("replyID"));
+				 reply.setCommentID(result.getInt("commentID"));
+				 reply.setUserID(result.getString("userID"));
+				 reply.setNickName(result.getString("nickName"));
+				 reply.setReplyTime(result.getString("replyTime"));
+				 reply.setReplyContent(result.getString("replyContent"));
 			     }
-//				 System.out.println(result.getInt("comment_id"));
-//				 System.out.println(result.getString("comment_time"));
-				//return generatedKeys.getInt(1);
 				 return reply;
 			}
 		}
@@ -205,15 +190,14 @@ public class ForumManager {
 			 while(result.next()) 
 		     { 
 				 reply = new Reply();
-				 reply.setReply_id(result.getInt("reply_id"));
-				 reply.setComment_id(result.getInt("comment_id"));
-				 reply.setUser_id(result.getString("user_id"));
-				 reply.setNick_name(result.getString("nick_name"));
-				 reply.setReply_time(result.getString("reply_time"));
-				 reply.setReply_content(result.getString("reply_content"));
+				 reply.setReplyID(result.getInt("replyID"));
+				 reply.setCommentID(result.getInt("commentID"));
+				 reply.setUserID(result.getString("userID"));
+				 reply.setNickName(result.getString("nickName"));
+				 reply.setReplyTime(result.getString("replyTime"));
+				 reply.setReplyContent(result.getString("replyContent"));
 				 replys.add(reply);
 		     }
-//			 System.out.println(replys);
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());
@@ -222,10 +206,10 @@ public class ForumManager {
 			Close();
 		}
 	}
-	public void deleteReplyTable(int reply_id) {
+	public void deleteReplyTable(int replyID) {
 		try {
 			pst = con.prepareStatement(deleteReplySQL);
-			pst.setInt(1,reply_id);
+			pst.setInt(1,replyID);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
@@ -235,10 +219,10 @@ public class ForumManager {
 			Close();
 		}
 	}  
-	public void deleteReplyTable2(int comment_id) {
+	public void deleteReplyTable2(int commentID) {
 		try {
 			pst = con.prepareStatement(deleteReplySQL2);
-			pst.setInt(1,comment_id);
+			pst.setInt(1,commentID);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
@@ -251,12 +235,12 @@ public class ForumManager {
 	public void updateReplyTable(Reply reply){
 		try {
 			pst = con.prepareStatement(updateReplySQL);	
-			pst.setInt(6,reply.getReply_id());
-			pst.setInt(1,reply.getComment_id());
-			pst.setString(2,reply.getUser_id());
-			pst.setString(3,reply.getNick_name());
-			pst.setString(4,reply.getReply_time());
-			pst.setString(5,reply.getReply_content());
+			pst.setInt(6,reply.getReplyID());
+			pst.setInt(1,reply.getCommentID());
+			pst.setString(2,reply.getUserID());
+			pst.setString(3,reply.getNickName());
+			pst.setString(4,reply.getReplyTime());
+			pst.setString(5,reply.getReplyContent());
 			
 			pst.executeUpdate();
 		}

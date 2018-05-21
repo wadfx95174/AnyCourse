@@ -1,8 +1,8 @@
 package PlayerInterface;
 
 public class Unit {
-	private String user_id;
-	private int unitId;
+	private String userID;
+	private int unitID;
 	private String schoolName;
 	private String listName;
 	private String unitName;
@@ -30,12 +30,12 @@ public class Unit {
 		this.teacher = teacher;
 	}
 
-	public int getUnitId() {
-		return unitId;
+	public int getUnitID() {
+		return unitID;
 	}
 
-	public void setUnitId(int unitId) {
-		this.unitId = unitId;
+	public void setUnitID(int unitID) {
+		this.unitID = unitID;
 	}
 
 	public String getSchoolName() {
@@ -95,11 +95,11 @@ public class Unit {
 	}
 
 	public String getUserID() {
-		return user_id;
+		return userID;
 	}
 
-	public void setUserID(String user_id) {
-		this.user_id = user_id;
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
 
 	public int getPersonalLike() {

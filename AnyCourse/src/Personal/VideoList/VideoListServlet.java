@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 public class VideoListServlet extends HttpServlet{
-
+	private static final long serialVersionUID = 1L;
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -21,12 +21,12 @@ public class VideoListServlet extends HttpServlet{
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		if(request.getParameter("action").equals("selectList")) {
-			videoLists = videoListDatebaseManager.selectVideoListTable((String)session.getAttribute("userId"));
+			videoLists = videoListDatebaseManager.selectVideoListTable((String)session.getAttribute("userID"));
 			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(videoLists));
 		}
 		else if(request.getParameter("action").equals("selectUnit")) {
-			unitVideos = videoListDatebaseManager.selectUnitTable((String)session.getAttribute("userId")
+			unitVideos = videoListDatebaseManager.selectUnitTable((String)session.getAttribute("userID")
 					,request.getParameter("schoolName"),request.getParameter("lisNname"));
 			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(unitVideos));
@@ -44,7 +44,7 @@ public class VideoListServlet extends HttpServlet{
 		
 		//insert
 		if(request.getParameter("action").equals("insert")) {
-			videoListDatebaseManager.insertCourseListTable((String)session.getAttribute("userId")
+			videoListDatebaseManager.insertCourseListTable((String)session.getAttribute("userID")
 					,request.getParameter("listName"));
 		}
 		//update

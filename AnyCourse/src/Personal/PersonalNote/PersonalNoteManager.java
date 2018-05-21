@@ -13,10 +13,8 @@ import com.google.gson.Gson;
 import Personal.WatchRecord.WatchRecord;
 
 public class PersonalNoteManager {
-	public String selectPersonalTextNoteSQL = "select * from text_note , unit where text_note.user_id = ? and text_note.unit_id = unit.unit_id ";
-//	public String deletePersonalTextNoteSQL = "delete from text_note where user_id = ? and unit_id = ?";
-	public String selectPersonalPictureNoteSQL = "select * from picture_note , unit where picture_note.user_id = ? and picture_note.unit_id = unit.unit_id ";
-//	public String deletePersonalPictureNoteSQL = "delete from picture_note where user_id = ? and unit_id = ?";
+	public String selectPersonalTextNoteSQL = "select * from textNote , unit where textNote.userID = ? and textNote.unitID = unit.unitID ";
+	public String selectPersonalPictureNoteSQL = "select * from pictureNote , unit where pictureNote.userID = ? and pictureNote.unitID = unit.unitID ";
 	
 	public PersonalTextNote personalTextNote;
 	public PersonalPictureNote personalPictureNote;
@@ -28,10 +26,10 @@ public class PersonalNoteManager {
 	
 	public PersonalNoteManager() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");//閮餃�river
+			Class.forName("com.mysql.jdbc.Driver");
 
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
-					, "root", "peter");//���onnection
+					, "root", "peter");
 			
 		}
 		catch(ClassNotFoundException e){
@@ -41,27 +39,25 @@ public class PersonalNoteManager {
 			System.out.println("Exception" + x.toString());
 		}
 	}
-	//�������������
-	public String selectPersonalTextNoteTable(String user_id) {
+	
+	public String selectPersonalTextNoteTable(String userID) {
 		ArrayList<PersonalTextNote> personalTextNotes = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectPersonalTextNoteSQL);
-			pst.setString(1, user_id);
+			pst.setString(1, userID);
 			result = pst.executeQuery();
-//			stat = con.createStatement();
-//			result = stat.executeQuery(selectWatchRecordSQL);
 			 while(result.next()) 
 		     { 				 
 				 personalTextNote = new PersonalTextNote();
-				 personalTextNote.setText_note_id(result.getInt("text_note_id"));
-				 personalTextNote.setUser_id(result.getString("user_id"));
-				 personalTextNote.setUnit_id(result.getInt("unit_id"));
-				 personalTextNote.setText_note(result.getString("text_note"));
+				 personalTextNote.setTextNoteID(result.getInt("textNoteID"));
+				 personalTextNote.setUserID(result.getString("userID"));
+				 personalTextNote.setUnitID(result.getInt("unitID"));
+				 personalTextNote.setTextNote(result.getString("textNote"));
 				 personalTextNote.setShare(result.getInt("share"));
-				 personalTextNote.setShare_time(result.getString("share_time"));
-				 personalTextNote.setUnit_name(result.getString("unit_name"));
-				 personalTextNote.setSchool_name(result.getString("school_name"));				 
-				 personalTextNote.setVideo_url(result.getString("video_url"));
+				 personalTextNote.setShareTime(result.getString("shareTime"));
+				 personalTextNote.setUnitName(result.getString("unitName"));
+				 personalTextNote.setSchoolName(result.getString("schoolName"));				 
+				 personalTextNote.setVideoUrl(result.getString("videoUrl"));
 				 personalTextNote.setLikes(result.getInt("likes"));				 
 				 personalTextNotes.add(personalTextNote);
 		     }
@@ -75,42 +71,25 @@ public class PersonalNoteManager {
 		String json = new Gson().toJson(personalTextNotes);
 		return json;
 	}
-//	//����������
-//	public void deleteWatchRecordTable(String user_id,int unit_id) {
-//		try {
-//			pst = con.prepareStatement(deleteWatchRecordSQL);
-//			pst.setString(1,user_id);
-//			pst.setInt(2,unit_id);
-//			pst.executeUpdate();
-//		}
-//		catch(SQLException x){
-//			System.out.println("Exception delete"+x.toString());
-//		}
-//		finally {
-//			Close();
-//		}
-//	}
 	
-	public String selectPersonalPictureNoteTable(String user_id) {
+	public String selectPersonalPictureNoteTable(String userID) {
 		ArrayList<PersonalPictureNote> personalPictureNotes = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectPersonalPictureNoteSQL);
-			pst.setString(1, user_id);
+			pst.setString(1, userID);
 			result = pst.executeQuery();
-//			stat = con.createStatement();
-//			result = stat.executeQuery(selectWatchRecordSQL);
 			 while(result.next()) 
 		     { 				 
 				 personalPictureNote = new PersonalPictureNote();
-				 personalPictureNote.setPicture_note_id(result.getInt("picture_note_id"));
-				 personalPictureNote.setUser_id(result.getString("user_id"));
-				 personalPictureNote.setUnit_id(result.getInt("unit_id"));
-				 personalPictureNote.setPicture_note_url(result.getString("picture_note_url"));
+				 personalPictureNote.setPictureNoteID(result.getInt("pictureNoteID"));
+				 personalPictureNote.setUserID(result.getString("userID"));
+				 personalPictureNote.setUnitID(result.getInt("unitID"));
+				 personalPictureNote.setPictureNoteUrl(result.getString("pictureNoteUrl"));
 				 personalPictureNote.setShare(result.getInt("share"));
-				 personalPictureNote.setShare_time(result.getString("share_time"));
-				 personalPictureNote.setUnit_name(result.getString("unit_name"));
-				 personalPictureNote.setSchool_name(result.getString("school_name"));				 
-				 personalPictureNote.setVideo_url(result.getString("video_url"));
+				 personalPictureNote.setShareTime(result.getString("shareTime"));
+				 personalPictureNote.setUnitName(result.getString("unitName"));
+				 personalPictureNote.setSchoolName(result.getString("schoolName"));				 
+				 personalPictureNote.setVideoUrl(result.getString("videoUrl"));
 				 personalPictureNote.setLikes(result.getInt("likes"));				 
 				 personalPictureNotes.add(personalPictureNote);
 		     }
@@ -124,21 +103,6 @@ public class PersonalNoteManager {
 		String json = new Gson().toJson(personalPictureNotes);
 		return json;
 	}
-//	//����������
-//	public void deleteWatchRecordTable(String user_id,int unit_id) {
-//		try {
-//			pst = con.prepareStatement(deleteWatchRecordSQL);
-//			pst.setString(1,user_id);
-//			pst.setInt(2,unit_id);
-//			pst.executeUpdate();
-//		}
-//		catch(SQLException x){
-//			System.out.println("Exception delete"+x.toString());
-//		}
-//		finally {
-//			Close();
-//		}
-//	}
 	
 	public void Close() {
 		try {

@@ -9,8 +9,8 @@ import java.sql.Statement;
 
 public class DatabaseManager {
 
-	private String insertCustomListVideoSQL = "insert into customlist_video (courselist_id,unit_id,oorder) value(?,?,?)";
-	private String selectUnit_CourseListSQL = "select * from courselist,unit where courselist.list_name = unit.list_name and courselist.school_name = unit.school_name";
+	private String insertCustomListVideoSQL = "insert into customlistVideo (courselistID,unitID,oorder) value(?,?,?)";
+	private String selectUnitCourseListSQL = "select * from courselist,unit where courselist.listName = unit.listName and courselist.schoolName = unit.schoolName";
 	
 	
 	private Connection con = null;
@@ -32,22 +32,22 @@ public class DatabaseManager {
 			System.out.println("Exception" + x.toString());
 		}
 	}
-	//運用courselist及unit兩個table生成customlist_video
-	public void insertCustomlist_videoTable() {
+	//運用courselist及unit兩個table生成customlistVideo
+	public void insertCustomlistVideoTable() {
 		try {
 			int order = 1;
 			String temp = null;
 			pst = con.prepareStatement(insertCustomListVideoSQL);
 			stat = con.createStatement();
-			result = stat.executeQuery(selectUnit_CourseListSQL);
+			result = stat.executeQuery(selectUnitCourseListSQL);
 			while(result.next()) {
-				pst.setInt(1,Integer.parseInt(result.getString("courselist_id")));
-				pst.setInt(2,Integer.parseInt(result.getString("unit_id")));
+				pst.setInt(1,Integer.parseInt(result.getString("courselistID")));
+				pst.setInt(2,Integer.parseInt(result.getString("unitID")));
 				
 				//檢查這一次迴圈是否已經執行到下一個課程了，等於temp的話，代表還在同一個課程
 //				System.out.println(temp);
-//				System.out.println(result.getString("courselist.list_name"));
-				if(result.getString("courselist.list_name").equals(temp)) {
+//				System.out.println(result.getString("courselist.listName"));
+				if(result.getString("courselist.listName").equals(temp)) {
 					
 					pst.setInt(3,order);
 					System.out.println(order);
@@ -62,7 +62,7 @@ public class DatabaseManager {
 					
 				}
 				
-				temp = result.getString("courselist.list_name");
+				temp = result.getString("courselist.listName");
 //				System.out.println(temp);
 			}
 		}
@@ -101,7 +101,7 @@ public class DatabaseManager {
 	}
 	public static void main(String[] args) {
 		DatabaseManager d = new DatabaseManager();
-		d.insertCustomlist_videoTable();
+		d.insertCustomlistVideoTable();
 	}
 
 }

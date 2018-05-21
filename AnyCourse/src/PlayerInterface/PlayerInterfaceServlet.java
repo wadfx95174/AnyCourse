@@ -24,10 +24,8 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		PlayerInterfaceManager manager = new PlayerInterfaceManager();
 		HttpSession session = request.getSession();
 		
-//		System.out.println(request.getParameter("unitId"));
 		
-		response.getWriter().write(manager.getVideoUrl(Integer.parseInt(request.getParameter("unitId"))));
-				/*,(String)session.getAttribute("userId"))*/
+		response.getWriter().write(manager.getVideoUrl(Integer.parseInt(request.getParameter("unitID"))));
 		manager.conClose();
 	}
 
@@ -39,86 +37,72 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		if(request.getParameter("action").equals("getVideoList")) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			response.getWriter().write(manager.getList(Integer.parseInt(request.getParameter("courselistId"))));
+			response.getWriter().write(manager.getList(Integer.parseInt(request.getParameter("courselistID"))));
 		}
 		else if(request.getParameter("action").equals("setVideoCloseTime")
-				&&(String)session.getAttribute("userId") != null) {
+				&&(String)session.getAttribute("userID") != null) {
 			PlayerInterfaceManager playerInterfaceManager = new PlayerInterfaceManager();
-			System.out.println(Integer.parseInt(request.getParameter("unitId")));
+			System.out.println(Integer.parseInt(request.getParameter("unitID")));
 			System.out.println(Integer.parseInt(request.getParameter("currentTime")));
 			System.out.println(Integer.parseInt(request.getParameter("duration")));
 			
 			playerInterfaceManager.setVideoEndTime(Integer.parseInt(request.getParameter("currentTime"))
-					, Integer.parseInt(request.getParameter("unitId")), (String)session.getAttribute("userId")
+					, Integer.parseInt(request.getParameter("unitID")), (String)session.getAttribute("userID")
 					,Integer.parseInt(request.getParameter("duration")));
 			
 			
 		}
-		else if(request.getParameter("action").equals("like")&&(String)session.getAttribute("userId") != null) {
-//			System.out.println(Integer.parseInt(request.getParameter("like")));
+		else if(request.getParameter("action").equals("like")&&(String)session.getAttribute("userID") != null) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			Unit unit = new Unit();
-			System.out.println(Integer.parseInt(request.getParameter("unit_id")));
+			System.out.println(Integer.parseInt(request.getParameter("unitID")));
 			System.out.println(Integer.parseInt(request.getParameter("like")));
-			unit = manager.setLike((String)session.getAttribute("userId")
-					, Integer.parseInt(request.getParameter("unit_id"))
+			unit = manager.setLike((String)session.getAttribute("userID")
+					, Integer.parseInt(request.getParameter("unitID"))
 					,Integer.parseInt(request.getParameter("like")));
-//			System.out.println(Integer.parseInt(request.getParameter("like")));
 			Gson gson = new Gson();
 			response.getWriter().write(gson.toJson(unit));
-//			System.out.println(gson.toJson(unit));
 		}
 		else if(request.getParameter("action").equals("setIsBrowse")) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			Unit unit = new Unit();
 			
-			
-//			System.out.println((String)session.getAttribute("userId"));
-			if((String)session.getAttribute("userId") == null) {
+			if((String)session.getAttribute("userID") == null) {
 				unit = new Unit();
 				unit.setPersonalLike(0);
 				Gson gson = new Gson();
 				response.getWriter().write(gson.toJson(unit));
-//				System.out.println(gson.toJson(unit));
 			}
 			else {
 				unit = new Unit();
-				unit = manager.setIsBrowse((String)session.getAttribute("userId")
-						, Integer.parseInt(request.getParameter("unitId")));
+				unit = manager.setIsBrowse((String)session.getAttribute("userID")
+						, Integer.parseInt(request.getParameter("unitID")));
 				Gson gson = new Gson();
 				response.getWriter().write(gson.toJson(unit));
-//				System.out.println(gson.toJson(unit));
-				
 			}
-			
-			
 		}
 		else if(request.getParameter("action").equals("getRecommendation")) {
-			int account_id = 0;
-			if((String)session.getAttribute("userId") == null) {
-				account_id = manager.getAccountID("1");
+			int accountID = 0;
+			if((String)session.getAttribute("userID") == null) {
+				accountID = manager.getAccountID("1");
 			}
 			else {
-				account_id = manager.getAccountID((String)session.getAttribute("userId"));
+				accountID = manager.getAccountID((String)session.getAttribute("userID"));
 			}
-			System.out.println("account_id:"+account_id);
-			manager.setBrowse(account_id,Integer.parseInt(request.getParameter("unit_id")));
-//			System.out.println(account_id);
+			System.out.println("accountID:"+accountID);
+			manager.setBrowse(accountID,Integer.parseInt(request.getParameter("unitID")));
 			ArrayList<Unit> units = new ArrayList<Unit>();
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			try {
-				units = manager.getRecommendList(account_id, Long.parseLong(request.getParameter("unit_id")));
-//				System.out.println("re");
+				units = manager.getRecommendList(accountID, Long.parseLong(request.getParameter("unitID")));
 			} catch (NumberFormatException | TasteException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			Gson gson = new Gson();
 			response.getWriter().write(gson.toJson(units));
-//			System.out.println(gson.toJson(units));
 		}
 		manager.conClose();
 	}

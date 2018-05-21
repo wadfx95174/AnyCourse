@@ -22,7 +22,7 @@ $(document).ready(function(){
     	cache :false,
     	data: {
     		"action": 'setIsBrowse',
-    		"unitId": get('unit_id')
+    		"unitID": get('unitID')
     	},
     	error: function(){
     		console.log("SetIsBrowse Error!!!")
@@ -41,7 +41,7 @@ $(document).ready(function(){
     	cache :false,
     	data: {
     		"method": 'getVideo',
-    		"unitId": get('unit_id')
+    		"unitID": get('unitID')
     	},
     	error: function(){
     	},
@@ -96,7 +96,7 @@ $(document).ready(function(){
     window.onbeforeunload = function(event) { 
         console.log(player["currentTime"]);
         console.log(player["duration"]);
-        console.log(get("unit_id"));
+        console.log(get("unitID"));
         
         $.ajax({
         	url:ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
@@ -105,7 +105,7 @@ $(document).ready(function(){
         		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
         		"currentTime":Math.floor(player["currentTime"]),//關閉的時間
         		"duration":Math.floor(player["duration"]),//影片總共有多長時間
-        		"unitId": get("unit_id")
+        		"unitID": get("unitID")
         	},
         	error: function(){
         		console.log("setVideoEndTime failed!");

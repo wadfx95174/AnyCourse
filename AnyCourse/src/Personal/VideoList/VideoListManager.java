@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 public class VideoListManager {
 
-	private String deleteCourseListSQL = "delete from courselist where courselist_id = ? and list_name = ? and creator = ? ";
-	private String deleteListSQL = "delete from list where user_id = ? and courselist_id = ? and oorder = ? ";
+	private String deleteCourseListSQL = "delete from courselist where courselistID = ? and listName = ? and creator = ? ";
+	private String deleteListSQL = "delete from list where userID = ? and courselistID = ? and oorder = ? ";
 
 	private VideoList videoList;
 	private UnitVideo unitVideo;
@@ -43,17 +43,17 @@ public class VideoListManager {
 		videoLists = new ArrayList<VideoList>();
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from courselist,list where courselist.courselist_id "
-					+ "= list.courselist_id and list.user_id = '"+userID+"' order by list.oorder ASC");
+			result = stat.executeQuery("select * from courselist,list where courselist.courselistID "
+					+ "= list.courselistID and list.userID = '"+userID+"' order by list.oorder ASC");
 			while(result.next()) {
 				//選取該使用者的課程清單
 				videoList = new VideoList();
-				videoList.setUserID(result.getString("list.user_id"));
-				videoList.setCourselistID(result.getInt("list.courselist_id"));
+				videoList.setUserID(result.getString("list.userID"));
+				videoList.setCourselistID(result.getInt("list.courselistID"));
 				videoList.setOorder(result.getInt("list.oorder"));
-				videoList.setListName(result.getString("courselist.list_name")); 
+				videoList.setListName(result.getString("courselist.listName")); 
 				videoList.setCreator(result.getString("courselist.creator"));
-				videoList.setSchoolName(result.getString("courselist.school_name"));
+				videoList.setSchoolName(result.getString("courselist.schoolName"));
 				videoLists.add(videoList);
 			}
 		}
@@ -73,26 +73,26 @@ public class VideoListManager {
 		unitVideos = new ArrayList<UnitVideo>();
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from customlist_video,unit,list,courselist where "
-					+"customlist_video.courselist_id = list.courselist_id and "
-					+"customlist_video.unit_id = unit.unit_id and "
-					+"list.courselist_id = courselist.courselist_id and "
-					+"list.user_id = '"+userID+"' and "
-					+"courselist.school_name = '"+schoolName+"' and "
-					+"courselist.list_name = '"+listName+"' order by customlist_video.oorder ASC");
+			result = stat.executeQuery("select * from customlistVideo,unit,list,courselist where "
+					+"customlistVideo.courselistID = list.courselistID and "
+					+"customlistVideo.unitID = unit.unitID and "
+					+"list.courselistID = courselist.courselistID and "
+					+"list.userID = '"+userID+"' and "
+					+"courselist.schoolName = '"+schoolName+"' and "
+					+"courselist.listName = '"+listName+"' order by customlistVideo.oorder ASC");
 			while(result.next()) {
 				unitVideo = new UnitVideo();
-				unitVideo.setUserID(result.getString("list.user_id"));
-				unitVideo.setUnitName(result.getString("unit.unit_name"));
-				unitVideo.setCourseInfo(result.getString("courselist.course_info"));
-				unitVideo.setSchoolName(result.getString("courselist.school_name"));
+				unitVideo.setUserID(result.getString("list.userID"));
+				unitVideo.setUnitName(result.getString("unit.unitName"));
+				unitVideo.setCourseInfo(result.getString("courselist.courseInfo"));
+				unitVideo.setSchoolName(result.getString("courselist.schoolName"));
 				unitVideo.setTeacher(result.getString("courselist.teacher"));
-				unitVideo.setVideoImgSrc(result.getString("unit.video_img_src"));
-				unitVideo.setCourselistID(result.getInt("list.courselist_id"));
-				unitVideo.setOorder(result.getInt("customlist_video.oorder"));
+				unitVideo.setVideoImgSrc(result.getString("unit.videoImgSrc"));
+				unitVideo.setCourselistID(result.getInt("list.courselistID"));
+				unitVideo.setOorder(result.getInt("customlistVideo.oorder"));
 				unitVideo.setLikes(result.getInt("unit.likes"));
-				unitVideo.setUnitID(result.getInt("customlist_video.unit_id"));
-				if(result.getString("unit.video_url").split("/")[2].equals("www.youtube.com")) {
+				unitVideo.setUnitID(result.getInt("customlistVideo.unitID"));
+				if(result.getString("unit.videoUrl").split("/")[2].equals("www.youtube.com")) {
 					unitVideo.setVideoType(1);//youtube
 				}
 				else {
@@ -118,7 +118,7 @@ public class VideoListManager {
 		int listOrder = 0;
 		try {
 			//先存入courselist這個table
-			pst = con.prepareStatement("insert into courselist (courselist_id,list_name"
+			pst = con.prepareStatement("insert into courselist (courselistID,listName"
 					+ ",creator,share,likes) value(null,?,?,?,?)");
 			pst.setString(1,listName);
 			pst.setString(2,userID);
@@ -126,21 +126,21 @@ public class VideoListManager {
 			pst.setInt(4,0);
 			pst.executeUpdate();
 			
-			//從courselist中抓自動生成的courselist_id
+			//從courselist中抓自動生成的courselistID
 			stat = con.createStatement();
-			result = stat.executeQuery("select courselist_id from courselist where creator = '"+userID+"' and "
-					+ "list_name = '"+listName+"'");
+			result = stat.executeQuery("select courselistID from courselist where creator = '"+userID+"' and "
+					+ "listName = '"+listName+"'");
 			while(result.next()) {
-				courselistID = result.getInt("courselist_id");
+				courselistID = result.getInt("courselistID");
 			}
 			//去list中抓oorder欄位的最大值
 			stat = con.createStatement();
-			result = stat.executeQuery("select MAX(oorder) from list where user_id = '"+userID+"'");
+			result = stat.executeQuery("select MAX(oorder) from list where userID = '"+userID+"'");
 			while(result.next()) {
 				listOrder = result.getInt("MAX(oorder)");
 			}
 			
-			pst2 = con.prepareStatement("insert into list (user_id,courselist_id,oorder) value(?,?,?)");
+			pst2 = con.prepareStatement("insert into list (userID,courselistID,oorder) value(?,?,?)");
 			pst2.setString(1,userID);
 			pst2.setInt(2,courselistID);
 			//把抓到的oorder最大值+1
@@ -161,7 +161,7 @@ public class VideoListManager {
 		int check = 0;//0 = 要刪除的list不是他本人創建的。1 = 要刪除的lost是本人創建的
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from courselist where courselist_id =" + videoList.getCourselistID());
+			result = stat.executeQuery("select * from courselist where courselistID =" + videoList.getCourselistID());
 			while(result.next()) {
 				if(result.getString("creator").equals(videoList.getUserID())) {
 					check = 1;
@@ -201,8 +201,8 @@ public class VideoListManager {
 	//編輯清單
 	public void updateCourseListTable(VideoList videoList){
 		try {
-			//1:list_name。2:courselist_id。3:creator
-			pst = con.prepareStatement("update courselist set list_name = ? where courselist_id = ? and creator = ? ");
+			//1:listName。2:courselistID。3:creator
+			pst = con.prepareStatement("update courselist set listName = ? where courselistID = ? and creator = ? ");
 			pst.setInt(2,videoList.getCourselistID());
 			pst.setString(3,videoList.getCreator());
 			pst.setString(1,videoList.getListName());

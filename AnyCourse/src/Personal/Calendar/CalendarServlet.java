@@ -22,15 +22,15 @@ public class CalendarServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
 		HttpSession session = request.getSession();
-		String userId = (String)session.getAttribute("userId");
+		String userID = (String)session.getAttribute("userID");
 		if (request.getParameter("method").equals("getEvent"))
 		{
-			response.getWriter().write(new Gson().toJson(calendarManager.getEvents(userId)));
+			response.getWriter().write(new Gson().toJson(calendarManager.getEvents(userID)));
 		}
 		else if (request.getParameter("method").equals("getCoursePlan"))
 		{
 			CoursePlanManager coursePlanManager = new CoursePlanManager();
-			response.getWriter().write(new Gson().toJson(coursePlanManager.getCoursePlanAllList(userId)));
+			response.getWriter().write(new Gson().toJson(coursePlanManager.getCoursePlanAllList(userID)));
 		}
 		calendarManager.conClose();
 	}
@@ -52,13 +52,13 @@ public class CalendarServlet extends HttpServlet {
 			event.setBackgroundColor(request.getParameter("backgroundColor"));
 			event.setBorderColor(request.getParameter("borderColor"));
 			HttpSession session = request.getSession();
-			int newId = calendarManager.insertEvent(event, (String)session.getAttribute("userId"));
-			String json = new Gson().toJson(newId);
+			int newID = calendarManager.insertEvent(event, (String)session.getAttribute("userID"));
+			String json = new Gson().toJson(newID);
 			response.getWriter().write(json);
 		}
 		else if (method.equals("delete"))
 		{
-			calendarManager.deleteEvent(Integer.parseInt(request.getParameter("eventId")));
+			calendarManager.deleteEvent(Integer.parseInt(request.getParameter("eventID")));
 		}
 		else
 		{
@@ -72,7 +72,6 @@ public class CalendarServlet extends HttpServlet {
 			event.setBackgroundColor(request.getParameter("backgroundColor"));
 			event.setBorderColor(request.getParameter("borderColor"));
 			event.setId(Integer.parseInt(request.getParameter("id")));
-//			System.out.println(event);
 			calendarManager.updateEvent(event);
 		}
 		calendarManager.conClose();

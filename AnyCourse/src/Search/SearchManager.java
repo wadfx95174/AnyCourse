@@ -10,14 +10,13 @@ import java.util.ArrayList;
 
 public class SearchManager
 {
-	private final String selectCourseListSQL = "select * from courselist where list_name like ?";
-	private final String selectUnitKeywordSQL = "select * from unit natural join unit_keyword where unit_keyword like ? ";
-//	private final String selectCourseKeywordSQL = "select * from courselist natural join course_keyword where course_keyword like ? or list_name like ? group by courselist_id";
-	private final String selectCourseKeywordSQL = "select max(courselist_id)courselist_id, max(school_name)school_name, max(list_name)list_name, max(teacher)teacher, max(department_name)department_name, max(course_info)course_info, max(creator)creator, max(share)share, max(likes)likes from courselist natural join course_keyword where course_keyword like ? or list_name like ? or teacher like ? or school_name like ? or department_name like ? group by list_name ORDER BY `courselist_id` ASC";
-	private final String selectUnitByCourseIdSQL = "select * from unit natural join customlist_video where courselist_id = ?";
+	private final String selectCourseListSQL = "select * from courselist where listName like ?";
+	private final String selectUnitKeywordSQL = "select * from unit natural join unitKeyword where unitKeyword like ? ";
+	private final String selectCourseKeywordSQL = "select max(courselistID)courselistID, max(schoolName)schoolName, max(listName)listName, max(teacher)teacher, max(departmentName)departmentName, max(courseInfo)courseInfo, max(creator)creator, max(share)share, max(likes)likes from courselist natural join courseKeyword where courseKeyword like ? or listName like ? or teacher like ? or schoolName like ? or departmentName like ? group by listName ORDER BY `courselistID` ASC";
+	private final String selectUnitByCourseIDSQL = "select * from unit natural join customlistVideo where courselistID = ?";
 	private final String selectTeacherSQL = "select distinct teacher from courselist where teacher is not null";
-	private final String selectDepartmentSQL = "select distinct department_name from courselist where department_name is not null";
-	private final String selectPlanMaxSQL = "select MAX(oorder) from personal_plan where status = 1 and user_id = ?";
+	private final String selectDepartmentSQL = "select distinct departmentName from courselist where departmentName is not null";
+	private final String selectPlanMaxSQL = "select MAX(oorder) from personalPlan where status = 1 and userID = ?";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -47,7 +46,7 @@ public class SearchManager
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 	
-				 String output = result.getString("list_name");
+				 String output = result.getString("listName");
 				 outputList.add(output);
 		     }
 		}
@@ -110,30 +109,30 @@ public class SearchManager
 			 while(result.next()) 
 		     { 	
 				 Search output = new Search();
-				 output.setCourselistId(result.getInt("courselist_id"));
-				 output.setSchoolName(result.getString("school_name"));
-				 output.setListName(result.getString("list_name"));
+				 output.setCourselistID(result.getInt("courselistID"));
+				 output.setSchoolName(result.getString("schoolName"));
+				 output.setListName(result.getString("listName"));
 				 output.setTeacher(result.getString("teacher"));
-				 output.setDepartmentName(result.getString("department_name"));
-				 output.setCourseInfo(result.getString("course_info"));
+				 output.setDepartmentName(result.getString("departmentName"));
+				 output.setCourseInfo(result.getString("courseInfo"));
 				 output.setCreator(result.getString("creator"));
 				 output.setShare(result.getInt("share"));
 				 output.setLikes(result.getInt("likes"));
 				 outputList.add(output);
 		     }
-			pst = con.prepareStatement(selectUnitByCourseIdSQL);
+			pst = con.prepareStatement(selectUnitByCourseIDSQL);
 			for (int i = 0; i < outputList.size(); i++)
 			{
-				pst.setInt(1,outputList.get(i).getCourselistId());
+				pst.setInt(1,outputList.get(i).getCourselistID());
 				result = pst.executeQuery();
 				while (result.next())
 				{
 					Unit unit = new Unit();
-					unit.setUnitId(result.getInt("unit_id"));
-					unit.setUnitName(result.getString("unit_name"));
-					unit.setVideoUrl(result.getString("video_url"));
+					unit.setUnitID(result.getInt("unitID"));
+					unit.setUnitName(result.getString("unitName"));
+					unit.setVideoUrl(result.getString("videoRrl"));
 					unit.setLikes(result.getInt("likes"));
-					unit.setVideoImgSrc(result.getString("video_img_src"));
+					unit.setVideoImgSrc(result.getString("videoImgSrc"));
 					outputList.get(i).addUnit(unit);
 				}
 			}
@@ -144,12 +143,12 @@ public class SearchManager
 			{
 				Search search = new Search();
 				Unit unit = new Unit();
-				unit.setUnitId(result.getInt("unit_id"));
-				unit.setUnitName(result.getString("unit_name"));
-				unit.setVideoUrl(result.getString("video_url"));
+				unit.setUnitID(result.getInt("unitID"));
+				unit.setUnitName(result.getString("unitName"));
+				unit.setVideoUrl(result.getString("videoRrl"));
 				unit.setLikes(result.getInt("likes"));
-				unit.setSchoolName(result.getString("school_name"));
-				unit.setVideoImgSrc(result.getString("video_img_src"));
+				unit.setSchoolName(result.getString("schoolName"));
+				unit.setVideoImgSrc(result.getString("videoImgSrc"));
 				search.addUnit(unit);
 				outputList.add(search);;
 			}
@@ -162,13 +161,6 @@ public class SearchManager
 		}
 		 return outputList;
 	}
-	
-//	public ArrayList<String> getAllKeyword(String name) {
-
-//		ArrayList<String> outputList = selectCourseKeywordTable(name);
-//		outputList.addAll(selectUnitKeywordTable(name));
-//		 return outputList;
-//	}
 	
 	public ArrayList<String> getTeacher()
 	{
@@ -216,65 +208,63 @@ public class SearchManager
 		return outputList;
 	}
 	//將搜尋的單元影片加入課程計畫中
-		public void addToCoursePlan(String user_id,int unit_id){
-			int maxOrder = 0;
-			try {
-				pst = con.prepareStatement(selectPlanMaxSQL);
-				pst.setString(1, user_id);
-				result = pst.executeQuery();
-				while(result.next()) {
-					maxOrder = result.getInt("MAX(oorder)");
-				}
-				pst = con.prepareStatement("insert into personal_plan (user_id,unit_id,last_time,status,oorder) value(?,?,0,1,?)");
-				pst.setString(1, user_id);
-				pst.setInt(2, unit_id);
-				pst.setInt(3, ++maxOrder);
-				pst.executeUpdate();
+	public void addToCoursePlan(String userID,int unitID){
+		int maxOrder = 0;
+		try {
+			pst = con.prepareStatement(selectPlanMaxSQL);
+			pst.setString(1, userID);
+			result = pst.executeQuery();
+			while(result.next()) {
+				maxOrder = result.getInt("MAX(oorder)");
 			}
-			catch(SQLException x){
-				System.out.println("Exception select"+x.toString());
-			}
-			finally {
-				Close();
-			}
+			pst = con.prepareStatement("insert into personalPlan (userID,unitID,lastTime,status,oorder) value(?,?,0,1,?)");
+			pst.setString(1, userID);
+			pst.setInt(2, unitID);
+			pst.setInt(3, ++maxOrder);
+			pst.executeUpdate();
 		}
-		//將搜尋的清單中的所有單元影片加入課程計畫中
-		public void addToCoursePlan_List(String user_id,int courselist_id){
-			ArrayList<Integer> plans = new ArrayList<Integer>();
-			int maxOrder = 0;
-			try {
-				pst = con.prepareStatement(selectPlanMaxSQL);
-				pst.setString(1, user_id);
-				result = pst.executeQuery();
-				while(result.next()) {
-					maxOrder = result.getInt("MAX(oorder)");
-				}
-				result = stat.executeQuery("select * from unit,customlist_video,courselist where unit.unit_id"
-						+ " = customlist_video.unit_id and customlist_video.courselist_id ="
-						+ " courselist.courselist_id and courselist.courselist_id = "+ courselist_id);
-				while(result.next()) {
-					plans.add(result.getInt("unit.unit_id"));
-//					System.out.println(result.getInt("unit.unit_id"));
-				}
+		catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	//將搜尋的清單中的所有單元影片加入課程計畫中
+	public void addToCoursePlanList(String userID,int courselistID){
+		ArrayList<Integer> plans = new ArrayList<Integer>();
+		int maxOrder = 0;
+		try {
+			pst = con.prepareStatement(selectPlanMaxSQL);
+			pst.setString(1, userID);
+			result = pst.executeQuery();
+			while(result.next()) {
+				maxOrder = result.getInt("MAX(oorder)");
+			}
+			result = stat.executeQuery("select * from unit,customlistVideo,courselist where unit.unitID"
+					+ " = customlistVideo.unitID and customlistVideo.courselistID ="
+					+ " courselist.courselistID and courselist.courselistID = "+ courselistID);
+			while(result.next()) {
+				plans.add(result.getInt("unit.unitID"));
+			}
+			
+			pst = con.prepareStatement("insert ignore into personalPlan (userID,unitID,lastTime,status,oorder) value(?,?,0,1,?)");
+			for(int i = 0;i < plans.size();i++) {
 				
-				pst = con.prepareStatement("insert ignore into personal_plan (user_id,unit_id,last_time,status,oorder) value(?,?,0,1,?)");
-				for(int i = 0;i < plans.size();i++) {
-					
-					pst.setString(1, user_id);
-					pst.setInt(2, plans.get(i));
-					pst.setInt(3, ++maxOrder);
-					pst.addBatch();
-//					System.out.println(homePages.get(i).getUnit_id());
-				}
-				pst.executeBatch();
+				pst.setString(1, userID);
+				pst.setInt(2, plans.get(i));
+				pst.setInt(3, ++maxOrder);
+				pst.addBatch();
 			}
-			catch(SQLException x){
-				System.out.println("Exception select"+x.toString());
-			}
-			finally {
-				Close();
-			}
+			pst.executeBatch();
 		}
+		catch(SQLException x){
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
 	public void Close() {
 		try {
 			if(result!=null) {

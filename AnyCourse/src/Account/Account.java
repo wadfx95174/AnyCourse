@@ -2,31 +2,25 @@ package Account;
 
 public class Account
 {
-	private String userId;
+	private String userID;
 	private String nickName;
 	private String pictureUrl;
-	public String getUserId()
-	{
-		return userId;
+	public String getUserID() {
+		return userID;
 	}
-	public void setUserId(String userId)
-	{
-		this.userId = userId;
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
-	public String getNickName()
-	{
+	public String getNickName() {
 		return nickName;
 	}
-	public void setNickName(String nickName)
-	{
+	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
-	public String getPictureUrl()
-	{
+	public String getPictureUrl() {
 		return pictureUrl;
 	}
-	public void setPictureUrl(String pictureUrl)
-	{
+	public void setPictureUrl(String pictureUrl) {
 		this.pictureUrl = pictureUrl;
 	}
 	

@@ -1,33 +1,33 @@
 package Personal.WatchRecord;
 
 public class WatchRecord {
-	public String user_id;
-	public int unit_id;
-	public String watch_time;	
-	public String school_name;
-	public String unit_name;
-	public String video_url;
+	public String userID;
+	public int unitID;
+	public String watchTime;	
+	public String schoolName;
+	public String unitName;
+	public String videoUrl;
 	public int likes;
-	public String video_img_src;
+	public String videoImgSrc;
 	
 	
-	public String getSchool_name() {
-		return school_name;
+	public String getSchoolName() {
+		return schoolName;
 	}
-	public void setSchool_name(String school_name) {
-		this.school_name = school_name;
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
-	public String getUnit_name() {
-		return unit_name;
+	public String getUnitName() {
+		return unitName;
 	}
-	public void setUnit_name(String unit_name) {
-		this.unit_name = unit_name;
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
 	}
-	public String getVideo_url() {
-		return video_url;
+	public String getVideoUrl() {
+		return videoUrl;
 	}
-	public void setVideo_url(String video_url) {
-		this.video_url = video_url;
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
 	}
 	public int getLikes() {
 		return likes;
@@ -35,28 +35,28 @@ public class WatchRecord {
 	public void setLikes(int likes) {
 		this.likes = likes;
 	}
-	public String getVideo_img_src() {
-		return video_img_src;
+	public String getVideoImgSrc() {
+		return videoImgSrc;
 	}
-	public void setVideo_img_src(String video_img_src) {
-		this.video_img_src = video_img_src;
+	public void setVideoImgSrc(String videoImgSrc) {
+		this.videoImgSrc = videoImgSrc;
 	}
-	public String getUser_id() {
-		return user_id;
+	public String getUserID() {
+		return userID;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
-	public int getUnit_id() {
-		return unit_id;
+	public int getUnitID() {
+		return unitID;
 	}
-	public void setUnit_id(int unit_id) {
-		this.unit_id = unit_id;
+	public void setUnitID(int unitID) {
+		this.unitID = unitID;
 	}
-	public String getWatch_time() {
-		return watch_time;
+	public String getWatchTime() {
+		return watchTime;
 	}
-	public void setWatch_time(String watch_time) {
-		this.watch_time = watch_time;
+	public void setWatchTime(String watchTime) {
+		this.watchTime = watchTime;
 	}
 }

@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 public class AutoCompleteManager
 {
 
-	private String selectUnitKeywordSQL = "select max(unit_keyword)unit_keyword from unit_keyword group by unit_keyword";
+	private String selectUnitKeywordSQL = "select max(unitKeyword)unitKeyword from unitKeyword group by unitKeyword";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -43,7 +43,7 @@ public class AutoCompleteManager
 			result = pst.executeQuery();
 			while(result.next()) 
 			{ 	
-				String str = result.getString("unit_keyword");
+				String str = result.getString("unitKeyword");
 				outputList.add(str);
 				if (num / 20 == 1)
 				{

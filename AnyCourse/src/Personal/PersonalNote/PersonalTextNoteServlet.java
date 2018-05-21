@@ -15,45 +15,22 @@ import com.google.gson.Gson;
 import Personal.WatchRecord.WatchRecord;
 import Personal.WatchRecord.WatchRecordManager;
 
-/**
- * Servlet implementation class PersonalTextNoteServlet
- */
-@WebServlet("/PersonalTextNoteServlet")
 public class PersonalTextNoteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public PersonalTextNoteServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		PersonalNoteManager dbpersonalNote = new PersonalNoteManager();	
 		HttpSession session = request.getSession();
 		ArrayList<PersonalTextNote> personalTextNotes = new ArrayList<>();
 		
-		String personalTextNote_json = new Gson().toJson(personalTextNotes);
-		personalTextNote_json = dbpersonalNote.selectPersonalTextNoteTable((String)session.getAttribute("userId"));
+		String personalTextNoteJson = new Gson().toJson(personalTextNotes);
+		personalTextNoteJson = dbpersonalNote.selectPersonalTextNoteTable((String)session.getAttribute("userID"));
 		response.setContentType("application/json;charset = utf-8;");
-		response.getWriter().write(personalTextNote_json);	
+		response.getWriter().write(personalTextNoteJson);	
 		dbpersonalNote.conClose();
-//		System.out.println(personalTextNote_json);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
 	}
 
 }

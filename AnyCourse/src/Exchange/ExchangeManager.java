@@ -16,9 +16,9 @@ import Note.TextNote;
 import KeyLabel.KeyLabel;
 
 public class ExchangeManager {
-	public String selectTextNoteSQL = "select * from account natural join text_note where unit_id = ? and share=1 ";
-	public String selectPictureNoteSQL = "select * from picture_note where unit_id = ? and share=1";
-	public String selectKeylabelSQL = "select * from account natural join keylabel where unit_id = ? and share=1";
+	public String selectTextNoteSQL = "select * from account natural join textNote where unitID = ? and share=1 ";
+	public String selectPictureNoteSQL = "select * from pictureNote where unitID = ? and share=1";
+	public String selectKeylabelSQL = "select * from account natural join keylabel where unitID = ? and share=1";
 	
 	public TextNote textNote;
 	public PictureNote pictureNote;
@@ -44,29 +44,25 @@ public class ExchangeManager {
 		}
 	}
 	
-	public String selectTextNoteTable(int unit_id) {
+	public String selectTextNoteTable(int unitID) {
 		ArrayList<TextNote> textNotes = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectTextNoteSQL);
-			pst.setInt(1, unit_id);
+			pst.setInt(1, unitID);
 			result = pst.executeQuery();
-//			stat = con.createStatement();
-//			result = stat.executeQuery(selectTextNoteSQL);
 			 while(result.next()) 
 		     { 	
 				 textNote = new TextNote();
-				 textNote.setText_note_id(result.getInt("text_note_id"));
-				 textNote.setUnit_id(result.getInt("unit_id"));
-				 textNote.setUser_id(result.getString("user_id"));	
-				 textNote.setNick_name(result.getString("nick_name"));
-				 textNote.setText_note(result.getString("text_note"));
-			//	 textNote.setPicture_note_url(result.getString("picture_note_url"));
+				 textNote.setTextNoteID(result.getInt("textNoteID"));
+				 textNote.setUnitID(result.getInt("unitID"));
+				 textNote.setUserID(result.getString("userID"));	
+				 textNote.setNickName(result.getString("nickName"));
+				 textNote.setTextNote(result.getString("textNote"));
 				 textNote.setShare(result.getInt("share"));
-				 textNote.setShare_time(result.getString("share_time"));
+				 textNote.setShareTime(result.getString("shareTime"));
 				 textNote.setLikes(result.getInt("likes"));	
 				 textNotes.add(textNote);
 		     }
-//			 System.out.println(textNotes);
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());
@@ -78,27 +74,24 @@ public class ExchangeManager {
 		return json;
 	}
 	 
-	public String selectPictureNoteTable(int unit_id) {
+	public String selectPictureNoteTable(int unitID) {
 		ArrayList<PictureNote> pictureNotes = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectPictureNoteSQL);
-			pst.setInt(1, unit_id);
+			pst.setInt(1, unitID);
 			result = pst.executeQuery();
-//			stat = con.createStatement();
-//			result = stat.executeQuery(selectPictureNoteSQL);
 			 while(result.next()) 
 		     { 
 				 pictureNote = new PictureNote();
-				 pictureNote.setPicture_note_id(result.getInt("picture_note_id"));
-				 pictureNote.setUnit_id(result.getInt("unit_id"));
-				 pictureNote.setUser_id(result.getString("user_id"));
-				 pictureNote.setPicture_note_url(result.getString("picture_note_url"));
+				 pictureNote.setPictureNoteID(result.getInt("pictureNoteID"));
+				 pictureNote.setUnitID(result.getInt("unitID"));
+				 pictureNote.setUserID(result.getString("userID"));
+				 pictureNote.setPictureNoteUrl(result.getString("pictureNoteUrl"));
 				 pictureNote.setShare(result.getInt("share"));
-				 pictureNote.setShare_time(result.getString("share_time"));
+				 pictureNote.setShareTime(result.getString("shareTime"));
 				 pictureNote.setLikes(result.getInt("likes"));
 				 pictureNotes.add(pictureNote);
 		     }
-//			 System.out.println(pictureNotes);
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());
@@ -110,30 +103,27 @@ public class ExchangeManager {
 		return json;
 	}
 	
-	public String selectKeyLabelTable(int unit_id) {
+	public String selectKeyLabelTable(int unitID) {
 		ArrayList<KeyLabel> keyLabels = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectKeylabelSQL);
-			pst.setInt(1, unit_id);
+			pst.setInt(1, unitID);
 			result = pst.executeQuery();
-//			stat = con.createStatement();
-//			result = stat.executeQuery(selectKeylabelSQL);
 			 while(result.next()) 
 		     { 
 				 keyLabel = new KeyLabel();
-				 keyLabel.setKeyLabelId(result.getInt("keylabel_id"));
-				 keyLabel.setUnitId(result.getInt("unit_id"));
-				 keyLabel.setUserId(result.getString("user_id"));
-				 keyLabel.setNick_name(result.getString("nick_name"));
-				 keyLabel.setKeyLabelName(result.getString("keylabel_name"));
-				 keyLabel.setBeginTime(result.getInt("begin_time"));
-				 keyLabel.setEndTime(result.getInt("end_time"));
+				 keyLabel.setKeyLabelID(result.getInt("keylabelID"));
+				 keyLabel.setUnitID(result.getInt("unitID"));
+				 keyLabel.setUserID(result.getString("userID"));
+				 keyLabel.setNickName(result.getString("nickName"));
+				 keyLabel.setKeyLabelName(result.getString("keylabelName"));
+				 keyLabel.setBeginTime(result.getInt("beginTime"));
+				 keyLabel.setEndTime(result.getInt("endTime"));
 				 keyLabel.setShare(result.getInt("share"));
-				 keyLabel.setShareTime(result.getString("share_time"));
+				 keyLabel.setShareTime(result.getString("shareTime"));
 				 keyLabel.setLikes(result.getInt("likes"));
 				 keyLabels.add(keyLabel);
 		     }
-//			 System.out.println(pictureNotes);
 		}
 			 catch(SQLException x){
 			System.out.println("Exception select"+x.toString());

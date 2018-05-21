@@ -14,145 +14,96 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
-/**
- * Servlet implementation class NoteUpLoad
- */
-@WebServlet("/TextNoteServlet")
 public class TextNoteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public TextNoteServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-  
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());		
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		NoteManager dbnote1 = new NoteManager();
 		HttpSession session = request.getSession();
-//		Note_database dbnote2 = new Note_database();
 		response.setHeader("Cache-Control","max-age=0");
 		ArrayList<TextNote> textNotes = new ArrayList<TextNote>();
-//		PictureNote pictureNote = new PictureNote();
 		
-		//dbnote1.selectTextNoteTable(textNotes);
-		  
-		String textNote_json = new Gson().toJson(textNotes);
-		textNote_json = dbnote1.selectTextNoteTable(Integer.parseInt(request.getParameter("unit_id")), (String)session.getAttribute("userId"));
+		String textNoteJson = new Gson().toJson(textNotes);
+		textNoteJson = dbnote1.selectTextNoteTable(Integer.parseInt(request.getParameter("unitID")), (String)session.getAttribute("userID"));
 		response.setContentType("application/json;charset = utf-8;");	
-		response.getWriter().write(textNote_json);
-//		System.out.println(textNote_json);
-				
-		
-//		dbnote2.selectPictureNoteTable(pictureNote);
-//		String pictureNote_json = new Gson().toJson(pictureNote);
-//		response.setContentType("application/json");
-//		response.getWriter().write(pictureNote_json);	
-		
-//		System.out.println(pictureNote_json);
+		response.getWriter().write(textNoteJson);
 		dbnote1.conClose();
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
 		HttpSession session = request.getSession();
 		String state = request.getParameter("state");
 		response.setHeader("Cache-Control","max-age=0");
-		int unit_id = Integer.parseInt(request.getParameter("unit_id"));
-		String user_id = (String)session.getAttribute("userId");
-		 
-		 
+		int unitID = Integer.parseInt(request.getParameter("unitID"));
+		String userID = (String)session.getAttribute("userID");
+		
 		if(state.equals("insert"))
 		{
 			NoteManager dbnote = new NoteManager();
-			String text_note = request.getParameter("text_note");
+			String textNotestr = request.getParameter("textNote");
 			int share = Integer.parseInt(request.getParameter("share"));
-			String share_time = request.getParameter("share_time");
+			String shareTime = request.getParameter("shareTime");
 			int likes = Integer.parseInt(request.getParameter("likes"));
 			
 			TextNote textNote = new TextNote();
 			
-			textNote.setUnit_id(unit_id);
-			textNote.setUser_id(user_id);
-			textNote.setText_note(text_note);
+			textNote.setUnitID(unitID);
+			textNote.setUserID(userID);
+			textNote.setTextNote(textNotestr);
 			textNote.setShare(share);
-			textNote.setShare_time(share_time);
+			textNote.setShareTime(shareTime);
 			textNote.setLikes(likes);
-			//textNote.setText_note_id(text_note_id);
 			
 			dbnote.insertTextNoteTable(textNote);
 			response.setContentType("application/json");
-			PrintWriter out = response.getWriter();		
-//			out.print("success");
 			dbnote.conClose();
 		}
 		if(state.equals("update"))
 		{
 			NoteManager dbnote = new NoteManager();
-			int text_note_id = Integer.parseInt(request.getParameter("text_note_id"));
-			String text_note = request.getParameter("text_note");
+			int textNoteID = Integer.parseInt(request.getParameter("textNoteID"));
+			String textNotestr = request.getParameter("textNote");
 			int share = Integer.parseInt(request.getParameter("share"));
-			String share_time = request.getParameter("share_time");
+			String shareTime = request.getParameter("shareTime");
 			int likes = Integer.parseInt(request.getParameter("likes"));
 			
 			TextNote textNote = new TextNote();
-			textNote.setText_note_id(text_note_id);
-			textNote.setUnit_id(unit_id);
-			textNote.setUser_id(user_id);
-			textNote.setText_note(text_note);
+			textNote.setTextNoteID(textNoteID);
+			textNote.setUnitID(unitID);
+			textNote.setUserID(userID);
+			textNote.setTextNote(textNotestr);
 			textNote.setShare(share);
-			textNote.setShare_time(share_time);
+			textNote.setShareTime(shareTime);
 			textNote.setLikes(likes);
 
 			System.out.println(textNote);
 			dbnote.updateTextNoteTable(textNote);
-			PrintWriter out = response.getWriter();		
-//			out.print("success");
 			dbnote.conClose();
 		}
 		if(state.equals("share"))
 		{
 			NoteManager dbnote = new NoteManager();
 			
-			
 			TextNote textNote = new TextNote();			
-			textNote.setUnit_id(unit_id);
-			textNote.setUser_id(user_id);
-			 
-
-			System.out.println(user_id);
-			dbnote.shareTextNote(unit_id,user_id);
-			dbnote.sharePictureNote(unit_id,user_id);
-			PrintWriter out = response.getWriter();		
-//			out.print("success");
+			textNote.setUnitID(unitID);
+			textNote.setUserID(userID);
+			
+			System.out.println(userID);
+			dbnote.shareTextNote(unitID,userID);
+			dbnote.sharePictureNote(unitID,userID);
 			dbnote.conClose();
 		}
 		if(state.equals("notShare"))
 		{
 			NoteManager dbnote = new NoteManager();
 			
-			
 			TextNote textNote = new TextNote();			
-			textNote.setUnit_id(unit_id);
-			textNote.setUser_id(user_id);
-			
+			textNote.setUnitID(unitID);
+			textNote.setUserID(userID);
 
-			System.out.println(user_id);
-			dbnote.notShareTextNote(unit_id,user_id);
-			dbnote.notSharePictureNote(unit_id,user_id);
-			PrintWriter out = response.getWriter();		
-//			out.print("success");
+			System.out.println(userID);
+			dbnote.notShareTextNote(unitID,userID);
+			dbnote.notSharePictureNote(unitID,userID);
 			dbnote.conClose();
 		}
 		
