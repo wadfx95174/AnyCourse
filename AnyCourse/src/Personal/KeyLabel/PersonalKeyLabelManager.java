@@ -12,8 +12,8 @@ import com.google.gson.Gson;
 
 public class PersonalKeyLabelManager
 {
-	private String selectPersonalKeyLabelSQL = "select * from keylabel natural join unit where userID = ?";
-	private String deleteKeyLabelSQL = "delete from keylabel where keylabelID = ?";
+	private String selectPersonalKeyLabelSQL = "select * from keylabel natural join unit where userId = ?";
+	private String deleteKeyLabelSQL = "delete from keylabel where keylabelId = ?";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -43,10 +43,10 @@ public class PersonalKeyLabelManager
 			while(result.next()) 
 			{ 	
 				PersonalKeyLabel keyLabel = new PersonalKeyLabel();
-				keyLabel.setKeyLabelID(result.getInt("keylabelID"));
-				keyLabel.setUnitID(result.getInt("unitID"));
+				keyLabel.setKeyLabelId(result.getInt("keylabelId"));
+				keyLabel.setUnitId(result.getInt("unitId"));
 				keyLabel.setUnitName(result.getString("unitName"));
-				keyLabel.setUserID(result.getString("userID"));
+				keyLabel.setUserId(result.getString("userId"));
 				keyLabel.setKeyLabelName(result.getString("keylabelName"));
 				keyLabel.setUrl(result.getString("videoUrl"));
 				keyLabel.setBeginTime(result.getInt("beginTime"));
@@ -67,11 +67,11 @@ public class PersonalKeyLabelManager
 		return json;
 	}
 	
-	public void deleteKeyLabel(int keyLabelID)
+	public void deleteKeyLabel(int keyLabelId)
 	{
 		try {
 			pst = con.prepareStatement(deleteKeyLabelSQL);
-			pst.setInt(1,keyLabelID);
+			pst.setInt(1,keyLabelId);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){

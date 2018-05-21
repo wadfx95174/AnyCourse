@@ -1,26 +1,26 @@
 package Personal.VideoList;
 
 public class UnitVideo {
-	private String userID;
+	private String userId;
 	private String unitName;
 	private String courseInfo;
 	private String schoolName;
 	private String teacher;
 	private String videoImgSrc;
 	private int videoType;//1:youtube。2:jwplayer
-	private int courselistID;
+	private int courselistId;
 	private int oorder;
 	private int likes;
-	private int unitID;
+	private int unitId;
 	
 	public UnitVideo() {}
 
-	public String getUserID() {
-		return userID;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getUnitName() {
@@ -71,12 +71,12 @@ public class UnitVideo {
 		this.videoType = videoType;
 	}
 
-	public int getCourselistID() {
-		return courselistID;
+	public int getCourselistId() {
+		return courselistId;
 	}
 
-	public void setCourselistID(int courselistID) {
-		this.courselistID = courselistID;
+	public void setCourselistId(int courselistId) {
+		this.courselistId = courselistId;
 	}
 
 	public int getOorder() {
@@ -95,12 +95,11 @@ public class UnitVideo {
 		this.likes = likes;
 	}
 
-	public int getUnitID() {
-		return unitID;
+	public int getUnitId() {
+		return unitId;
 	}
 
-	public void setUnitID(int unitID) {
-		this.unitID = unitID;
+	public void setUnitId(int unitId) {
+		this.unitId = unitId;
 	}
-	
 }

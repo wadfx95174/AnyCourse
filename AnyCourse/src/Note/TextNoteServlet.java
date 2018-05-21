@@ -24,7 +24,7 @@ public class TextNoteServlet extends HttpServlet {
 		ArrayList<TextNote> textNotes = new ArrayList<TextNote>();
 		
 		String textNoteJson = new Gson().toJson(textNotes);
-		textNoteJson = dbnote1.selectTextNoteTable(Integer.parseInt(request.getParameter("unitID")), (String)session.getAttribute("userID"));
+		textNoteJson = dbnote1.selectTextNoteTable(Integer.parseInt(request.getParameter("unitId")), (String)session.getAttribute("userId"));
 		response.setContentType("application/json;charset = utf-8;");	
 		response.getWriter().write(textNoteJson);
 		dbnote1.conClose();
@@ -34,8 +34,8 @@ public class TextNoteServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String state = request.getParameter("state");
 		response.setHeader("Cache-Control","max-age=0");
-		int unitID = Integer.parseInt(request.getParameter("unitID"));
-		String userID = (String)session.getAttribute("userID");
+		int unitId = Integer.parseInt(request.getParameter("unitId"));
+		String userId = (String)session.getAttribute("userId");
 		
 		if(state.equals("insert"))
 		{
@@ -47,8 +47,8 @@ public class TextNoteServlet extends HttpServlet {
 			
 			TextNote textNote = new TextNote();
 			
-			textNote.setUnitID(unitID);
-			textNote.setUserID(userID);
+			textNote.setUnitId(unitId);
+			textNote.setUserId(userId);
 			textNote.setTextNote(textNotestr);
 			textNote.setShare(share);
 			textNote.setShareTime(shareTime);
@@ -61,16 +61,16 @@ public class TextNoteServlet extends HttpServlet {
 		if(state.equals("update"))
 		{
 			NoteManager dbnote = new NoteManager();
-			int textNoteID = Integer.parseInt(request.getParameter("textNoteID"));
+			int textNoteId = Integer.parseInt(request.getParameter("textNoteId"));
 			String textNotestr = request.getParameter("textNote");
 			int share = Integer.parseInt(request.getParameter("share"));
 			String shareTime = request.getParameter("shareTime");
 			int likes = Integer.parseInt(request.getParameter("likes"));
 			
 			TextNote textNote = new TextNote();
-			textNote.setTextNoteID(textNoteID);
-			textNote.setUnitID(unitID);
-			textNote.setUserID(userID);
+			textNote.setTextNoteId(textNoteId);
+			textNote.setUnitId(unitId);
+			textNote.setUserId(userId);
 			textNote.setTextNote(textNotestr);
 			textNote.setShare(share);
 			textNote.setShareTime(shareTime);
@@ -85,12 +85,12 @@ public class TextNoteServlet extends HttpServlet {
 			NoteManager dbnote = new NoteManager();
 			
 			TextNote textNote = new TextNote();			
-			textNote.setUnitID(unitID);
-			textNote.setUserID(userID);
+			textNote.setUnitId(unitId);
+			textNote.setUserId(userId);
 			
-			System.out.println(userID);
-			dbnote.shareTextNote(unitID,userID);
-			dbnote.sharePictureNote(unitID,userID);
+			System.out.println(userId);
+			dbnote.shareTextNote(unitId,userId);
+			dbnote.sharePictureNote(unitId,userId);
 			dbnote.conClose();
 		}
 		if(state.equals("notShare"))
@@ -98,12 +98,12 @@ public class TextNoteServlet extends HttpServlet {
 			NoteManager dbnote = new NoteManager();
 			
 			TextNote textNote = new TextNote();			
-			textNote.setUnitID(unitID);
-			textNote.setUserID(userID);
+			textNote.setUnitId(unitId);
+			textNote.setUserId(userId);
 
-			System.out.println(userID);
-			dbnote.notShareTextNote(unitID,userID);
-			dbnote.notSharePictureNote(unitID,userID);
+			System.out.println(userId);
+			dbnote.notShareTextNote(unitId,userId);
+			dbnote.notSharePictureNote(unitId,userId);
 			dbnote.conClose();
 		}
 		

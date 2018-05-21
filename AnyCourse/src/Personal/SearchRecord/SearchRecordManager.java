@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SearchRecordManager {
-	private String deleteSearchRecordSQL = "delete from searchRecord where userID = ? and searchWord = ? and searchTime = ?";
+	private String deleteSearchRecordSQL = "delete from searchRecord where userId = ? and searchWord = ? and searchTime = ?";
 	private SearchRecord searchRecord;
 	private ArrayList<SearchRecord> searchRecords;
 	
@@ -34,11 +34,11 @@ public class SearchRecordManager {
 		}
 	}
 	//選取要呈現的搜尋紀錄
-	public ArrayList<SearchRecord> selectSearchRecordTable(String userID) {
+	public ArrayList<SearchRecord> selectSearchRecordTable(String userId) {
 		searchRecords = new ArrayList<SearchRecord>();
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from searchRecord where userID = '" + userID + "'");
+			result = stat.executeQuery("select * from searchRecord where userId = '" + userId + "'");
 			 while(result.next()) 
 		     { 	
 				 searchRecord = new SearchRecord();
@@ -56,10 +56,10 @@ public class SearchRecordManager {
 		return searchRecords;
 	}
 	//刪除指定搜尋資料
-	public void deleteSearchRecordTable(String userID,String searchWord,String searchTime) {
+	public void deleteSearchRecordTable(String userId,String searchWord,String searchTime) {
 		try {
 			pst = con.prepareStatement(deleteSearchRecordSQL);
-			pst.setString(1,userID);
+			pst.setString(1,userId);
 			pst.setString(2,searchWord);
 			pst.setString(3,searchTime);
 			pst.executeUpdate();

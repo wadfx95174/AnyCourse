@@ -2,7 +2,6 @@
 //var ajaxURL="http://140.121.197.130:8400/";
 var ajaxURL="http://localhost:8080/";
 var player;
-//var keyLabels = [];
 var keyLabelArray;
 var maxIndex = 0;
 var exmaxIndex = 0;
@@ -22,15 +21,12 @@ $(document).ready(function(){
     	cache :false,
     	data: {
     		"action": 'setIsBrowse',
-    		"unitID": get('unitID')
+    		"unitId": get('unitId')
     	},
     	error: function(){
     		console.log("SetIsBrowse Error!!!")
     	},
     	success: function(response){
-//    		alert(response);
-//    		console.log("aaa");
-//    	    console.log(response.personalLike);
     	    if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
     	    else if(response.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
     	}
@@ -41,7 +37,7 @@ $(document).ready(function(){
     	cache :false,
     	data: {
     		"method": 'getVideo',
-    		"unitID": get('unitID')
+    		"unitId": get('unitId')
     	},
     	error: function(){
     	},
@@ -50,12 +46,8 @@ $(document).ready(function(){
     		
     		$('h3')[0].append(response.unitName);
     	    player=$("#myvideo")[0];
-//    	    console.log(response.personalLike);
-//    	    if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
-//    	    else if(reponse.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
     	    $('#likesNum').text(response.likes);
     	    $('#introduction').append(response.courseInfo);
-    	    //player.currentTime = get("time") == null ? 0 : parseInt(get("time"));
     	    seekTo(get("time") == null ? 0 : parseInt(get("time")));
     	}
     });
@@ -92,12 +84,8 @@ $(document).ready(function(){
 
 //----------------------------------------------keyLabel----------------------------------------------//    
 //---------------------------抓影片結束時間，並儲存----------------------------------------------//
-//---------------------------要設perconal_plan跟watch_record兩個table-------------------------//
-    window.onbeforeunload = function(event) { 
-        console.log(player["currentTime"]);
-        console.log(player["duration"]);
-        console.log(get("unitID"));
-        
+//---------------------------要設perconalPlan跟watchRecord兩個table-------------------------//
+    window.onbeforeunload = function(event) {
         $.ajax({
         	url:ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
         	method: 'POST',
@@ -105,7 +93,7 @@ $(document).ready(function(){
         		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
         		"currentTime":Math.floor(player["currentTime"]),//關閉的時間
         		"duration":Math.floor(player["duration"]),//影片總共有多長時間
-        		"unitID": get("unitID")
+        		"unitId": get("unitId")
         	},
         	error: function(){
         		console.log("setVideoEndTime failed!");

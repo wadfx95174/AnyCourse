@@ -25,9 +25,9 @@ public class AccountServlet extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		Account account = new Account();
-		if (session.getAttribute("userID")!=null)
+		if (session.getAttribute("userId")!=null)
 		{
-			account.setUserID((String)session.getAttribute("userID"));
+			account.setUserId((String)session.getAttribute("userId"));
 			account.setNickName((String)session.getAttribute("nickName"));
 			account.setPictureUrl((String)session.getAttribute("pictureUrl"));
 		}

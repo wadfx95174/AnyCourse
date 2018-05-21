@@ -11,11 +11,11 @@ import java.util.ArrayList;
 
 public class CalendarManager
 {
-	private final String selectEventsSQL = "select * from event natural join calendar where userID = ?";
+	private final String selectEventsSQL = "select * from event natural join calendar where userId = ?";
 	private final String insertEventSQL = "insert into event value (null,1,?,?,?,?,?,?,?)";
-	private final String updateEventSQL = "update event set title = ?,url = ?,start = ?,end = ?,allDay = ? where eventID = ?";
-	private final String deleteEventSQL = "delete from event where eventID = ?";
-	private final String deleteCalendarSQL = "delete from calendar where eventID = ?";
+	private final String updateEventSQL = "update event set title = ?,url = ?,start = ?,end = ?,allDay = ? where eventId = ?";
+	private final String deleteEventSQL = "delete from event where eventId = ?";
+	private final String deleteCalendarSQL = "delete from calendar where eventId = ?";
 	private final String insertCalendarSQL = "insert into calendar value (?,?)";
 	private Connection con = null;
 	private Statement stat = null;
@@ -50,7 +50,7 @@ public class CalendarManager
 			while (result.next())
 			{
 				CalendarDTO dto = new CalendarDTO();
-				dto.setId(result.getInt("eventID"));
+				dto.setId(result.getInt("eventId"));
 				dto.setTitle(result.getString("title"));
 				dto.setUrl(result.getString("url"));
 				dto.setStart(result.getString("start"));

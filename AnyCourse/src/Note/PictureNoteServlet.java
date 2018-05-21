@@ -21,7 +21,7 @@ public class PictureNoteServlet extends HttpServlet {
 		ArrayList<PictureNote> pictureNotes = new ArrayList<PictureNote>();
 		response.setHeader("Cache-Control","max-age=0");
 		String pictureNoteJson = new Gson().toJson(pictureNotes);
-		pictureNoteJson = dbnote.selectPictureNoteTable(Integer.parseInt(request.getParameter("unitID")), (String)session.getAttribute("userID"));
+		pictureNoteJson = dbnote.selectPictureNoteTable(Integer.parseInt(request.getParameter("unitId")), (String)session.getAttribute("userId"));
 		response.setContentType("application/json");
 		response.getWriter().write(pictureNoteJson);	
 		dbnote.conClose();
@@ -35,20 +35,20 @@ public class PictureNoteServlet extends HttpServlet {
 		{
 			System.out.println("ddd");
 			NoteManager dbnote = new NoteManager();
-			int pictureNoteID = Integer.parseInt(request.getParameter("pictureNoteID"));
+			int pictureNoteId = Integer.parseInt(request.getParameter("pictureNoteId"));
 			
 			PictureNote pictureNote = new PictureNote();
-			pictureNote.setPictureNoteID(pictureNoteID);
+			pictureNote.setPictureNoteId(pictureNoteId);
 			
 			
-			dbnote.deletePictureNoteTable(pictureNoteID);
+			dbnote.deletePictureNoteTable(pictureNoteId);
 			PrintWriter out = response.getWriter();
 			dbnote.conClose();
 		}
 		if(state.equals("insert"))
 		{
-			int unitID = Integer.parseInt(request.getParameter("unitID"));
-			String userID = (String)session.getAttribute("userID");
+			int unitId = Integer.parseInt(request.getParameter("unitId"));
+			String userId = (String)session.getAttribute("userId");
 			String pictureNoteUrl = request.getParameter("pictureNoteUrl");
 			int share = Integer.parseInt(request.getParameter("share"));
 			String shareTime = request.getParameter("shareTime");
@@ -56,15 +56,15 @@ public class PictureNoteServlet extends HttpServlet {
 			NoteManager dbnote = new NoteManager();
 						
 			PictureNote pictureNote = new PictureNote();
-			pictureNote.setUnitID(unitID);
-			pictureNote.setUserID(userID);
+			pictureNote.setUnitId(unitId);
+			pictureNote.setUserId(userId);
 			pictureNote.setPictureNoteUrl(pictureNoteUrl);
 			pictureNote.setShare(share);
 			pictureNote.setShareTime(shareTime);
 			pictureNote.setLikes(likes);
 			
 			int id =dbnote.insertPictureNoteTable(pictureNote);
-			pictureNote.setPictureNoteID(id);
+			pictureNote.setPictureNoteId(id);
 			String pictureNoteJson = new Gson().toJson(pictureNote);
 			response.setContentType("application/json");
 			response.getWriter().write(pictureNoteJson);

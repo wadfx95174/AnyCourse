@@ -23,7 +23,7 @@ public class ExchangeKeyLabelServlet extends HttpServlet {
 			
 		
 		String keyLabelJson = new Gson().toJson(keyLabels);
-		keyLabelJson = dbkeylabel.selectKeyLabelTable(Integer.parseInt(request.getParameter("unitID")));
+		keyLabelJson = dbkeylabel.selectKeyLabelTable(Integer.parseInt(request.getParameter("unitId")));
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(keyLabelJson);
 		dbkeylabel.conClose();

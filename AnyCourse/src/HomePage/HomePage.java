@@ -1,9 +1,9 @@
 package HomePage;
 
 public class HomePage {
-	private int accountID;
-	private String userID;
-	private int unitID;
+	private int accountId;
+	private String userId;
+	private int unitId;
 	private String listName;
 	private String unitName;
 	private String schoolName;
@@ -12,7 +12,7 @@ public class HomePage {
 	private int unitLikes;
 	private int listLikes;
 	private String videoImgSrc;
-	private int courselistID;
+	private int courselistId;
 	private int share;
 	private int num;
 	private int videoType;
@@ -22,23 +22,23 @@ public class HomePage {
 	 */
 	private int type;//
 	public HomePage() {}
-	public int getAccountID() {
-		return accountID;
+	public int getAccountId() {
+		return accountId;
 	}
-	public void setAccountID(int accountID) {
-		this.accountID = accountID;
+	public void setAccountId(int accountId) {
+		this.accountId = accountId;
 	}
-	public String getUserID() {
-		return userID;
+	public String getUserId() {
+		return userId;
 	}
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public int getUnitID() {
-		return unitID;
+	public int getUnitId() {
+		return unitId;
 	}
-	public void setUnitID(int unitID) {
-		this.unitID = unitID;
+	public void setUnitId(int unitId) {
+		this.unitId = unitId;
 	}
 	public String getListName() {
 		return listName;
@@ -88,11 +88,11 @@ public class HomePage {
 	public void setVideoImgSrc(String videoImgSrc) {
 		this.videoImgSrc = videoImgSrc;
 	}
-	public int getCourselistID() {
-		return courselistID;
+	public int getCourselistId() {
+		return courselistId;
 	}
-	public void setCourselistID(int courselistID) {
-		this.courselistID = courselistID;
+	public void setCourselistId(int courselistId) {
+		this.courselistId = courselistId;
 	}
 	public int getShare() {
 		return share;

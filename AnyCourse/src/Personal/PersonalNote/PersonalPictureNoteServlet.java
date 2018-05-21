@@ -21,7 +21,7 @@ public class PersonalPictureNoteServlet extends HttpServlet {
 		ArrayList<PersonalPictureNote> personalPictureNotes = new ArrayList<>();
 		
 		String personalPictureNoteJson = new Gson().toJson(personalPictureNotes);
-		personalPictureNoteJson = dbpersonalNote.selectPersonalPictureNoteTable((String)session.getAttribute("userID"));
+		personalPictureNoteJson = dbpersonalNote.selectPersonalPictureNoteTable((String)session.getAttribute("userId"));
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(personalPictureNoteJson);	
 		dbpersonalNote.conClose();

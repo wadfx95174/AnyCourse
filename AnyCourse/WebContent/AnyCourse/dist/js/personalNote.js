@@ -16,26 +16,26 @@ $(document).ready(function(){
 							'<li>'
 							+'<ul class="list-group list-group-horizontal">'
 							+'<li class="list-group-item col-xs-4">'
-							+'<div class="personalNote "><a class="list-group-item" href="../PlayerInterface.html?type='+ (response[i].video_url.split("/")[2]=='www.youtube.com'?1:2) + '&unit_id='+response[i].unit_id+'">'					
+							+'<div class="personalNote "><a class="list-group-item" href="../PlayerInterface.html?type='+ (response[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].unitId+'">'					
 							+'<h4 class="media-heading">'
-							+'<b>影片名稱:' + response[i].unit_name + '</b>'
+							+'<b>影片名稱:' + response[i].unitName + '</b>'
 							+'</h4>'						
-							+'<p style="margin-bottom: 5px;">開課大學:' + response[i].school_name + '</p>'					
+							+'<p style="margin-bottom: 5px;">開課大學:' + response[i].schoolName + '</p>'					
 							+'<p style="margin-bottom: 5px;">讚數:' + response[i].likes +'</p>'
 							+'</a></div></li>'
 							+'<li class="list-group-item col-xs-4">'
-							+'<div class="personalNote ">' + response[i].text_note + '</div>'
+							+'<div class="personalNote ">' + response[i].textNote + '</div>'
 							+'</li>'
 							+'<li class="list-group-item col-xs-4">'
-							+'<div class="personalNote " id="personalPictureNote_'+ response[i].unit_id  +'"></div>'
+							+'<div class="personalNote " id="personalPictureNote_'+ response[i].unitId  +'"></div>'
 							+'</li>'
 							+'</ul>'				
 							+'</li>'+
-							'<div class="ffs-gal-view view'+ response[i].unit_id +'">'+
+							'<div class="ffs-gal-view view'+ response[i].unitId +'">'+
 							'<h1 id="picture"></h1>'+ 
-							'<img class="ffs-gal-prev ffs-gal-nav prev' + response[i].unit_id + ' nav'+ response[i].unit_id +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/prev.svg" alt="Previous picture" title="Previous picture" />'+									     
-							'<img class="ffs-gal-next ffs-gal-nav next' + response[i].unit_id + ' nav'+ response[i].unit_id +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/next.svg" alt="Next picture" title="Next picture" />'+
-							'<img class="ffs-gal-close close'+ response[i].unit_id +'"  src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/close.svg" alt="Close gallery" title="Close gallery" />'+
+							'<img class="ffs-gal-prev ffs-gal-nav prev' + response[i].unitId + ' nav'+ response[i].unitId +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/prev.svg" alt="Previous picture" title="Previous picture" />'+									     
+							'<img class="ffs-gal-next ffs-gal-nav next' + response[i].unitId + ' nav'+ response[i].unitId +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/next.svg" alt="Next picture" title="Next picture" />'+
+							'<img class="ffs-gal-close close'+ response[i].unitId +'"  src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/close.svg" alt="Close gallery" title="Close gallery" />'+
 							'</div>'
 					);
 				}
@@ -48,10 +48,9 @@ $(document).ready(function(){
 					array = response;
 					for (var i = 0; i < response.length; i++)
 					{			
-							$('#personalPictureNote_'+response[i].unit_id).append(
-									'<img id="no_'+ response[i].unit_id +'_'+ response[i].user_id+'_'+ response[i].picture_note_id +'" class="ffs-gal p'+ response[i].unit_id +'" src="' + response[i].picture_note_url +'" alt="picture_note_' + response[i].picture_note_id + '" data-url="' + response[i].picture_note_url + '" />'
-							);
-//						}
+						$('#personalPictureNote_'+response[i].unitId).append(
+								'<img id="no_'+ response[i].unitId +'_'+ response[i].userId+'_'+ response[i].pictureNoteId +'" class="ffs-gal p'+ response[i].unitId +'" src="' + response[i].pictureNoteUrl +'" alt="pictureNote_' + response[i].pictureNoteId + '" data-url="' + response[i].pictureNoteUrl + '" />'
+						);
 					}
 					
 				},
@@ -70,26 +69,18 @@ var id;
 $('document').ready(function() {
   //Make gallery objects clickable
   $(document).on('click','.ffs-gal', function() {
-  //$('.fs-gal').click(function() {
 	id = (this.id).split("_")[1];  
 	
-	//Gallery navigation
-   //$('.view1 .nav1').click(function() {
-  $(document).on('click','.view'+id + ' .nav'+id, function() {	
-  //$('.view'+id + ' .nav'+id).click(function() {
+  $(document).on('click','.view'+id + ' .nav'+id, function() {
 	  
     var index = $(this).data('img-index');
     var img = $($('.p'+id).get(index));
-    fsGal_DisplayImage(img);
+    fsGalDisplayImage(img);
 	
   });
   //Close gallery
   
- //$(vv).click(function() {
-  $(document).on('click','.view'+id + ' .close'+id, function() {	
-  //$('.view'+id + ' .close'+id).click(function() {
-	  //alert(typeof(id));
-	  //alert(id);
+  $(document).on('click','.view'+id + ' .close'+id, function() {
     $('.view'+id).fadeOut();
   });
   //Keyboard navigation
@@ -105,13 +96,11 @@ $('document').ready(function() {
     }
   });
   
-    fsGal_DisplayImage($(this));
+    fsGalDisplayImage($(this));
   });
   //Display gallery
-  function fsGal_DisplayImage(obj) {
+  function fsGalDisplayImage(obj) {
     //Clear navigation buttons
-	//id = (obj.id).split("_")[1];
-	
     $('.view'+id + '>.prev'+id).fadeOut();
 	
     $('.view'+id + '>.next'+id).fadeOut();
@@ -138,8 +127,5 @@ $('document').ready(function() {
       $('.view'+id +' > .next'+id).fadeIn();
     }
     $('.view'+id).fadeIn(); //Display gallery
-	
   }
-  
 });
-

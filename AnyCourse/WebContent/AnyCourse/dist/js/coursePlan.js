@@ -9,7 +9,7 @@ $('#unit').slimScroll({
 $('.box-body').slimScroll({
 	  height: '420px;'
 	  });
-var listArray;//用來儲存影片的unitID
+var listArray;//用來儲存影片的unitId
 $(document).ready(function() {
 	checkLogin("../", "../../../");
 	//想要觀看、正在觀看、已觀看完的每個影片的前段HTML
@@ -33,7 +33,7 @@ $(document).ready(function() {
 		+'<span class="pull-right">' 
 		+'<i class="fa fa-times" style="cursor: pointer;"></i>'
 		+'</span>';
-	var videoID = 1;//設置每個影片的ID
+	var videoId = 1;//設置每個影片的Id
 	$.ajax({
 		url:ajaxURL+'AnyCourse/CoursePlanServlet.do',
 		method:'GET',
@@ -44,7 +44,7 @@ $(document).ready(function() {
 				//想要觀看
 				if(result[i].status == 1){
 					$('#wantList').append(ListBeginningHTML
-							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unitID + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
+							+'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
 							+'<div class="info-card">'
 							+'<div class="embed-responsive embed-responsive-16by9">'
 							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].videoImgSrc+'">' 
@@ -68,7 +68,7 @@ $(document).ready(function() {
 				//正在觀看
 				else if(result[i].status == 2){
 					$('#ingList').append(ListBeginningHTML
-							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unitID + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
+							+'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
 							+'<div class="info-card">'
 							+'<div class="embed-responsive embed-responsive-16by9">'
 							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].videoImgSrc+'">' 
@@ -92,7 +92,7 @@ $(document).ready(function() {
 				//已觀看完
 				else if(result[i].status == 3){
 					$('#doneList').append(ListBeginningHTML
-							+'<a class="portlet-content" id="'+videoID+'" onclick="jumpToPlayerInterface('+ result[i].unitID + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
+							+'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
 							+'<div class="info-card">'
 							+'<div class="embed-responsive embed-responsive-16by9">'
 							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].videoImgSrc+'">' 
@@ -113,10 +113,10 @@ $(document).ready(function() {
 							+'</li>'
 					);
 				}
-				videoID++;
+				videoId++;
 			}
 			for(var i = 1 ; i <= result.length;i++){
-				listArray[i] = result[i-1].unitID;
+				listArray[i] = result[i-1].unitId;
 			}
 		},
 		error:function(){}
@@ -155,7 +155,7 @@ $(document).ready(function() {
 		    			newIndex: newIndex + 1,//因為抓到的index是從0開始算，而資料庫是從1開始，所以要加1
 	    				sender: sender,
 		    			received: received,
-		    			unitID: listArray[id]//unitID
+		    			unitId: listArray[id]//unitId
 		    		},
 		    		error:function(){
 		    			console.log("CoursePlan Sort Error!");
@@ -168,7 +168,7 @@ $(document).ready(function() {
 	
 });
 //跳轉至播放介面
-function jumpToPlayerInterface(unitID,type,time){
-    url = "../PlayerInterface.html?unitID="+unitID+"&type="+type+"&time="+time;//此處拼接內容
+function jumpToPlayerInterface(unitId,type,time){
+    url = "../PlayerInterface.html?unitId="+unitId+"&type="+type+"&time="+time;//此處拼接內容
     window.location.href = url;
 }

@@ -12,13 +12,13 @@ import com.google.gson.Gson;
 
 public class KeyLabelManager
 {
-	private String selectUnitKeyLabelSQL = "select * from keylabel where unitID = ?";
-	private String selectExangeKeyLabelSQL = "select * from keylabel where unitID = ? and share = 1";
-	private String selectPersonalKeyLabelSQL = "select * from keylabel where unitID = ? and userID = ?";
-	private String updateKeyLabelSQL = "update keylabel set keylabelName = ?, beginTime = ?, endTime = ? where keylabelID = ?";
+	private String selectUnitKeyLabelSQL = "select * from keylabel where unitId = ?";
+	private String selectExangeKeyLabelSQL = "select * from keylabel where unitId = ? and share = 1";
+	private String selectPersonalKeyLabelSQL = "select * from keylabel where unitId = ? and userId = ?";
+	private String updateKeyLabelSQL = "update keylabel set keylabelName = ?, beginTime = ?, endTime = ? where keylabelId = ?";
 	private String insertKeyLabelSQL = "insert into keylabel value (null,?,?,?,?,?,?,?,?)";
-	private String deleteKeyLabelSQL = "delete from keylabel where keylabelID = ?";
-	private String shareKeyLabelSQL = "update keylabel set share = ? where keylabelID = ?";
+	private String deleteKeyLabelSQL = "delete from keylabel where keylabelId = ?";
+	private String shareKeyLabelSQL = "update keylabel set share = ? where keylabelId = ?";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -49,9 +49,9 @@ public class KeyLabelManager
 			while(result.next()) 
 			{ 	
 				KeyLabel keyLabel = new KeyLabel();
-				keyLabel.setKeyLabelID(result.getInt("keylabelID"));
-				keyLabel.setUnitID(result.getInt("unitID"));
-				keyLabel.setUserID(result.getString("userID"));
+				keyLabel.setKeyLabelId(result.getInt("keylabelId"));
+				keyLabel.setUnitId(result.getInt("unitId"));
+				keyLabel.setUserId(result.getString("userId"));
 				keyLabel.setKeyLabelName(result.getString("keylabelName"));
 				keyLabel.setBeginTime(result.getInt("beginTime"));
 				keyLabel.setEndTime(result.getInt("endTime"));
@@ -81,9 +81,9 @@ public class KeyLabelManager
 			while(result.next()) 
 			{ 	
 				KeyLabel keyLabel = new KeyLabel();
-				keyLabel.setKeyLabelID(result.getInt("keylabelID"));
-				keyLabel.setUnitID(result.getInt("unitID"));
-				keyLabel.setUserID(result.getString("userID"));
+				keyLabel.setKeyLabelId(result.getInt("keylabelId"));
+				keyLabel.setUnitId(result.getInt("unitId"));
+				keyLabel.setUserId(result.getString("userId"));
 				keyLabel.setKeyLabelName(result.getString("keylabelName"));
 				keyLabel.setBeginTime(result.getInt("beginTime"));
 				keyLabel.setEndTime(result.getInt("endTime"));
@@ -114,9 +114,9 @@ public class KeyLabelManager
 			while(result.next()) 
 			{ 	
 				KeyLabel keyLabel = new KeyLabel();
-				keyLabel.setKeyLabelID(result.getInt("keylabelID"));
-				keyLabel.setUnitID(result.getInt("unitID"));
-				keyLabel.setUserID(result.getString("userID"));
+				keyLabel.setKeyLabelId(result.getInt("keylabelId"));
+				keyLabel.setUnitId(result.getInt("unitId"));
+				keyLabel.setUserId(result.getString("userId"));
 				keyLabel.setKeyLabelName(result.getString("keylabelName"));
 				keyLabel.setBeginTime(result.getInt("beginTime"));
 				keyLabel.setEndTime(result.getInt("endTime"));
@@ -141,8 +141,8 @@ public class KeyLabelManager
 		try
 		{
 			pst = con.prepareStatement(insertKeyLabelSQL, Statement.RETURN_GENERATED_KEYS);
-			pst.setInt(1, keyLabel.getUnitID());
-			pst.setString(2, keyLabel.getUserID());
+			pst.setInt(1, keyLabel.getUnitId());
+			pst.setString(2, keyLabel.getUserId());
 			pst.setString(3, keyLabel.getKeyLabelName());
 			pst.setInt(4, keyLabel.getBeginTime());
 			pst.setInt(5, keyLabel.getEndTime());
@@ -171,7 +171,7 @@ public class KeyLabelManager
 			pst.setString(1,keyLabel.getKeyLabelName());
 			pst.setInt(2,keyLabel.getBeginTime());
 			pst.setInt(3,keyLabel.getEndTime());
-			pst.setInt(4, keyLabel.getKeyLabelID());
+			pst.setInt(4, keyLabel.getKeyLabelId());
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
@@ -182,11 +182,11 @@ public class KeyLabelManager
 		}
 	}
 	
-	public void deleteKeyLabel(int keyLabelID)
+	public void deleteKeyLabel(int keyLabelId)
 	{
 		try {
 			pst = con.prepareStatement(deleteKeyLabelSQL);
-			pst.setInt(1,keyLabelID);
+			pst.setInt(1,keyLabelId);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
@@ -197,12 +197,12 @@ public class KeyLabelManager
 		}
 	}
 	
-	public void shareKeyLabel(int keyLabelID, int share)
+	public void shareKeyLabel(int keyLabelId, int share)
 	{
 		try {
 			pst = con.prepareStatement(shareKeyLabelSQL);
 			pst.setInt(1, share);
-			pst.setInt(2,keyLabelID);
+			pst.setInt(2,keyLabelId);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){

@@ -24,7 +24,7 @@ import RecommenderSystem.RecommendationResult;
 
 
 public class HomePageServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUId = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
@@ -37,14 +37,14 @@ public class HomePageServlet extends HttpServlet {
 		HomePageManager homePageDatabaseManager = new HomePageManager();
 		boolean check;//檢查該使用者是訪客、新使用者(沒有觀看紀錄)還是舊使用者(已經有推薦結果)
 		//檢查該使用者有沒有推薦資料、課程清單、想要觀看、正在觀看
-		check = homePageDatabaseManager.checkUser((String)session.getAttribute("userID"));
+		check = homePageDatabaseManager.checkUser((String)session.getAttribute("userId"));
 		//訪客||新使用者
-		if((String)session.getAttribute("userID") == null || check == false ) {
+		if((String)session.getAttribute("userId") == null || check == false ) {
 			homePages = homePageDatabaseManager.getRandVideo();
 		}
 		//舊使用者
 		else {
-			homePages = homePageDatabaseManager.getAllVideo((String)session.getAttribute("userID"));
+			homePages = homePageDatabaseManager.getAllVideo((String)session.getAttribute("userId"));
 		}
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
@@ -62,14 +62,14 @@ public class HomePageServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		HomePageManager homePageDatabaseManager = new HomePageManager();
 		//加單一個影片到課程計畫
-		if(request.getParameter("action").equals("addToCoursePlan")&&(String)session.getAttribute("userID")!=null) {
-			homePageDatabaseManager.addToCoursePlan((String)session.getAttribute("userID")
-					,Integer.parseInt(request.getParameter("unitID")));
+		if(request.getParameter("action").equals("addToCoursePlan")&&(String)session.getAttribute("userId")!=null) {
+			homePageDatabaseManager.addToCoursePlan((String)session.getAttribute("userId")
+					,Integer.parseInt(request.getParameter("unitId")));
 		}
 		//加整個清單到課程計畫
-		if(request.getParameter("action").equals("addToCoursePlanList")&&(String)session.getAttribute("userID")!=null) {
-			homePageDatabaseManager.addToCoursePlanList((String)session.getAttribute("userID")
-					,Integer.parseInt(request.getParameter("courselistID")));
+		if(request.getParameter("action").equals("addToCoursePlanList")&&(String)session.getAttribute("userId")!=null) {
+			homePageDatabaseManager.addToCoursePlanList((String)session.getAttribute("userId")
+					,Integer.parseInt(request.getParameter("courselistId")));
 		}
 		//關閉資料庫連線
 		homePageDatabaseManager.conClose();

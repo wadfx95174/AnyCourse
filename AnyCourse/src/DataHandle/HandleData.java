@@ -11,17 +11,9 @@ public class HandleData {
             reader.readLine();
             String line = null;
             String last;
-            String temp = null;
-            int count = 1;
             while((line=reader.readLine())!=null){
                 String item[] = line.split(",");
-                 
-                last = item[4];  
-//                boolean status = last.contains("/");  
-//                
-//                if(status){  
-//                	last = last.split("\\?")[0];
-//                }
+                last = item[4];
                 if(last.split("/")[2].equals("www.youtube.com")) {
                 	System.out.println("https://i.ytimg.com/vi/" + last.split("/")[4] + "/hqdefault.jpg");
                 }
@@ -31,8 +23,6 @@ public class HandleData {
                 else {
                 	System.out.println(last);
                 }
-                
-//                System.out.println(last);
             }
             
         }catch(ArrayIndexOutOfBoundsException e) {
@@ -42,5 +32,4 @@ public class HandleData {
             e.printStackTrace();
         }
     }
-
 }

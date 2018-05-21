@@ -10,7 +10,7 @@ function checkAll(obj,cName)
     for(var i=0;i<checkboxs.length;i++){checkboxs[i].checked = obj.checked;} 
 } 
 
-var checkID;
+var checkId;
 var searchRecordArray;//用來儲存搜尋結果的資料
 $(document).ready(function() {
 	checkLogin("../", "../../../");
@@ -24,7 +24,7 @@ $(document).ready(function() {
 		success:function(result){
 			searchRecordArray = new Array(result.length);
     		for(var i = 0 ;i < result.length;i++){
-    			$('#SearcRecordList').append('<li class="list-group-item" id="searchRecordID_'+ (i+1) +'">'
+    			$('#SearcRecordList').append('<li class="list-group-item" id="searchRecordId_'+ (i+1) +'">'
 						+'<div class="row">'
 						+'<div class="col-xs-1 text-left">'
 						+'<input name="checkboxItem" type="checkbox"/>'
@@ -32,7 +32,7 @@ $(document).ready(function() {
 						+'<div class="col-xs-6" id="searchRecordWord_'+ (i+1) +'"><a href="../SearchResult.html?searchQuery='+result[i].searchWord+'">' + result[i].searchWord + '</a></div>'
 						+'<div class="col-xs-5" id="searchRecordTime_'+ (i+1) +'">' + result[i].searchTime + '</div>'
 						+'<div class="col-xs-1">'
-						+'<button type="button" data-toggle="modal" data-target="#deleteModal1" onclick="getID('+(i+1)+')"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除"></i></button>'
+						+'<button type="button" data-toggle="modal" data-target="#deleteModal1" onclick="getId('+(i+1)+')"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除"></i></button>'
 						+'</div>'
 						+'</div></li>');
     			for(var j = 0 ; j < 3;j++){
@@ -62,11 +62,11 @@ $(document).ready(function() {
 			method : 'POST',
 			cache :false,
 		    data : {
-		    	"searchWord" : searchRecordArray[checkID][0],
-				"searchTime" : searchRecordArray[checkID][1]
+		    	"searchWord" : searchRecordArray[checkId][0],
+				"searchTime" : searchRecordArray[checkId][1]
 			},
 			success:function(result){
-	    		$("#searchRecordID_"+checkID).remove();
+	    		$("#searchRecordId_"+checkId).remove();
 	    	},
 			error:function(){console.log('failed');}
 		});
@@ -80,11 +80,11 @@ $(document).ready(function() {
 //			url : 'http://localhost:8080/AnyCourse/SearchRecordServlet.do',
 //			method : 'POST',
 //		    data : {
-//		    	"searchWord" : searchRecordArray[checkID][0],
-//				"searchTime" : searchRecordArray[checkID][1]
+//		    	"searchWord" : searchRecordArray[checkId][0],
+//				"searchTime" : searchRecordArray[checkId][1]
 //			},
 //			success:function(result){
-//	    		$("#searchRecordID_"+checkID).remove();
+//	    		$("#searchRecordId_"+checkId).remove();
 //	    		
 //	    	},
 //			error:function(){alert('failed');}
@@ -92,6 +92,6 @@ $(document).ready(function() {
 //	    
 //	  });
 });
-function getID(id){
-    checkID = id;
+function getId(id){
+    checkId = id;
   }

@@ -1,8 +1,8 @@
 package Personal.CoursePlan;
 
 public class CoursePlan {
-	private String userID;
-	private int unitID;
+	private String userId;
+	private int unitId;
 	private int lastTime;
 	private int status;
 	private int oorder;
@@ -16,20 +16,20 @@ public class CoursePlan {
 	
 	public CoursePlan() {}
 
-	public String getUserID() {
-		return userID;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public int getUnitID() {
-		return unitID;
+	public int getUnitId() {
+		return unitId;
 	}
 
-	public void setUnitID(int unitID) {
-		this.unitID = unitID;
+	public void setUnitId(int unitId) {
+		this.unitId = unitId;
 	}
 
 	public int getLastTime() {

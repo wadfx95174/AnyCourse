@@ -2,10 +2,10 @@ package Personal.KeyLabel;
 
 public class PersonalKeyLabel
 {
-	private int keyLabelID;
-	private int unitID;
+	private int keyLabelId;
+	private int unitId;
 	private String unitName;
-	private String userID;
+	private String userId;
 	private String keyLabelName;
 	private String url;
 	private int beginTime;
@@ -14,21 +14,21 @@ public class PersonalKeyLabel
 	private String shareTime;
 	private int likes;
 	
-	public int getKeyLabelID()
+	public int getKeyLabelId()
 	{
-		return keyLabelID;
+		return keyLabelId;
 	}
-	public void setKeyLabelID(int keyLabelID)
+	public void setKeyLabelId(int keyLabelId)
 	{
-		this.keyLabelID = keyLabelID;
+		this.keyLabelId = keyLabelId;
 	}
-	public int getUnitID()
+	public int getUnitId()
 	{
-		return unitID;
+		return unitId;
 	}
-	public void setUnitID(int unitID)
+	public void setUnitId(int unitId)
 	{
-		this.unitID = unitID;
+		this.unitId = unitId;
 	}
 	public String getUnitName()
 	{
@@ -38,13 +38,13 @@ public class PersonalKeyLabel
 	{
 		this.unitName = unitName;
 	}
-	public String getUserID()
+	public String getUserId()
 	{
-		return userID;
+		return userId;
 	}
-	public void setUserID(String userID)
+	public void setUserId(String userId)
 	{
-		this.userID = userID;
+		this.userId = userId;
 	}
 	public String getKeyLabelName()
 	{
@@ -105,7 +105,7 @@ public class PersonalKeyLabel
 	@Override
 	public String toString()
 	{
-		return "KeyLabel [keyLabelID=" + keyLabelID + ", unitID=" + unitID + ", userID=" + userID + ", keyLabelName="
+		return "KeyLabel [keyLabelId=" + keyLabelId + ", unitId=" + unitId + ", userId=" + userId + ", keyLabelName="
 				+ keyLabelName + ", beginTime=" + beginTime + ", endTime=" + endTime + ", share=" + share
 				+ ", shareTime=" + shareTime + ", likes=" + likes + ", toString()=" + super.toString() + "]";
 	}

@@ -28,7 +28,7 @@ public class CommentServlet extends HttpServlet {
 
 		
 		String commentJson = new Gson().toJson(comments);
-		commentJson = dbcomment.selectCommentTable(Integer.parseInt(request.getParameter("unitID")));
+		commentJson = dbcomment.selectCommentTable(Integer.parseInt(request.getParameter("unitId")));
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(commentJson);
 		dbcomment.conClose();
@@ -40,8 +40,8 @@ public class CommentServlet extends HttpServlet {
 		response.setHeader("Cache-Control","max-age=0");		 
 		if(state.equals("insert"))
 		{
-			int unitID = Integer.parseInt(request.getParameter("unitID"));
-			String userID = (String)session.getAttribute("userID");
+			int unitId = Integer.parseInt(request.getParameter("unitId"));
+			String userId = (String)session.getAttribute("userId");
 			String nickName = (String)session.getAttribute("nickName");
 			String commentContent = request.getParameter("commentContent");
 			
@@ -49,8 +49,8 @@ public class CommentServlet extends HttpServlet {
 			
 			Comment comment = new Comment();
 			
-			comment.setUnitID(unitID);
-			comment.setUserID(userID);
+			comment.setUnitId(unitId);
+			comment.setUserId(userId);
 			comment.setNickName(nickName);
 			comment.setCommentContent(commentContent);
 			
@@ -62,9 +62,9 @@ public class CommentServlet extends HttpServlet {
 		}
 		if(state.equals("update"))
 		{
-			int commentID = Integer.parseInt(request.getParameter("commentID"));
-			int unitID = Integer.parseInt(request.getParameter("unitID"));
-			String userID = (String)session.getAttribute("userID");
+			int commentId = Integer.parseInt(request.getParameter("commentId"));
+			int unitId = Integer.parseInt(request.getParameter("unitId"));
+			String userId = (String)session.getAttribute("userId");
 			String nickName = (String)session.getAttribute("nickName");
 			String commentTime = request.getParameter("commentTime");
 			String commentContent = request.getParameter("commentContent");
@@ -72,9 +72,9 @@ public class CommentServlet extends HttpServlet {
 			ForumManager dbcomment = new ForumManager();
 			
 			Comment comment = new Comment();
-			comment.setCommentID(commentID);
-			comment.setUnitID(unitID);
-			comment.setUserID(userID);
+			comment.setCommentId(commentId);
+			comment.setUnitId(unitId);
+			comment.setUserId(userId);
 			comment.setNickName(nickName);
 			comment.setCommentTime(commentTime);
 			comment.setCommentContent(commentContent);
@@ -87,12 +87,12 @@ public class CommentServlet extends HttpServlet {
 		if(state.equals("delete"))
 		{
 			ForumManager dbcomment = new ForumManager();
-			int commentID = Integer.parseInt(request.getParameter("commentID"));
+			int commentId = Integer.parseInt(request.getParameter("commentId"));
 			
 			Comment comment = new Comment();
-			comment.setCommentID(commentID);
+			comment.setCommentId(commentId);
 						
-			dbcomment.deleteCommentTable(commentID);
+			dbcomment.deleteCommentTable(commentId);
 			PrintWriter out = response.getWriter();
 			dbcomment.conClose();
 		}

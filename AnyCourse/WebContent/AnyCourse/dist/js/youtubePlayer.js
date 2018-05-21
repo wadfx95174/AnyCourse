@@ -35,7 +35,7 @@ $(document).ready(function(){
 	})
 	
   //---------------------------抓影片結束時間，並儲存----------------------------------------------//
-  //---------------------------要設perconal_plan跟watch_record兩個table-------------------------//
+  //---------------------------要設perconalPlan跟watchRecord兩個table-------------------------//
     window.onbeforeunload = function(event) { 
     	var current = player.getCurrentTime();
     	var duration = player.getDuration();
@@ -192,9 +192,9 @@ function init() {
 
     tag.src = 'https://www.youtube.com/iframe_api';
 
-    var first_script_tag = document.getElementsByTagName('script')[0];
+    var firstScriptTag = document.getElementsByTagName('script')[0];
 
-    first_script_tag.parentNode.insertBefore(tag, first_script_tag);
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 
     // Set timer to display infos

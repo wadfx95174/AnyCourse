@@ -21,7 +21,7 @@ public class SearchRecordServlet extends HttpServlet{
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		
-		searchRecords = searchRecordDatebaseManager.selectSearchRecordTable((String)session.getAttribute("userID"));
+		searchRecords = searchRecordDatebaseManager.selectSearchRecordTable((String)session.getAttribute("userId"));
 		
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(searchRecords));
@@ -35,7 +35,7 @@ public class SearchRecordServlet extends HttpServlet{
 		HttpSession session = request.getSession();
 		SearchRecordManager searchRecordDatebaseManager = new SearchRecordManager();
 		
-		searchRecordDatebaseManager.deleteSearchRecordTable((String)session.getAttribute("userID"),
+		searchRecordDatebaseManager.deleteSearchRecordTable((String)session.getAttribute("userId"),
 				request.getParameter("searchWord"),request.getParameter("searchTime"));
 		//關閉connection
 		searchRecordDatebaseManager.conClose();

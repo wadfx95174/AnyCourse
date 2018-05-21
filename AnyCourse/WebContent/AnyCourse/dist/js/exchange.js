@@ -15,32 +15,24 @@ $(document).ready(function() {
 		method : 'GET',
 		cache :false,
 		data : {					
-			"unit_id" : get("unit_id")
+			"unitId" : get("unitId")
 		},
 		success:function(result){
-//			alert(result);
-			
-			
     		for(var i = 0 ;i < result.length;i++){
     			
-    			$('#exchange_note').append( 	 
-						'<div id="exT_' + result[i].user_id + '" class=" col-xs-12">'+
+    			$('#exchangeNote').append( 	 
+						'<div id="exT_' + result[i].userId + '" class=" col-xs-12">'+
 						'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
-						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result[i].nick_name + '</h4>'+
-						'<h5 style="float:right;">' + result[i].share_time + '</h5>'+														
-						'<textarea class="col-xs-12" rows="4" cols="50" id="exText_' + result[i].text_note_id + '" disabled="disabled" style="float:left;">' + result[i].text_note + '</textarea>'+																			
-					//	'<div class="row">'+
-					//	'<div class="swiper-container" style="clear:both;">'+
-					//	'<div class="swiper-wrapper" id="exP_' + result[i].user_id +'" style="clear:both;">'+
-						'<div id="exP_' + result[i].user_id +'"  style="clear:both;">'+		
-					//	'</div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div>'+						
-					//	'</div></div>'+		
+						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result[i].nickName + '</h4>'+
+						'<h5 style="float:right;">' + result[i].shareTime + '</h5>'+														
+						'<textarea class="col-xs-12" rows="4" cols="50" id="exText_' + result[i].textNoteId + '" disabled="disabled" style="float:left;">' + result[i].textNote + '</textarea>'+
+						'<div id="exP_' + result[i].userId +'"  style="clear:both;">'+	
 						'</div>'+
-						'<div class="ffs-gal-view view'+ result[i].user_id +'">'+
+						'<div class="ffs-gal-view view'+ result[i].userId +'">'+
 						'<h1 id="picture"></h1>'+ 
-						'<img class="ffs-gal-prev ffs-gal-nav prev' + result[i].user_id + ' nav'+ result[i].user_id +'" src="../plugins/Gallery-Popup-jQuery-Fs-Gal/img/prev.svg" alt="Previous picture" title="Previous picture" />'+									     
-						'<img class="ffs-gal-next ffs-gal-nav next' + result[i].user_id + ' nav'+ result[i].user_id +'" src="../plugins/Gallery-Popup-jQuery-Fs-Gal/img/next.svg" alt="Next picture" title="Next picture" />'+
-						'<img class="ffs-gal-close close'+ result[i].user_id +'"  src="../plugins/Gallery-Popup-jQuery-Fs-Gal/img/close.svg" alt="Close gallery" title="Close gallery" />'+
+						'<img class="ffs-gal-prev ffs-gal-nav prev' + result[i].userId + ' nav'+ result[i].userId +'" src="../plugins/Gallery-Popup-jQuery-Fs-Gal/img/prev.svg" alt="Previous picture" title="Previous picture" />'+									     
+						'<img class="ffs-gal-next ffs-gal-nav next' + result[i].userId + ' nav'+ result[i].userId +'" src="../plugins/Gallery-Popup-jQuery-Fs-Gal/img/next.svg" alt="Next picture" title="Next picture" />'+
+						'<img class="ffs-gal-close close'+ result[i].userId +'"  src="../plugins/Gallery-Popup-jQuery-Fs-Gal/img/close.svg" alt="Close gallery" title="Close gallery" />'+
 						'</div>'+																																										
 						'</div>'						
 	    			); 
@@ -52,23 +44,14 @@ $(document).ready(function() {
     			method : 'GET',
     			cache :false,
     			data : {					
-					"unit_id" : get("unit_id")
+					"unitId" : get("unitId")
 				},
     			success : function(result) {
-//    				alert(result.comment_id);
-//    				alert(result.user_id);
-//    				alert(result.nick_name);
-//    				alert(result.comment_time);
-//    				alert(result.comment_content);
-//    				console.log(result);
     				for(var i = 0 ;i < result.length;i++){
-    				$('#exP_'+result[i].user_id).append( 
-//    						'<div class="swiper-slide col-xs-2 col-sm-2" style="padding:0px;">'+
-    						'<img id="no_'+ result[i].user_id +'_'+ result[i].picture_note_id +'" class="ffs-gal p'+ result[i].user_id +'" src="' + result[i].picture_note_url +'" alt="picture_note_' + result[i].picture_note_id + '" data-url="' + result[i].picture_note_url + '" />'
-//    						+'</div>'
+    				$('#exP_'+result[i].userId).append( 
+    						'<img id="no_'+ result[i].userId +'_'+ result[i].pictureNoteId +'" class="ffs-gal p'+ result[i].userId +'" src="' + result[i].pictureNoteUrl +'" alt="pictureNote_' + result[i].pictureNoteId + '" data-url="' + result[i].pictureNoteUrl + '" />'
     					);	
     				}
-//    				$("#reply_div_" + id ).toggle();
     				var swiper = new Swiper('.swiper-container', {
     				      slidesPerView: 3,
     				      spaceBetween: 0,
@@ -82,14 +65,6 @@ $(document).ready(function() {
     				    });
     			},
     			error: function (jqXHR, textStatus, errorThrown) {
-    		         /*弹出jqXHR对象的信息*/
-//    		         alert(jqXHR.responseText);
-//    		         alert(jqXHR.status);
-//    		         alert(jqXHR.readyState);
-//    		         alert(jqXHR.statusText);
-    		         /*弹出其他两个参数的信息*/
-//    		         alert(textStatus);
-//    		         alert(errorThrown);
     		     }
     		})
     	},
@@ -110,10 +85,10 @@ $(document).ready(function() {
 //		alert(keyLabelArray);
 //		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++){
 ////			alert("OKOK");
-//			$('#exchange_keylabel').append(
+//			$('#exchangeKeylabel').append(
 //					'<div id="exK_' + keyLabelArray[maxIndex].userId + '" class=" col-xs-12">'+
 //					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
-//					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + keyLabelArray[maxIndex].nick_name + '</h4>'+
+//					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + keyLabelArray[maxIndex].nickName + '</h4>'+
 //					'<li class="list-group-item">'+ keyLabelArray[maxIndex].keyLabelName+
 //					'<ul class="list-group-submenu">'+
 //					'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + maxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'+
@@ -161,7 +136,7 @@ $('document').ready(function() {
 	  
     var index = $(this).data('img-index');
     var img = $($('.p'+id).get(index));
-    fsGal_DisplayImage(img);
+    fsGalDisplayImage(img);
 	
   });
   //Close gallery
@@ -186,10 +161,10 @@ $('document').ready(function() {
     }
   });
   
-    fsGal_DisplayImage($(this));
+    fsGalDisplayImage($(this));
   });
   //Display gallery
-  function fsGal_DisplayImage(obj) {
+  function fsGalDisplayImage(obj) {
     //Clear navigation buttons
 	//id = (obj.id).split("_")[1];
 	

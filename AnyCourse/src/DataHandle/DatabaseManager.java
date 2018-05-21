@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 public class DatabaseManager {
 
-	private String insertCustomListVideoSQL = "insert into customlistVideo (courselistID,unitID,oorder) value(?,?,?)";
+	private String insertCustomListVideoSQL = "insert into customlistVideo (courselistId,unitId,oorder) value(?,?,?)";
 	private String selectUnitCourseListSQL = "select * from courselist,unit where courselist.listName = unit.listName and courselist.schoolName = unit.schoolName";
 	
 	
@@ -41,12 +41,10 @@ public class DatabaseManager {
 			stat = con.createStatement();
 			result = stat.executeQuery(selectUnitCourseListSQL);
 			while(result.next()) {
-				pst.setInt(1,Integer.parseInt(result.getString("courselistID")));
-				pst.setInt(2,Integer.parseInt(result.getString("unitID")));
+				pst.setInt(1,Integer.parseInt(result.getString("courselistId")));
+				pst.setInt(2,Integer.parseInt(result.getString("unitId")));
 				
 				//檢查這一次迴圈是否已經執行到下一個課程了，等於temp的話，代表還在同一個課程
-//				System.out.println(temp);
-//				System.out.println(result.getString("courselist.listName"));
 				if(result.getString("courselist.listName").equals(temp)) {
 					
 					pst.setInt(3,order);
@@ -61,9 +59,7 @@ public class DatabaseManager {
 					pst.executeUpdate();
 					
 				}
-				
 				temp = result.getString("courselist.listName");
-//				System.out.println(temp);
 			}
 		}
 		catch(SQLException x){
@@ -103,5 +99,4 @@ public class DatabaseManager {
 		DatabaseManager d = new DatabaseManager();
 		d.insertCustomlistVideoTable();
 	}
-
 }

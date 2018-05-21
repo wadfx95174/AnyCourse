@@ -1,29 +1,29 @@
 package Forum;
 
 public class Reply {
-	public int replyID;
-	public int commentID;
-	public String userID;
+	public int replyId;
+	public int commentId;
+	public String userId;
 	public String nickName;	
 	public String replyTime;
 	public String replyContent;
-	public int getReplyID() {
-		return replyID;
+	public int getReplyId() {
+		return replyId;
 	}
-	public void setReplyID(int replyID) {
-		this.replyID = replyID;
+	public void setReplyId(int replyId) {
+		this.replyId = replyId;
 	}
-	public int getCommentID() {
-		return commentID;
+	public int getCommentId() {
+		return commentId;
 	}
-	public void setCommentID(int commentID) {
-		this.commentID = commentID;
+	public void setCommentId(int commentId) {
+		this.commentId = commentId;
 	}
-	public String getUserID() {
-		return userID;
+	public String getUserId() {
+		return userId;
 	}
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public String getNickName() {
 		return nickName;

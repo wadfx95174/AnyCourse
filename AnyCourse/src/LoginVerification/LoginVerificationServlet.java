@@ -21,26 +21,26 @@ public class LoginVerificationServlet extends HttpServlet {
 		response.setHeader("Cache-Control","max-age=0");
 		if (method.equals("checkLogin"))
 		{
-			if (session.getAttribute("userID") == null)
+			if (session.getAttribute("userId") == null)
 			{
 				UserProfile userProfile = new UserProfile();
-				userProfile.setUserID(null);
+				userProfile.setUserId(null);
 				String json = new Gson().toJson(userProfile);
 				response.getWriter().write(json);
 			}
 			else
 			{
 				UserProfile userProfile = new UserProfile();
-				userProfile.setUserID((String)session.getAttribute("userID"));
+				userProfile.setUserId((String)session.getAttribute("userId"));
 				String json = new Gson().toJson(userProfile);
 				response.getWriter().write(json);
 			}
 		}
 		else if (method.equals("checkExist"))
 		{
-			String userID = request.getParameter("userID");
+			String userId = request.getParameter("userId");
 			UserProfile userProfile = new UserProfile();
-			userProfile.setUserID(manager.getUserID(userID));
+			userProfile.setUserId(manager.getUserId(userId));
 			String json = new Gson().toJson(userProfile);
 			response.getWriter().write(json);
 		}
@@ -67,7 +67,7 @@ public class LoginVerificationServlet extends HttpServlet {
 			{
 				response.getWriter().println("登入成功");
 				UserProfile user = manager.getUserProfile(param);
-				session.setAttribute("userID", user.getUserID());
+				session.setAttribute("userId", user.getUserId());
 				session.setAttribute("nickName", user.getNickName());
 				session.setAttribute("pictureUrl", user.getPictureUrl());
 				System.out.println("aaa");
@@ -77,26 +77,26 @@ public class LoginVerificationServlet extends HttpServlet {
 		else if (method.equals("googleLogin"))
 		{
 			UserProfile userProfile = new UserProfile();
-			userProfile.setUserID(request.getParameter("Account"));
+			userProfile.setUserId(request.getParameter("Account"));
 			userProfile.setNickName(request.getParameter("Nickname"));
 			userProfile.setEmail(request.getParameter("Email"));
 			userProfile.setPictureUrl(request.getParameter("PictureUrl"));
 			manager.insertGoogleAccount(userProfile);
-			session.setAttribute("userID", userProfile.getUserID());
+			session.setAttribute("userId", userProfile.getUserId());
 			session.setAttribute("nickName", userProfile.getNickName());
 			session.setAttribute("pictureUrl", userProfile.getPictureUrl());
 		}
 		else if (method.equals("register"))
 		{
 			UserProfile userProfile = new UserProfile();
-			userProfile.setUserID(request.getParameter("Account"));
+			userProfile.setUserId(request.getParameter("Account"));
 			userProfile.setPassword(request.getParameter("Password"));
 			userProfile.setEmail(request.getParameter("Email"));
 			userProfile.setNickName(request.getParameter("Nickname"));
 			userProfile.addFavoriteCourse(request.getParameter("Preference"));
 			manager.createAccount(userProfile);
 			manager.insertFavoriteCourse(userProfile);
-			session.setAttribute("userID", request.getParameter("Account"));
+			session.setAttribute("userId", request.getParameter("Account"));
 			session.setAttribute("nickName", request.getParameter("Nickname"));
 			session.setAttribute("pictureUrl", "");
 			response.sendRedirect("AnyCourse/HomePage.html");

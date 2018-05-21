@@ -16,9 +16,9 @@ import Note.TextNote;
 import KeyLabel.KeyLabel;
 
 public class ExchangeManager {
-	public String selectTextNoteSQL = "select * from account natural join textNote where unitID = ? and share=1 ";
-	public String selectPictureNoteSQL = "select * from pictureNote where unitID = ? and share=1";
-	public String selectKeylabelSQL = "select * from account natural join keylabel where unitID = ? and share=1";
+	public String selectTextNoteSQL = "select * from account natural join textNote where unitId = ? and share=1 ";
+	public String selectPictureNoteSQL = "select * from pictureNote where unitId = ? and share=1";
+	public String selectKeylabelSQL = "select * from account natural join keylabel where unitId = ? and share=1";
 	
 	public TextNote textNote;
 	public PictureNote pictureNote;
@@ -44,18 +44,18 @@ public class ExchangeManager {
 		}
 	}
 	
-	public String selectTextNoteTable(int unitID) {
+	public String selectTextNoteTable(int unitId) {
 		ArrayList<TextNote> textNotes = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectTextNoteSQL);
-			pst.setInt(1, unitID);
+			pst.setInt(1, unitId);
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 	
 				 textNote = new TextNote();
-				 textNote.setTextNoteID(result.getInt("textNoteID"));
-				 textNote.setUnitID(result.getInt("unitID"));
-				 textNote.setUserID(result.getString("userID"));	
+				 textNote.setTextNoteId(result.getInt("textNoteId"));
+				 textNote.setUnitId(result.getInt("unitId"));
+				 textNote.setUserId(result.getString("userId"));	
 				 textNote.setNickName(result.getString("nickName"));
 				 textNote.setTextNote(result.getString("textNote"));
 				 textNote.setShare(result.getInt("share"));
@@ -74,18 +74,18 @@ public class ExchangeManager {
 		return json;
 	}
 	 
-	public String selectPictureNoteTable(int unitID) {
+	public String selectPictureNoteTable(int unitId) {
 		ArrayList<PictureNote> pictureNotes = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectPictureNoteSQL);
-			pst.setInt(1, unitID);
+			pst.setInt(1, unitId);
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 
 				 pictureNote = new PictureNote();
-				 pictureNote.setPictureNoteID(result.getInt("pictureNoteID"));
-				 pictureNote.setUnitID(result.getInt("unitID"));
-				 pictureNote.setUserID(result.getString("userID"));
+				 pictureNote.setPictureNoteId(result.getInt("pictureNoteId"));
+				 pictureNote.setUnitId(result.getInt("unitId"));
+				 pictureNote.setUserId(result.getString("userId"));
 				 pictureNote.setPictureNoteUrl(result.getString("pictureNoteUrl"));
 				 pictureNote.setShare(result.getInt("share"));
 				 pictureNote.setShareTime(result.getString("shareTime"));
@@ -103,18 +103,18 @@ public class ExchangeManager {
 		return json;
 	}
 	
-	public String selectKeyLabelTable(int unitID) {
+	public String selectKeyLabelTable(int unitId) {
 		ArrayList<KeyLabel> keyLabels = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectKeylabelSQL);
-			pst.setInt(1, unitID);
+			pst.setInt(1, unitId);
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 
 				 keyLabel = new KeyLabel();
-				 keyLabel.setKeyLabelID(result.getInt("keylabelID"));
-				 keyLabel.setUnitID(result.getInt("unitID"));
-				 keyLabel.setUserID(result.getString("userID"));
+				 keyLabel.setKeyLabelId(result.getInt("keylabelId"));
+				 keyLabel.setUnitId(result.getInt("unitId"));
+				 keyLabel.setUserId(result.getString("userId"));
 				 keyLabel.setNickName(result.getString("nickName"));
 				 keyLabel.setKeyLabelName(result.getString("keylabelName"));
 				 keyLabel.setBeginTime(result.getInt("beginTime"));

@@ -13,8 +13,8 @@ import com.google.gson.Gson;
 import Personal.WatchRecord.WatchRecord;
 
 public class PersonalNoteManager {
-	public String selectPersonalTextNoteSQL = "select * from textNote , unit where textNote.userID = ? and textNote.unitID = unit.unitID ";
-	public String selectPersonalPictureNoteSQL = "select * from pictureNote , unit where pictureNote.userID = ? and pictureNote.unitID = unit.unitID ";
+	public String selectPersonalTextNoteSQL = "select * from textNote , unit where textNote.userId = ? and textNote.unitId = unit.unitId ";
+	public String selectPersonalPictureNoteSQL = "select * from pictureNote , unit where pictureNote.userId = ? and pictureNote.unitId = unit.unitId ";
 	
 	public PersonalTextNote personalTextNote;
 	public PersonalPictureNote personalPictureNote;
@@ -27,10 +27,8 @@ public class PersonalNoteManager {
 	public PersonalNoteManager() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
 					, "root", "peter");
-			
 		}
 		catch(ClassNotFoundException e){
 			System.out.println("DriverClassNotFound"+e.toString());
@@ -40,18 +38,18 @@ public class PersonalNoteManager {
 		}
 	}
 	
-	public String selectPersonalTextNoteTable(String userID) {
+	public String selectPersonalTextNoteTable(String userId) {
 		ArrayList<PersonalTextNote> personalTextNotes = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectPersonalTextNoteSQL);
-			pst.setString(1, userID);
+			pst.setString(1, userId);
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 				 
 				 personalTextNote = new PersonalTextNote();
-				 personalTextNote.setTextNoteID(result.getInt("textNoteID"));
-				 personalTextNote.setUserID(result.getString("userID"));
-				 personalTextNote.setUnitID(result.getInt("unitID"));
+				 personalTextNote.setTextNoteId(result.getInt("textNoteId"));
+				 personalTextNote.setUserId(result.getString("userId"));
+				 personalTextNote.setUnitId(result.getInt("unitId"));
 				 personalTextNote.setTextNote(result.getString("textNote"));
 				 personalTextNote.setShare(result.getInt("share"));
 				 personalTextNote.setShareTime(result.getString("shareTime"));
@@ -72,18 +70,18 @@ public class PersonalNoteManager {
 		return json;
 	}
 	
-	public String selectPersonalPictureNoteTable(String userID) {
+	public String selectPersonalPictureNoteTable(String userId) {
 		ArrayList<PersonalPictureNote> personalPictureNotes = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectPersonalPictureNoteSQL);
-			pst.setString(1, userID);
+			pst.setString(1, userId);
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 				 
 				 personalPictureNote = new PersonalPictureNote();
-				 personalPictureNote.setPictureNoteID(result.getInt("pictureNoteID"));
-				 personalPictureNote.setUserID(result.getString("userID"));
-				 personalPictureNote.setUnitID(result.getInt("unitID"));
+				 personalPictureNote.setPictureNoteId(result.getInt("pictureNoteId"));
+				 personalPictureNote.setUserId(result.getString("userId"));
+				 personalPictureNote.setUnitId(result.getInt("unitId"));
 				 personalPictureNote.setPictureNoteUrl(result.getString("pictureNoteUrl"));
 				 personalPictureNote.setShare(result.getInt("share"));
 				 personalPictureNote.setShareTime(result.getString("shareTime"));

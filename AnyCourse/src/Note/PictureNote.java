@@ -1,30 +1,30 @@
 package Note;
     
 public class PictureNote {
-	public int pictureNoteID;
-	public int unitID;
-	public String userID;
+	public int pictureNoteId;
+	public int unitId;
+	public String userId;
 	public String pictureNoteUrl;
 	public int share;
 	public String shareTime;
 	public int likes;
-	public int getPictureNoteID() {
-		return pictureNoteID;
+	public int getPictureNoteId() {
+		return pictureNoteId;
 	}
-	public void setPictureNoteID(int pictureNoteID) {
-		this.pictureNoteID = pictureNoteID;
+	public void setPictureNoteId(int pictureNoteId) {
+		this.pictureNoteId = pictureNoteId;
 	}
-	public int getUnitID() {
-		return unitID;
+	public int getUnitId() {
+		return unitId;
 	}
-	public void setUnitID(int unitID) {
-		this.unitID = unitID;
+	public void setUnitId(int unitId) {
+		this.unitId = unitId;
 	}
-	public String getUserID() {
-		return userID;
+	public String getUserId() {
+		return userId;
 	}
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public String getPictureNoteUrl() {
 		return pictureNoteUrl; 
@@ -50,6 +50,4 @@ public class PictureNote {
 	public void setLikes(int likes) {
 		this.likes = likes;
 	}
-	
-		
 }

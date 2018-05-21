@@ -8,7 +8,7 @@ document.write("<script type='text/javascript' src='dist/js/swiper.min.js'></scr
 
 
 var homePageList;//Array，用來存影片、清單的資訊
-var checkID;//用來存使用者點擊哪個物件的ID，用這個ID與homePageList這個Array搭配使用，就可以對該物件操作，像是新增、刪除等等
+var checkId;//用來存使用者點擊哪個物件的Id，用這個Id與homePageList這個Array搭配使用，就可以對該物件操作，像是新增、刪除等等
 
 $(document).ready(function(){
 	homePageList = new Array();
@@ -17,7 +17,7 @@ $(document).ready(function(){
 	//swiper-button
 	var swiperButton = '</div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div>'
 		+'</div></div></section>'
-	var homePageListID = 1;//每個card的ID
+	var homePageListId = 1;//每個card的Id
 	//首頁初始化，推薦影片、清單等等
 	$.ajax({
 		url : ajaxURL+'AnyCourse/HomePageServlet.do',
@@ -48,16 +48,16 @@ $(document).ready(function(){
 					}
 					for(var j = 0 ;j < 10;j++){ 
 						$('#courseList_1').append(
-							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
+							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListId_'+ homePageListId +'">'
 							+'<div class="card">'
 							+'<figure class="snip1492">'
-							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unitID + ',' + result[i][j].videoType+')">'
+							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unitId + ',' + result[i][j].videoType+')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].videoImgSrc+'">'
 							+'</div>'
 							+'<i class="fa fa-play"></i>'
-							+'<a href="#" onclick="jumpToPlayerInterface('+ result[i][j].unitID + ',' + result[i][j].videoType+')"></a>'
+							+'<a href="#" onclick="jumpToPlayerInterface('+ result[i][j].unitId + ',' + result[i][j].videoType+')"></a>'
 							+'</figure>'
-							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unitID + ',' + result[i][j].videoType+')">'
+							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unitId + ',' + result[i][j].videoType+')">'
 							+'<h4 class="card-title" >' + result[i][j].unitName + '</h4>'
 							+'<div class="card-text">清單:'+ result[i][j].listName +'</div>'
 							+'<div class="meta">'
@@ -72,15 +72,15 @@ $(document).ready(function(){
 							+'</div><div class="card-footer"><div class="btn-group show-on-hover dropup">'
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">新增至' 
 							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
-							+'<li><a data-toggle="modal" data-target="#addToCourseList" onclick="getID('+homePageListID+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
-							+'<li><a data-toggle="modal" data-target="#addToCoursePlan" onclick="getID('+homePageListID+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+							+'<li><a data-toggle="modal" data-target="#addToCourseList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
+							+'<li><a data-toggle="modal" data-target="#addToCoursePlan" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
 							+'</ul></div></div></div></div>'
 						);
 						$('.snip1492').tooltip({title:result[i][j].listName , scontainer: "body", placement:"bottom", animation: true}); 
-						homePageList[homePageListID] = new Array(2);
-						homePageList[homePageListID][0] = result[i][j].unitID;
-						homePageList[homePageListID][1] = result[i][j].courselistID;
-						homePageListID++;
+						homePageList[homePageListId] = new Array(2);
+						homePageList[homePageListId][0] = result[i][j].unitId;
+						homePageList[homePageListId][1] = result[i][j].courselistId;
+						homePageListId++;
 					}
 					
 				}
@@ -105,16 +105,16 @@ $(document).ready(function(){
 					}
 					for(var j = 0 ;j < 10;j++){
 						$('#courseList_2').append(
-							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
+							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListId_'+ homePageListId +'">'
 							+'<div class="card">'
 							+'<figure class="snip1492">'
-							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitID + ',' + result[i][j].videoType +',' + result[i][j].courselistID + ')">'
+							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitId + ',' + result[i][j].videoType +',' + result[i][j].courselistId + ')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].videoImgSrc+'">'
 							+'</div>'
 							+'<i class="fa fa-play"></i>'
-							+'<a href="#" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitID + ',' + result[i][j].videoType +',' + result[i][j].courselistID + ')"></a>'
+							+'<a href="#" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitId + ',' + result[i][j].videoType +',' + result[i][j].courselistId + ')"></a>'
 							+'</figure>'
-							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitID + ',' + result[i][j].videoType +',' + result[i][j].courselistID + ')">'
+							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitId + ',' + result[i][j].videoType +',' + result[i][j].courselistId + ')">'
 							+'<h4 class="card-title" >' + result[i][j].listName + '</h4>'
 							+'<div class="meta">'
 							+'<a>'+ result[i][j].schoolName +'&nbsp;&nbsp;'+ result[i][j].teacher +'教師</a>'
@@ -127,15 +127,15 @@ $(document).ready(function(){
 							+'</div></div><div class="card-footer"><div class="btn-group show-on-hover dropup">'
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">新增至' 
 							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
-							+'<li><a href="#" data-toggle="modal" data-target="#addToCourseList_List" onclick="getID('+homePageListID+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
-							+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlan_List" onclick="getID('+homePageListID+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+							+'<li><a href="#" data-toggle="modal" data-target="#addToCourseListList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
+							+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlanList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
 							+'</ul></div></div></div></div>'
 						);
 						$('.snip1492').tooltip({title:result[i][j].listName , scontainer: "body", placement:"bottom", animation: true}); 
-						homePageList[homePageListID] = new Array(2);
-						homePageList[homePageListID][0] = result[i][j].unitID;
-						homePageList[homePageListID][1] = result[i][j].courselistID;
-						homePageListID++;
+						homePageList[homePageListId] = new Array(2);
+						homePageList[homePageListId][0] = result[i][j].unitId;
+						homePageList[homePageListId][1] = result[i][j].courselistId;
+						homePageListId++;
 					}
 					
 				}
@@ -163,16 +163,16 @@ $(document).ready(function(){
 					for(var j = 0 ;j < result[i][0].num;j++){
 						console.log("111");
 						$('#courseList_3').append(
-							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
+							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListId_'+ homePageListId +'">'
 							+'<div class="card">'
 							+'<figure class="snip1492">'
-							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitID + ',' + result[i][j].videoType +',' + result[i][j].courselistID + ')">'
+							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitId + ',' + result[i][j].videoType +',' + result[i][j].courselistId + ')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].videoImgSrc+'">'
 							+'</div>'
 							+'<i class="fa fa-play"></i>'
-							+'<a href="#" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitID + ',' + result[i][j].videoType +',' + result[i][j].courselistID + ')"></a>'
+							+'<a href="#" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitId + ',' + result[i][j].videoType +',' + result[i][j].courselistId + ')"></a>'
 							+'</figure>'
-							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitID + ',' + result[i][j].videoType +',' + result[i][j].courselistID + ')">'
+							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterfaceWithList('+ result[i][j].unitId + ',' + result[i][j].videoType +',' + result[i][j].courselistId + ')">'
 							+'<h4 class="card-title" >' + result[i][j].listName + '</h4>'
 							+'<div class="meta">'
 							+'<a>'+ result[i][j].schoolName +'&nbsp;&nbsp;'+ result[i][j].teacher +'教師</a>'
@@ -185,15 +185,15 @@ $(document).ready(function(){
 							+'</div></div><div class="card-footer"><div class="btn-group show-on-hover dropup">'
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">新增至' 
 							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
-							+'<li><a href="#" data-toggle="modal" data-target="#addToCourseList_List" onclick="getID('+homePageListID+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
-							+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlan_List" onclick="getID('+homePageListID+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+							+'<li><a href="#" data-toggle="modal" data-target="#addToCourseListList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
+							+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlanList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
 							+'</ul></div></div></div></div>'
 						);
 						$('.snip1492').tooltip({title:result[i][j].listName , scontainer: "body", placement:"bottom", animation: true}); 
-						homePageList[homePageListID] = new Array(2);
-						homePageList[homePageListID][0] = result[i][j].unitID;
-						homePageList[homePageListID][1] = result[i][j].courselistID;
-						homePageListID++;
+						homePageList[homePageListId] = new Array(2);
+						homePageList[homePageListId][0] = result[i][j].unitId;
+						homePageList[homePageListId][1] = result[i][j].courselistId;
+						homePageListId++;
 					}
 					
 				}
@@ -218,16 +218,16 @@ $(document).ready(function(){
 					}
 					for(var j = 0 ;j < result[i][0].num;j++){
 						$('#courseList_4').append(
-							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
+							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListId_'+ homePageListId +'">'
 							+'<div class="card">'
 							+'<figure class="snip1492">'
-							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unitID + ',' + result[i][j].videoType+')">'
+							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unitId + ',' + result[i][j].videoType+')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].videoImgSrc+'">'
 							+'</div>'
 							+'<i class="fa fa-play"></i>'
-							+'<a href="#" onclick="jumpToPlayerInterface('+ result[i][j].unitID + ',' + result[i][j].videoType+')"></a>'
+							+'<a href="#" onclick="jumpToPlayerInterface('+ result[i][j].unitId + ',' + result[i][j].videoType+')"></a>'
 							+'</figure>'
-							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unitID + ',' + result[i][j].videoType+')">'
+							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unitId + ',' + result[i][j].videoType+')">'
 							+'<h4 class="card-title" >' + result[i][j].unitName + '</h4>'
 							+'<div class="card-text">清單:'+ result[i][j].listName +'</div>'
 							+'<div class="meta">'
@@ -241,15 +241,15 @@ $(document).ready(function(){
 							+'</div></div><div class="card-footer"><div class="btn-group show-on-hover dropup">'
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">新增至' 
 							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
-							+'<li><a href="#" data-toggle="modal" data-target="#addToCourseList" onclick="getID('+homePageListID+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
-							+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlan" onclick="getID('+homePageListID+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+							+'<li><a href="#" data-toggle="modal" data-target="#addToCourseList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
+							+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlan" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
 							+'</ul></div></div></div></div>'
 						);
 						$('.snip1492').tooltip({title:result[i][j].listName , scontainer: "body", placement:"bottom", animation: true}); 
-						homePageList[homePageListID] = new Array(2);
-						homePageList[homePageListID][0] = result[i][j].unitID;
-						homePageList[homePageListID][1] = result[i][j].courselistID;
-						homePageListID++;
+						homePageList[homePageListId] = new Array(2);
+						homePageList[homePageListId][0] = result[i][j].unitId;
+						homePageList[homePageListId][1] = result[i][j].courselistId;
+						homePageListId++;
 					}
 				}
 				//正在觀看
@@ -274,16 +274,16 @@ $(document).ready(function(){
 					console.log(result[i][0].num);
 					for(var j = 0 ;j < result[i][0].num;j++){
 						$('#courseList_5').append(
-							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListID_'+ homePageListID +'">'
+							'<div class="swiper-slide col-sm-5ths col-xs-5ths" style="padding:5px;" id="homePageListId_'+ homePageListId +'">'
 							+'<div class="card">'
 							+'<figure class="snip1492">'
-							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unitID + ',' + result[i][j].videoType+')">'
+							+'<div class="embed-responsive embed-responsive-16by9" onclick="jumpToPlayerInterface('+ result[i][j].unitId + ',' + result[i][j].videoType+')">'
 							+'<img id="img" class="cardWidth style-scope yt-img-shadow" width="300px;" alt="" src="'+result[i][j].videoImgSrc+'">'
 							+'</div>'
 							+'<i class="fa fa-play"></i>'
-							+'<a href="#" onclick="jumpToPlayerInterface('+ result[i][j].unitID + ',' + result[i][j].videoType+')"></a>'
+							+'<a href="#" onclick="jumpToPlayerInterface('+ result[i][j].unitId + ',' + result[i][j].videoType+')"></a>'
 							+'</figure>'
-							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unitID + ',' + result[i][j].videoType+')">'
+							+'<div class="card-block" style="padding-top:0px;" onclick="jumpToPlayerInterface('+ result[i][j].unitId + ',' + result[i][j].videoType+')">'
 							+'<h4 class="card-title" >' + result[i][j].unitName + '</h4>'
 							+'<div class="card-text">清單:'+ result[i][j].listName +'</div>'
 							+'<div class="meta">'
@@ -297,15 +297,15 @@ $(document).ready(function(){
 							+'</div></div><div class="card-footer"><div class="btn-group show-on-hover dropup">'
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">新增至' 
 							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
-							+'<li><a href="#" data-toggle="modal" data-target="#addToCourseList" onclick="getID('+homePageListID+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
-							+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlan" onclick="getID('+homePageListID+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+							+'<li><a href="#" data-toggle="modal" data-target="#addToCourseList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
+							+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlan" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
 							+'</ul></div></div></div></div>'
 						);
 						$('.snip1492').tooltip({title:result[i][j].listName , scontainer: "body", placement:"bottom", animation: true}); 
-						homePageList[homePageListID] = new Array(2);
-						homePageList[homePageListID][0] = result[i][j].unitID;
-						homePageList[homePageListID][1] = result[i][j].courselistID;
-						homePageListID++;
+						homePageList[homePageListId] = new Array(2);
+						homePageList[homePageListId][0] = result[i][j].unitId;
+						homePageList[homePageListId][1] = result[i][j].courselistId;
+						homePageListId++;
 					}
 				}
 				//台大
@@ -349,7 +349,7 @@ $(document).ready(function(){
 					cache: false,
 					data:{
 						action:'addToCoursePlan',
-						unitID:homePageList[checkID][0]
+						unitId:homePageList[checkId][0]
 					},
 					error:function(){
 						console.log("addToCoursePlan Error!");
@@ -357,18 +357,18 @@ $(document).ready(function(){
 				})
 			});
 			//清單整個新增至課程計畫
-			$('#addToCoursePlanButton_List').click(function(e){
+			$('#addToCoursePlanButtonList').click(function(e){
 				e.preventDefault();
 				$.ajax({
 					url : ajaxURL+'AnyCourse/HomePageServlet.do',
 					method : 'POST',
 					cache: false,
 					data:{
-						action:'addToCoursePlan_List',
-						courselistID:homePageList[checkID][1]
+						action:'addToCoursePlanList',
+						courselistId:homePageList[checkId][1]
 					},
 					error:function(e){
-						console.log("addToCoursePlan_List Error!");
+						console.log("addToCoursePlanList Error!");
 					}
 				})
 			});
@@ -377,18 +377,18 @@ $(document).ready(function(){
 	});
  }());
 //跳轉至播放介面
-function jumpToPlayerInterface(unitID,type){
-    url = "pages/PlayerInterface.html?unitID="+unitID+"&type="+type;//此處拼接內容
+function jumpToPlayerInterface(unitId,type){
+    url = "pages/PlayerInterface.html?unitId="+unitId+"&type="+type;//此處拼接內容
     window.location.href = url;
 }
 //跳轉至播放介面，且是清單
-function jumpToPlayerInterfaceWithList(unitID,type,listID){
-	url = "pages/PlayerInterface.html?unitID="+unitID+"&type="+type+"&listID="+listID;
+function jumpToPlayerInterfaceWithList(unitId,type,listId){
+	url = "pages/PlayerInterface.html?unitId="+unitId+"&type="+type+"&listId="+listId;
 	window.location.href = url;
 }
-//才能知道要對哪個ID做動作
-function getID(id){
-    checkID = id;
+//才能知道要對哪個Id做動作
+function getId(id){
+    checkId = id;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////進入首頁時重新整理//////////////////////////////////////////

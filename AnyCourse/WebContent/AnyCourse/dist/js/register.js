@@ -9,7 +9,6 @@ var passwordCheck = false;
 var confirmPwCheck = false;
 var emailCheck = false;
 
-
 $( document ).ready(function() {
     var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;  
     po.src = 'https://apis.google.com/js/client:plusone.js?onload=render';
@@ -183,12 +182,12 @@ function checkInput(form){
 //------------------Google 登入---------------------
 var isClick = false;
 
-$('#google_login').click(function(){
+$('#googleLogin').click(function(){
 	isClick = true;
 });
 // 初始化函数  
 function render() {  
-    gapi.signin.render('google_login', {  
+    gapi.signin.render('googleLogin', {  
         'callback': 'signinCallback',  
         'approvalprompt': 'auto',  
         'clientid': '645783857059-6faluf0otn6641vrdlm2e4oc2tgagbbo.apps.googleusercontent.com',  

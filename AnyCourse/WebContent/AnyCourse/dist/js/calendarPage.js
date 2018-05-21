@@ -343,15 +343,15 @@ function getCoursePlanEvent()
   			for(var i = 0; i < coursePlanList.length; i ++)
   			{
 	  			$('#external-events').append(
-	  				'<li><a href="javascript:void(0)">'+coursePlanList[i].unit_name+'</a></li>'
+	  				'<li><a href="javascript:void(0)">'+coursePlanList[i].unitName+'</a></li>'
 	  			);
   			}
   			$('#external-events li').each(function(index){
   			    // 宣告EventObject (可以不用start跟end)
   			    var eventObject = {
-  			          title: coursePlanList[index].unit_name,
-  		              unitId: coursePlanList[index].unit_id,
-  		              type: coursePlanList[index].video_type
+  			          title: coursePlanList[index].unitName,
+  		              unitId: coursePlanList[index].unitId,
+  		              type: coursePlanList[index].videoType
   			    	};
   			    // 把eventObject存到DOM裡面，之後就可以取得
   			    $(this).data('eventObject', eventObject);
@@ -556,7 +556,7 @@ function initCalendar(eventSrc)
 	        else if (event.url && event.url != 'undefined/undefined') 
 	      	{
 		        var urls = event.url.split('/');
-		        url = "../PlayerInterface.html?unit_id="+urls[0]+"&type="+urls[1];
+		        url = "../PlayerInterface.html?unitId="+urls[0]+"&type="+urls[1];
 		      	window.location.href = url;
 	      	    return false;
 	      	}
@@ -574,7 +574,7 @@ function initCalendar(eventSrc)
       	    // 更新資料庫
       	    else
       	    {
-      		    $.post(ajax_url+"AnyCourse/CalendarServlet.do", 
+      		    $.post(ajaxURL+"AnyCourse/CalendarServlet.do", 
       		    	{
 		        		id: event.id,
 		        		title: event.title,
@@ -615,7 +615,7 @@ function initCalendar(eventSrc)
   		    }
       	    // 更新資料庫
       	    else if (event.end != null)
-  	            $.post(ajax_url+"AnyCourse/CalendarServlet.do",
+  	            $.post(ajaxURL+"AnyCourse/CalendarServlet.do",
       			    {
       		  		    id: event.id,
       		  		    title: event.title,
@@ -626,7 +626,7 @@ function initCalendar(eventSrc)
       		  		    method: "update"
       			    });
   	        else 
-  		        $.post(ajax_url+"AnyCourse/CalendarServlet.do",
+  		        $.post(ajaxURL+"AnyCourse/CalendarServlet.do",
       			    {
       		  		    id: event.id,
       		  		    title: event.title,

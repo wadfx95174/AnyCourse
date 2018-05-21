@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class UserProfile
 {
-	private String userID;
-	private String googleID;
+	private String userId;
+	private String googleId;
 	private String password;
-	private String calendarID;
+	private String calendarId;
 	private String email;
 	private String nickName;
 	private String pictureUrl;
@@ -15,27 +15,27 @@ public class UserProfile
 	
 	public UserProfile()
 	{
-		googleID = null;
-		calendarID = null;
+		googleId = null;
+		calendarId = null;
 		pictureUrl = null;
 		favoriteCourses = new ArrayList<String>();
 	}
 	
-	public String getUserID()
+	public String getUserId()
 	{
-		return userID;
+		return userId;
 	}
-	public void setUserID(String userID)
+	public void setUserId(String userId)
 	{
-		this.userID = userID;
+		this.userId = userId;
 	}
-	public String getGoogleID()
+	public String getGoogleId()
 	{
-		return googleID;
+		return googleId;
 	}
-	public void setGoogleID(String googleID)
+	public void setGoogleId(String googleId)
 	{
-		this.googleID = googleID;
+		this.googleId = googleId;
 	}
 	public String getPassword()
 	{
@@ -45,13 +45,13 @@ public class UserProfile
 	{
 		this.password = password;
 	}
-	public String getCalendarID()
+	public String getCalendarId()
 	{
-		return calendarID;
+		return calendarId;
 	}
-	public void setCalendarID(String calendarID)
+	public void setCalendarId(String calendarId)
 	{
-		this.calendarID = calendarID;
+		this.calendarId = calendarId;
 	}
 	public String getEmail()
 	{

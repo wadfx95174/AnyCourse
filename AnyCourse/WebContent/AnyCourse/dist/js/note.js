@@ -5,27 +5,24 @@
 		var previewer = document.getElementById('previewer');
 		//資料庫欄位  
 		var state;
-		var text_note_id =null;
-		var picture_note_id =null;
-		var unit_id = 1;
-		var user_id = 111;
-		var text_note = "123456";
-		var picture_note_url;
+		var textNoteId =null;
+		var pictureNoteId =null;
+		var unitId = 1;
+		var userId = 111;
+		var textNote = "123456";
+		var pictureNoteUrl;
 		var share = 0;
-		var share_time;
+		var shareTime;
 		var likes = 0;
 		// 200 KB 对应的字节数
 		var maxsize = 200 * 1024;
 		
-
-
 		function get(name)
 		{
 		   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
 		      return decodeURIComponent(name[1]);
 			}
 			
-
 		filechooser.onchange = function() {
 			var files = this.files;
 			var file = files[0];
@@ -45,72 +42,39 @@
 					toPreviewer(result);
 					return;
 				}
-
 				img.onload = function() {
 					var compressedDataUrl = compress(img, file.type);
 					toPreviewer(compressedDataUrl);
-
 					img = null;
 				};
-
 				img.src = result;
 			};
-
 			reader.readAsDataURL(file);
 		};
 
 		function toPreviewer(dataUrl) {
 			var dataUrl = dataUrl;
-//			previewer.src = dataUrl;
-//			previewer1.src = dataUrl;
-			//	console.log(dataUrl);
 			filechooser.value = '';
-
-				
 				$.ajax({
 					url : ajaxURL+'AnyCourse/PictureNoteServlet.do',
 					method : 'POST',
 					cache :false,
 					data : {
 						"state" : "insert",
-						"unit_id" : get("unit_id"),
-						"user_id" : user_id,
-						"picture_note_url" : dataUrl,
-					//	"text_note" : text_note,
+						"unitId" : get("unitId"),
+						"userId" : userId,
+						"pictureNoteUrl" : dataUrl,
 						"share" : share,
-						"share_time" : share_time,
+						"shareTime" : shareTime,
 						"likes" : likes
 					},
 					success : function(result) {
-//						alert(result.picture_note_id);
 						$('#container').append( 	 
-								'<img id="picture_note_' +  result.picture_note_id + '" class="fs-gal" src="' + result.picture_note_url +'" alt="picture_note_' + result.picture_note_id + '" data-url="' + result.picture_note_url + '" />' 
-//								+ '<button id = "delete_' + result.picture_note_id +'"  type="button" onclick="getID(this.id)" onclick ="deletePicture_note()"  style="float:right">Delete</button>'
-								
-//			    				'<button id="myBtn_' + result.picture_note_id + '" onclick="getID(this.id)">'+
-//									'<img id="previewer11" src="'+ result.picture_note_url + '" class = "min">'+
-//								"</button>"	+"<br>" + 							
-//								'<div id="myModal_' + result.picture_note_id + '" class="modal">' +
-//								'<div class="modal-content" >' +
-//								'<button id = "close_' + result.picture_note_id +'"  type="button" class="close" style="float:right">Close</button>'+
-//								'<div style="height:600px;overflow:auto;">' +
-//								'<img id="previewer1" src="'+ result.picture_note_url + '"class="max"> ' +
-//								'</div>' +						
-//								'<button id = "delete_' + result.picture_note_id +'"  type="button"  onclick ="deletePicture_note()" class="close" style="float:right">Delete</button>'+							
-//							    '</div>' +		    				
-//			    				'</div>'
+								'<img id="pictureNote_' +  result.pictureNoteId + '" class="fs-gal" src="' + result.pictureNoteUrl +'" alt="pictureNote_' + result.pictureNoteId + '" data-url="' + result.pictureNoteUrl + '" />' 
 			    			);	
 						
 					},
 					error: function (jqXHR, textStatus, errorThrown) {
-		                 /*弹出jqXHR对象的信息*/
-//		                 alert(jqXHR.responseText);
-//		                 alert(jqXHR.status);
-//		                 alert(jqXHR.readyState);
-//		                 alert(jqXHR.statusText);
-		                 /*弹出其他两个参数的信息*/
-//		                 alert(textStatus);
-//		                 alert(errorThrown);
 		             }
 				})				
 				
@@ -133,7 +97,7 @@
 
 			ctx.drawImage(img, 0, 0, width, height);
 
-			// 压缩
+			// 壓縮
 			var base64data = canvas.toDataURL(fileType, 0.3);
 
 			var initSize = img.src.length;
@@ -143,80 +107,32 @@
 					100 * (initSize - base64data.length) / initSize, "%");
 
 			canvas = ctx = null;
-			//console.log(base64data);
 			return base64data;
 		} 
-			
-
-		 
+		
 		$(document).ready(function() {
 			$.ajax({
 				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'GET',
 				cache :false,
 				data : {					
-					"unit_id" : get("unit_id")
+					"unitId" : get("unitId")
 				},
 				success:function(result){
 		    		for(var i = 0 ;i < result.length;i++){
-//		    			alert(result[i].text_note);
 		    			if(result[i].share == 1){
 		    				$('#shareNote').text("已分享");
 							$('#shareNote').removeClass('btn-primary');
 				        	$('#shareNote').addClass('btn-danger');
 						}	    			
-		    			$('#text_area').append( result[i].text_note + "<br>");
-		    			text_note_id = result[i].text_note_id;
-		    			user_id = result[i].user_id;
+		    			$('#textArea').append( result[i].textNote + "<br>");
+		    			textNoteId = result[i].textNoteId;
+		    			userId = result[i].userId;
 					}
-//		    		alert(text_note_id);
 		    	},
 				error:function(){}
 			});
 		});
-		
-//		
-//		var id = null;
-//		
-//		function getID(input){
-//			id = null;
-//			var modal = null;
-//			var btn =  null;
-//			var span =  null;
-//			id = input.split('_')[1]; 
-//						
-////			alert(id);
-//			
-//			modal = document.getElementById('myModal_'+id);
-//
-//    		// Get the button that opens the modal
-//    		btn = document.getElementById("myBtn_"+id);
-//    		// Get the <span> element that closes the modal
-//    		
-//    		span = document.getElementById("close_"+id);
-//    		span2 = document.getElementById("delete_"+id);
-//
-//    		// When the user clicks the button, open the modal 
-//    		
-//    			modal.style.display = "block";
-//    		
-//    		span2.onclick = function() {
-//    			deletePicture_note();
-//        		modal.style.display = "none";
-//        	}
-//
-//    		// When the user clicks on <span> (x), close the modal
-//    		span.onclick = function() {
-//    			modal.style.display = "none";
-//    		}
-//    		
-//    		// When the user clicks anywhere outside of the modal, close it
-//    		window.onclick = function(event) {
-//    			if (event.target == modal) {
-//    				modal.style.display = "none";
-//    			}
-//    		}	
-//		}
 		
 		$(document).ready(function() {
 			printPicture();
@@ -228,29 +144,14 @@
 				method : 'GET',
 				cache :false,
 				data : {					
-					"unit_id" : get("unit_id")
+					"unitId" : get("unitId")
 				},
 				success:function(result){
 		    		for(var i = 0 ;i < result.length;i++){
-//		    			alert(result[i].picture_note_url);
-//		    			alert(result[i].picture_note_id);
 		    			$('#container').append( 
-		    					'<img id="picture_note_' +  result[i].picture_note_id + '" class="fs-gal" src="' + result[i].picture_note_url +'" alt="picture_note_' + result[i].picture_note_id + '" data-url="' + result[i].picture_note_url + '" />'	
-		    					
-//		    				'<button id="myBtn_' + result[i].picture_note_id + '" onclick="getID(this.id)">'+
-//								'<img id="previewer11" src="'+ result[i].picture_note_url + '" class = "min">'+
-//							"</button>"	+"<br>" + 							
-//							'<div id="myModal_' + result[i].picture_note_id + '" class="modal">' +
-//							'<div class="modal-content" >' +
-//							'<button id = "close_' + result[i].picture_note_id +'"  type="button" class="close" style="float:right">Close</button>'+
-//							'<div style="height:600px;overflow:auto;">' +
-//							'<img id="previewer1" src="'+ result[i].picture_note_url + '"class="max"> ' +
-//							'</div>' +						
-//							'<button id = "delete_' + result[i].picture_note_id +'"  type="button"  onclick ="deletePicture_note()" class="close" style="float:right">Delete</button>'+							
-//						    '</div>' +		    				
-//		    				'</div>'
+		    					'<img id="pictureNote_' +  result[i].pictureNoteId + '" class="fs-gal" src="' + result[i].pictureNoteUrl +'" alt="pictureNote_' + result[i].pictureNoteId + '" data-url="' + result[i].pictureNoteUrl + '" />'	
 		    			);	
-		    			user_id = result[i].user_id;
+		    			userId = result[i].userId;
 					}	    		
 		    	},
 				error:function(){}
@@ -259,39 +160,36 @@
 		
 		function setText(){	
 			        
-			if(text_note_id == null)
+			if(textNoteId == null)
 				{
-//					alert("OK");
-					setText_note();
-					$("#text_area").attr("disabled","false");
+					setTextNote();
+					$("#textArea").attr("disabled","false");
 		    		$("#noteFooter").slideToggle();
 				}
 			else{
-					updateText_note();
-					$("#text_area").attr("disabled","false");
+					updateTextNote();
+					$("#textArea").attr("disabled","false");
 		    		$("#noteFooter").slideToggle();
 				}	
 		};
 		
-		function setText_note(){
-			//document.getElementById("text_area").innerHTML += document.getElementById('text_note').value + "<br>";
-			text_note = document.getElementById('text_area').value;
+		function setTextNote(){
+			textNote = document.getElementById('textArea').value;
 			$.ajax({
 				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {
 					"state" : "insert",
-					"unit_id" : get("unit_id"),
-					"user_id" : user_id,
-					//"picture_note_url" : dataUrl,
-					"text_note" : text_note,
+					"unitId" : get("unitId"),
+					"userId" : userId,
+					"textNote" : textNote,
 					"share" : share,
-					"share_time" : share_time,
+					"shareTime" : shareTime,
 					"likes" : likes
 				},
-				success : function(text_note) {
-					console.log(text_note);
+				success : function(textNote) {
+					console.log(textNote);
 				},
 			});
 			$.ajax({
@@ -299,90 +197,73 @@
 				method : 'GET',
 				cache :false,
 				data : {					
-					"unit_id" : get("unit_id")
+					"unitId" : get("unitId")
 				},
 				success:function(result){
-//					alert(result);
 		    		for(var i = 0 ;i < result.length;i++){
-//		    			alert(result[i].text_note);
 		    			
-		    			$('#text_area').append( result[i].text_note + "<br>");
-		    			text_note_id = result[i].text_note_id;
+		    			$('#textArea').append( result[i].textNote + "<br>");
+		    			textNoteId = result[i].textNoteId;
 					}
-//		    		alert(text_note_id);
 		    	},
 				error:function(){}
 			});
 		};
 		
-		function updateText_note(){
-			//document.getElementById("text_area").innerHTML += document.getElementById('text_note').value + "<br>";
-			text_note = document.getElementById('text_area').value;
-//			alert(text_note);
-//			alert(text_note_id);
+		function updateTextNote(){
+			textNote = document.getElementById('textArea').value;
 			$.ajax({  
 				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {
 					"state" : "update",
-					"text_note_id" : text_note_id,
-					"unit_id" : get("unit_id"),
-					"user_id" : user_id,
-					"text_note" : text_note,
+					"textNoteId" : textNoteId,
+					"unitId" : get("unitId"),
+					"userId" : userId,
+					"textNote" : textNote,
 					"share" : share,
-					"share_time" : share_time,
+					"shareTime" : shareTime,
 					"likes" : likes
 				},				
 				success : function(data) {
-//					alert(data);
-					$('#text_area').append( data.text_note );
-	    			text_note_id = data.text_note_id;
+					$('#textArea').append( data.textNote );
+	    			textNoteId = data.textNoteId;
 				},
 				error : function() {
-//					alert("error");
 				}
 			});
 		};
 		
-		function deletePicture_note(){
-//			document.getElementById('picture').value;
+		function deletePictureNote(){
 			var zzz= $("#picture").text();
-//			alert(zzz);
 			var id = zzz.split('_')[2];
-//			alert(id);
 			$.ajax({
 				url : ajaxURL+'AnyCourse/PictureNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {
 					"state" : "delete",
-					"picture_note_id" : id,					
+					"pictureNoteId" : id,					
 				},				
 				success : function(data) {
-//					alert("OKOK");
-					$("#picture_note_"+id).remove();
-//					$("#modal_"+id).remove();
+					$("#pictureNote_"+id).remove();
 				},
 			});
 		}
 		
 		function shareNote(){
-//			alert("oK");
 			$.ajax({  
 				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {
 					"state" : "share",					
-					"unit_id" : get("unit_id"),
-//					"user_id" : user_id					
+					"unitId" : get("unitId"),				
 				},				
 				success : function(data) {
-//					alert("成功成功1");
 				},
 				error : function() {
-//					alert("error1");
 				}
 			});
 
@@ -394,21 +275,17 @@
 				cache :false,
 				data : {
 					"state" : "notShare",					
-					"unit_id" : get("unit_id"),
-//					"user_id" : user_id					
+					"unitId" : get("unitId"),				
 				},				
 				success : function(data) {
-//					alert("成功成功2");
 				},
 				error : function() {
-//					alert("error2");
 				}
 			});
 		}
 		
 		$('#shareNote').click(function(){
 			if($('#shareNote').hasClass('btn-primary')){
-//				alert(typeof(user_id));
 				$('#shareNote').text("已分享");
 				$('#shareNote').removeClass('btn-primary');
 	        	$('#shareNote').addClass('btn-danger');

@@ -24,7 +24,7 @@ public class PersonalTextNoteServlet extends HttpServlet {
 		ArrayList<PersonalTextNote> personalTextNotes = new ArrayList<>();
 		
 		String personalTextNoteJson = new Gson().toJson(personalTextNotes);
-		personalTextNoteJson = dbpersonalNote.selectPersonalTextNoteTable((String)session.getAttribute("userID"));
+		personalTextNoteJson = dbpersonalNote.selectPersonalTextNoteTable((String)session.getAttribute("userId"));
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(personalTextNoteJson);	
 		dbpersonalNote.conClose();

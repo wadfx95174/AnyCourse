@@ -13,19 +13,19 @@ import java.util.Map;
 
 public class HomePageManager {
 	private String selectRecommend ="select * from customlistVideo,unit,recommendedResult,courselist where "
-			+"recommendedResult.unitID = unit.unitID and "
-			+"customlistVideo.unitID = unit.unitID and "
-			+"customlistVideo.courselistID = courselist.courselistID and "
-			+"recommendedResult.accountID = '";
+			+"recommendedResult.unitId = unit.unitId and "
+			+"customlistVideo.unitId = unit.unitId and "
+			+"customlistVideo.courselistId = courselist.courselistId and "
+			+"recommendedResult.accountId = '";
 	private String selectPlan="select * from customlistVideo,unit,personalPlan,courselist "
-			+"where personalPlan.unitID = unit.unitID and "
-			+"customlistVideo.unitID = unit.unitID and "
-			+"customlistVideo.courselistID = courselist.courselistID and "
+			+"where personalPlan.unitId = unit.unitId and "
+			+"customlistVideo.unitId = unit.unitId and "
+			+"customlistVideo.courselistId = courselist.courselistId and "
 			+"personalPlan.status = ";
 	private String selectPlanMax="select MAX(oorder) from personalPlan where status =";
 	private String selectRand="select * from customlistVideo,unit,courselist "
-			+ "where customlistVideo.unitID = unit.unitID and " 
-			+ "customlistVideo.courselistID = courselist.courselistID order by rand() limit 20";
+			+ "where customlistVideo.unitId = unit.unitId and " 
+			+ "customlistVideo.courselistId = courselist.courselistId order by rand() limit 20";
 	
 	private Map<Integer, HomePage> map;
 	private HomePage homePage;
@@ -51,14 +51,14 @@ public class HomePageManager {
 		}
 	}
 	//登入之後取得所有推薦影片及課程清單、想要觀看等等的影片或清單
-	public ArrayList<Map<Integer, HomePage>> getAllVideo(String userID) {
+	public ArrayList<Map<Integer, HomePage>> getAllVideo(String userId) {
 		ArrayList<Map<Integer, HomePage>> homePages = new ArrayList<Map<Integer, HomePage>>();
 		 
-		homePages.add(selectRecommendVideo(userID));
-		homePages.add(selectRecommendList(userID));
-		homePages.add(selectVideoList(userID));
-		homePages.add(selectCoursePlanWant(userID));
-		homePages.add(selectCoursePlanING(userID));
+		homePages.add(selectRecommendVideo(userId));
+		homePages.add(selectRecommendList(userId));
+		homePages.add(selectVideoList(userId));
+		homePages.add(selectCoursePlanWant(userId));
+		homePages.add(selectCoursePlanING(userId));
 		
 		return homePages;
 	}
@@ -71,24 +71,24 @@ public class HomePageManager {
 		return homePages;
 	}
 	//檢查該使用者在recommendedResult有沒有資料以及課程清單、想要觀看、正在觀看有無資料，有的話回傳true
-	public boolean checkUser(String userID) {
+	public boolean checkUser(String userId) {
 		boolean check = false;
 		try {
-			pst = con.prepareStatement("select recommendedResult.unitID from recommendedResult,account "
-					+ "where account.accountID = recommendedResult.accountID and account.userID = ?");
-			pst.setString(1,userID);
+			pst = con.prepareStatement("select recommendedResult.unitId from recommendedResult,account "
+					+ "where account.accountId = recommendedResult.accountId and account.userId = ?");
+			pst.setString(1,userId);
 			result = pst.executeQuery();
 			if(result.next()) {
 				check = true;
 			}
-			pst = con.prepareStatement("select courselistID from list where userID = ?");
-			pst.setString(1, userID);
+			pst = con.prepareStatement("select courselistId from list where userId = ?");
+			pst.setString(1, userId);
 			result = pst.executeQuery();
 			if(result.next()) {
 				check = true;
 			}
-			pst = con.prepareStatement("select unitID from personalPlan where userID = ?");
-			pst.setString(1, userID);
+			pst = con.prepareStatement("select unitId from personalPlan where userId = ?");
+			pst.setString(1, userId);
 			result = pst.executeQuery();
 			if(result.next()) {
 				check = true;
@@ -116,9 +116,9 @@ public class HomePageManager {
 				homePage.setUnitName(result.getString("unit.unitName"));
 				homePage.setSchoolName(result.getString("courselist.schoolName"));
 				homePage.setTeacher(result.getString("courselist.teacher"));
-				homePage.setCourselistID(result.getInt("courselist.courselistID"));
+				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
-				homePage.setUnitID(result.getInt("unit.unitID"));
+				homePage.setUnitId(result.getInt("unit.unitId"));
 				//沒有圖片就塞預設的
 				if(result.getString("unit.videoImgSrc") == "") {
 					homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
@@ -161,9 +161,9 @@ public class HomePageManager {
 				homePage.setUnitName(result.getString("unit.unitName"));
 				homePage.setSchoolName(result.getString("courselist.schoolName"));
 				homePage.setTeacher(result.getString("courselist.teacher"));
-				homePage.setCourselistID(result.getInt("courselist.courselistID"));
+				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setListLikes(result.getInt("courselist.likes"));
-				homePage.setUnitID(result.getInt("unit.unitID"));
+				homePage.setUnitId(result.getInt("unit.unitId"));
 				if(result.getString("unit.videoImgSrc") == "") {
 					homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
@@ -193,31 +193,31 @@ public class HomePageManager {
 	}
 	
 	//推薦影片
-	public Map<Integer, HomePage> selectRecommendVideo(String userID){
+	public Map<Integer, HomePage> selectRecommendVideo(String userId){
 		map = new HashMap<Integer, HomePage>();
 		int count = 0;//map的key
-		int accountID = 0;
+		int accountId = 0;
 		try {
 			pst = con.prepareStatement("select * from recommendedResult,account where "
-					+ "account.accountID = recommendedResult.accountID and account.userID = ?");
-			pst.setString(1,userID);
+					+ "account.accountId = recommendedResult.accountId and account.userId = ?");
+			pst.setString(1,userId);
 			result = pst.executeQuery();
 			if(result.next()) {
-				accountID = result.getInt("account.accountID");
+				accountId = result.getInt("account.accountId");
 			}
 			
 			stat = con.createStatement();
-			result = stat.executeQuery(selectRecommend + accountID + "'");
+			result = stat.executeQuery(selectRecommend + accountId + "'");
 			while(result.next()) {
 				homePage = new HomePage();
-				homePage.setAccountID(result.getInt("recommendedResult.accountID"));
+				homePage.setAccountId(result.getInt("recommendedResult.accountId"));
 				homePage.setListName(result.getString("courselist.listName"));
 				homePage.setUnitName(result.getString("unit.unitName"));
 				homePage.setSchoolName(result.getString("courselist.schoolName"));
 				homePage.setTeacher(result.getString("courselist.teacher"));
-				homePage.setCourselistID(result.getInt("courselist.courselistID"));
+				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
-				homePage.setUnitID(result.getInt("unit.unitID"));
+				homePage.setUnitId(result.getInt("unit.unitId"));
 				if(result.getString("unit.videoImgSrc") == "") {
 					homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
@@ -247,32 +247,32 @@ public class HomePageManager {
 	}
 	
 	//推薦清單
-	public Map<Integer, HomePage> selectRecommendList(String userID){
+	public Map<Integer, HomePage> selectRecommendList(String userId){
 		map = new HashMap<Integer, HomePage>();
 		int count = 0;//map的key
 		int check = 0;//0代表是第一次跑這個清單，不是0代表這個清單已經跑過
-		int accountID = 0;
+		int accountId = 0;
 		try {
 			pst = con.prepareStatement("select * from recommendedResult,account where "
-					+ "account.accountID = recommendedResult.accountID and account.userID = ?");
-			pst.setString(1,userID);
+					+ "account.accountId = recommendedResult.accountId and account.userId = ?");
+			pst.setString(1,userId);
 			result = pst.executeQuery();
 			if(result.next()) {
-				accountID = result.getInt("account.accountID");
+				accountId = result.getInt("account.accountId");
 			}
 			else return null;
 			stat = con.createStatement();
-			result = stat.executeQuery(selectRecommend + accountID +"' order by customlistVideo.oorder ASC");
+			result = stat.executeQuery(selectRecommend + accountId +"' order by customlistVideo.oorder ASC");
 			while(result.next()) {
-				if(check == 0 || check!=result.getInt("customlistVideo.courselistID")) {
+				if(check == 0 || check!=result.getInt("customlistVideo.courselistId")) {
 					homePage = new HomePage();
-					homePage.setAccountID(result.getInt("recommendedResult.accountID"));
+					homePage.setAccountId(result.getInt("recommendedResult.accountId"));
 					homePage.setListName(result.getString("courselist.listName"));
 					homePage.setSchoolName(result.getString("courselist.schoolName"));
 					homePage.setTeacher(result.getString("courselist.teacher"));
-					homePage.setCourselistID(result.getInt("courselist.courselistID"));
+					homePage.setCourselistId(result.getInt("courselist.courselistId"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
-					homePage.setUnitID(result.getInt("unit.unitID"));
+					homePage.setUnitId(result.getInt("unit.unitId"));
 					if(result.getString("unit.videoImgSrc") == "") {
 						homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 					}
@@ -291,7 +291,7 @@ public class HomePageManager {
 					
 					count++;
 				}
-				check = result.getInt("customlistVideo.courselistID");
+				check = result.getInt("customlistVideo.courselistId");
 			} 
 		}
 		catch(SQLException x){
@@ -305,7 +305,7 @@ public class HomePageManager {
 	}
 	
 	//找使用者的課程清單
-	public Map<Integer, HomePage> selectVideoList(String userID){
+	public Map<Integer, HomePage> selectVideoList(String userId){
 		map = new HashMap<Integer, HomePage>();
 		int count = 0;//map的key
 		int max = 0;
@@ -314,7 +314,7 @@ public class HomePageManager {
 			//找oorder來當最大值
 			stat = con.createStatement();
 			//檢查清單列表有沒有清單
-			result = stat.executeQuery("select MAX(oorder) from list where userID = '" + userID+"'");
+			result = stat.executeQuery("select MAX(oorder) from list where userId = '" + userId+"'");
 			while(result.next()) {
 				max = result.getInt("MAX(oorder)");
 				//檢查有沒有資料
@@ -323,34 +323,34 @@ public class HomePageManager {
 			max = 0;
 			//看有幾個清單是有內容的，有才可以顯示在首頁
 			result = stat.executeQuery("select * from customlistVideo,unit,list,courselist where "
-					+"customlistVideo.courselistID = list.courselistID and "
-					+"customlistVideo.unitID = unit.unitID and "
-					+"list.courselistID = courselist.courselistID and "
-					+"list.userID ='" + userID+"'");
+					+"customlistVideo.courselistId = list.courselistId and "
+					+"customlistVideo.unitId = unit.unitId and "
+					+"list.courselistId = courselist.courselistId and "
+					+"list.userId ='" + userId+"'");
 			while(result.next()) {
-				if(check == 0 || check!=result.getInt("customlistVideo.courselistID")) {
+				if(check == 0 || check!=result.getInt("customlistVideo.courselistId")) {
 					max++;
-					check = result.getInt("customlistVideo.courselistID");
+					check = result.getInt("customlistVideo.courselistId");
 				}
 					
 			}
 			//將清單有影片的找出來
 			result = stat.executeQuery("select * from customlistVideo,unit,list,courselist where "
-					+"customlistVideo.courselistID = list.courselistID and "
-					+"customlistVideo.unitID = unit.unitID and "
-					+"list.courselistID = courselist.courselistID and "
-					+"list.userID ='" + userID+"'");
+					+"customlistVideo.courselistId = list.courselistId and "
+					+"customlistVideo.unitId = unit.unitId and "
+					+"list.courselistId = courselist.courselistId and "
+					+"list.userId ='" + userId+"'");
 			count = 0;
 			while(result.next()) {
-				if(check == 0 || check!=result.getInt("customlistVideo.courselistID")) {
+				if(check == 0 || check!=result.getInt("customlistVideo.courselistId")) {
 					homePage = new HomePage();
-					homePage.setUserID(result.getString("list.userID"));
+					homePage.setUserId(result.getString("list.userId"));
 					homePage.setListName(result.getString("courselist.listName"));
 					homePage.setSchoolName(result.getString("courselist.schoolName"));
 					homePage.setTeacher(result.getString("courselist.teacher"));
-					homePage.setCourselistID(result.getInt("list.courselistID"));
+					homePage.setCourselistId(result.getInt("list.courselistId"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
-					homePage.setUnitID(result.getInt("customlistVideo.unitID"));
+					homePage.setUnitId(result.getInt("customlistVideo.unitId"));
 					homePage.setNum(max);
 					homePage.setType(3);//代表課程清單
 					if(result.getString("unit.videoImgSrc") == "") {
@@ -368,7 +368,7 @@ public class HomePageManager {
 					map.put(count, homePage);
 					count++;
 				}
-				check = result.getInt("customlistVideo.courselistID");
+				check = result.getInt("customlistVideo.courselistId");
 			} 
 		}
 		catch(SQLException x){
@@ -382,31 +382,31 @@ public class HomePageManager {
 	}
 	
 	//找使用者的課程計畫中的"想要觀看"
-	public Map<Integer, HomePage> selectCoursePlanWant(String userID){
+	public Map<Integer, HomePage> selectCoursePlanWant(String userId){
 		map = new HashMap<Integer, HomePage>();
 		int count = 0;//map的key
 		int max = 0;
 		try {
 			//找oorder來當最大值
 			stat = con.createStatement();
-			result = stat.executeQuery(selectPlanMax+" 1 and userID = '" + userID+"'");
+			result = stat.executeQuery(selectPlanMax+" 1 and userId = '" + userId+"'");
 			while(result.next()) {
 				max = result.getInt("MAX(oorder)");
 				//檢查有沒有資料
 				if(max == 0)return null;
 			}
 			
-			result = stat.executeQuery(selectPlan+ "1 and personalPlan.userID = '" + userID+"'");
+			result = stat.executeQuery(selectPlan+ "1 and personalPlan.userId = '" + userId+"'");
 			while(result.next()) {
 				homePage = new HomePage();
-				homePage.setUserID(result.getString("personalPlan.userID"));
+				homePage.setUserId(result.getString("personalPlan.userId"));
 				homePage.setUnitName(result.getString("unit.unitName"));
 				homePage.setListName(result.getString("courselist.listName"));
 				homePage.setSchoolName(result.getString("courselist.schoolName"));
 				homePage.setTeacher(result.getString("courselist.teacher"));
-				homePage.setCourselistID(result.getInt("courselist.courselistID"));
+				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
-				homePage.setUnitID(result.getInt("unit.unitID"));
+				homePage.setUnitId(result.getInt("unit.unitId"));
 				homePage.setNum(max);
 				homePage.setType(4);//代表想要觀看
 				if(result.getString("unit.videoImgSrc") == "") {
@@ -436,31 +436,31 @@ public class HomePageManager {
 	}
 	
 	//找使用者的課程計畫中的"正在觀看"
-	public Map<Integer, HomePage> selectCoursePlanING(String userID){
+	public Map<Integer, HomePage> selectCoursePlanING(String userId){
 		map = new HashMap<Integer, HomePage>();
 		int count = 0;//map的key
 		int max = 0;
 		try {
 			//找oorder來當最大值
 			stat = con.createStatement();
-			result = stat.executeQuery(selectPlanMax+" 2 and userID = '" + userID+"'");
+			result = stat.executeQuery(selectPlanMax+" 2 and userId = '" + userId+"'");
 			while(result.next()) {
 				max = result.getInt("MAX(oorder)");
 				//檢查有沒有資料
 				if(max == 0)return null;
 			}
 			
-			result = stat.executeQuery(selectPlan+ "2 and personalPlan.userID = '" + userID+"'");
+			result = stat.executeQuery(selectPlan+ "2 and personalPlan.userId = '" + userId+"'");
 			while(result.next()) {
 				homePage = new HomePage();
-				homePage.setUserID(result.getString("personalPlan.userID"));
+				homePage.setUserId(result.getString("personalPlan.userId"));
 				homePage.setUnitName(result.getString("unit.unitName"));
 				homePage.setListName(result.getString("courselist.listName"));
 				homePage.setSchoolName(result.getString("courselist.schoolName"));
 				homePage.setTeacher(result.getString("courselist.teacher"));
-				homePage.setCourselistID(result.getInt("courselist.courselistID"));
+				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
-				homePage.setUnitID(result.getInt("unit.unitID"));
+				homePage.setUnitId(result.getInt("unit.unitId"));
 				homePage.setNum(max);
 				homePage.setType(5);//代表想要觀看
 				if(result.getString("unit.videoImgSrc") == "") {
@@ -489,17 +489,17 @@ public class HomePageManager {
 		return map;
 	}
 	//將首頁的單元影片加入課程計畫中
-	public void addToCoursePlan(String userID,int unitID){
+	public void addToCoursePlan(String userId,int unitId){
 		int maxOrder = 0;
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery(selectPlanMax+" 1 and userID = '" + userID+"'");
+			result = stat.executeQuery(selectPlanMax+" 1 and userId = '" + userId+"'");
 			while(result.next()) {
 				maxOrder = result.getInt("MAX(oorder)");
 			}
-			pst = con.prepareStatement("insert into personalPlan (userID,unitID,lastTime,status,oorder) value(?,?,0,1,?)");
-			pst.setString(1, userID);
-			pst.setInt(2, unitID);
+			pst = con.prepareStatement("insert into personalPlan (userId,unitId,lastTime,status,oorder) value(?,?,0,1,?)");
+			pst.setString(1, userId);
+			pst.setInt(2, unitId);
 			pst.setInt(3, ++maxOrder);
 			pst.executeUpdate();
 		}
@@ -513,29 +513,29 @@ public class HomePageManager {
 	}
 	
 	//將首頁的清單中的所有單元影片加入課程計畫中
-	public void addToCoursePlanList(String userID,int courselistID){
+	public void addToCoursePlanList(String userId,int courselistId){
 		homePages = new ArrayList<HomePage>();
 		homePage = new HomePage();
 		int maxOrder = 0;
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery(selectPlanMax+" 1 and userID = '" + userID+"'");
+			result = stat.executeQuery(selectPlanMax+" 1 and userId = '" + userId+"'");
 			while(result.next()) {
 				maxOrder = result.getInt("MAX(oorder)");
 			}
-			result = stat.executeQuery("select * from unit,customlistVideo,courselist where unit.unitID"
-					+ " = customlistVideo.unitID and customlistVideo.courselistID ="
-					+ " courselist.courselistID and courselist.courselistID = "+ courselistID);
+			result = stat.executeQuery("select * from unit,customlistVideo,courselist where unit.unitId"
+					+ " = customlistVideo.unitId and customlistVideo.courselistId ="
+					+ " courselist.courselistId and courselist.courselistId = "+ courselistId);
 			while(result.next()) {
 				homePage = new HomePage();
-				homePage.setUnitID(result.getInt("unit.unitID"));
+				homePage.setUnitId(result.getInt("unit.unitId"));
 				homePages.add(homePage);
 			}
-			pst = con.prepareStatement("insert ignore into personalPlan (userID,unitID,lastTime,status,oorder) value(?,?,0,1,?)");
+			pst = con.prepareStatement("insert ignore into personalPlan (userId,unitId,lastTime,status,oorder) value(?,?,0,1,?)");
 			for(int i = 0;i < homePages.size();i++) {
 				
-				pst.setString(1, userID);
-				pst.setInt(2, homePages.get(i).getUnitID());
+				pst.setString(1, userId);
+				pst.setInt(2, homePages.get(i).getUnitId());
 				pst.setInt(3, ++maxOrder);
 				//先放到batch，等迴圈跑完再一次新增
 				pst.addBatch();

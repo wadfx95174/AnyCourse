@@ -22,15 +22,15 @@ public class CalendarServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
 		HttpSession session = request.getSession();
-		String userID = (String)session.getAttribute("userID");
+		String userId = (String)session.getAttribute("userId");
 		if (request.getParameter("method").equals("getEvent"))
 		{
-			response.getWriter().write(new Gson().toJson(calendarManager.getEvents(userID)));
+			response.getWriter().write(new Gson().toJson(calendarManager.getEvents(userId)));
 		}
 		else if (request.getParameter("method").equals("getCoursePlan"))
 		{
 			CoursePlanManager coursePlanManager = new CoursePlanManager();
-			response.getWriter().write(new Gson().toJson(coursePlanManager.getCoursePlanAllList(userID)));
+			response.getWriter().write(new Gson().toJson(coursePlanManager.getCoursePlanAllList(userId)));
 		}
 		calendarManager.conClose();
 	}
@@ -52,13 +52,13 @@ public class CalendarServlet extends HttpServlet {
 			event.setBackgroundColor(request.getParameter("backgroundColor"));
 			event.setBorderColor(request.getParameter("borderColor"));
 			HttpSession session = request.getSession();
-			int newID = calendarManager.insertEvent(event, (String)session.getAttribute("userID"));
-			String json = new Gson().toJson(newID);
+			int newId = calendarManager.insertEvent(event, (String)session.getAttribute("userId"));
+			String json = new Gson().toJson(newId);
 			response.getWriter().write(json);
 		}
 		else if (method.equals("delete"))
 		{
-			calendarManager.deleteEvent(Integer.parseInt(request.getParameter("eventID")));
+			calendarManager.deleteEvent(Integer.parseInt(request.getParameter("eventId")));
 		}
 		else
 		{

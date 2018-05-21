@@ -6,9 +6,9 @@ function get(name)
    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
       return decodeURIComponent(name[1]);
 }
-//才能知道要對哪個ID做動作
-function getID(id){
-    checkID = id;
+//才能知道要對哪個Id做動作
+function getId(id){
+    checkId = id;
 }
 var array = [];
 $(document).ready(function(){
@@ -18,7 +18,7 @@ $(document).ready(function(){
 		cache :false,
 		url:ajaxURL+'AnyCourse/SearchServlet.do',
 		data: {
-			search_query: get('search_query')
+			searchQuery: get('searchQuery')
 		},
 		success: function(response){
 			console.log(response);
@@ -35,11 +35,11 @@ $(document).ready(function(){
 							+'<span class="caret"></span>'
 							+'</button>'
 							+'<ul class="dropdown-menu">'
-							+'<li><a data-toggle="modal" data-target="#addToCoursePlan_List" onclick="getID('+i+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程計畫</a>'
+							+'<li><a data-toggle="modal" data-target="#addToCoursePlanList" onclick="getId('+i+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程計畫</a>'
 							+'</li>'
 							+'</ul>'
 							+'</div>'
-							+'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[0].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unit_id='+response[i].units[0].unitId+'&list_id='+response[i].courselistId+'">'
+							+'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[0].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].units[0].unitId+'&listId='+response[i].courselistId+'">'
 							+'<div class="media">'
 							+'<div class="media-body">'
 							+'<div class="col-xs-4 pull-left" style="padding-left: 0px;">'
@@ -61,10 +61,6 @@ $(document).ready(function(){
 							+'</div>'
 							+'</a></li>'
 					);
-//					for (var j = 0; j < response[i].units.length; j++)
-//					{
-//						$('#video_list_'+i).append('<a href="PlayerInterface.html?type='+ (response[i].units[j].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unit_id='+response[i].units[j].unitId+'">'+response[i].units[j].unitName+'</a>');
-//					}
 				}
 				else
 				{
@@ -76,11 +72,11 @@ $(document).ready(function(){
 							+'<span class="caret"></span>'
 							+'</button>'
 							+'<ul class="dropdown-menu">'
-							+'<li><a data-toggle="modal" data-target="#addToCoursePlan" onclick="getID('+i+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程計畫</a>'
+							+'<li><a data-toggle="modal" data-target="#addToCoursePlan" onclick="getId('+i+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程計畫</a>'
 							+'</li>'
 							+'</ul>'
 							+'</div>'
-							+'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[0].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unit_id='+response[i].units[0].unitId+'">'
+							+'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[0].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].units[0].unitId+'">'
 							+'<div class="media">'
 							+'<div class="media-body">'
 							+'<div class="col-xs-4 pull-left" style="padding-left: 0px;">'
@@ -111,7 +107,7 @@ $(document).ready(function(){
 					cache: false,
 					data:{
 						action:'addToCoursePlan',
-						unit_id:array[checkID]["units"][checkID]["unitId"]
+						unitId:array[checkId]["units"][checkId]["unitId"]
 					},
 					error:function(){
 						console.log("addToCoursePlan Error!");
@@ -119,19 +115,19 @@ $(document).ready(function(){
 				})
 			});
 			//清單整個新增至課程計畫
-			$('#addToCoursePlanButton_List').click(function(e){
+			$('#addToCoursePlanButtonList').click(function(e){
 				e.preventDefault();
-				console.log(array[checkID]["units"][checkID]["unitId"]);
+				console.log(array[checkId]["units"][checkId]["unitId"]);
 				$.ajax({
 					url : ajaxURL+'AnyCourse/HomePageServlet.do',
 					method : 'POST',
 					cache: false,
 					data:{
-						action:'addToCoursePlan_List',
-						courselist_id:array[checkID]["courselistId"]
+						action:'addToCoursePlanList',
+						courselistId:array[checkId]["courselistId"]
 					},
 					error:function(e){
-						console.log("addToCoursePlan_List Error!");
+						console.log("addToCoursePlanList Error!");
 					}
 				})
 			});

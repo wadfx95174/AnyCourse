@@ -34,13 +34,13 @@ public class SearchServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		SearchManager manager = new SearchManager();
 		
-		if(request.getParameter("action").equals("addToCoursePlan")&&(String)session.getAttribute("userID")!=null) {
-			manager.addToCoursePlan((String)session.getAttribute("userID")
-					,Integer.parseInt(request.getParameter("unitID")));
+		if(request.getParameter("action").equals("addToCoursePlan")&&(String)session.getAttribute("userId")!=null) {
+			manager.addToCoursePlan((String)session.getAttribute("userId")
+					,Integer.parseInt(request.getParameter("unitId")));
 		}
-		if(request.getParameter("action").equals("addToCoursePlanList")&&(String)session.getAttribute("userID")!=null) {
-			manager.addToCoursePlanList((String)session.getAttribute("userID")
-					,Integer.parseInt(request.getParameter("courselistID")));
+		if(request.getParameter("action").equals("addToCoursePlanList")&&(String)session.getAttribute("userId")!=null) {
+			manager.addToCoursePlanList((String)session.getAttribute("userId")
+					,Integer.parseInt(request.getParameter("courselistId")));
 		}
 		manager.conClose();
 	}

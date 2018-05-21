@@ -23,7 +23,7 @@ public class ExchangePictureNoteServlet extends HttpServlet {
 		
 		
 		String pictureNoteJson = new Gson().toJson(pictureNotes);
-		pictureNoteJson = dbnote2.selectPictureNoteTable(Integer.parseInt(request.getParameter("unitID")));
+		pictureNoteJson = dbnote2.selectPictureNoteTable(Integer.parseInt(request.getParameter("unitId")));
 		response.setContentType("application/json");
 		response.getWriter().write(pictureNoteJson);
 		dbnote2.conClose();

@@ -2,9 +2,9 @@ package Note;
    
 public class TextNote {
 	
-	public int textNoteID;
-	public int unitID;
-	public String userID;
+	public int textNoteId;
+	public int unitId;
+	public String userId;
 	public String nickName;
 	public String textNote;
 	public int share;
@@ -19,83 +19,66 @@ public class TextNote {
 		this.nickName = nickName;
 	}
 	
-	public int getTextNoteID() {
-		return textNoteID;
+	public int getTextNoteId() {
+		return textNoteId;
 	}
 
-
-	public void setTextNoteID(int textNoteID) {
-		this.textNoteID = textNoteID;
+	public void setTextNoteId(int textNoteId) {
+		this.textNoteId = textNoteId;
 	}
 
-
-	public int getUnitID() {
-		return unitID;
+	public int getUnitId() {
+		return unitId;
 	}
 
-
-	public void setUnitID(int unitID) {
-		this.unitID = unitID;
+	public void setUnitId(int unitId) {
+		this.unitId = unitId;
 	}
 
-
-	public String getUserID() {
-		return userID;
+	public String getUserId() {
+		return userId;
 	}
 
-
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-
 
 	public String getTextNote() {
 		return textNote;
 	}
 
-
 	public void setTextNote(String textNote) {
 		this.textNote = textNote;
 	}
-
 
 	public int getShare() {
 		return share;
 	}
 
-
 	public void setShare(int share) {
 		this.share = share;
 	}
-
 
 	public String getShareTime() {
 		return shareTime;
 	}
 
-
 	public void setShareTime(String shareTime) {
 		this.shareTime = shareTime;
 	}
-
 
 	public int getLikes() {
 		return likes;
 	}
 
-
 	public void setLikes(int likes) {
 		this.likes = likes;
 	}
-
-
+	
 	@Override
 	public String toString() {
-		return "TextNote [textNoteID=" + textNoteID + ", unitID=" + unitID + ", userID=" + userID
+		return "TextNote [textNoteId=" + textNoteId + ", unitId=" + unitId + ", userId=" + userId
 				+ ", textNote=" + textNote + ", share=" + share + ", shareTime=" + shareTime + ", likes=" + likes
 				+ "]";
 	}
-	
-	
-	
 }

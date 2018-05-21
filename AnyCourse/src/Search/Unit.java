@@ -2,19 +2,19 @@ package Search;
 
 public class Unit
 {
-	private int unitID;
+	private int unitId;
 	private String unitName;
 	private String videoUrl;
 	private int likes;
 	private String videoImgSrc;
 	private String schoolName;
-	public int getUnitID()
+	public int getUnitId()
 	{
-		return unitID;
+		return unitId;
 	}
-	public void setUnitID(int unitID)
+	public void setUnitId(int unitId)
 	{
-		this.unitID = unitID;
+		this.unitId = unitId;
 	}
 	public String getUnitName()
 	{
@@ -59,7 +59,7 @@ public class Unit
 	@Override
 	public String toString()
 	{
-		return "Unit [unitId=" + unitID + ", unitName=" + unitName + ", videoUrl=" + videoUrl + ", likes=" + likes
+		return "Unit [unitId=" + unitId + ", unitName=" + unitName + ", videoUrl=" + videoUrl + ", likes=" + likes
 				+ ", videoImgSrc=" + videoImgSrc + ", schoolName=" + schoolName + "]";
 	}
 }

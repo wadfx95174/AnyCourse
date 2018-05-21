@@ -1,9 +1,9 @@
 package Personal.PersonalNote;
 
 public class PersonalTextNote {
-	public int textNoteID;
-	public int unitID;
-	public String userID;
+	public int textNoteId;
+	public int unitId;
+	public String userId;
 	public String textNote;
 	public int share;
 	public String shareTime;
@@ -12,23 +12,23 @@ public class PersonalTextNote {
 	public String unitName;
 	public String videoUrl;
 	
-	public int getTextNoteID() {
-		return textNoteID;
+	public int getTextNoteId() {
+		return textNoteId;
 	}
-	public void setTextNoteID(int textNoteID) {
-		this.textNoteID = textNoteID;
+	public void setTextNoteId(int textNoteId) {
+		this.textNoteId = textNoteId;
 	}
-	public int getUnitID() {
-		return unitID;
+	public int getUnitId() {
+		return unitId;
 	}
-	public void setUnitID(int unitID) {
-		this.unitID = unitID;
+	public void setUnitId(int unitId) {
+		this.unitId = unitId;
 	}
-	public String getUserID() {
-		return userID;
+	public String getUserId() {
+		return userId;
 	}
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public String getTextNote() {
 		return textNote;

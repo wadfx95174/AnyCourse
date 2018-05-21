@@ -38,15 +38,15 @@ public class CoursePlanManager {
 		}
 	}
 	//拿該使用者課程計畫所有影片
-	public ArrayList<CoursePlan> getCoursePlanAllList(String userID){
+	public ArrayList<CoursePlan> getCoursePlanAllList(String userId){
 		coursePlans = new ArrayList<CoursePlan>();
 		try {
 			stat = con.createStatement();
 			result = stat.executeQuery("select * from personalPlan,unit,customlistVideo,courselist where "
-					+ "personalPlan.unitID = unit.unitID and "
-					+ "unit.unitID = customlistVideo.unitID and "
-					+ "customlistVideo.courselistID = courselist.courselistID and "
-					+ "personalPlan.userID = '"+userID +"' order by personalPlan.oorder ASC");
+					+ "personalPlan.unitId = unit.unitId and "
+					+ "unit.unitId = customlistVideo.unitId and "
+					+ "customlistVideo.courselistId = courselist.courselistId and "
+					+ "personalPlan.userId = '"+userId +"' order by personalPlan.oorder ASC");
 			while(result.next()) {
 				coursePlan = new CoursePlan();
 				coursePlan.setListName(result.getString("courselist.listName"));
@@ -55,7 +55,7 @@ public class CoursePlanManager {
 				coursePlan.setLastTime(result.getInt("personalPlan.lastTime"));
 				coursePlan.setTeacher(result.getString("courselist.teacher"));
 				coursePlan.setLikes(result.getInt("unit.likes"));
-				coursePlan.setUnitID(result.getInt("unit.unitID"));
+				coursePlan.setUnitId(result.getInt("unit.unitId"));
 				coursePlan.setStatus(result.getInt("personalPlan.status"));//狀態
 				coursePlan.setOorder(result.getInt("oorder"));
 				if(result.getString("unit.videoImgSrc") == "") {
@@ -83,7 +83,7 @@ public class CoursePlanManager {
 		return coursePlans;
 	}
 	//獲取原本該狀態列表的資料
-	public ArrayList<CoursePlan> getCoursePlanOrder(String userID,String received){
+	public ArrayList<CoursePlan> getCoursePlanOrder(String userId,String received){
 		coursePlans = new ArrayList<CoursePlan>();
 		int status = 0;
 		if(received.equals("wantList"))status = 1;
@@ -91,11 +91,11 @@ public class CoursePlanManager {
 		else if(received.equals("doneList"))status = 3;
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from personalPlan where userID = '" + userID + "' and status = " + status);
+			result = stat.executeQuery("select * from personalPlan where userId = '" + userId + "' and status = " + status);
 			while(result.next()) {
 				coursePlan = new CoursePlan();
-				coursePlan.setUserID(result.getString("userID"));
-				coursePlan.setUnitID(result.getInt("unitID"));
+				coursePlan.setUserId(result.getString("userId"));
+				coursePlan.setUnitId(result.getInt("unitId"));
 				coursePlan.setStatus(result.getInt("status"));
 				coursePlan.setOorder(result.getInt("oorder"));
 				coursePlans.add(coursePlan);
@@ -114,10 +114,10 @@ public class CoursePlanManager {
 	public void updateCoursePlanList(CoursePlan coursePlan) {
 		try {
 			//1:想要觀看。2:正在觀看。3:已觀看完
-			pst = con.prepareStatement("update personalPlan set status = ? , oorder = ? where userID = ? and unitID = ? ");
+			pst = con.prepareStatement("update personalPlan set status = ? , oorder = ? where userId = ? and unitId = ? ");
 			
-			pst.setString(3,coursePlan.getUserID());
-			pst.setInt(4,coursePlan.getUnitID());
+			pst.setString(3,coursePlan.getUserId());
+			pst.setInt(4,coursePlan.getUnitId());
 			pst.setInt(1,coursePlan.getStatus());
 			pst.setInt(2,coursePlan.getOorder());
 			pst.executeUpdate();
@@ -131,7 +131,7 @@ public class CoursePlanManager {
 		}
 	}
 	//獲取移動前的清單的資料
-	public ArrayList<CoursePlan> getOldCoursePlanOrder(String userID,String sender){
+	public ArrayList<CoursePlan> getOldCoursePlanOrder(String userId,String sender){
 		coursePlans = new ArrayList<CoursePlan>();
 		int status = 0;
 		if(sender.equals("wantList"))status = 1;
@@ -139,11 +139,11 @@ public class CoursePlanManager {
 		else if(sender.equals("doneList"))status = 3;
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from personalPlan where userID = '" + userID + "' and status = " + status);
+			result = stat.executeQuery("select * from personalPlan where userId = '" + userId + "' and status = " + status);
 			while(result.next()) {
 				coursePlan = new CoursePlan();
-				coursePlan.setUserID(result.getString("userID"));
-				coursePlan.setUnitID(result.getInt("unitID"));
+				coursePlan.setUserId(result.getString("userId"));
+				coursePlan.setUnitId(result.getInt("unitId"));
 				coursePlan.setStatus(result.getInt("status"));
 				coursePlan.setOorder(result.getInt("oorder"));
 				coursePlans.add(coursePlan);
@@ -162,10 +162,10 @@ public class CoursePlanManager {
 	public void updateOldStatusList(CoursePlan oldCoursePlan) {
 		try {
 			//1:想要觀看。2:正在觀看。3:已觀看完
-			pst = con.prepareStatement("update personalPlan set status = ? , oorder = ? where userID = ? and unitID = ? ");
+			pst = con.prepareStatement("update personalPlan set status = ? , oorder = ? where userId = ? and unitId = ? ");
 			
-			pst.setString(3,oldCoursePlan.getUserID());
-			pst.setInt(4,oldCoursePlan.getUnitID());
+			pst.setString(3,oldCoursePlan.getUserId());
+			pst.setInt(4,oldCoursePlan.getUnitId());
 			pst.setInt(1,oldCoursePlan.getStatus());
 			pst.setInt(2,oldCoursePlan.getOorder());
 			pst.executeUpdate();

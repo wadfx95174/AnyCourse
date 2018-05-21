@@ -68,37 +68,33 @@ $(document).ready(function(){
     
     
     $("#editNote").click(function(){
-//    	alert("AAA");
-//    	alert($("#text_area").attr("disabled"));
-    	if(typeof($("#text_area").attr("disabled")) === "string"){
-    		$("#text_area").removeAttr("disabled");
+    	if(typeof($("#textArea").attr("disabled")) === "string"){
+    		$("#textArea").removeAttr("disabled");
     		$("#noteFooter").slideToggle();
     	}
     	else{
-//    		alert("OK");
-    		$("#text_area").attr("disabled","false");
+    		$("#textArea").attr("disabled","false");
     		$("#noteFooter").slideToggle();
     	}   	
     });
     $("#cancelNote").click(function(){
-    	$("#text_area").attr("disabled","false");
+    	$("#textArea").attr("disabled","false");
         $("#noteFooter").slideToggle();
     });
     $( function() {
 	    $( "#keyLabel1, #keyLabel2" ).sortable({
-	//      connectWith: ".connectedSortable"
 	    }).disableSelection();
     });
 
 //----------------------------------------------video----------------------------------------------//
-    if (get('list_id') != undefined)
+    if (get('listId') != undefined)
     {
     	$.ajax({
         	url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
         	method: 'POST',
         	cache :false,
         	data: {
-        		courselistId: get('list_id'),
+        		courselistId: get('listId'),
         		action: 'getVideoList',//代表要取videoList
         	},
         	success: function(result){
@@ -113,7 +109,7 @@ $(document).ready(function(){
         	                    + '   <div class="list-group"  id="listbox">');
         	    for (var i = 0; i < result.length; i++)
         	    {
-        	    	$('#listbox').append('      <a href="PlayerInterface.html?type='+ (result[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unit_id='+result[i].unitId+'&list_id='+get('list_id')+'" class="list-group-item">'
+        	    	$('#listbox').append('      <a href="PlayerInterface.html?type='+ (result[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+result[i].unitId+'&listId='+get('listId')+'" class="list-group-item">'
 		    	                    + '         <div class="media">'
 		    	                    + '            <div class="col-xs-6 pull-left" style="padding-left: 0px;">'
 		    	                    + '               <div class="embed-responsive embed-responsive-16by9">          '
@@ -163,7 +159,7 @@ $(document).ready(function(){
 		data : 
 		{
 			"method" : "getPKL",
-			"unit_id" : get("unit_id")
+			"unitId" : get("unitId")
 		},
 		success:function(result){
 			keyLabelArray = result;
@@ -180,7 +176,7 @@ $(document).ready(function(){
 		url : ajaxURL+'AnyCourse/ExchangeKeyLabelServlet.do',
 		method : 'GET', 
 		cache :false,
-		data : {"unit_id" : get("unit_id")},
+		data : {"unitId" : get("unitId")},
 		success:function(result){
 			exKeyLabelArray = result;
     		for(exmaxIndex = 0 ;exmaxIndex < result.length; exmaxIndex++)
@@ -188,7 +184,7 @@ $(document).ready(function(){
     			$('#exchange_keylabel').append(
     					'<div id="exK_' + exKeyLabelArray[exmaxIndex].userId + '" class=" col-xs-12">'+
     					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
-    					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + exKeyLabelArray[exmaxIndex].nick_name + '</h4>'+
+    					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + exKeyLabelArray[exmaxIndex].nickName + '</h4>'+
     					'<li class="list-group-item">'+ exKeyLabelArray[exmaxIndex].keyLabelName+
     					'<ul class="list-group-submenu">'+
     					'<a href="#" class = "ukl exchange" id = "exchange-ukl-' + exmaxIndex + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'+
@@ -317,7 +313,7 @@ $(document).ready(function(){
         	    	"keyLabelName" : klName,
         	    	"beginTime" : klBeginTime,
         	    	"endTime" : klEndTime,
-        	    	"unitId" : get("unit_id")
+        	    	"unitId" : get("unitId")
         		},
         		dataType : 'json',
         		cache: false,
@@ -502,17 +498,15 @@ $(document).ready(function(){
     $('#likesButton').click(function(){
     	//按讚
     	if($('#likesIcon').hasClass('fa-heart-o')){
-//    		console.log("like");
     		$('#likesIcon').removeClass('fa-heart-o');
         	$('#likesIcon').addClass('fa-heart');
-//        	console.log(get('unit_id'));
         	$.ajax({
         		url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
             	method: 'POST',
             	cache :false,
             	data:{
             		action:'like',
-            		unit_id:get('unit_id'),
+            		unitId:get('unitId'),
             		like:1,//1代表喜歡
             	},
             	success:function(result){
@@ -526,7 +520,6 @@ $(document).ready(function(){
     	}
     	//收回讚
     	else{
-//    		console.log("Un");
     		$('#likesIcon').removeClass('fa-heart');
         	$('#likesIcon').addClass('fa-heart-o');
         	$.ajax({
@@ -535,7 +528,7 @@ $(document).ready(function(){
             	cache :false,
             	data:{
             		action:'like',
-            		unit_id:get('unit_id'),
+            		unitId:get('unitId'),
             		like:0//0代表收回讚
             	},
             	success:function(result){
@@ -556,7 +549,7 @@ $(document).ready(function(){
     	cache :false,
     	data:{
     		action:'getRecommendation',
-    		unit_id:get('unit_id'),
+    		unitId:get('unitId'),
     	},
     	success:function(result){
     		console.log(result);
@@ -564,7 +557,6 @@ $(document).ready(function(){
     			$('#recommendList').append(
         				'<li>'
     					+'<a class="list-group-item" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].type+')">'
-    					
     					+'<div class="media">'
     					+'<div class="pull-left" style="padding-left: 0px;">'
     					+'<div class="embed-responsive embed-responsive-16by9 col-xs-12">'
@@ -573,7 +565,6 @@ $(document).ready(function(){
     					+'</div>'
     					+'</div>'
     					+'<div class="media-body">'
-    					
     					+'<h5 class="unitUi">'
     					+'<b>影片名稱:' + result[i].unitName + '</b>'
     					+'</h5>'
@@ -583,26 +574,8 @@ $(document).ready(function(){
     					+'</div>'
     					+'</div>'
     					+'</a></li>'
-        				
-        				///////////
-//        				+'<a href="PlayerInterface.html" class="list-group-item">'
-//        				+'<div class="media">'
-//        				+'<div class="col-xs-6 pull-left" style="padding-left: 0px;">'
-//        				+'<div class="embed-responsive embed-responsive-16by9">'
-//        				+'<img id="img" class="style-scope yt-img-shadow" alt="" width="210" src="https://i.ytimg.com/vi/B-AoHE6dPnk/hqdefault.jpg">'   
-//        				+'</div>'
-//        				+'</div>'
-//        				+'<div class="media-body">'
-//        				+'<h3 class="media-heading">導涵式公式的推廣</h3>'
-//        				+'<p>中央大學 王老師</p>'
-//        				+'<p>讚數:216,165</p>'
-//        				+'</div>'
-//        				+'</div>'
-//        				+'</a>'
         		);
     		}
-    		
-//    		$('#likesNum').text(result.likes);
     	},
     	error:function(){
     		console.log("Like Fail!");
@@ -614,7 +587,7 @@ $(document).ready(function(){
 });
 
 
-function jumpToPlayerInterface(unit_id,type){
-    url = "../PlayerInterface.html?unit_id="+unit_id+"&type="+type;//此處拼接內容
+function jumpToPlayerInterface(unitId,type){
+    url = "../PlayerInterface.html?unitId="+unitId+"&type="+type;//此處拼接內容
     window.location.href = url;
 }

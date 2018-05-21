@@ -26,7 +26,7 @@ public class WatchRecordServlet extends HttpServlet {
 		ArrayList<WatchRecord> watchRecords = new ArrayList<>();
 		
 		String watchRecordJson = new Gson().toJson(watchRecords);
-		watchRecordJson = dbwatchRecord.selectWatchRecordTable((String)session.getAttribute("userID"));
+		watchRecordJson = dbwatchRecord.selectWatchRecordTable((String)session.getAttribute("userId"));
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(watchRecordJson);	
 		dbwatchRecord.conClose();
@@ -34,17 +34,17 @@ public class WatchRecordServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String userID = (String)session.getAttribute("userID");
-		int unitID = Integer.parseInt(request.getParameter("unitID"));
+		String userId = (String)session.getAttribute("userId");
+		int unitId = Integer.parseInt(request.getParameter("unitId"));
 		
 		
 		WatchRecordManager dbwatchRecord = new WatchRecordManager();
 		WatchRecord watchRecord = new WatchRecord();
 				
-		watchRecord.setUserID(userID);
-		watchRecord.setUnitID(unitID);	
+		watchRecord.setUserId(userId);
+		watchRecord.setUnitId(unitId);	
 		
-		dbwatchRecord.deleteWatchRecordTable(userID,unitID);
+		dbwatchRecord.deleteWatchRecordTable(userId,unitId);
 		dbwatchRecord.conClose();
 	}
 

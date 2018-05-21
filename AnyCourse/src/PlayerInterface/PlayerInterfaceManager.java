@@ -19,10 +19,10 @@ import RecommenderSystem.RecommendationResult;
 
 public class PlayerInterfaceManager
 {
-	private String selectVideoUrlSQL = "select * from unit,courselist,customlistVideo where unit.unitID = ? "
-			+ "and unit.unitID = customlistVideo.unitID and "
-			+ "customlistVideo.courselistID = courselist.courselistID";
-	private String selectCourseListSQL = "select * from unit natural join customlistVideo where courselistID = ?";
+	private String selectVideoUrlSQL = "select * from unit,courselist,customlistVideo where unit.unitId = ? "
+			+ "and unit.unitId = customlistVideo.unitId and "
+			+ "customlistVideo.courselistId = courselist.courselistId";
+	private String selectCourseListSQL = "select * from unit natural join customlistVideo where courselistId = ?";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -43,17 +43,17 @@ public class PlayerInterfaceManager
 		}
 	}
 	
-	public String getVideoUrl(int unitID) {
+	public String getVideoUrl(int unitId) {
 		Unit unit = null;
 		try {
 			pst = con.prepareStatement(selectVideoUrlSQL);
-			pst.setInt(1, unitID);
+			pst.setInt(1, unitId);
 			result = pst.executeQuery();
 			
 			while(result.next()) 
 			{ 	
 				unit = new Unit();
-				unit.setUnitID(result.getInt("unit.unitID"));
+				unit.setUnitId(result.getInt("unit.unitId"));
 				unit.setUnitName(result.getString("unit.unitName"));
 				unit.setListName(result.getString("courselist.listName"));
 				unit.setSchoolName(result.getString("courselist.schoolName"));
@@ -73,16 +73,16 @@ public class PlayerInterfaceManager
 		return gson.toJson(unit);
 	}
 	//取得完整清單中的單元影片
-	public String getList(int courselistID) {
+	public String getList(int courselistId) {
 		ArrayList<Unit> units = new ArrayList<>(); 
 		try {
 			pst = con.prepareStatement(selectCourseListSQL);
-			pst.setInt(1, courselistID);
+			pst.setInt(1, courselistId);
 			result = pst.executeQuery();
 			while(result.next()) 
 			{ 	
 				Unit unit = new Unit();
-				unit.setUnitID(result.getInt("unitID"));
+				unit.setUnitId(result.getInt("unitId"));
 				unit.setUnitName(result.getString("unitName"));
 				unit.setListName(result.getString("listName"));
 				unit.setSchoolName(result.getString("schoolName"));
@@ -105,53 +105,53 @@ public class PlayerInterfaceManager
 	//watchRecord的watchTime是存入資料時資料庫自動抓現在的時間
 	//如果該影片有存在在使用者的課程計畫中，則personalPlan的lastTime也要update，並且判斷要不要改status
 	//設定shareLikes	的觀看紀錄，將isBrowse+1
-	public void setVideoEndTime(int currentTime,int unitID,String userID,int duration) {
+	public void setVideoEndTime(int currentTime,int unitId,String userId,int duration) {
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from watchRecord where userID = '"+userID
-					+"' and unitID = "+unitID);
+			result = stat.executeQuery("select * from watchRecord where userId = '"+userId
+					+"' and unitId = "+unitId);
 			boolean check = false;//檢查watchRecord裡面有沒有這筆單元影片的資料，false為沒有
 			System.out.println("currentTime: " + currentTime);
 			System.out.println("duration: " + duration);
 			while(result.next()) {check = true;}
 			//如果沒有，就塞資料
 			if(check == false) {
-				pst = con.prepareStatement("insert ignore into watchRecord (userID,unitID,watchTime) value(?,?,null)");
-				pst.setString(1,userID);
-				pst.setInt(2,unitID);
+				pst = con.prepareStatement("insert ignore into watchRecord (userId,unitId,watchTime) value(?,?,null)");
+				pst.setString(1,userId);
+				pst.setInt(2,unitId);
 			}
 			//有就更新資料
 			else {
-				pst = con.prepareStatement("update watchRecord set watchTime = null where userID = ? and unitID = ? ");
-				pst.setString(1,userID);
-				pst.setInt(2,unitID);
+				pst = con.prepareStatement("update watchRecord set watchTime = null where userId = ? and unitId = ? ");
+				pst.setString(1,userId);
+				pst.setInt(2,unitId);
 			}
 			pst.executeUpdate();
 			
 			//檢查有沒有存在在使用者的課程計畫中
 			stat = con.createStatement();
-			result = stat.executeQuery("select unitID from personalPlan where userID = '"+userID
-					+"' and unitID = "+unitID);
-			check = false;//檢查有沒有在課程計畫的table中找到這個unitID
+			result = stat.executeQuery("select unitId from personalPlan where userId = '"+userId
+					+"' and unitId = "+unitId);
+			check = false;//檢查有沒有在課程計畫的table中找到這個unitId
 			while(result.next()) {check = true;}
 			//如果有，就更新影片結束時間，true是有，沒有就不做事
 			if(check == true) { 
 				
 				//判斷結束了沒，currentTime+5秒代表5秒內會結束的都改變status
 				if(currentTime+5 > duration) {
-					pst = con.prepareStatement("update personalPlan set lastTime = ?,status = ? where userID = ? and unitID = ? ");
+					pst = con.prepareStatement("update personalPlan set lastTime = ?,status = ? where userId = ? and unitId = ? ");
 					pst.setInt(1,currentTime);
 					pst.setInt(2,3);
-					pst.setString(3,userID);
+					pst.setString(3,userId);
 					System.out.println("coursePlan");
-					pst.setInt(4, unitID);
+					pst.setInt(4, unitId);
 				}
 				else {
-					pst = con.prepareStatement("update personalPlan set lastTime = ?,status = ? where userID = ? and unitID = ? ");
+					pst = con.prepareStatement("update personalPlan set lastTime = ?,status = ? where userId = ? and unitId = ? ");
 					pst.setInt(1,currentTime);
 					pst.setInt(2,2);
-					pst.setString(3,userID);
-					pst.setInt(4, unitID);
+					pst.setString(3,userId);
+					pst.setInt(4, unitId);
 					
 				}
 				pst.executeUpdate();
@@ -172,41 +172,41 @@ public class PlayerInterfaceManager
 	//按讚時，有兩個table需要更改
 	//1.shareLikes：用於推薦系統
 	//2.unit：該影片的總按讚數
-	public void addLike(String userID) {
+	public void addLike(String userId) {
 		
 	}
 	
 	
 	//進入播放介面時，先設定isBrowse，以此來判斷有沒有看過讚
-	public Unit setIsBrowse(String userID,int unitID) {
+	public Unit setIsBrowse(String userId,int unitId) {
 		int like = 0;
 		Unit unit = null;
 		try {
 			//更新shareLikes的isBrowse
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from shareLikes where userID = '"+userID
-					+"' and unitID = "+unitID);
+			result = stat.executeQuery("select * from shareLikes where userId = '"+userId
+					+"' and unitId = "+unitId);
 			boolean check = false;//檢查watchRecord裡面有沒有這筆單元影片的資料，false為沒有
 			while(result.next()) {
 				check = true;
 				}
 			//如果沒有，就塞資料
 			if(check == false) {
-				pst = con.prepareStatement("insert into shareLikes (userID,unitID,isShare,isLike"
+				pst = con.prepareStatement("insert into shareLikes (userId,unitId,isShare,isLike"
 						+ ",isAddToCourseList,isAddToCoursePlan,isBrowse) value(?,?,0,0,0,0,1)");
-				pst.setString(1,userID);
-				pst.setInt(2,unitID);
+				pst.setString(1,userId);
+				pst.setInt(2,unitId);
 			}
 			//有就更新資料
 			else {
-				pst = con.prepareStatement("update shareLikes set isBrowse = isBrowse + 1 where userID = ? and unitID = ? and isBrowse < 6");
-				pst.setString(1,userID);
-				pst.setInt(2,unitID);
+				pst = con.prepareStatement("update shareLikes set isBrowse = isBrowse + 1 where userId = ? and unitId = ? and isBrowse < 6");
+				pst.setString(1,userId);
+				pst.setInt(2,unitId);
 			}
 			pst.executeUpdate();
 			
-			result = stat.executeQuery("select * from shareLikes where userID = '"+userID
-					+"' and unitID = "+unitID);
+			result = stat.executeQuery("select * from shareLikes where userId = '"+userId
+					+"' and unitId = "+unitId);
 			while(result.next()) {
 				unit = new Unit();
 				unit.setPersonalLike(result.getInt("isLike"));
@@ -227,38 +227,38 @@ public class PlayerInterfaceManager
 	//按讚，更新2個選取1個
 	//更新1:unit的likes
 	//更新2:shareLikes的isLike
-	public Unit setLike(String userID,int unitID,int like) {
+	public Unit setLike(String userId,int unitId,int like) {
 		Unit unit = new Unit();
 		try {
 			//按讚
 			if(like == 1) {
-				pst = con.prepareStatement("update unit set likes = likes + 1 where unitID = ?");
-				pst.setInt(1, unitID);
+				pst = con.prepareStatement("update unit set likes = likes + 1 where unitId = ?");
+				pst.setInt(1, unitId);
 				pst.executeUpdate();
 				
-				pst = con.prepareStatement("update shareLikes set isLike = isLike + 1 where userID = ? and unitID = ? and isLike < 1");
-				pst.setString(1,userID);
-				pst.setInt(2, unitID);
+				pst = con.prepareStatement("update shareLikes set isLike = isLike + 1 where userId = ? and unitId = ? and isLike < 1");
+				pst.setString(1,userId);
+				pst.setInt(2, unitId);
 				pst.executeUpdate();
 				
 				stat = con.createStatement();
-				result = stat.executeQuery("select * from unit where unitID = "+unitID);
+				result = stat.executeQuery("select * from unit where unitId = "+unitId);
 				while(result.next()) {
 					unit.setLikes(result.getInt("likes"));
 				}
 			}
 			//收回讚
 			else if(like == 0) {
-				pst = con.prepareStatement("update unit set likes = likes - 1 where unitID = ? and likes > 0");
-				pst.setInt(1, unitID);
+				pst = con.prepareStatement("update unit set likes = likes - 1 where unitId = ? and likes > 0");
+				pst.setInt(1, unitId);
 				pst.executeUpdate();
-				pst = con.prepareStatement("update shareLikes set isLike = isLike - 1 where userID = ? and unitID = ? and isLike > 0");
-				pst.setString(1,userID);
-				pst.setInt(2, unitID);
+				pst = con.prepareStatement("update shareLikes set isLike = isLike - 1 where userId = ? and unitId = ? and isLike > 0");
+				pst.setString(1,userId);
+				pst.setInt(2, unitId);
 				pst.executeUpdate();
 				
 				stat = con.createStatement();
-				result = stat.executeQuery("select * from unit where unitID = "+unitID);
+				result = stat.executeQuery("select * from unit where unitId = "+unitId);
 				while(result.next()) {
 					unit.setLikes(result.getInt("likes"));
 				}
@@ -273,16 +273,16 @@ public class PlayerInterfaceManager
 		}
 		return unit;
 	}
-	//拿accountID
-	public int getAccountID(String userID) {
-		int accountID = 0;
+	//拿accountId
+	public int getAccountId(String userId) {
+		int accountId = 0;
 		try {
-			pst = con.prepareStatement("select account.accountID from rating,account where "
-					+ "account.accountID = rating.accountID and account.userID = ?");
-			pst.setString(1,userID);
+			pst = con.prepareStatement("select account.accountId from rating,account where "
+					+ "account.accountId = rating.accountId and account.userId = ?");
+			pst.setString(1,userId);
 			result = pst.executeQuery();
 			while(result.next()) {
-				accountID = result.getInt("account.accountID");
+				accountId = result.getInt("account.accountId");
 			}
 		}
 		catch(SQLException x) {
@@ -291,20 +291,20 @@ public class PlayerInterfaceManager
 		finally {
 			Close();
 		}
-		return accountID;
+		return accountId;
 	}
 	
 	//拿推薦給該使用者的影片
-	public ArrayList<Unit> getRecommendList(int accountID, long unitID) throws IOException,TasteException{
+	public ArrayList<Unit> getRecommendList(int accountId, long unitId) throws IOException,TasteException{
 		ArrayList<Unit> units = new ArrayList<Unit>();
 		Unit unit = null;
 		try {
 			try {
 				List<RecommendedItem> test = RecommendationResult.designatedItemBooleanRecommendedResult(
-						(long)accountID,unitID,10);
+						(long)accountId,unitId,10);
 				pst = con.prepareStatement("select * from unit,courselist,customlistVideo where "
-						+ "unit.unitID = customlistVideo.unitID and customlistVideo.courselistID"
-						+ " = courselist.courselistID and unit.unitID = ?");
+						+ "unit.unitId = customlistVideo.unitId and customlistVideo.courselistId"
+						+ " = courselist.courselistId and unit.unitId = ?");
 				for(RecommendedItem r: test) {
 					
 					pst.setInt(1,(int)r.getItemID());
@@ -312,7 +312,7 @@ public class PlayerInterfaceManager
 					while(result.next()) {
 						unit = new Unit();
 						unit.setUnitName(result.getString("unit.unitName"));
-						unit.setUnitID(result.getInt("unit.unitID"));
+						unit.setUnitId(result.getInt("unit.unitId"));
 						unit.setVideoImgSrc(result.getString("unit.videoImgSrc"));
 						unit.setTeacher(result.getString("courselist.teacher"));
 						unit.setSchoolName(result.getString("courselist.schoolName"));
@@ -341,20 +341,20 @@ public class PlayerInterfaceManager
 	}
 	
 	//進入播放介面時，先設定isBrowse，以此來判斷有沒有看過讚
-	public void setBrowse(int accountID,int unitID) {
+	public void setBrowse(int accountId,int unitId) {
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from rating where accountID = '"+accountID
-					+"' and unitID = "+unitID);
+			result = stat.executeQuery("select * from rating where accountId = '"+accountId
+					+"' and unitId = "+unitId);
 			boolean check = false;//檢查watchRecord裡面有沒有這筆單元影片的資料，false為沒有
 			while(result.next()) {
 				check = true;
 				}
 			//如果沒有，就塞資料
 			if(check == false) {
-				pst = con.prepareStatement("insert into rating (accountID,unitID,score) value(?,?,4)");
-				pst.setInt(1,accountID);
-				pst.setInt(2,unitID);
+				pst = con.prepareStatement("insert into rating (accountId,unitId,score) value(?,?,4)");
+				pst.setInt(1,accountId);
+				pst.setInt(2,unitId);
 				System.out.println("insert");
 			}
 			pst.executeUpdate();

@@ -2,9 +2,9 @@ package KeyLabel;
 
 public class KeyLabel
 {
-	private int keyLabelID;
-	private int unitID;
-	private String userID;
+	private int keyLabelId;
+	private int unitId;
+	private String userId;
 	private String keyLabelName;
 	private String nickName;	
 	private int beginTime;
@@ -14,33 +14,33 @@ public class KeyLabel
 	private int likes;
 	
 	
-	public int getKeyLabelID() {
-		return keyLabelID;
+	public int getKeyLabelId() {
+		return keyLabelId;
 	}
 
 
-	public void setKeyLabelID(int keyLabelID) {
-		this.keyLabelID = keyLabelID;
+	public void setKeyLabelId(int keyLabelId) {
+		this.keyLabelId = keyLabelId;
 	}
 
 
-	public int getUnitID() {
-		return unitID;
+	public int getUnitId() {
+		return unitId;
 	}
 
 
-	public void setUnitID(int unitID) {
-		this.unitID = unitID;
+	public void setUnitId(int unitId) {
+		this.unitId = unitId;
 	}
 
 
-	public String getUserID() {
-		return userID;
+	public String getUserId() {
+		return userId;
 	}
 
 
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 
@@ -117,7 +117,7 @@ public class KeyLabel
 	@Override
 	public String toString()
 	{
-		return "KeyLabel [keyLabelID=" + keyLabelID + ", unitID=" + unitID + ", userID=" + userID + ", keyLabelName="
+		return "KeyLabel [keyLabelId=" + keyLabelId + ", unitId=" + unitId + ", userId=" + userId + ", keyLabelName="
 				+ keyLabelName + ", beginTime=" + beginTime + ", endTime=" + endTime + ", share=" + share
 				+ ", shareTime=" + shareTime + ", likes=" + likes + ", toString()=" + super.toString() + "]";
 	}

@@ -12,8 +12,8 @@ import com.google.gson.Gson;
 
 
 public class WatchRecordManager {
-	public String selectWatchRecordSQL = "select * from watchRecord natural join unit where watchRecord.userID = ? and watchRecord.unitID = unit.unitID ";
-	public String deleteWatchRecordSQL = "delete from watchRecord where userID = ? and unitID = ?";
+	public String selectWatchRecordSQL = "select * from watchRecord natural join unit where watchRecord.userId = ? and watchRecord.unitId = unit.unitId ";
+	public String deleteWatchRecordSQL = "delete from watchRecord where userId = ? and unitId = ?";
 	public WatchRecord watchRecord;
 	
 	public Connection con = null;
@@ -36,17 +36,17 @@ public class WatchRecordManager {
 			System.out.println("Exception" + x.toString());
 		}
 	}
-	public String selectWatchRecordTable(String userID) {
+	public String selectWatchRecordTable(String userId) {
 		ArrayList<WatchRecord> watchRecords = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectWatchRecordSQL);
-			pst.setString(1, userID);
+			pst.setString(1, userId);
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 	
 				 watchRecord = new WatchRecord();
-				 watchRecord.setUserID(result.getString("userID"));
-				 watchRecord.setUnitID(result.getInt("unitID"));
+				 watchRecord.setUserId(result.getString("userId"));
+				 watchRecord.setUnitId(result.getInt("unitId"));
 				 watchRecord.setWatchTime(result.getString("watchTime"));
 				 watchRecord.setSchoolName(result.getString("schoolName"));
 				 watchRecord.setUnitName(result.getString("unitName"));
@@ -65,11 +65,11 @@ public class WatchRecordManager {
 		String json = new Gson().toJson(watchRecords);
 		return json;
 	}
-	public void deleteWatchRecordTable(String userID,int unitID) {
+	public void deleteWatchRecordTable(String userId,int unitId) {
 		try {
 			pst = con.prepareStatement(deleteWatchRecordSQL);
-			pst.setString(1,userID);
-			pst.setInt(2,unitID);
+			pst.setString(1,userId);
+			pst.setInt(2,unitId);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){

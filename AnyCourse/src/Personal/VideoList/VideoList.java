@@ -1,10 +1,10 @@
 package Personal.VideoList;
 
 public class VideoList {
-	private int courselistID;
+	private int courselistId;
 	private String listName;
 	private String creator;
-	private String userID;
+	private String userId;
 	private String schoolName;
 	private int share;
 	private int likes;
@@ -12,12 +12,12 @@ public class VideoList {
 	
 	public VideoList() {}
 
-	public int getCourselistID() {
-		return courselistID;
+	public int getCourselistId() {
+		return courselistId;
 	}
 
-	public void setCourselistID(int courselistID) {
-		this.courselistID = courselistID;
+	public void setCourselistId(int courselistId) {
+		this.courselistId = courselistId;
 	}
 
 	public String getListName() {
@@ -36,12 +36,12 @@ public class VideoList {
 		this.creator = creator;
 	}
 
-	public String getUserID() {
-		return userID;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getSchoolName() {
@@ -75,5 +75,4 @@ public class VideoList {
 	public void setOorder(int oorder) {
 		this.oorder = oorder;
 	}
-	
 }

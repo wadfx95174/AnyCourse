@@ -1,8 +1,8 @@
 package Personal.WatchRecord;
 
 public class WatchRecord {
-	public String userID;
-	public int unitID;
+	public String userId;
+	public int unitId;
 	public String watchTime;	
 	public String schoolName;
 	public String unitName;
@@ -41,17 +41,17 @@ public class WatchRecord {
 	public void setVideoImgSrc(String videoImgSrc) {
 		this.videoImgSrc = videoImgSrc;
 	}
-	public String getUserID() {
-		return userID;
+	public String getUserId() {
+		return userId;
 	}
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public int getUnitID() {
-		return unitID;
+	public int getUnitId() {
+		return unitId;
 	}
-	public void setUnitID(int unitID) {
-		this.unitID = unitID;
+	public void setUnitId(int unitId) {
+		this.unitId = unitId;
 	}
 	public String getWatchTime() {
 		return watchTime;

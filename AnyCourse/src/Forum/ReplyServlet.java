@@ -35,8 +35,8 @@ public class ReplyServlet extends HttpServlet {
 		response.setHeader("Cache-Control","max-age=0");
 		if(state.equals("insert"))
 		{
-			int commentID = Integer.parseInt(request.getParameter("commentID"));
-			String userID = (String)session.getAttribute("userID");
+			int commentId = Integer.parseInt(request.getParameter("commentId"));
+			String userId = (String)session.getAttribute("userId");
 			String nickName = (String)session.getAttribute("nickName");
 			String replyContent = request.getParameter("replyContent");
 			
@@ -44,8 +44,8 @@ public class ReplyServlet extends HttpServlet {
 			
 			Reply reply = new Reply();
 			
-			reply.setCommentID(commentID);
-			reply.setUserID(userID);
+			reply.setCommentId(commentId);
+			reply.setUserId(userId);
 			reply.setNickName(nickName);
 			reply.setReplyContent(replyContent);
 
@@ -57,9 +57,9 @@ public class ReplyServlet extends HttpServlet {
 		}
 		if(state.equals("update"))
 		{
-			int replyID = Integer.parseInt(request.getParameter("replyID"));
-			int commentID = Integer.parseInt(request.getParameter("commentID"));
-			String userID = (String)session.getAttribute("userID");
+			int replyId = Integer.parseInt(request.getParameter("replyId"));
+			int commentId = Integer.parseInt(request.getParameter("commentId"));
+			String userId = (String)session.getAttribute("userId");
 			String nickName = (String)session.getAttribute("nickName");
 			String replyTime = request.getParameter("replyTime");
 			String replyContent = request.getParameter("replyContent");
@@ -68,9 +68,9 @@ public class ReplyServlet extends HttpServlet {
 			
 			Reply reply = new Reply();
 			
-			reply.setReplyID(replyID);
-			reply.setCommentID(commentID);
-			reply.setUserID(userID);
+			reply.setReplyId(replyId);
+			reply.setCommentId(commentId);
+			reply.setUserId(userId);
 			reply.setNickName(nickName);
 			reply.setReplyTime(replyTime);
 			reply.setReplyContent(replyContent);
@@ -84,25 +84,24 @@ public class ReplyServlet extends HttpServlet {
 		if(state.equals("delete"))
 		{
 			ForumManager dbreply = new ForumManager();
-			int replyID = Integer.parseInt(request.getParameter("replyID"));
+			int replyId = Integer.parseInt(request.getParameter("replyId"));
 			
 			Reply reply = new Reply();
-			reply.setReplyID(replyID);
+			reply.setReplyId(replyId);
 						
-			dbreply.deleteReplyTable(replyID);
+			dbreply.deleteReplyTable(replyId);
 			PrintWriter out = response.getWriter();
 			dbreply.conClose();
 		}	
 		if(state.equals("delete2"))
 		{
 			ForumManager dbreply = new ForumManager();
-			int commentID = Integer.parseInt(request.getParameter("commentID"));
+			int commentId = Integer.parseInt(request.getParameter("commentId"));
 			
 			Reply reply = new Reply();
-			reply.setCommentID(commentID);
+			reply.setCommentId(commentId);
 						
-			dbreply.deleteReplyTable2(commentID);
-			PrintWriter out = response.getWriter();
+			dbreply.deleteReplyTable2(commentId);
 			dbreply.conClose();
 		}	
 	}

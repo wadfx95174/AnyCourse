@@ -23,7 +23,7 @@ public class ExchangeTextNoteServlet extends HttpServlet {
 			
 		
 		String textNoteJson = new Gson().toJson(textNotes);
-		textNoteJson = dbnote1.selectTextNoteTable(Integer.parseInt(request.getParameter("unitID")));
+		textNoteJson = dbnote1.selectTextNoteTable(Integer.parseInt(request.getParameter("unitId")));
 		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(textNoteJson);
 		dbnote1.conClose();		

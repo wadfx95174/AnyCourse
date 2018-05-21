@@ -5,12 +5,12 @@ var ajaxURL="http://localhost:8080/";
 var isClick = false;
 
  
-$('#google_login').click(function(){
+$('#googleLogin').click(function(){
 	isClick = true;
 });
 // 初始化函数  
 function render() {  
-    gapi.signin.render('google_login', {  
+    gapi.signin.render('googleLogin', {  
         'callback': 'signinCallback',  
         'approvalprompt': 'auto',  
         'clientid': '645783857059-6faluf0otn6641vrdlm2e4oc2tgagbbo.apps.googleusercontent.com',  
