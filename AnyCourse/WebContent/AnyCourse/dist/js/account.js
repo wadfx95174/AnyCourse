@@ -3,8 +3,8 @@ $(document).on('click', '#logout', function logout()
 {
     disconnectUser();
 })
-var ajax_url="http://140.121.197.130:8400/";
-//var ajax_url="http://localhost:8080/";
+//var ajaxURL="http://140.121.197.130:8400/";
+var ajaxURL="http://localhost:8080/";
 
 
 $(document).on('click', '#logout', function logout()
@@ -15,7 +15,7 @@ $(document).on('click', '#logout', function logout()
 function checkLogin(htmlUrl, servletUrl)
 {
 	$.ajax({
-    	url: ajax_url+'AnyCourse/AccountServlet.do',
+    	url: ajaxURL+'AnyCourse/AccountServlet.do',
     	method: 'POST',
     	cache :false,
     	success: function(result){
@@ -24,13 +24,13 @@ function checkLogin(htmlUrl, servletUrl)
     			$('.navbar-nav').append(
 						'<li class="dropdown user user-menu"><a href="#"'
 						+'	class="dropdown-toggle" data-toggle="dropdown"> <img'
-						+'		src="'+ajax_url+'AnyCourse/AnyCourse/dist/img/user2-160x160.jpg" class="user-image"'
+						+'		src="'+ajaxURL+'AnyCourse/AnyCourse/dist/img/user2-160x160.jpg" class="user-image"'
 						+'		alt="User Image" /> <span>'+result.nickName+'</span>'
 						+'</a>'
 						+'	<ul class="dropdown-menu">'
 						+'		<!-- User image -->'
 						+'		<li class="user-header"><img'
-						+'			src="'+ajax_url+'AnyCourse/AnyCourse/dist/img/user2-160x160.jpg" class="img-circle"'
+						+'			src="'+ajaxURL+'AnyCourse/AnyCourse/dist/img/user2-160x160.jpg" class="img-circle"'
 						+'			alt="User Image" />'
 						+'			<p>'
 						+               result.nickName

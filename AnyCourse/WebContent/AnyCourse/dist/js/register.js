@@ -1,5 +1,5 @@
-var ajaxURL="http://140.121.197.130:8400/AnyCourse/LoginVerificationServlet.do";
-//var ajaxURL="http://localhost:8080/AnyCourse/LoginVerificationServlet.do";
+//var ajaxURL="http://140.121.197.130:8400/";
+var ajaxURL="http://localhost:8080/";
 
 // 各欄位正確與否 :boolean 
 var nickNameCheck =false;
@@ -67,7 +67,7 @@ $('#userId').change(function userId() {
           
       // 檢查帳號是否已存在
 	  $.ajax({
-              url : ajaxURL,
+              url : ajaxURL+'AnyCourse/LoginVerificationServlet.do',
               cache :false,
               data : {
             	  method : "checkExist",
@@ -204,7 +204,7 @@ function signinCallback(authResult) {
                 request.execute(function(obj){
                 	profile = obj;
                     $.ajax({
-           	     	 url: ajaxURL,
+           	     	 url: ajaxURL+'AnyCourse/LoginVerificationServlet.do',
            	     	 method : 'POST',
            	     	 data: {
            	              method : "googleLogin",

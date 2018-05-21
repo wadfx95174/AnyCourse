@@ -198,6 +198,7 @@ public class VideoListManager {
 			Close();
 		}
 	}
+	//編輯清單
 	public void updateCourseListTable(VideoList videoList){
 		try {
 			//1:list_name。2:courselist_id。3:creator

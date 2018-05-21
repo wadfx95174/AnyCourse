@@ -1,5 +1,5 @@
-var ajaxURL="http://140.121.197.130:8400/AnyCourse/LoginVerificationServlet.do";
-//var ajaxURL="http://localhost:8080/AnyCourse/LoginVerificationServlet.do";
+//var ajaxURL="http://140.121.197.130:8400/";
+var ajaxURL="http://localhost:8080/";
 
 var isClick = false;
 
@@ -26,7 +26,7 @@ function signinCallback(authResult) {
                 request.execute(function(obj){
                 	profile = obj;
                     $.ajax({
-           	     	 url: ajaxURL,
+           	     	 url: ajaxURL+'AnyCourse/LoginVerificationServlet.do',
            	     	 method : 'POST',
            	     	 data: {
            	              method : "googleLogin",
@@ -66,7 +66,7 @@ $( document ).ready(function() {
     po.src = 'https://apis.google.com/js/client:plusone.js?onload=render';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);  
      $.ajax({
-    	 url: ajaxURL,
+    	 url: ajaxURL+'AnyCourse/LoginVerificationServlet.do',
     	 method : 'GET',
     	 cache :false,
     	 data: {

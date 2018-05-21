@@ -1,5 +1,5 @@
-//var ajaxURL="http://140.121.197.130:8400/AnyCourse/CalendarServlet.do";
-var ajaxURL="http://localhost:8080/AnyCourse/CalendarServlet.do";
+//var ajaxURL="http://140.121.197.130:8400/";
+var ajaxURL="http://localhost:8080/";
 var events;
 
 document.write('<script async defer src="https://apis.google.com/js/api.js"'
@@ -157,7 +157,7 @@ function addEvent(event)
               response.eventType = 'g';
 	          
 			  $.ajax({
-        		url : ajaxURL,
+        		url : ajaxURL+'AnyCourse/CalendarServlet.do',
         		method: 'POST',
         		cache:false,
         		data: {
@@ -265,7 +265,7 @@ $(function () {
     
     // 從資料庫取得行事曆的資料，並更新至頁面
     $.ajax({
-		url: ajaxURL,
+		url: ajaxURL+'AnyCourse/CalendarServlet.do',
 		type: 'GET',
 		dataType: "json", 
 		cache :false,
@@ -316,7 +316,7 @@ $(function () {
 function getCoursePlanEvent()
 {
   	$.ajax({
-  		url: ajaxURL,
+  		url: ajaxURL+'AnyCourse/CalendarServlet.do',
   		method: 'GET',
   		cache: false,
   		data:{
@@ -409,7 +409,7 @@ function initCalendar(eventSrc)
       	    selectedObject.url = selectedObject.unitId + '/' + selectedObject.type;
       	    // 送到資料庫更新
       	    $.ajax({
-          		url : ajaxURL,
+          		url : ajaxURL+'AnyCourse/CalendarServlet.do',
           		method: 'POST',
           		cache: false,
           		data: {
@@ -463,7 +463,7 @@ function initCalendar(eventSrc)
 //	            console.log(!date.hasTime());
           
             $.ajax({
-      		    url : ajaxURL,
+      		    url : ajaxURL+'AnyCourse/CalendarServlet.do',
       		    method: 'POST',
       		    cache :false,
       		    data: {
@@ -514,7 +514,7 @@ function initCalendar(eventSrc)
         		    else
         		    {		        			  
 	        		    $.ajax({
-		            		url : ajaxURL,
+		            		url : ajaxURL+'AnyCourse/CalendarServlet.do',
 		            		method: 'POST',
 		            		cache :false,
 		            		data: {

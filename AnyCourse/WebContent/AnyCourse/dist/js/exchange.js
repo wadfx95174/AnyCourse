@@ -1,7 +1,7 @@
 
 document.write("<script type='text/javascript' src='../dist/js/swiper.min.js'></script>");
-var ajaxURL="http://140.121.197.130:8400/";
-//var ajaxURL="http://localhost:8080/";
+//var ajaxURL="http://140.121.197.130:8400/";
+var ajaxURL="http://localhost:8080/";
 
 function get(name)
 {

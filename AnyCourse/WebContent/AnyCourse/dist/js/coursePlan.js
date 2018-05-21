@@ -1,6 +1,6 @@
 //////////////localhost用來測試、IP那個用來部屬再tomcat///////////////////////
-var ajaxURL="http://140.121.197.130:8400/AnyCourse/CoursePlanServlet.do";
-//var ajaxURL="http://localhost:8080/AnyCourse/CoursePlanServlet.do";
+//var ajaxURL="http://140.121.197.130:8400/AnyCourse/CoursePlanServlet.do";
+var ajaxURL="http://localhost:8080/";
 ///////////////////////////////////////////////////////////////////////
 //////////////////////////////設置拉霸///////////////////////////////////
 $('#unit').slimScroll({
@@ -36,7 +36,7 @@ $(document).ready(function() {
 		+'</span>';
 	var videoID = 1;//設置每個影片的ID
 	$.ajax({
-		url:ajaxURL,
+		url:ajaxURL+'AnyCourse/CoursePlanServlet.do',
 		method:'GET',
 		cache :false,
 		success:function(result){
@@ -147,7 +147,7 @@ $(document).ready(function() {
 	    	//原本她會執行兩次(sender被更新，及received也被更新，這句共讓他只執行一次)
 	    	if (this === ui.item.parent()[0]) {
 	    		$.ajax({
-	    			url:ajaxURL,
+	    			url:ajaxURL+'AnyCourse/CoursePlanServlet.do',
 		    		method:'POST',
 		    		cache :false,
 		    		data:{

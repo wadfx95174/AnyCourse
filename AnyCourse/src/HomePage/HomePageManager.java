@@ -261,7 +261,7 @@ public class HomePageManager {
 				accountID = result.getInt("account.account_id");
 			}
 			else return null;
-			
+			stat = con.createStatement();
 			result = stat.executeQuery(selectRecommend + accountID +"' order by customlist_video.oorder ASC");
 			while(result.next()) {
 				if(check == 0 || check!=result.getInt("customlist_video.courselist_id")) {

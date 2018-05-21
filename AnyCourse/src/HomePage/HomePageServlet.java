@@ -50,7 +50,7 @@ public class HomePageServlet extends HttpServlet {
 		Gson gson = builder.setPrettyPrinting().create();
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(homePages));
-		System.out.println(gson.toJson(homePages));
+//		System.out.println(gson.toJson(homePages));
 		//關閉資料庫連線
 		homePageDatabaseManager.conClose();
 	}
