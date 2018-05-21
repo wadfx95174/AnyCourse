@@ -103,6 +103,8 @@ function handleAuthClick(event) {
 // 加入到 Google Calendar
 function addEvent(event)
 {
+	var date = moment().format("YYYYMMDDHHmmss");
+	console.log(date);
 	if (!event.allDay)
 	{
 		var request = gapi.client.calendar.events.insert({
@@ -111,7 +113,7 @@ function addEvent(event)
 		        'summary': event.title,
 		        'location': '',
 		        'description':event.unitId + '/' + event.type,
-		        'id':'fullcalendar'+event.id,
+		        'id':'fullcalendar' + event.id + date,
 		        'start': {
 		          'dateTime': event.start.toISOString(),
 		          'timeZone': 'Asia/Taipei'
@@ -131,7 +133,7 @@ function addEvent(event)
 		        'summary': event.title,
 		        'location': '',
 		        'description':event.unitId + '/' + event.type,
-		        'id':'fullcalendar'+event.id,
+		        'id':'fullcalendar' + event.id + date,
 		        'start': {
 			          'date': event.start,
 			          'timeZone': 'Asia/Taipei'
@@ -151,7 +153,7 @@ function addEvent(event)
     		  response.title = event.title;
     		  response.backgroundColor = '#B22222';
     		  response.borderColor =  '#B22222';
-    		  response.url = response.summary;
+    		  response.url = response.description;
     		  response.start = response.start.dateTime ? (moment(response.start.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.start.date).format('YYYY-MM-DD'));
     		  response.end = response.end.dateTime ? (moment(response.end.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.end.date).format('YYYY-MM-DD'));
               response.eventType = 'g';
@@ -182,18 +184,18 @@ function updateEvent(event)
 {
 	if (!event.allDay)
 	{
+		console.log('!allday');
 		var request = gapi.client.calendar.events.patch({
 	        'calendarId': 'primary',
 	        'eventId': event.id,
 	        'resource': {
-		        'summary': event.title,
-		        'location': '',
-		        'description': '',
 		        'start': {
+				  'date': null,
 		          'dateTime': event.start,
 		          'timeZone': 'Asia/Taipei'
 		        },
 		        'end': {
+		          'date': null,
 		          'dateTime': event.end,
 		          'timeZone': 'Asia/Taipei'
 		        }
@@ -202,19 +204,26 @@ function updateEvent(event)
 	}
 	else
 	{
+		// end day null
+//		console.log('allday');
+		if (event.end == null)
+		{
+			event.end = event.start
+		}
+		console.log(event.end);
 		var request = gapi.client.calendar.events.patch({
 	        'calendarId': 'primary',
 	        'eventId': event.id,
 	        'resource': {
-		        'summary': event.title,
-		        'location': '',
-		        'description': '',
+		        'allDay': true,
 		        'start': {
-		          'date': event.start,
+			      'dateTime': null,
+		          'date': event.start.format('YYYY-MM-DD'),
 		          'timeZone': 'Asia/Taipei'
 		        },
 		        'end': {
-		          'date': event.end,
+				  'dateTime': null,
+		          'date': event.end.format('YYYY-MM-DD'),
 		          'timeZone': 'Asia/Taipei'
 		        }
 		     }
@@ -262,7 +271,6 @@ $(function () {
     // ----初始化行事曆----
     
     
-    
     // 從資料庫取得行事曆的資料，並更新至頁面
     $.ajax({
 		url: ajax_url+'AnyCourse/CalendarServlet.do',
@@ -277,7 +285,7 @@ $(function () {
 		},
 		success: function(response){
 			console.log(response);
-			initCalendar();
+			initCalendar(response);
 		} // end succuss
 	})
 	
@@ -306,7 +314,10 @@ $(function () {
   		  '<li><a href="javascript:void(0)">'+val+'</a></li>'
   	  );
       //Add draggable funtionality
-      ini_event($('#external-events li').last());
+      $('#external-events li').last().click(function(){
+    	  $('#selectedEvent').text($(this).text());
+	      $('#selectedEvent').data('eventObject', {title: $(this).text()});
+	  });
 
       //Remove event from text input
       $("#new-event").val("");
@@ -335,27 +346,23 @@ function getCoursePlanEvent()
 	  				'<li><a href="javascript:void(0)">'+coursePlanList[i].unit_name+'</a></li>'
 	  			);
   			}
-  	        initEvents($('#external-events li'));
+  			$('#external-events li').each(function(index){
+  			    // 宣告EventObject (可以不用start跟end)
+  			    var eventObject = {
+  			          title: coursePlanList[index].unit_name,
+  		              unitId: coursePlanList[index].unit_id,
+  		              type: coursePlanList[index].video_type
+  			    	};
+  			    // 把eventObject存到DOM裡面，之後就可以取得
+  			    $(this).data('eventObject', eventObject);
+  			    $(this).click(function(){
+	  		    	console.log($(this).data('eventObject'));		//********************************
+	  		    	$('#selectedEvent').text($(this).text());
+	  		    	$('#selectedEvent').data($(this).data());
+	  		    });
+  			});
   		}
   	});
-}
-
-function initEvent(ele) 
-{
-	console.log(ele.text());
-    // 宣告EventObject (可以不用start跟end)
-    var eventObject = {
-      title: ele.text(),
-    };
-
-    // 把eventObject存到DOM裡面，之後就可以取得
-    ele.data('eventObject', eventObject);
-    
-    ele.click(function(){
-    	console.log(ele.data('eventObject'));		//********************************
-    	$('#selectedEvent').text(ele.text());
-    	$('#selectedEvent').data(ele.data());
-    });
 }
 
 function initCalendar(eventSrc)
@@ -445,6 +452,12 @@ function initCalendar(eventSrc)
             // retrieve the dropped element's stored Event Object
             var originalEventObject = $(this).data('eventObject');
 
+      	    // 若沒有選擇則不做任何事
+      	    if (originalEventObject == undefined)
+      	    {
+      	    	return;
+      	    }
+      	    
             // we need to copy it, so that multiple events don't have a reference to the same object
             var copiedEventObject = $.extend({}, originalEventObject);
 
@@ -577,13 +590,27 @@ function initCalendar(eventSrc)
         eventDrop: function(event, delta, revertFunc) {
       	    console.log(event.id + " " + event.title + " was dropped on " + event.start.format());
       	    console.log(event.allDay);
-      	    // 如果取消改變，就把event還原回去不動作(revertFunc())
-      	    //if (!confirm("Are you sure about this change?")) {
-      	    //  revertFunc();
-      	    //}
+//      	    // 如果取消改變，就把event還原回去不動作(revertFunc())
+//      	    if (!confirm("Are you sure about this change?")) {
+//      	      revertFunc();
+//      	    }
       	    // 若是Google日曆的event，則直接更新到Google日曆
       	    if (event.eventType=='g')
   		    {
+      	    	// 若沒有end且不是allday，預設為開始時間 +2 小時
+      	    	if (event.end == null)
+      	    	{
+      	    		if (event.allDay != true)
+      	    		{
+          	    		event.end = moment(event.start);
+          	    		event.end.hour(event.end.hour()+2);
+      	    		}
+      	    		else
+      	    		{
+          	    		event.end = moment(event.start);
+          	    		event.end.day(event.end.day()+1);
+      	    		}
+      	    	}
       	 	    updateEvent(event);
   		    }
       	    // 更新資料庫
