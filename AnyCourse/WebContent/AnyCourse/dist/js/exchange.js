@@ -1,9 +1,5 @@
 
 document.write("<script type='text/javascript' src='../dist/js/swiper.min.js'></script>");
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master' of https://github.com/wadfx95174/AnyCourse.git
 //var ajaxURL="http://140.121.197.130:8400/";
 var ajaxURL="http://localhost:8080/";
 

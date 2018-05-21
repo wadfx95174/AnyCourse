@@ -1,10 +1,6 @@
-<<<<<<< HEAD
+
 //var ajaxURL="http://140.121.197.130:8400/";
 var ajaxURL="http://localhost:8080/";
-=======
-//var ajaxURL="http://140.121.197.130:8400/AnyCourse/WatchRecordServlet.do";
-var ajaxURL="http://localhost:8080/AnyCourse/WatchRecordServlet.do";
->>>>>>> branch 'master' of https://github.com/wadfx95174/AnyCourse.git
 
 
 $(document).ready(function(){
