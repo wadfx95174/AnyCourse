@@ -110,7 +110,6 @@
 		<div class="content-wrapper">
 			<section class="content">
 				<div class="row">
-					
 					<!-- Main content -->
 					<section class="content">
 						<div class="box box-primary" >
@@ -119,10 +118,10 @@
 									<li class="list-group-item list-group-body">
 										<div class="row">
 											<div class="col-xs-1 text-left">
-												<input name="checkAll" type="checkbox" onclick="check_all(this,'checkboxItem')" />
+												<input name="checkAll" type="checkbox" onclick="checkAll(this,'checkboxItem')" />
 											</div>
-											<div class="col-xs-7"><strong>搜尋關鍵字</strong></div>
-											<div class="col-xs-3"><strong>搜尋時間</strong></div>
+											<div class="col-xs-6"><strong>搜尋關鍵字</strong></div>
+											<div class="col-xs-5"><strong>搜尋時間</strong></div>
 											<div class="col-xs-1">
 												<button type="button" data-toggle="modal" data-target="#deleteModal2"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除選取"></i></button>
 											</div>
@@ -130,15 +129,16 @@
 									</li>
 								</ul>
 							</div>
+							<!-- 搜尋結果列表 -->
 							<div class="box-body" style="height: 480px;" id="searchList">
 								<ul class="list-group" id="SearcRecordList">
 								</ul>
 							</div>
+							<!-- /.搜尋結果列表 -->
 							
 						</div>
 					</section>
 					<!-- /.content -->
-
 				</div>
 				<!-- /.row -->
 			</section>
@@ -217,16 +217,13 @@
 					</h3>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
 					<button id="deleteListButton1" type="button"
 						class="btn btn-primary" data-dismiss="modal">確定</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	
 	
 	<!--DeleteModal2-->
 	<div class="modal fade" id="deleteModal2" tabindex="-1" role="dialog"
@@ -241,8 +238,7 @@
 					<!--<input id="named" type="text" name="listName" placeholder="Named a ListName!">-->
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
 					<button id="deleteListButton2" type="button"
 						class="btn btn-primary" data-dismiss="modal">確定</button>
 				</div>

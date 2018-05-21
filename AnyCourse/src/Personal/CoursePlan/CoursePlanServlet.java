@@ -23,15 +23,13 @@ public class CoursePlanServlet extends HttpServlet {
 		CoursePlanManager coursePlanManager = new CoursePlanManager();
 		ArrayList<CoursePlan> coursePlans = null;
 		HttpSession session = request.getSession();
-//		if(request.getParameter("action").equals("select")) {
-			coursePlans = coursePlanManager.getCoursePlanAllList((String)session.getAttribute("userId"));
-//		}
+		coursePlans = coursePlanManager.getCoursePlanAllList((String)session.getAttribute("userId"));
 		
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		response.setContentType("application/json");
 		response.getWriter().write(gson.toJson(coursePlans));
-//		System.out.println(gson.toJson(coursePlans));
+		//關閉connection
 		coursePlanManager.conClose();
 	}
 	
@@ -55,8 +53,8 @@ public class CoursePlanServlet extends HttpServlet {
 				}
 			}
 			//將被移動的item的屬性塞進coursePlan
-			coursePlan.setUser_id((String)session.getAttribute("userId"));
-			coursePlan.setUnit_id(Integer.parseInt(request.getParameter("unit_id")));
+			coursePlan.setUserID((String)session.getAttribute("userId"));
+			coursePlan.setUnitID(Integer.parseInt(request.getParameter("unitID")));
 			if(request.getParameter("received").equals("wantList"))coursePlan.setStatus(1);
 			else if(request.getParameter("received").equals("ingList"))coursePlan.setStatus(2);
 			else if(request.getParameter("received").equals("doneList"))coursePlan.setStatus(3);
@@ -67,7 +65,7 @@ public class CoursePlanServlet extends HttpServlet {
 			for(int i = 0;i < coursePlans.size();i++) {
 				coursePlanManager.updateCoursePlanList(coursePlans.get(i));
 			}
-			////////////////////////////.更新移動後的清單的排序/////////////////////////////////////////////
+			/////////////////////////////////////////////////////////////////////////////////////////
 			
 			
 			
@@ -87,10 +85,10 @@ public class CoursePlanServlet extends HttpServlet {
 			for(int i = 0;i < oldCoursePlans.size();i++) {
 				coursePlanManager.updateOldStatusList(oldCoursePlans.get(i));
 			}
-			///////////////////////////更新移動前的清單的排序/////////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////////
 			
 		}
+		//關閉connection
 		coursePlanManager.conClose();
 	}
-
 }

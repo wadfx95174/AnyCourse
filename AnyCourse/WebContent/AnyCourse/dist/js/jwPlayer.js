@@ -1,5 +1,5 @@
-//var ajax_url="http://140.121.197.130:8400/";
-var ajax_url="http://localhost:8080/";
+//var ajaxURL="http://140.121.197.130:8400/AnyCourse/PlayerInterfaceServlet.do";
+var ajaxURL="http://localhost:8080/AnyCourse/PlayerInterfaceServlet.do";
 
 var player;
 //var keyLabels = [];
@@ -17,7 +17,7 @@ $(document).ready(function(){
    	}
 	//設瀏覽紀錄，或是已經有瀏覽紀錄則加1，並檢查他是否已經有按讚
 	$.ajax({
-		url:ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
+		url:ajaxURL,
     	method: 'POST',
     	cache :false,
     	data: {
@@ -36,7 +36,7 @@ $(document).ready(function(){
     	}
 	})
 	$.ajax({
-    	url: ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
+    	url: ajaxURL,
     	method: 'GET',
     	cache :false,
     	data: {
@@ -99,7 +99,7 @@ $(document).ready(function(){
         console.log(get("unit_id"));
         
         $.ajax({
-        	url:ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
+        	url:ajaxURL,
         	method: 'POST',
         	data:{
         		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間

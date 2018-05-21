@@ -1,48 +1,43 @@
 package Personal.CoursePlan;
 
 public class CoursePlan {
-	private String user_id;
-	private int unit_id;
-	private int last_time;
+	private String userID;
+	private int unitID;
+	private int lastTime;
 	private int status;
 	private int oorder;
-	private String school_name;
-	private String list_name;
+	private String schoolName;
+	private String listName;
 	private String teacher;
-	private String unit_name;
-	private String video_url;
+	private String unitName;
 	private int likes;
-	private String video_img_src;
-	private int video_type;
+	private String videoImgSrc;
+	private int videoType;
+	
+	public CoursePlan() {}
 
-	public int getVideo_type() {
-		return video_type;
-	}
-	public void setVideo_type(int video_type) {
-		this.video_type = video_type;
-	}
-	public String getUser_id() {
-		return user_id;
+	public String getUserID() {
+		return userID;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
 
-	public int getUnit_id() {
-		return unit_id;
+	public int getUnitID() {
+		return unitID;
 	}
 
-	public void setUnit_id(int unit_id) {
-		this.unit_id = unit_id;
+	public void setUnitID(int unitID) {
+		this.unitID = unitID;
 	}
 
-	public int getLast_time() {
-		return last_time;
+	public int getLastTime() {
+		return lastTime;
 	}
 
-	public void setLast_time(int last_time) {
-		this.last_time = last_time;
+	public void setLastTime(int lastTime) {
+		this.lastTime = lastTime;
 	}
 
 	public int getStatus() {
@@ -61,20 +56,20 @@ public class CoursePlan {
 		this.oorder = oorder;
 	}
 
-	public String getSchool_name() {
-		return school_name;
+	public String getSchoolName() {
+		return schoolName;
 	}
 
-	public void setSchool_name(String school_name) {
-		this.school_name = school_name;
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
 	}
 
-	public String getList_name() {
-		return list_name;
+	public String getListName() {
+		return listName;
 	}
 
-	public void setList_name(String list_name) {
-		this.list_name = list_name;
+	public void setListName(String listName) {
+		this.listName = listName;
 	}
 
 	public String getTeacher() {
@@ -85,20 +80,12 @@ public class CoursePlan {
 		this.teacher = teacher;
 	}
 
-	public String getUnit_name() {
-		return unit_name;
+	public String getUnitName() {
+		return unitName;
 	}
 
-	public void setUnit_name(String unit_name) {
-		this.unit_name = unit_name;
-	}
-
-	public String getVideo_url() {
-		return video_url;
-	}
-
-	public void setVideo_url(String video_url) {
-		this.video_url = video_url;
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
 	}
 
 	public int getLikes() {
@@ -109,14 +96,21 @@ public class CoursePlan {
 		this.likes = likes;
 	}
 
-	public String getVideo_img_src() {
-		return video_img_src;
+	public String getVideoImgSrc() {
+		return videoImgSrc;
 	}
 
-	public void setVideo_img_src(String video_img_src) {
-		this.video_img_src = video_img_src;
+	public void setVideoImgSrc(String videoImgSrc) {
+		this.videoImgSrc = videoImgSrc;
 	}
 
-	public CoursePlan() {}
+	public int getVideoType() {
+		return videoType;
+	}
 
+	public void setVideoType(int videoType) {
+		this.videoType = videoType;
+	}
+
+	
 }

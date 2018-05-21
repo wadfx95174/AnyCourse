@@ -1,7 +1,8 @@
 
 document.write("<script type='text/javascript' src='../dist/js/swiper.min.js'></script>");
-//var ajax_url="http://140.121.197.130:8400/";
-var ajax_url="http://localhost:8080/";
+
+//var ajaxURL="http://140.121.197.130:8400/";
+var ajaxURL="http://localhost:8080/";
 
 function get(name)
 {
@@ -11,7 +12,7 @@ function get(name)
 
 $(document).ready(function() {
 	$.ajax({
-		url : ajax_url+'AnyCourse/ExchangeTextNoteServlet.do',
+		url : ajaxURL+'AnyCourse/ExchangeTextNoteServlet.do',
 		method : 'GET',
 		cache :false,
 		data : {					
@@ -48,7 +49,7 @@ $(document).ready(function() {
     			
 			}	
     		$.ajax({
-    			url : ajax_url+'AnyCourse/ExchangePictureNoteServlet.do',
+    			url : ajaxURL+'AnyCourse/ExchangePictureNoteServlet.do',
     			method : 'GET',
     			cache :false,
     			data : {					
@@ -100,7 +101,7 @@ $(document).ready(function() {
 
 
 //$.ajax({
-//	url : ajax_url+'AnyCourse/ExchangeKeyLabelServlet.do',
+//	url : ajaxURL+'AnyCourse/ExchangeKeyLabelServlet.do',
 //	method : 'GET', 
 //	cache :false,
 //	

@@ -1,5 +1,5 @@
-//var ajax_url="http://140.121.197.130:8400/";
-var ajax_url="http://localhost:8080/";
+//var ajaxURL="http://140.121.197.130:8400/AnyCourse/WatchRecordServlet.do";
+var ajaxURL="http://localhost:8080/AnyCourse/WatchRecordServlet.do";
 
 
 $(document).ready(function(){
@@ -7,7 +7,7 @@ $(document).ready(function(){
 	$.ajax({
 		method:"GET",
 		cache :false,
-		url:ajax_url+'AnyCourse/WatchRecordServlet.do',
+		url:ajaxURL,
 		success: function(response){
 			console.log(response);
 			array = response;

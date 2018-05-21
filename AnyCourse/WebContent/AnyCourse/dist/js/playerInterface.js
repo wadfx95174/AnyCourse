@@ -1,5 +1,5 @@
-//var ajax_url="http://140.121.197.130:8400/";
-var ajax_url="http://localhost:8080/";
+//var ajaxURL="http://140.121.197.130:8400/";
+var ajaxURL="http://localhost:8080/";
 var video;		// 播放器
 var keyLabelArray;		// 存放個人標籤
 var exKeyLabelArray;	// 存放交流標籤
@@ -94,7 +94,7 @@ $(document).ready(function(){
     if (get('list_id') != undefined)
     {
     	$.ajax({
-        	url: ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
+        	url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
         	method: 'POST',
         	cache :false,
         	data: {
@@ -157,7 +157,7 @@ $(document).ready(function(){
 //----------------------------------------------keyLabel----------------------------------------------//   
     // 取資料庫個人標籤
     $.ajax({
-		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
+		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
 		method : 'GET', 
 		cache :false,
 		data : 
@@ -177,7 +177,7 @@ $(document).ready(function(){
     
     // 取資料庫交流標籤
     $.ajax({
-		url : ajax_url+'AnyCourse/ExchangeKeyLabelServlet.do',
+		url : ajaxURL+'AnyCourse/ExchangeKeyLabelServlet.do',
 		method : 'GET', 
 		cache :false,
 		data : {"unit_id" : get("unit_id")},
@@ -286,7 +286,7 @@ $(document).ready(function(){
     $(document).on('click', '#deleteKlButton', function(event)
     {
     	$.ajax({
-    		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
+    		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
     		method : 'POST',
     		cache :false,
     	    data : {
@@ -309,7 +309,7 @@ $(document).ready(function(){
     	if (klName != "")
     	{
     		$.ajax({
-        		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
+        		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
         		method : 'POST',
         		cache :false,
         	    data : {
@@ -353,7 +353,7 @@ $(document).ready(function(){
     	element = $(this).parent().parent();
     	selectId = parseInt(this.getAttribute("id").split("-")[2]);
     	$.ajax({
-    		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
+    		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
     		method : 'POST',
     	    data : {
     	    	"method" : "share",
@@ -389,7 +389,7 @@ $(document).ready(function(){
     	
     	
     	$.ajax({
-    		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
+    		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
     		method : 'POST',
     		cache :false,
     	    data : {
@@ -426,7 +426,7 @@ $(document).ready(function(){
     	//*
     	
     	$.ajax({
-    		url : ajax_url+'AnyCourse/KeyLabelServlet.do',
+    		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
     		method : 'POST',
     		cache :false,
     	    data : {
@@ -507,7 +507,7 @@ $(document).ready(function(){
         	$('#likesIcon').addClass('fa-heart');
 //        	console.log(get('unit_id'));
         	$.ajax({
-        		url: ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
+        		url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
             	method: 'POST',
             	cache :false,
             	data:{
@@ -530,7 +530,7 @@ $(document).ready(function(){
     		$('#likesIcon').removeClass('fa-heart');
         	$('#likesIcon').addClass('fa-heart-o');
         	$.ajax({
-        		url: ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
+        		url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
             	method: 'POST',
             	cache :false,
             	data:{
@@ -551,7 +551,7 @@ $(document).ready(function(){
 //----------------------------------------------按讚----------------------------------------------// 
 //----------------------------------------------播放介面之推薦影片-------------------------------// 
     $.ajax({
-    	url: ajax_url+'AnyCourse/PlayerInterfaceServlet.do',
+    	url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
     	method: 'POST',
     	cache :false,
     	data:{

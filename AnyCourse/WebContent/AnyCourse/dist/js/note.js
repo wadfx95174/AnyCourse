@@ -1,5 +1,5 @@
-//		var ajax_url="http://140.121.197.130:8400/";
-		var ajax_url="http://localhost:8080/";
+//		var ajaxURL="http://140.121.197.130:8400/";
+		var ajaxURL="http://localhost:8080/";
 				
 		var filechooser = document.getElementById('filechooser');
 		var previewer = document.getElementById('previewer');
@@ -68,7 +68,7 @@
 
 				
 				$.ajax({
-					url : ajax_url+'AnyCourse/PictureNoteServlet.do',
+					url : ajaxURL+'AnyCourse/PictureNoteServlet.do',
 					method : 'POST',
 					cache :false,
 					data : {
@@ -151,15 +151,13 @@
 		 
 		$(document).ready(function() {
 			$.ajax({
-				url : ajax_url+'AnyCourse/TextNoteServlet.do',
+				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'GET',
 				cache :false,
 				data : {					
 					"unit_id" : get("unit_id")
 				},
 				success:function(result){
-//					alert(result);
-					
 		    		for(var i = 0 ;i < result.length;i++){
 //		    			alert(result[i].text_note);
 		    			if(result[i].share == 1){
@@ -226,7 +224,7 @@
 		
 		function printPicture(){
 			$.ajax({
-				url : ajax_url+'AnyCourse/PictureNoteServlet.do',
+				url : ajaxURL+'AnyCourse/PictureNoteServlet.do',
 				method : 'GET',
 				cache :false,
 				data : {					
@@ -279,7 +277,7 @@
 			//document.getElementById("text_area").innerHTML += document.getElementById('text_note').value + "<br>";
 			text_note = document.getElementById('text_area').value;
 			$.ajax({
-				url : ajax_url+'AnyCourse/TextNoteServlet.do',
+				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {
@@ -297,7 +295,7 @@
 				},
 			});
 			$.ajax({
-				url : ajax_url+'AnyCourse/TextNoteServlet.do',
+				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'GET',
 				cache :false,
 				data : {					
@@ -323,7 +321,7 @@
 //			alert(text_note);
 //			alert(text_note_id);
 			$.ajax({  
-				url : ajax_url+'AnyCourse/TextNoteServlet.do',
+				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {
@@ -354,7 +352,7 @@
 			var id = zzz.split('_')[2];
 //			alert(id);
 			$.ajax({
-				url : ajax_url+'AnyCourse/PictureNoteServlet.do',
+				url : ajaxURL+'AnyCourse/PictureNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {
@@ -372,7 +370,7 @@
 		function shareNote(){
 //			alert("oK");
 			$.ajax({  
-				url : ajax_url+'AnyCourse/TextNoteServlet.do',
+				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {
@@ -391,7 +389,7 @@
 		}
 		function notShareNote(){
 			$.ajax({  
-				url : ajax_url+'AnyCourse/TextNoteServlet.do',
+				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'POST',
 				cache :false,
 				data : {

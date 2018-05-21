@@ -1,5 +1,5 @@
-//var ajax_url="http://140.121.197.130:8400/";
-var ajax_url="http://localhost:8080/";
+//var ajaxURL="http://140.121.197.130:8400/AnyCourse/PersonalKeyLabelServlet.do";
+var ajaxURL="http://localhost:8080/AnyCourse/PersonalKeyLabelServlet.do";
 
 
 function check_all(obj,cName) 
@@ -24,7 +24,7 @@ $(document).ready(function() {
 	checkLogin("../", "../../../");
 	//取得資料庫的資料
 	$.ajax({
-		url : ajax_url+'AnyCourse/PersonalKeyLabelServlet.do',
+		url : ajaxURL,
 		method : 'GET', 
 		cache :false,
 		data: {

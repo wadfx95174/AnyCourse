@@ -65,12 +65,12 @@ public class HomePageServlet extends HttpServlet {
 		//加單一個影片到課程計畫
 		if(request.getParameter("action").equals("addToCoursePlan")&&(String)session.getAttribute("userId")!=null) {
 			homePageDatabaseManager.addToCoursePlan((String)session.getAttribute("userId")
-					,Integer.parseInt(request.getParameter("unit_id")));
+					,Integer.parseInt(request.getParameter("unitID")));
 		}
 		//加整個清單到課程計畫
 		if(request.getParameter("action").equals("addToCoursePlan_List")&&(String)session.getAttribute("userId")!=null) {
 			homePageDatabaseManager.addToCoursePlan_List((String)session.getAttribute("userId")
-					,Integer.parseInt(request.getParameter("courselist_id")));
+					,Integer.parseInt(request.getParameter("courselistID")));
 		}
 		//關閉資料庫連線
 		homePageDatabaseManager.conClose();
