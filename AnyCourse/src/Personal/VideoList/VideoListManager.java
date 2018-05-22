@@ -73,13 +73,13 @@ public class VideoListManager {
 		unitVideos = new ArrayList<UnitVideo>();
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from customlistVideo,unit,list,courselist where "
-					+"customlistVideo.courselistId = list.courselistId and "
-					+"customlistVideo.unitId = unit.unitId and "
+			result = stat.executeQuery("select * from customListVideo,unit,list,courselist where "
+					+"customListVideo.courselistId = list.courselistId and "
+					+"customListVideo.unitId = unit.unitId and "
 					+"list.courselistId = courselist.courselistId and "
 					+"list.userId = '"+userId+"' and "
 					+"courselist.schoolName = '"+schoolName+"' and "
-					+"courselist.listName = '"+listName+"' order by customlistVideo.oorder ASC");
+					+"courselist.listName = '"+listName+"' order by customListVideo.oorder ASC");
 			while(result.next()) {
 				unitVideo = new UnitVideo();
 				unitVideo.setUserId(result.getString("list.userId"));
@@ -89,9 +89,9 @@ public class VideoListManager {
 				unitVideo.setTeacher(result.getString("courselist.teacher"));
 				unitVideo.setVideoImgSrc(result.getString("unit.videoImgSrc"));
 				unitVideo.setCourselistId(result.getInt("list.courselistId"));
-				unitVideo.setOorder(result.getInt("customlistVideo.oorder"));
+				unitVideo.setOorder(result.getInt("customListVideo.oorder"));
 				unitVideo.setLikes(result.getInt("unit.likes"));
-				unitVideo.setUnitId(result.getInt("customlistVideo.unitId"));
+				unitVideo.setUnitId(result.getInt("customListVideo.unitId"));
 				if(result.getString("unit.videoUrl").split("/")[2].equals("www.youtube.com")) {
 					unitVideo.setVideoType(1);//youtube
 				}
