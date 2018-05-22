@@ -26,8 +26,6 @@ $(document).ready(function(){
     		console.log("SetIsBrowse Error!!!")
     	},
     	success: function(response){
-//    		console.log(response);
-//    		console.log("aaa");
     	    console.log(response.personalLike);
     	    if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
     	    else if(response.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
@@ -60,7 +58,6 @@ $(document).ready(function(){
 
 //--------------------------youtube iframe api-----------------------------
 function onYouTubeIframeAPIReady() {
-//	console.log(get('unitID'));
 	$.ajax({
 		url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
 		method: 'GET',
@@ -72,7 +69,6 @@ function onYouTubeIframeAPIReady() {
 		error: function(){
 		},
 		success: function(response){
-//			console.log(response.videoUrl);
 			uid = response.videoUrl.split('/')[4];
 
 			player = new YT.Player('youTubePlayer', {
@@ -92,8 +88,6 @@ function onYouTubeIframeAPIReady() {
 			                                    'errors': []};
 			    
 			$('h3')[0].append(response.unitName);
-//			if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
-//    	    else if(reponse.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
     	    $('#likesNum').text(response.likes);
     	    $('#introduction').append(response.courseInfo);
 		}
@@ -106,14 +100,6 @@ function onPlayerReady(event) {
     event.target.playVideo();   //  播放
 }
 
-
-  // var done = false;
-  // function onPlayerStateChange(event) {
-  //   if (event.data == YT.PlayerState.PLAYING && !done) {
-  //     setTimeout(stopVideo, 6000);
-  //     done = true;
-  //   }
-  // }
   
 function stopVideo() 
 {
