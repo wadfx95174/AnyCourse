@@ -53,12 +53,27 @@ public class HomePageManager {
 	//登入之後取得所有推薦影片及課程清單、想要觀看等等的影片或清單
 	public ArrayList<Map<Integer, HomePage>> getAllVideo(String userId) {
 		ArrayList<Map<Integer, HomePage>> homePages = new ArrayList<Map<Integer, HomePage>>();
-		 
-		homePages.add(selectRecommendVideo(userId));
-		homePages.add(selectRecommendList(userId));
-		homePages.add(selectVideoList(userId));
-		homePages.add(selectCoursePlanWant(userId));
-		homePages.add(selectCoursePlanING(userId));
+		Map<Integer, HomePage> recommendVideo = new HashMap<Integer, HomePage>();
+		Map<Integer, HomePage> recommendlist = new HashMap<Integer, HomePage>();
+		Map<Integer, HomePage> videoList = new HashMap<Integer, HomePage>();
+		Map<Integer, HomePage> Want = new HashMap<Integer, HomePage>();
+		Map<Integer, HomePage> ING = new HashMap<Integer, HomePage>();
+		recommendVideo = selectRecommendVideo(userId);
+		recommendlist = selectRecommendList(userId);
+		videoList = selectVideoList(userId);
+		Want = selectCoursePlanWant(userId);
+		ING = selectCoursePlanING(userId);
+//		System.out.println(videoList);
+		if(recommendVideo == null || recommendVideo.size() < 1)homePages.add(selectRandVideo());
+		else homePages.add(selectRecommendVideo(userId));
+		if(recommendlist == null || recommendlist.size() < 1)homePages.add(selectRandList());
+		else homePages.add(selectRecommendList(userId));
+		if(videoList == null || videoList.size() < 1)System.out.println("have no videoList");
+		else homePages.add(selectVideoList(userId));
+		if(Want == null || Want.size() < 1)System.out.println("have no wantList");
+		else homePages.add(selectCoursePlanWant(userId));
+		if(ING == null || ING.size() < 1)System.out.println("have no INGList");
+		else homePages.add(selectCoursePlanING(userId));
 		
 		return homePages;
 	}
@@ -205,10 +220,10 @@ public class HomePageManager {
 			if(result.next()) {
 				accountId = result.getInt("account.accountId");
 			}
-			
 			stat = con.createStatement();
 			result = stat.executeQuery(selectRecommend + accountId + "'");
 			while(result.next()) {
+				System.out.println("1234156");
 				homePage = new HomePage();
 				homePage.setAccountId(result.getInt("recommendedResult.accountId"));
 				homePage.setListName(result.getString("courselist.listName"));
@@ -243,6 +258,7 @@ public class HomePageManager {
 		finally {
 			Close();
 		}
+		
 		return map;
 	}
 	
@@ -287,6 +303,7 @@ public class HomePageManager {
 					else {
 						homePage.setVideoType(2);//jwplayer
 					}
+					System.out.println("1621321");
 					map.put(count, homePage);
 					
 					count++;
@@ -301,6 +318,7 @@ public class HomePageManager {
 		finally {
 			Close();
 		}
+		System.out.println(map);
 		return map;
 	}
 	

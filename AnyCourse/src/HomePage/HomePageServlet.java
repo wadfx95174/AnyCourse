@@ -44,6 +44,7 @@ public class HomePageServlet extends HttpServlet {
 		}
 		//舊使用者
 		else {
+//			System.out.println((String)session.getAttribute("userId"));
 			homePages = homePageDatabaseManager.getAllVideo((String)session.getAttribute("userId"));
 		}
 		GsonBuilder builder = new GsonBuilder();
