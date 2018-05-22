@@ -20,7 +20,7 @@ $(document).ready(function(){
     	cache :false,
     	data: {
     		"action": 'setIsBrowse',
-    		"unitID": get('unitID')
+    		"unitId": get('unitId')
     	},
     	error: function(){
     		console.log("SetIsBrowse Error!!!")
@@ -48,7 +48,7 @@ $(document).ready(function(){
         		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
         		"currentTime": Math.floor(current),//關閉的時間
         		"duration": Math.floor(duration),//影片總共有多長時間
-        		"unitID" : get("unitID")
+        		"unitId" : get("unitId")
         	},
         	error: function(){
         		console.log("setVideoEndTime failed!");
@@ -60,14 +60,14 @@ $(document).ready(function(){
 
 //--------------------------youtube iframe api-----------------------------
 function onYouTubeIframeAPIReady() {
-//	console.log(get('unitID'));
+//	console.log(get('unitId'));
 	$.ajax({
 		url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
 		method: 'GET',
 		cache :false,
 		data: {
 			"method": 'getVideo',
-			"unitID": get('unitID')
+			"unitId": get('unitId')
 		},
 		error: function(){
 		},

@@ -19,10 +19,10 @@ import RecommenderSystem.RecommendationResult;
 
 public class PlayerInterfaceManager
 {
-	private String selectVideoUrlSQL = "select * from unit,courselist,customlistVideo where unit.unitId = ? "
-			+ "and unit.unitId = customlistVideo.unitId and "
-			+ "customlistVideo.courselistId = courselist.courselistId";
-	private String selectCourseListSQL = "select * from unit natural join customlistVideo where courselistId = ?";
+	private String selectVideoUrlSQL = "select * from unit,courselist,customListVideo where unit.unitId = ? "
+			+ "and unit.unitId = customListVideo.unitId and "
+			+ "customListVideo.courselistId = courselist.courselistId";
+	private String selectCourseListSQL = "select * from unit natural join customListVideo where courselistId = ?";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -302,8 +302,8 @@ public class PlayerInterfaceManager
 			try {
 				List<RecommendedItem> test = RecommendationResult.designatedItemBooleanRecommendedResult(
 						(long)accountId,unitId,10);
-				pst = con.prepareStatement("select * from unit,courselist,customlistVideo where "
-						+ "unit.unitId = customlistVideo.unitId and customlistVideo.courselistId"
+				pst = con.prepareStatement("select * from unit,courselist,customListVideo where "
+						+ "unit.unitId = customListVideo.unitId and customListVideo.courselistId"
 						+ " = courselist.courselistId and unit.unitId = ?");
 				for(RecommendedItem r: test) {
 					

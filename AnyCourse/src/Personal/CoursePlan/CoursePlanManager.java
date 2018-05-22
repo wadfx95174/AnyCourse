@@ -42,10 +42,10 @@ public class CoursePlanManager {
 		coursePlans = new ArrayList<CoursePlan>();
 		try {
 			stat = con.createStatement();
-			result = stat.executeQuery("select * from personalPlan,unit,customlistVideo,courselist where "
+			result = stat.executeQuery("select * from personalPlan,unit,customListVideo,courselist where "
 					+ "personalPlan.unitId = unit.unitId and "
-					+ "unit.unitId = customlistVideo.unitId and "
-					+ "customlistVideo.courselistId = courselist.courselistId and "
+					+ "unit.unitId = customListVideo.unitId and "
+					+ "customListVideo.courselistId = courselist.courselistId and "
 					+ "personalPlan.userId = '"+userId +"' order by personalPlan.oorder ASC");
 			while(result.next()) {
 				coursePlan = new CoursePlan();

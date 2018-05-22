@@ -12,20 +12,20 @@ import java.util.Map;
 
 
 public class HomePageManager {
-	private String selectRecommend ="select * from customlistVideo,unit,recommendedResult,courselist where "
+	private String selectRecommend ="select * from customListVideo,unit,recommendedResult,courselist where "
 			+"recommendedResult.unitId = unit.unitId and "
-			+"customlistVideo.unitId = unit.unitId and "
-			+"customlistVideo.courselistId = courselist.courselistId and "
+			+"customListVideo.unitId = unit.unitId and "
+			+"customListVideo.courselistId = courselist.courselistId and "
 			+"recommendedResult.accountId = '";
-	private String selectPlan="select * from customlistVideo,unit,personalPlan,courselist "
+	private String selectPlan="select * from customListVideo,unit,personalPlan,courselist "
 			+"where personalPlan.unitId = unit.unitId and "
-			+"customlistVideo.unitId = unit.unitId and "
-			+"customlistVideo.courselistId = courselist.courselistId and "
+			+"customListVideo.unitId = unit.unitId and "
+			+"customListVideo.courselistId = courselist.courselistId and "
 			+"personalPlan.status = ";
 	private String selectPlanMax="select MAX(oorder) from personalPlan where status =";
-	private String selectRand="select * from customlistVideo,unit,courselist "
-			+ "where customlistVideo.unitId = unit.unitId and " 
-			+ "customlistVideo.courselistId = courselist.courselistId order by rand() limit 20";
+	private String selectRand="select * from customListVideo,unit,courselist "
+			+ "where customListVideo.unitId = unit.unitId and " 
+			+ "customListVideo.courselistId = courselist.courselistId order by rand() limit 20";
 	
 	private Map<Integer, HomePage> map;
 	private HomePage homePage;
@@ -262,9 +262,9 @@ public class HomePageManager {
 			}
 			else return null;
 			stat = con.createStatement();
-			result = stat.executeQuery(selectRecommend + accountId +"' order by customlistVideo.oorder ASC");
+			result = stat.executeQuery(selectRecommend + accountId +"' order by customListVideo.oorder ASC");
 			while(result.next()) {
-				if(check == 0 || check!=result.getInt("customlistVideo.courselistId")) {
+				if(check == 0 || check!=result.getInt("customListVideo.courselistId")) {
 					homePage = new HomePage();
 					homePage.setAccountId(result.getInt("recommendedResult.accountId"));
 					homePage.setListName(result.getString("courselist.listName"));
@@ -291,7 +291,7 @@ public class HomePageManager {
 					
 					count++;
 				}
-				check = result.getInt("customlistVideo.courselistId");
+				check = result.getInt("customListVideo.courselistId");
 			} 
 		}
 		catch(SQLException x){
@@ -322,27 +322,27 @@ public class HomePageManager {
 			}
 			max = 0;
 			//看有幾個清單是有內容的，有才可以顯示在首頁
-			result = stat.executeQuery("select * from customlistVideo,unit,list,courselist where "
-					+"customlistVideo.courselistId = list.courselistId and "
-					+"customlistVideo.unitId = unit.unitId and "
+			result = stat.executeQuery("select * from customListVideo,unit,list,courselist where "
+					+"customListVideo.courselistId = list.courselistId and "
+					+"customListVideo.unitId = unit.unitId and "
 					+"list.courselistId = courselist.courselistId and "
 					+"list.userId ='" + userId+"'");
 			while(result.next()) {
-				if(check == 0 || check!=result.getInt("customlistVideo.courselistId")) {
+				if(check == 0 || check!=result.getInt("customListVideo.courselistId")) {
 					max++;
-					check = result.getInt("customlistVideo.courselistId");
+					check = result.getInt("customListVideo.courselistId");
 				}
 					
 			}
 			//將清單有影片的找出來
-			result = stat.executeQuery("select * from customlistVideo,unit,list,courselist where "
-					+"customlistVideo.courselistId = list.courselistId and "
-					+"customlistVideo.unitId = unit.unitId and "
+			result = stat.executeQuery("select * from customListVideo,unit,list,courselist where "
+					+"customListVideo.courselistId = list.courselistId and "
+					+"customListVideo.unitId = unit.unitId and "
 					+"list.courselistId = courselist.courselistId and "
 					+"list.userId ='" + userId+"'");
 			count = 0;
 			while(result.next()) {
-				if(check == 0 || check!=result.getInt("customlistVideo.courselistId")) {
+				if(check == 0 || check!=result.getInt("customListVideo.courselistId")) {
 					homePage = new HomePage();
 					homePage.setUserId(result.getString("list.userId"));
 					homePage.setListName(result.getString("courselist.listName"));
@@ -350,7 +350,7 @@ public class HomePageManager {
 					homePage.setTeacher(result.getString("courselist.teacher"));
 					homePage.setCourselistId(result.getInt("list.courselistId"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
-					homePage.setUnitId(result.getInt("customlistVideo.unitId"));
+					homePage.setUnitId(result.getInt("customListVideo.unitId"));
 					homePage.setNum(max);
 					homePage.setType(3);//代表課程清單
 					if(result.getString("unit.videoImgSrc") == "") {
@@ -368,7 +368,7 @@ public class HomePageManager {
 					map.put(count, homePage);
 					count++;
 				}
-				check = result.getInt("customlistVideo.courselistId");
+				check = result.getInt("customListVideo.courselistId");
 			} 
 		}
 		catch(SQLException x){
@@ -523,8 +523,8 @@ public class HomePageManager {
 			while(result.next()) {
 				maxOrder = result.getInt("MAX(oorder)");
 			}
-			result = stat.executeQuery("select * from unit,customlistVideo,courselist where unit.unitId"
-					+ " = customlistVideo.unitId and customlistVideo.courselistId ="
+			result = stat.executeQuery("select * from unit,customListVideo,courselist where unit.unitId"
+					+ " = customListVideo.unitId and customListVideo.courselistId ="
 					+ " courselist.courselistId and courselist.courselistId = "+ courselistId);
 			while(result.next()) {
 				homePage = new HomePage();
