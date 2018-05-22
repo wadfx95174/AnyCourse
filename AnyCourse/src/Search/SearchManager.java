@@ -13,7 +13,7 @@ public class SearchManager
 	private final String selectCourseListSQL = "select * from courselist where listName like ?";
 	private final String selectUnitKeywordSQL = "select * from unit natural join unitKeyword where unitKeyword like ? ";
 	private final String selectCourseKeywordSQL = "select max(courselistId)courselistId, max(schoolName)schoolName, max(listName)listName, max(teacher)teacher, max(departmentName)departmentName, max(courseInfo)courseInfo, max(creator)creator, max(share)share, max(likes)likes from courselist natural join courseKeyword where courseKeyword like ? or listName like ? or teacher like ? or schoolName like ? or departmentName like ? group by listName ORDER BY `courselistId` ASC";
-	private final String selectUnitByCourseIdSQL = "select * from unit natural join customlistVideo where courselistId = ?";
+	private final String selectUnitByCourseIdSQL = "select * from unit natural join customListVideo where courselistId = ?";
 	private final String selectTeacherSQL = "select distinct teacher from courselist where teacher is not null";
 	private final String selectDepartmentSQL = "select distinct departmentName from courselist where departmentName is not null";
 	private final String selectPlanMaxSQL = "select MAX(oorder) from personalPlan where status = 1 and userId = ?";
@@ -87,24 +87,30 @@ public class SearchManager
 		ArrayList<Search> outputList = new ArrayList<Search>(); 
 		try {
 			pst = con.prepareStatement(selectCourseKeywordSQL);
+			String query = "%";
 			if (keyword.length() == 2)
 			{
 				String firstWord = keyword.substring(0,1);
 				String secondWord = keyword.substring(1);
-				pst.setString(1,  "%" + firstWord + "%" + secondWord + "%");
-				pst.setString(2,  "%" + firstWord + "%" + secondWord + "%");
-				pst.setString(3,  "%" + firstWord + "%" + secondWord + "%");
-				pst.setString(4,  "%" + firstWord + "%" + secondWord + "%");
-				pst.setString(5,  "%" + firstWord + "%" + secondWord + "%");
+				query += (firstWord + "%" + secondWord + "%");
+			}
+			else if (keyword.contains("+"))
+			{
+				String []wordList = keyword.split("[+]");	//RE的+有特別意思，所以要用括號括起來
+				for (String word: wordList)
+				{
+					query += (word + "%");
+				}
 			}
 			else
 			{
-				pst.setString(1,  "%" + keyword + "%" );
-				pst.setString(2,  "%" + keyword + "%" );
-				pst.setString(3,  "%" + keyword + "%" );
-				pst.setString(4,  "%" + keyword + "%" );
-				pst.setString(5,  "%" + keyword + "%" );
+				query += (keyword + "%");
 			}
+			pst.setString(1,  query);
+			pst.setString(2,  query);
+			pst.setString(3,  query);
+			pst.setString(4,  query);
+			pst.setString(5,  query);
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 	
@@ -130,7 +136,7 @@ public class SearchManager
 					Unit unit = new Unit();
 					unit.setUnitId(result.getInt("unitId"));
 					unit.setUnitName(result.getString("unitName"));
-					unit.setVideoUrl(result.getString("videoRrl"));
+					unit.setVideoUrl(result.getString("videoUrl"));
 					unit.setLikes(result.getInt("likes"));
 					unit.setVideoImgSrc(result.getString("videoImgSrc"));
 					outputList.get(i).addUnit(unit);
@@ -145,7 +151,7 @@ public class SearchManager
 				Unit unit = new Unit();
 				unit.setUnitId(result.getInt("unitId"));
 				unit.setUnitName(result.getString("unitName"));
-				unit.setVideoUrl(result.getString("videoRrl"));
+				unit.setVideoUrl(result.getString("videoUrl"));
 				unit.setLikes(result.getInt("likes"));
 				unit.setSchoolName(result.getString("schoolName"));
 				unit.setVideoImgSrc(result.getString("videoImgSrc"));
@@ -241,8 +247,8 @@ public class SearchManager
 			while(result.next()) {
 				maxOrder = result.getInt("MAX(oorder)");
 			}
-			result = stat.executeQuery("select * from unit,customlistVideo,courselist where unit.unitId"
-					+ " = customlistVideo.unitId and customlistVideo.courselistId ="
+			result = stat.executeQuery("select * from unit,customListVideo,courselist where unit.unitId"
+					+ " = customListVideo.unitId and customListVideo.courselistId ="
 					+ " courselist.courselistId and courselist.courselistId = "+ courselistId);
 			while(result.next()) {
 				plans.add(result.getInt("unit.unitId"));
