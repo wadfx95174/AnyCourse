@@ -181,7 +181,7 @@ $(document).ready(function(){
 			exKeyLabelArray = result;
     		for(exmaxIndex = 0 ;exmaxIndex < result.length; exmaxIndex++)
     		{
-    			$('#exchange_keylabel').append(
+    			$('#exchangeKeylabel').append(
     					'<div id="exK_' + exKeyLabelArray[exmaxIndex].userId + '" class=" col-xs-12">'+
     					'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
     					'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + exKeyLabelArray[exmaxIndex].nickName + '</h4>'+
