@@ -22,7 +22,6 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
 		PlayerInterfaceManager manager = new PlayerInterfaceManager();
-		HttpSession session = request.getSession();
 		
 		
 		response.getWriter().write(manager.getVideoUrl(Integer.parseInt(request.getParameter("unitId"))));

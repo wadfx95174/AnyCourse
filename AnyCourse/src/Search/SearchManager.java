@@ -25,7 +25,7 @@ public class SearchManager
 	public SearchManager() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
-			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5"
+			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5&autoReconnect=true&useSSL=false"
 					, "root", "peter");//取得connection
 			
 		}
