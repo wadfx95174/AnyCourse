@@ -75,7 +75,6 @@ public class ReplyServlet extends HttpServlet {
 			reply.setReplyTime(replyTime);
 			reply.setReplyContent(replyContent);
 
-			System.out.println(reply);
 			dbreply.updateReplyTable(reply);
 			PrintWriter out = response.getWriter();		
 			out.print("success");

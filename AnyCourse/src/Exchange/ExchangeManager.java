@@ -64,7 +64,8 @@ public class ExchangeManager {
 				 textNotes.add(textNote);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("ExchangeManager-selectTextNoteTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -93,7 +94,8 @@ public class ExchangeManager {
 				 pictureNotes.add(pictureNote);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("ExchangeManager-selectPictureNoteTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -125,7 +127,8 @@ public class ExchangeManager {
 				 keyLabels.add(keyLabel);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("ExchangeManager-selectKeyLabelTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -149,7 +152,7 @@ public class ExchangeManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("ExchangeManager Close Exception :" + e.toString()); 
 		}		
 	} 
 	public void conClose() {
@@ -159,7 +162,7 @@ public class ExchangeManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("ExchangeManager Close Exception :" + e.toString()); 
 		}
 	}
 }

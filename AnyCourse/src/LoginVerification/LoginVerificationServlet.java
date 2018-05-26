@@ -69,7 +69,6 @@ public class LoginVerificationServlet extends HttpServlet {
 				session.setAttribute("userId", user.getUserId());
 				session.setAttribute("nickName", user.getNickName());
 				session.setAttribute("pictureUrl", user.getPictureUrl());
-				System.out.println("aaa");
 				response.sendRedirect("AnyCourse/HomePage.html");
 			}
 		}

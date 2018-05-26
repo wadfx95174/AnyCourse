@@ -59,6 +59,7 @@ public class NoteManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("NoteManager-insertTextNoteTable");
 			System.out.println("Exception insert"+x.toString());
 		}
 		finally {
@@ -85,7 +86,8 @@ public class NoteManager {
 				 textNotes.add(textNote);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("NoteManager-selectTextNoteTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -101,6 +103,7 @@ public class NoteManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("NoteManager-deleteTextNoteTable");
 			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
@@ -121,6 +124,7 @@ public class NoteManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("NoteManager-updateTextNoteTable");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -132,7 +136,6 @@ public class NoteManager {
 	public int insertPictureNoteTable(PictureNote pictureNote){
 		try {
 			pst = con.prepareStatement(insertPictureNoteSQL,Statement.RETURN_GENERATED_KEYS);
-			//pst.setInt(1,);
 			pst.setInt(1,pictureNote.getUnitId());
 			pst.setString(2,pictureNote.getUserId());
 			pst.setString(3,pictureNote.getPictureNoteUrl());
@@ -145,6 +148,7 @@ public class NoteManager {
 				return generatedKeys.getInt(1);		   			    
 		}
 		catch(SQLException x){
+			System.out.println("NoteManager-insertPictureNoteTable");
 			System.out.println("Exception insert"+x.toString());
 		}
 		finally {
@@ -157,7 +161,6 @@ public class NoteManager {
 		ArrayList<PictureNote> pictureNotes = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectPictureNoteSQL);
-			System.out.println();
 			pst.setInt(1,unitId);
 			pst.setString(2,userId);
 			result = pst.executeQuery();
@@ -174,7 +177,8 @@ public class NoteManager {
 				 pictureNotes.add(pictureNote);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("NoteManager-selectPictureNoteTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -190,6 +194,7 @@ public class NoteManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("NoteManager-deletePictureNoteTable");
 			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
@@ -204,6 +209,7 @@ public class NoteManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("NoteManager-shareTextNote");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -218,6 +224,7 @@ public class NoteManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("NoteManager-notShareTextNote");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -226,13 +233,13 @@ public class NoteManager {
 	}
 	public void sharePictureNote(int unitId,String userId) {
 		try {
-//			System.out.println("OKOKOKOK");
 			pst = con.prepareStatement(sharePictureNoteSQL);
 			pst.setInt(1,unitId);
 			pst.setString(2,userId);			
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("NoteManager-sharePictureNote");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -247,6 +254,7 @@ public class NoteManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("NoteManager-notSharePictureNote");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -269,7 +277,7 @@ public class NoteManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("NoteManager Close Exception :" + e.toString()); 
 		}		
 	} 
 	
@@ -280,7 +288,7 @@ public class NoteManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("NoteManager Close Exception :" + e.toString()); 
 		}
 	}
 }

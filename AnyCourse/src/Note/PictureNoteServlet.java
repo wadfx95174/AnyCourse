@@ -33,7 +33,6 @@ public class PictureNoteServlet extends HttpServlet {
 		response.setHeader("Cache-Control","max-age=0");
 		if(state.equals("delete"))
 		{
-			System.out.println("ddd");
 			NoteManager dbnote = new NoteManager();
 			int pictureNoteId = Integer.parseInt(request.getParameter("pictureNoteId"));
 			
@@ -42,7 +41,6 @@ public class PictureNoteServlet extends HttpServlet {
 			
 			
 			dbnote.deletePictureNoteTable(pictureNoteId);
-			PrintWriter out = response.getWriter();
 			dbnote.conClose();
 		}
 		if(state.equals("insert"))

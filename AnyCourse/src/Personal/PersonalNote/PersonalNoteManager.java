@@ -60,7 +60,8 @@ public class PersonalNoteManager {
 				 personalTextNotes.add(personalTextNote);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("PersonalNoteManager-selectPersonalTextNoteTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -92,7 +93,8 @@ public class PersonalNoteManager {
 				 personalPictureNotes.add(personalPictureNote);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("PersonalNoteManager-selectPersonalPictureNoteTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -118,7 +120,7 @@ public class PersonalNoteManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("PersonalNoteManager Close Exception :" + e.toString()); 
 		}		
 	} 
 	public void conClose() {
@@ -128,7 +130,7 @@ public class PersonalNoteManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("PersonalNoteManager Close Exception :" + e.toString()); 
 		}
 	}
 }

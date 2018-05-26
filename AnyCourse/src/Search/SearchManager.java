@@ -24,8 +24,8 @@ public class SearchManager
 	
 	public SearchManager() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
-			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5&autoReconnect=true&useSSL=false"
+			Class.forName("com.mysql.jdbc.Driver");//註冊Driver\
+			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
 					, "root", "peter");//取得connection
 			
 		}
@@ -50,7 +50,8 @@ public class SearchManager
 				 outputList.add(output);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("SearchManager-selectCourseListTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -73,7 +74,8 @@ public class SearchManager
 				 outputList.add(output);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("SearchManager-getUnitByKeyword");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -159,7 +161,8 @@ public class SearchManager
 				outputList.add(search);;
 			}
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("SearchManager-getCourseListByKeyword");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -181,7 +184,8 @@ public class SearchManager
 				 outputList.add(output);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("SearchManager-getTeacher");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -204,7 +208,8 @@ public class SearchManager
 				 outputList.add(output);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("SearchManager-getDepartment");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -230,6 +235,7 @@ public class SearchManager
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("SearchManager-addToCoursePlan");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -265,6 +271,7 @@ public class SearchManager
 			pst.executeBatch();
 		}
 		catch(SQLException x){
+			System.out.println("SearchManager-addToCoursePlanList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -284,7 +291,7 @@ public class SearchManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("SearchManager Close Exception :" + e.toString()); 
 		}		
 	} 
 	public void conClose() {
@@ -294,19 +301,19 @@ public class SearchManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("SearchManager Close Exception :" + e.toString()); 
 		}
 	}
 	
 	public static void main(String []args)
 	{
-		SearchManager kldm = new SearchManager();
+//		SearchManager kldm = new SearchManager();
 		
 //		System.out.println(kldm.selectCourseListTable("化學"));
 //		System.out.println(kldm.selectUnitKeywordTable("微積分"));
 //		System.out.println(kldm.getCourseListByKeyword("微積分"));
 //		System.out.println(kldm.getAllKeyword("微積分"));
 //		System.out.println(kldm.getTeacher());
-		System.out.println(kldm.getDepartment());
+//		System.out.println(kldm.getDepartment());
 	}
 }

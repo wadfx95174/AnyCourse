@@ -41,22 +41,17 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		else if(request.getParameter("action").equals("setVideoCloseTime")
 				&&(String)session.getAttribute("userId") != null) {
 			PlayerInterfaceManager playerInterfaceManager = new PlayerInterfaceManager();
-			System.out.println(Integer.parseInt(request.getParameter("unitId")));
-			System.out.println(Integer.parseInt(request.getParameter("currentTime")));
-			System.out.println(Integer.parseInt(request.getParameter("duration")));
 			
 			playerInterfaceManager.setVideoEndTime(Integer.parseInt(request.getParameter("currentTime"))
 					, Integer.parseInt(request.getParameter("unitId")), (String)session.getAttribute("userId")
 					,Integer.parseInt(request.getParameter("duration")));
 			
-			
+			playerInterfaceManager.conClose();
 		}
 		else if(request.getParameter("action").equals("like")&&(String)session.getAttribute("userId") != null) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			Unit unit = new Unit();
-			System.out.println(Integer.parseInt(request.getParameter("unitId")));
-			System.out.println(Integer.parseInt(request.getParameter("like")));
 			unit = manager.setLike((String)session.getAttribute("userId")
 					, Integer.parseInt(request.getParameter("unitId"))
 					,Integer.parseInt(request.getParameter("like")));
@@ -90,7 +85,6 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			else {
 				accountId = manager.getAccountId((String)session.getAttribute("userId"));
 			}
-			System.out.println("accountId:"+accountId);
 			manager.setBrowse(accountId,Integer.parseInt(request.getParameter("unitId")));
 			ArrayList<Unit> units = new ArrayList<Unit>();
 			response.setContentType("application/json");

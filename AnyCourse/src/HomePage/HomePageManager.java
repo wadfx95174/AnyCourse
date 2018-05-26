@@ -63,7 +63,6 @@ public class HomePageManager {
 		videoList = selectVideoList(userId);
 		Want = selectCoursePlanWant(userId);
 		ING = selectCoursePlanING(userId);
-//		System.out.println(videoList);
 		if(recommendVideo == null || recommendVideo.size() < 1)homePages.add(selectRandVideo());
 		else homePages.add(selectRecommendVideo(userId));
 		if(recommendlist == null || recommendlist.size() < 1)homePages.add(selectRandList());
@@ -223,7 +222,6 @@ public class HomePageManager {
 			stat = con.createStatement();
 			result = stat.executeQuery(selectRecommend + accountId + "'");
 			while(result.next()) {
-				System.out.println("1234156");
 				homePage = new HomePage();
 				homePage.setAccountId(result.getInt("recommendedResult.accountId"));
 				homePage.setListName(result.getString("courselist.listName"));
@@ -303,7 +301,6 @@ public class HomePageManager {
 					else {
 						homePage.setVideoType(2);//jwplayer
 					}
-					System.out.println("1621321");
 					map.put(count, homePage);
 					
 					count++;
@@ -318,7 +315,6 @@ public class HomePageManager {
 		finally {
 			Close();
 		}
-		System.out.println(map);
 		return map;
 	}
 	

@@ -56,7 +56,8 @@ public class WatchRecordManager {
 				 watchRecords.add(watchRecord);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("WatchRecordManager-selectWatchRecordTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -73,6 +74,7 @@ public class WatchRecordManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("WatchRecordManager-deleteWatchRecordTable");
 			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
@@ -96,7 +98,7 @@ public class WatchRecordManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("WatchRecordManager Close Exception :" + e.toString()); 
 		}		
 	} 
 	public void conClose() {
@@ -106,7 +108,7 @@ public class WatchRecordManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("WatchRecordManager Close Exception :" + e.toString()); 
 		}
 	}
 }

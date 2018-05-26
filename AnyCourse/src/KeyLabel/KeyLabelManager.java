@@ -61,7 +61,8 @@ public class KeyLabelManager
 				outputList.add(keyLabel);
 			}
 		}
-			catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("KeyLabelManager-getUnitKeyLabel");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -93,7 +94,8 @@ public class KeyLabelManager
 				outputList.add(keyLabel);
 			}
 		}
-			catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("KeyLabelManager-getExangeKeyLabel");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -126,7 +128,8 @@ public class KeyLabelManager
 				outputList.add(keyLabel);
 			}
 		}
-			catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("KeyLabelManager-getPersonalKeyLabel");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -154,8 +157,8 @@ public class KeyLabelManager
 			if (generatedKeys.next())
 				return generatedKeys.getInt(1);
 			
-		} catch (final SQLException x)
-		{
+		} catch (final SQLException x){
+			System.out.println("KeyLabelManager-insertKeyLabel");
 			System.out.println("Exception insert" + x.toString());
 		} finally
 		{
@@ -175,6 +178,7 @@ public class KeyLabelManager
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("KeyLabelManager-updateKeyLabel");
 			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
@@ -190,6 +194,7 @@ public class KeyLabelManager
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("KeyLabelManager-deleteKeyLabel");
 			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
@@ -206,6 +211,7 @@ public class KeyLabelManager
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("KeyLabelManager-shareKeyLabel");
 			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
@@ -226,7 +232,7 @@ public class KeyLabelManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("KeyLabelManager Close Exception :" + e.toString()); 
 		}		
 	} 
 	public void conClose() {
@@ -236,7 +242,7 @@ public class KeyLabelManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("KeyLabelManager Close Exception :" + e.toString()); 
 		}
 	}
 //	public static void main(String []args)
