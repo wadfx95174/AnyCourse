@@ -24,6 +24,10 @@ $('#keyLabel1').slimScroll({
 $('#keyLabel2').slimScroll({
     height: '130px'
   });
+$('#recommendList').slimScroll({
+    height: '400px'
+  });
+
 
 // 取得url的參數
 function get(name)
@@ -552,6 +556,15 @@ $(document).ready(function(){
     		unitId:get('unitId'),
     	},
     	success:function(result){
+    		console.log(result);
+    		//亂數決定順序
+			var temp;
+			for(var j = 0 ;j < result.length;j++){
+				temp = Math.floor(Math.random()*result.length);
+				var video = result[temp];
+				result[temp] = result[j];
+				result[j] = video;
+			}
     		for(var i = 0;i < result.length; i++){
     			$('#recommendList').append(
         				'<li>'
@@ -587,6 +600,6 @@ $(document).ready(function(){
 
 
 function jumpToPlayerInterface(unitId,type){
-    url = "../PlayerInterface.html?unitId="+unitId+"&type="+type;//此處拼接內容
+    url = "/PlayerInterface.html?unitId="+unitId+"&type="+type;//此處拼接內容
     window.location.href = url;
 }

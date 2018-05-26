@@ -340,7 +340,7 @@ public class PlayerInterfaceManager
 		
 	}
 	
-	//進入播放介面時，先設定isBrowse，以此來判斷有沒有看過讚
+	
 	public void setBrowse(int accountId,int unitId) {
 		
 		try {
@@ -348,15 +348,15 @@ public class PlayerInterfaceManager
 			result = stat.executeQuery("select * from rating where accountId = '"+accountId
 					+"' and unitId = "+unitId);
 			boolean check = false;
-			while(result.next()) {check = true;}
+			
+			if(result.next())check = true;
 			//如果沒有，就塞資料
 			if(check == false) {
 				pst = con.prepareStatement("insert into rating (accountId,unitId,score) value(?,?,4)");
 				pst.setInt(1,accountId);
 				pst.setInt(2,unitId);
+				pst.executeUpdate();
 			}
-			pst.executeUpdate();
-				
 		}
 		catch(SQLException x) {
 			System.out.println("PlayerInterfaceManager-setBrowse");
@@ -366,7 +366,38 @@ public class PlayerInterfaceManager
 			Close();
 		}
 	}
-	
+	//把該影片的其他清單加入recommendedResult，如果某個影片已經存在，則把該影片的分數提高
+	public void setRecommendedResult(int accountId ,int unitId) {
+		try {
+			boolean check = false;
+			
+			pst = con.prepareStatement("select * from recommendedResult where accountId = ? and unitId = ?");
+			pst.setInt(1,accountId);
+			pst.setInt(2,unitId);
+			result = pst.executeQuery();
+			if(result.next())check = true;
+			//該影片沒有出現在recommendedResult中
+			if(check == false) {
+				pst = con.prepareStatement("insert into recommendedResult (accountId,unitId,recommendedScore) value(?,?,4)");
+				pst.setInt(1,accountId);
+				pst.setInt(2,unitId);
+				pst.executeUpdate();
+			}
+			//該影片有出現在recommendedResult中，將recommendedResult+1
+			else {
+				pst = con.prepareStatement("update recommendedResult set recommendedScore = recommendedScore + 1 where accountId = ? and unitId = ?");
+				pst.setInt(1, accountId);
+				pst.setInt(2, unitId);
+				pst.executeUpdate();
+			}
+		}
+		catch(SQLException e) {
+			
+		}
+		finally {
+			
+		}
+	}
 	
 	public void Close() {
 		try {
