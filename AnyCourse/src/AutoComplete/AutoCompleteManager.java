@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.google.gson.Gson;
-
 
 public class AutoCompleteManager
 {
@@ -23,7 +21,7 @@ public class AutoCompleteManager
 	public AutoCompleteManager() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
-			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5"
+			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
 					, "root", "peter");//取得connection
 			
 		}
