@@ -63,15 +63,16 @@ public class HomePageManager {
 		videoList = selectVideoList(userId);
 		Want = selectCoursePlanWant(userId);
 		ING = selectCoursePlanING(userId);
+		//判斷該使用者在recommendedResult中有沒有資料，沒有的話就要random給影片
 		if(recommendVideo == null || recommendVideo.size() < 1)homePages.add(selectRandVideo());
 		else homePages.add(selectRecommendVideo(userId));
 		if(recommendlist == null || recommendlist.size() < 1)homePages.add(selectRandList());
 		else homePages.add(selectRecommendList(userId));
-		if(videoList == null || videoList.size() < 1)System.out.println("have no videoList");
+		if(videoList == null || videoList.size() < 1){}
 		else homePages.add(selectVideoList(userId));
-		if(Want == null || Want.size() < 1)System.out.println("have no wantList");
+		if(Want == null || Want.size() < 1){}
 		else homePages.add(selectCoursePlanWant(userId));
-		if(ING == null || ING.size() < 1)System.out.println("have no INGList");
+		if(ING == null || ING.size() < 1){}
 		else homePages.add(selectCoursePlanING(userId));
 		
 		return homePages;
