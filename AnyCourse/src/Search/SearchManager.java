@@ -101,8 +101,6 @@ public class SearchManager
 		{
 			query += (keyword + "%");
 		}
-		System.out.println("keyword=" + keyword);
-		System.out.println("query=" + query);
 		return query;
 	}
 	
@@ -126,7 +124,6 @@ public class SearchManager
 			}
 			
 			selectCourseKeywordSQL += selectCourseKeywordSQLEnd;
-			System.out.println("selectCourseKeywordSQL=" + selectCourseKeywordSQL);
 			pst = con.prepareStatement(selectCourseKeywordSQL);
 			result = pst.executeQuery();
 			 while(result.next()) 
