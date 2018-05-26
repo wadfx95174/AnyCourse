@@ -65,9 +65,9 @@ $(document).ready(function(){
     $( "#bVideoTime" ).val( $( "#slider-range" ).slider( "values", 0 ) );
     $( "#eVideoTime" ).val( $( "#slider-range" ).slider( "values", 1 ) );
     
-    $("#addKeyLabel,#submitKL,#cancelKL").click(function(){
-    	$("#slider").toggle();
-    	$("#addKeyLabel").toggle();
+    $("#addKeyLabelBtn,#submitKL,#cancelKL").click(function(){
+    	$("#newKeyLabel").toggle();
+    	$("#addKeyLabelBtn").toggle();
     });
     
     
@@ -449,7 +449,7 @@ $(document).ready(function(){
     
 
     // 按下添加標籤按鈕，隱藏按鈕並顯示slider
-    $("#addKeyLabel").click(function(){
+    $("#addKeyLabelBtn").click(function(){
     	
   	    // 設置slider的最大時間
   	    $( "#slider-range" ).slider( "option", "max", getDuration());
