@@ -12,7 +12,9 @@ public class SearchManager
 {
 	private final String selectCourseListSQL = "select * from courselist where listName like ?";
 	private final String selectUnitKeywordSQL = "select * from unit natural join unitKeyword where unitKeyword like ? ";
-	private final String selectCourseKeywordSQL = "select max(courselistId)courselistId, max(schoolName)schoolName, max(listName)listName, max(teacher)teacher, max(departmentName)departmentName, max(courseInfo)courseInfo, max(creator)creator, max(share)share, max(likes)likes from courselist natural join courseKeyword where courseKeyword like ? or listName like ? or teacher like ? or schoolName like ? or departmentName like ? group by listName ORDER BY `courselistId` ASC";
+	private final String selectCourseKeywordSQLStart = "select max(courselistId)courselistId, max(schoolName)schoolName, max(listName)listName, max(teacher)teacher, max(departmentName)departmentName, max(courseInfo)courseInfo, max(creator)creator, max(share)share, max(likes)likes from courselist natural join courseKeyword where ";
+	private final String selectCourseKeywordSQLMiddle = "(courseKeyword like ? or listName like ? or teacher like ? or schoolName like ? or departmentName like ?) ";
+	private final String selectCourseKeywordSQLEnd = "group by listName ORDER BY `courselistId` ASC";
 	private final String selectUnitByCourseIdSQL = "select * from unit natural join customListVideo where courselistId = ?";
 	private final String selectTeacherSQL = "select distinct teacher from courselist where teacher is not null";
 	private final String selectDepartmentSQL = "select distinct departmentName from courselist where departmentName is not null";
@@ -20,11 +22,11 @@ public class SearchManager
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
-	private PreparedStatement pst = null;
+	private PreparedStatement pst = null; 
 	
 	public SearchManager() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");//註冊Driver\
+			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
 					, "root", "peter");//取得connection
 			
@@ -84,35 +86,48 @@ public class SearchManager
 		 return outputList;
 	}
 	
+	// 輸入字串回傳含有%的字串
+	private String getQuery(String keyword)
+	{
+		String query = "%";
+		if (keyword.length() > 1)
+		{
+			for (String word:keyword.split(""))
+			{
+				query += (word + "%");
+			}
+		}
+		else
+		{
+			query += (keyword + "%");
+		}
+		System.out.println("keyword=" + keyword);
+		System.out.println("query=" + query);
+		return query;
+	}
+	
 	public ArrayList<Search> getCourseListByKeyword(String keyword) {
-
+		String selectCourseKeywordSQL = selectCourseKeywordSQLStart + selectCourseKeywordSQLMiddle;
 		ArrayList<Search> outputList = new ArrayList<Search>(); 
 		try {
-			pst = con.prepareStatement(selectCourseKeywordSQL);
-			String query = "%";
-			if (keyword.length() == 2)
-			{
-				String firstWord = keyword.substring(0,1);
-				String secondWord = keyword.substring(1);
-				query += (firstWord + "%" + secondWord + "%");
-			}
-			else if (keyword.contains("+"))
+			if (keyword.contains("+"))
 			{
 				String []wordList = keyword.split("[+]");	//RE的+有特別意思，所以要用括號括起來
-				for (String word: wordList)
+				selectCourseKeywordSQL = selectCourseKeywordSQL.replace("?", "'" + getQuery(wordList[0]) + "'");
+				for (int i = 1; i < wordList.length; i++)
 				{
-					query += (word + "%");
+					selectCourseKeywordSQL += " and " + selectCourseKeywordSQLMiddle;
+					selectCourseKeywordSQL = selectCourseKeywordSQL.replace("?", "'" + getQuery(wordList[i]) + "'");
 				}
 			}
 			else
 			{
-				query += (keyword + "%");
+				selectCourseKeywordSQL = selectCourseKeywordSQL.replace("?", "'" + getQuery(keyword) + "'");
 			}
-			pst.setString(1,  query);
-			pst.setString(2,  query);
-			pst.setString(3,  query);
-			pst.setString(4,  query);
-			pst.setString(5,  query);
+			
+			selectCourseKeywordSQL += selectCourseKeywordSQLEnd;
+			System.out.println("selectCourseKeywordSQL=" + selectCourseKeywordSQL);
+			pst = con.prepareStatement(selectCourseKeywordSQL);
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 	
