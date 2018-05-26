@@ -552,7 +552,6 @@ $(document).ready(function(){
     		unitId:get('unitId'),
     	},
     	success:function(result){
-    		console.log(result);
     		for(var i = 0;i < result.length; i++){
     			$('#recommendList').append(
         				'<li>'

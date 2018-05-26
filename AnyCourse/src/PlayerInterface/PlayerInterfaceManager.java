@@ -63,7 +63,8 @@ public class PlayerInterfaceManager
 				unit.setCourseInfo(result.getString("courselist.courseInfo"));
 			}
 		}
-			catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("PlayerInterfaceManager-getVideoUrl");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -92,7 +93,8 @@ public class PlayerInterfaceManager
 				units.add(unit);
 			}
 		}
-			catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("PlayerInterfaceManager-getList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -111,8 +113,6 @@ public class PlayerInterfaceManager
 			result = stat.executeQuery("select * from watchRecord where userId = '"+userId
 					+"' and unitId = "+unitId);
 			boolean check = false;//檢查watchRecord裡面有沒有這筆單元影片的資料，false為沒有
-			System.out.println("currentTime: " + currentTime);
-			System.out.println("duration: " + duration);
 			while(result.next()) {check = true;}
 			//如果沒有，就塞資料
 			if(check == false) {
@@ -143,7 +143,6 @@ public class PlayerInterfaceManager
 					pst.setInt(1,currentTime);
 					pst.setInt(2,3);
 					pst.setString(3,userId);
-					System.out.println("coursePlan");
 					pst.setInt(4, unitId);
 				}
 				else {
@@ -161,8 +160,8 @@ public class PlayerInterfaceManager
 			
 		}
 		catch(SQLException x){
-			System.out.println("end");
-		System.out.println("Exception select"+x.toString());
+			System.out.println("PlayerInterfaceManager-setVideoEndTime");
+			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();
@@ -179,7 +178,6 @@ public class PlayerInterfaceManager
 	
 	//進入播放介面時，先設定isBrowse，以此來判斷有沒有看過讚
 	public Unit setIsBrowse(String userId,int unitId) {
-		int like = 0;
 		Unit unit = null;
 		try {
 			//更新shareLikes的isBrowse
@@ -214,7 +212,7 @@ public class PlayerInterfaceManager
 			}
 		}
 		catch(SQLException x) {
-			System.out.println("setIsBrowse");
+			System.out.println("PlayerInterfaceManager-setIsBrowse");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -266,6 +264,7 @@ public class PlayerInterfaceManager
 			
 		}
 		catch(SQLException x) {
+			System.out.println("PlayerInterfaceManager-setLike");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -286,6 +285,7 @@ public class PlayerInterfaceManager
 			}
 		}
 		catch(SQLException x) {
+			System.out.println("PlayerInterfaceManager-getAccountId");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -306,7 +306,6 @@ public class PlayerInterfaceManager
 						+ "unit.unitId = customListVideo.unitId and customListVideo.courselistId"
 						+ " = courselist.courselistId and unit.unitId = ?");
 				for(RecommendedItem r: test) {
-					
 					pst.setInt(1,(int)r.getItemID());
 					result = pst.executeQuery();
 					while(result.next()) {
@@ -331,6 +330,7 @@ public class PlayerInterfaceManager
 			}	
 		}
 		catch(SQLException x) {
+			System.out.println("PlayerInterfaceManager-getRecommendList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -342,25 +342,24 @@ public class PlayerInterfaceManager
 	
 	//進入播放介面時，先設定isBrowse，以此來判斷有沒有看過讚
 	public void setBrowse(int accountId,int unitId) {
+		
 		try {
 			stat = con.createStatement();
 			result = stat.executeQuery("select * from rating where accountId = '"+accountId
 					+"' and unitId = "+unitId);
-			boolean check = false;//檢查watchRecord裡面有沒有這筆單元影片的資料，false為沒有
-			while(result.next()) {
-				check = true;
-				}
+			boolean check = false;
+			while(result.next()) {check = true;}
 			//如果沒有，就塞資料
 			if(check == false) {
 				pst = con.prepareStatement("insert into rating (accountId,unitId,score) value(?,?,4)");
 				pst.setInt(1,accountId);
 				pst.setInt(2,unitId);
-				System.out.println("insert");
 			}
 			pst.executeUpdate();
 				
 		}
 		catch(SQLException x) {
+			System.out.println("PlayerInterfaceManager-setBrowse");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -382,7 +381,7 @@ public class PlayerInterfaceManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("PlayerInterfaceManager Close Exception :" + e.toString()); 
 		}		
 	} 
 	public void conClose() {
@@ -392,7 +391,7 @@ public class PlayerInterfaceManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("PlayerInterfaceManager Connection Close Exception :" + e.toString()); 
 		}
 	}
 }

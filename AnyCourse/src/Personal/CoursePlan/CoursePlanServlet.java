@@ -74,7 +74,6 @@ public class CoursePlanServlet extends HttpServlet {
 			oldCoursePlans = coursePlanManager.getOldCoursePlanOrder((String)session.getAttribute("userId")
 					, request.getParameter("sender"));
 			for(int i = 0;i < oldCoursePlans.size();i++) {
-				System.out.println(oldCoursePlans.get(i).getOorder());
 				if(oldCoursePlans.get(i).getOorder() > Integer.parseInt(request.getParameter("oldIndex"))) {
 					oldCoursePlans.get(i).setOorder(oldCoursePlans.get(i).getOorder()-1);
 					

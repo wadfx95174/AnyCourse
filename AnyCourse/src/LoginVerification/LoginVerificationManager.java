@@ -23,7 +23,7 @@ public class LoginVerificationManager
 	public LoginVerificationManager() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
-			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5"
+			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
 					, "root", "peter");//取得connection
 			
 		}
@@ -45,7 +45,8 @@ public class LoginVerificationManager
 				return result.getString("password");
 			}
 		}
-			catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("LoginVerificationManager-getUserPassword");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -64,7 +65,8 @@ public class LoginVerificationManager
 				return result.getString("userId");
 			}
 		}
-			catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("LoginVerificationManager-getUserId");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -88,7 +90,8 @@ public class LoginVerificationManager
 				return user;
 			}
 		}
-			catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("LoginVerificationManager-getUserProfile");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -110,6 +113,7 @@ public class LoginVerificationManager
 			
 		} catch (final SQLException x)
 		{
+			System.out.println("LoginVerificationManager-createAccount");
 			System.out.println("Exception insert" + x.toString());
 		} finally
 		{
@@ -131,6 +135,7 @@ public class LoginVerificationManager
 			
 		} catch (final SQLException x)
 		{
+			System.out.println("LoginVerificationManager-insertFavoriteCourse");
 			System.out.println("Exception insert" + x.toString());
 		} finally
 		{
@@ -151,6 +156,7 @@ public class LoginVerificationManager
 			
 		} catch (final SQLException x)
 		{
+			System.out.println("LoginVerificationManager-insertGoogleAccount");
 			System.out.println("Exception insert" + x.toString());
 		} finally
 		{
@@ -171,7 +177,7 @@ public class LoginVerificationManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("LoginVerificationManager Close Exception :" + e.toString()); 
 		}		
 	} 
 	
@@ -182,7 +188,7 @@ public class LoginVerificationManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("LoginVerificationManager Close Exception :" + e.toString()); 
 		}
 	}
 	

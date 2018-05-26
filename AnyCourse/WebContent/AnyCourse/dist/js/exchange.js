@@ -126,13 +126,12 @@ var id;
 $('document').ready(function() {
   //Make gallery objects clickable
   $(document).on('click','.ffs-gal', function() {
-  //$('.fs-gal').click(function() {
-	id = (this.id).split("_")[1];  
+  
+  id = (this.id).split("_")[1];  
 	
-	//Gallery navigation
-   //$('.view1 .nav1').click(function() {
+  //Gallery navigation
   $(document).on('click','.view'+id + ' .nav'+id, function() {	
-  //$('.view'+id + ' .nav'+id).click(function() {
+  
 	  
     var index = $(this).data('img-index');
     var img = $($('.p'+id).get(index));
@@ -140,12 +139,7 @@ $('document').ready(function() {
 	
   });
   //Close gallery
-  
- //$(vv).click(function() {
   $(document).on('click','.view'+id + ' .close'+id, function() {	
-  //$('.view'+id + ' .close'+id).click(function() {
-	  //alert(typeof(id));
-	  //alert(id);
     $('.view'+id).fadeOut();
   });
   //Keyboard navigation
@@ -166,8 +160,6 @@ $('document').ready(function() {
   //Display gallery
   function fsGalDisplayImage(obj) {
     //Clear navigation buttons
-	//id = (obj.id).split("_")[1];
-	
     $('.view'+id + '>.prev'+id).fadeOut();
 	
     $('.view'+id + '>.next'+id).fadeOut();

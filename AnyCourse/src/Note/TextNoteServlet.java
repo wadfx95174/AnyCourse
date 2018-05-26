@@ -76,7 +76,6 @@ public class TextNoteServlet extends HttpServlet {
 			textNote.setShareTime(shareTime);
 			textNote.setLikes(likes);
 
-			System.out.println(textNote);
 			dbnote.updateTextNoteTable(textNote);
 			dbnote.conClose();
 		}
@@ -88,7 +87,6 @@ public class TextNoteServlet extends HttpServlet {
 			textNote.setUnitId(unitId);
 			textNote.setUserId(userId);
 			
-			System.out.println(userId);
 			dbnote.shareTextNote(unitId,userId);
 			dbnote.sharePictureNote(unitId,userId);
 			dbnote.conClose();
@@ -101,7 +99,6 @@ public class TextNoteServlet extends HttpServlet {
 			textNote.setUnitId(unitId);
 			textNote.setUserId(userId);
 
-			System.out.println(userId);
 			dbnote.notShareTextNote(unitId,userId);
 			dbnote.notSharePictureNote(unitId,userId);
 			dbnote.conClose();

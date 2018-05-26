@@ -79,9 +79,7 @@ public class CommentServlet extends HttpServlet {
 			comment.setCommentTime(commentTime);
 			comment.setCommentContent(commentContent);
 
-			System.out.println(comment);
 			dbcomment.updateCommentTable(comment);
-			PrintWriter out = response.getWriter();
 			dbcomment.conClose();
 		}	
 		if(state.equals("delete"))
@@ -93,7 +91,6 @@ public class CommentServlet extends HttpServlet {
 			comment.setCommentId(commentId);
 						
 			dbcomment.deleteCommentTable(commentId);
-			PrintWriter out = response.getWriter();
 			dbcomment.conClose();
 		}
 	}

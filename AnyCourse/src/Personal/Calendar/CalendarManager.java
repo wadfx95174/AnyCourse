@@ -62,6 +62,7 @@ public class CalendarManager
 			}
 		} catch (final SQLException x)
 		{
+			System.out.println("CalendarManager-getEvents");
 			System.out.println("Exception select" + x.toString());
 		} finally
 		{
@@ -96,6 +97,7 @@ public class CalendarManager
 			}
 		} catch (final SQLException x)
 		{
+			System.out.println("CalendarManager-insertEvent");
 			System.out.println("Exception insert" + x.toString());
 		} finally
 		{
@@ -118,6 +120,7 @@ public class CalendarManager
 			pst.executeUpdate();
 		} catch (final SQLException x)
 		{
+			System.out.println("CalendarManager-updateEvent");
 			System.out.println("Exception update" + x.toString());
 		} finally
 		{
@@ -137,6 +140,7 @@ public class CalendarManager
 			pst.executeUpdate();
 		} catch (final SQLException x)
 		{
+			System.out.println("CalendarManager-deleteEvent");
 			System.out.println("Exception delete" + x.toString());
 		} finally
 		{
@@ -157,7 +161,7 @@ public class CalendarManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("CalendarManager Close Exception :" + e.toString()); 
 		}		
 	} 
 	public void conClose() {
@@ -167,7 +171,7 @@ public class CalendarManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("CalendarManager Close Exception :" + e.toString()); 
 		}
 	}
 	

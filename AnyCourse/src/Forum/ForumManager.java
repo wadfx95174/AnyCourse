@@ -78,6 +78,7 @@ public class ForumManager {
 			}
 		}
 		catch(SQLException x){
+			System.out.println("ForumManager-insertCommentTable");
 			System.out.println("Exception insert"+x.toString());
 		}
 		finally {
@@ -103,7 +104,8 @@ public class ForumManager {
 				 comments.add(comment);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("ForumManager-selectCommentTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -119,6 +121,7 @@ public class ForumManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("ForumManager-deleteCommentTable");
 			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
@@ -138,6 +141,7 @@ public class ForumManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("ForumManager-updateCommentTable");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -175,6 +179,7 @@ public class ForumManager {
 			}
 		}
 		catch(SQLException x){
+			System.out.println("ForumManager-insertReplyTable");
 			System.out.println("Exception insert"+x.toString());
 		}
 		finally {
@@ -199,7 +204,8 @@ public class ForumManager {
 				 replys.add(reply);
 		     }
 		}
-			 catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("ForumManager-selectReplyTable");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -213,6 +219,7 @@ public class ForumManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("ForumManager-deleteReplyTable");
 			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
@@ -226,6 +233,7 @@ public class ForumManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("ForumManager-deleteReplyTable2");
 			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
@@ -245,6 +253,7 @@ public class ForumManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("ForumManager-updateReplyTable");
 			System.out.println("Exception update"+x.toString());
 		}
 		finally {
@@ -265,7 +274,7 @@ public class ForumManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("ForumManager Close Exception :" + e.toString()); 
 		}		
 	} 
 	public void conClose() {
@@ -275,7 +284,7 @@ public class ForumManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("ForumManager Close Exception :" + e.toString()); 
 		}
 	}
 }

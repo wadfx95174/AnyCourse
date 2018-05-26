@@ -22,7 +22,7 @@ public class PersonalKeyLabelManager
 	public PersonalKeyLabelManager() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
-			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?useUnicode=true&characterEncoding=Big5"
+			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
 					, "root", "peter");//取得connection
 			
 		}
@@ -57,7 +57,8 @@ public class PersonalKeyLabelManager
 				outputList.add(keyLabel);
 			}
 		}
-			catch(SQLException x){
+		catch(SQLException x){
+			System.out.println("PersonalKeyLabelManager-getUnitPersonalKeyLabel");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -75,6 +76,7 @@ public class PersonalKeyLabelManager
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
+			System.out.println("PersonalKeyLabelManager-deleteKeyLabel");
 			System.out.println("Exception delete"+x.toString());
 		}
 		finally {
@@ -95,7 +97,7 @@ public class PersonalKeyLabelManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("PersonalKeyLabelManager Close Exception :" + e.toString()); 
 		}		
 	} 
 	public void conClose() {
@@ -105,7 +107,7 @@ public class PersonalKeyLabelManager
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Close Exception :" + e.toString()); 
+			System.out.println("PersonalKeyLabelManager Close Exception :" + e.toString()); 
 		}
 	}
 }
