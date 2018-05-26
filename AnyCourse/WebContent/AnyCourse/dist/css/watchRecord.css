@@ -1,3 +1,10 @@
-.list-group-item{
-	height: 200px;
+.media-heading 	{
+	margin-top:10px;
+}
+
+.unitUi		{
+	margin-bottom: 5px;
+	overflow:hidden;
+	white-space: nowrap;
+	text-overflow:ellipsis;
 }
