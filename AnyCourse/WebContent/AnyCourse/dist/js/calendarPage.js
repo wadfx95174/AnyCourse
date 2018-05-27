@@ -20,6 +20,10 @@ var SCOPES = "https://www.googleapis.com/auth/calendar";
 
 var authorizeButton = document.getElementById('authorize-button');
 
+$('#external-events').slimScroll({
+	  height:'100px;'
+});
+
 /**
  *  On load, called to load the auth2 library and API client library.
  */
@@ -313,9 +317,7 @@ $(function () {
       $('#external-events').append(
   		  '<li><a href="javascript:void(0)">'+val+'</a></li>'
   	  );
-      $('#external-events').slimScroll({
-    	  height:'100px;'
-      });
+      
       //Add draggable funtionality
       $('#external-events li').last().click(function(){
     	  $('#selectedEvent').text($(this).text());
