@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 
 public class PersonalKeyLabelManager
 {
-	private String selectPersonalKeyLabelSQL = "select * from keylabel natural join unit where userId = ?";
+	private String selectPersonalKeyLabelSQL = "select * from keylabel , unit where keylabel.unitId = unit.unitId and userId = ?";
 	private String deleteKeyLabelSQL = "delete from keylabel where keylabelId = ?";
 	private Connection con = null;
 	private Statement stat = null;
@@ -34,7 +34,7 @@ public class PersonalKeyLabelManager
 		}
 	}
 	
-	public String getUnitPersonalKeyLabel(String user) {
+	public String getAllPersonalKeyLabel(String user) {
 		ArrayList<PersonalKeyLabel> outputList = new ArrayList<>(); 
 		try {
 			pst = con.prepareStatement(selectPersonalKeyLabelSQL);
