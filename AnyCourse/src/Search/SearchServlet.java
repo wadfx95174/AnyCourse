@@ -13,14 +13,17 @@ import com.google.gson.Gson;
 public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		SearchManager manager = new SearchManager();
 		String searchQuery = request.getParameter("searchQuery");
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.setHeader("Cache-Control","max-age=0");
-		Gson gson = new Gson();
-		response.getWriter().print(gson.toJson(manager.getCourseListByKeyword(searchQuery)));
-		manager.conClose();
+		if (searchQuery != "")
+		{
+			SearchManager manager = new SearchManager();
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.setHeader("Cache-Control","max-age=0");
+			Gson gson = new Gson();
+			response.getWriter().print(gson.toJson(manager.getCourseListByKeyword(searchQuery)));
+			manager.conClose();
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -98,4 +98,18 @@
 	background-color: #60daff;
 }
 
+#newKeyLabel {
+	display:none;
+}
+#bVideoTime, #eVideoTime {
+	width:70px;
+	margin-top: 10px;
+}
+.newKLBtn {
+	margin-top: 5px;
+}
+#keyLabelName {
+	margin-top: 10px;
+	margin-right:10px;
+}
 
