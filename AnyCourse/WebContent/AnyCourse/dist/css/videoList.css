@@ -10,13 +10,6 @@
 #unit > a,.list-group-item{
 	cursor: pointer;
 }
-.textSet{
-	width:90%;
-    word-break:keep-all;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;/
-}
 .text{
 	vertical-align: middle;
 	overflow:hidden;

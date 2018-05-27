@@ -34,9 +34,12 @@ public class SearchRecordServlet extends HttpServlet{
 		response.setHeader("Cache-Control","max-age=0");
 		HttpSession session = request.getSession();
 		SearchRecordManager searchRecordDatebaseManager = new SearchRecordManager();
+		String userId = (String)session.getAttribute("userId");
+		if(request.getParameter("action").equals("deleteSingle")) {
+			searchRecordDatebaseManager.deleteSearchRecordTable(userId,
+					request.getParameter("searchWord"),request.getParameter("searchTime"));
+		}
 		
-		searchRecordDatebaseManager.deleteSearchRecordTable((String)session.getAttribute("userId"),
-				request.getParameter("searchWord"),request.getParameter("searchTime"));
 		//關閉connection
 		searchRecordDatebaseManager.conClose();
 	}

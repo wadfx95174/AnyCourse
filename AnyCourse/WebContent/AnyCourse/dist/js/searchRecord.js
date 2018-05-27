@@ -20,17 +20,18 @@ $(document).ready(function() {
 		method : 'GET', 
 		cache :false,
 		success:function(result){
+			console.log(result);
 			searchRecordArray = new Array(result.length);
     		for(var i = 0 ;i < result.length;i++){
-    			$('#SearcRecordList').append('<li class="list-group-item" id="searchRecordId_'+ (i+1) +'">'
+    			$('#SearcRecordList').append('<li class="list-group-item" id="searchRecordId_'+ i +'">'
 						+'<div class="row">'
 						+'<div class="col-xs-1 text-left">'
 						+'<input name="checkboxItem" type="checkbox"/>'
 						+'</div>'
-						+'<div class="col-xs-6" id="searchRecordWord_'+ (i+1) +'"><a href="../SearchResult.html?searchQuery='+result[i].searchWord+'">' + result[i].searchWord + '</a></div>'
-						+'<div class="col-xs-5" id="searchRecordTime_'+ (i+1) +'">' + result[i].searchTime + '</div>'
+						+'<div class="col-xs-5" id="searchRecordWord_'+ i +'"><a href="../SearchResult.html?searchQuery='+result[i].searchWord+'" style="color:black;">' + result[i].searchWord + '</a></div>'
+						+'<div class="col-xs-4" id="searchRecordTime_'+ i +'">' + result[i].searchTime + '</div>'
 						+'<div class="col-xs-1">'
-						+'<button type="button" data-toggle="modal" data-target="#deleteModal1" onclick="getId('+(i+1)+')"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除"></i></button>'
+						+'<button type="button" data-toggle="modal" data-target="#deleteModal1" onclick="getId('+i+')"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除"></i></button>'
 						+'</div>'
 						+'</div></li>');
     			for(var j = 0 ; j < 3;j++){
@@ -39,12 +40,12 @@ $(document).ready(function() {
 			}
     		for(var i = 0 ;i < result.length;i++){
     			for(var j = 0 ; j < 2;j++){
-    				if(j == 0)searchRecordArray[(i+1)][j] = result[i].searchWord;
-    				else searchRecordArray[(i+1)][j] = result[i].searchTime
+    				if(j == 0)searchRecordArray[i][j] = result[i].searchWord;
+    				else searchRecordArray[i][j] = result[i].searchTime;
     			}
     		}
     	},
-		error:function(){console('failed');}
+		error:function(){console('Get search record failed');}
 	});
 	
 	//搜尋記錄清單的scroll
@@ -60,8 +61,9 @@ $(document).ready(function() {
 			method : 'POST',
 			cache :false,
 		    data : {
-		    	"searchWord" : searchRecordArray[checkId][0],
-				"searchTime" : searchRecordArray[checkId][1]
+		    	action : "deleteSingle",
+		    	searchWord : searchRecordArray[checkId][0],
+				searchTime : searchRecordArray[checkId][1]
 			},
 			success:function(result){
 	    		$("#searchRecordId_"+checkId).remove();
