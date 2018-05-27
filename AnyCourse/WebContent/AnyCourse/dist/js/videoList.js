@@ -43,7 +43,7 @@ $(document).ready(function() {
 			action:'selectList'//代表要selectList
 		},
 		success:function(result){
-			console.lod(result);
+			console.log(result);
 			videoListArray = new Array(result.length);
 	  		for(var i = 0 ;i < result.length;i++){
 	  			$('#videoListUL').append('<li id = "videoListId_'+videoListId+'" onclick="getId('+videoListId+')">'

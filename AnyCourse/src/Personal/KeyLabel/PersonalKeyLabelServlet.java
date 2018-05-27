@@ -16,7 +16,7 @@ public class PersonalKeyLabelServlet extends HttpServlet {
 		response.setHeader("Cache-Control","max-age=0");
 		response.setContentType("application/json");
 		HttpSession seesion = request.getSession();
-		response.getWriter().print(manager.getUnitPersonalKeyLabel((String)seesion.getAttribute("userId")));
+		response.getWriter().print(manager.getAllPersonalKeyLabel((String)seesion.getAttribute("userId")));
 		manager.conClose();
 	}
 
