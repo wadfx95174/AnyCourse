@@ -1,7 +1,5 @@
-//////////////localhost用來測試、IP那個用來部屬再tomcat///////////////////////
 //var ajaxURL="http://140.121.197.130:8400/";
 var ajaxURL="http://localhost:8080/";
-///////////////////////////////////////////////////////////////////////
 //////////////////////////////設置拉霸///////////////////////////////////
 $('#unit').slimScroll({
     height: '400px;'
@@ -16,6 +14,7 @@ var videoListArray;//存放清單資料的陣列
 var unitArray;//存放影片資料的陣列
 
 $(document).ready(function() {
+	//跑出modal時直接把focus放在modal中的格子
 	$('#addModal').on('shown.bs.modal', function () {
 	  $('#named').focus();
   	});
@@ -23,7 +22,7 @@ $(document).ready(function() {
   	$('#editModal').on('shown.bs.modal', function () {
   		$('#edited').focus();
   	});
-
+  	//使li可拖拉
   	$(".todo-list").sortable({
   		placeholder: "sort-highlight",
     	handle: ".handle",
@@ -44,11 +43,13 @@ $(document).ready(function() {
 			action:'selectList'//代表要selectList
 		},
 		success:function(result){
+			console.lod(result);
 			videoListArray = new Array(result.length);
 	  		for(var i = 0 ;i < result.length;i++){
-	  			$('#videoListUL').append('<li id = "videoListId_'+videoListId+'" onclick="getId('+videoListId+')" <a href="#unitSection" style="color:black;">'
-	                    +'<div class="row">'
-	  					+'<div class="handle ui-sortable-handle col-xs-1 col-md-1">'
+	  			$('#videoListUL').append('<li id = "videoListId_'+videoListId+'" onclick="getId('+videoListId+')">'
+	  					+'<a href="#unitSection" style="color:black;">'
+						+'<div class="row">'
+	                    +'<div class="handle ui-sortable-handle col-xs-1 col-md-1">'
 	                    +'<i class="fa fa-ellipsis-v"></i>'
 	                    +'</div>'
 	                    +'<div class="text col-xs-8 col-md-8" id="videoListText_'+videoListId+'">'+result[i].listName+'</div>'
@@ -82,7 +83,7 @@ $(document).ready(function() {
 							unitArray = new Array(resultUnit.length);
 							for(var k = 0 ;k < resultUnit.length;k++){
 								$("#unit").append(
-										'<li id="videoItem_'+unitVideoId+'"><a href="#unitSection" style="color:black;">'
+										'<li id="videoItem_'+unitVideoId+'">'
 										+'<span class="handle ui-sortable-handle">' 
 										+'<i class="fa fa-ellipsis-h"></i>'
 										+'</span>' 
@@ -173,20 +174,21 @@ $(document).ready(function() {
 					listName : $("#named").val()
 				},
 				success:function(result){
-					$('#videoListUL').append('<li id = "videoListId_'+videoListId+'"'+'>'
-	                    +'<span class="handle ui-sortable-handle">'
-	                    +'<i class="fa fa-ellipsis-v">'
-	                    +'</i><i class="fa fa-ellipsis-v"></i>'
-	                    +'</span>'
-	                    +'<span class="text" id="videoListText_'+videoListId+'"'+'>'+$("#named").val()+'</span>'
-	                    +'<div class="btn-group col-xs-1 col-md-1">'
-						+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' 
-						+'<span class="caret caret-up"></span></button><ul class="dropdown-menu dropdown-menu-right" role="menu">'
-						+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlanList" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
-						+'<li><a href="#" data-toggle="modal" data-target="#editModal" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
-						+'<li><a href="#" data-toggle="modal" data-target="#deleteModal1" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
-						+'</ul></div>'
-	                    +'</li>');
+					$('#videoListUL').append('<li id = "videoListId_'+videoListId+'" onclick="getId('+videoListId+')">'
+							+'<a href="#unitSection" style="color:black;">'
+							+'<div class="row">'
+		                    +'<div class="handle ui-sortable-handle col-xs-1 col-md-1">'
+		                    +'<i class="fa fa-ellipsis-v"></i>'
+		                    +'</div>'
+		                    +'<div class="text col-xs-8 col-md-8" id="videoListText_'+videoListId+'">'+$("#named").val()+'</div>'
+		                    +'<div class="btn-group col-xs-1 col-md-1">'
+							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' 
+							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu dropdown-menu-right" role="menu">'
+							+'<li><a href="#" data-toggle="modal" data-target="#addToCoursePlanList" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+							+'<li><a href="#" data-toggle="modal" data-target="#editModal" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
+							+'<li><a href="#" data-toggle="modal" data-target="#deleteModal1" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
+							+'</ul></div>'
+		                    +'</a></li>');
 				//把modal設為空
 				$('#named').val("");
 				//點擊清單，顯示單元影片
