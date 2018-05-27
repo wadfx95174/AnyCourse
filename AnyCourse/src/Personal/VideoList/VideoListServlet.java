@@ -59,7 +59,7 @@ public class VideoListServlet extends HttpServlet{
 			videoList.setCourselistId(Integer.parseInt(request.getParameter("courselistId")));
 			videoList.setListName(request.getParameter("listName"));
 			videoList.setCreator(request.getParameter("creator"));
-			videoList.setUserId(request.getParameter("userId"));
+			videoList.setUserId((String)session.getAttribute("userId"));
 			videoList.setOorder(Integer.parseInt(request.getParameter("oorder")));
 			videoListDatebaseManager.deleteCourseListTable(videoList);
 		}
