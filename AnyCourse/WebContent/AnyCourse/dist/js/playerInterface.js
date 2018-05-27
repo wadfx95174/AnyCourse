@@ -16,7 +16,7 @@ $('#noteArea').slimScroll({
     height: '200px'
   });
 $('.tab-content').slimScroll({
-    height: '500px'
+    height: '300px'
   });
 $('#keyLabel1').slimScroll({
     height: '130px'
@@ -212,12 +212,12 @@ $(document).ready(function(){
     // 設置個人重點標籤
     function addToSelfKeyLabel(index)
     {
-    	var share = keyLabelArray[index].share ? '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item muted">收回</li></a>' : '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
+    	var share = keyLabelArray[index].share ? '<a href="javascript:void(0)" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item muted">收回</li></a>' : '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
 
     	$('#keyLabel1').append('<li class="list-group-item">'
 				+ keyLabelArray[index].keyLabelName
 				+'<ul class="list-group-submenu">'
-				+'<a href="#" class = "self dkl" id = "self-dkl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klDeleteModal"><li class="list-group-submenu-item danger">刪除</li></a>'
+				+'<a href="javascript:void(0)" class = "self dkl" id = "self-dkl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klDeleteModal"><li class="list-group-submenu-item danger">刪除</li></a>'
 				+'<a href="#" class = "self ekl" id = "self-ekl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">編輯</li></a>'
 				+ share
 				+'<a href="#" class = "self ukl" id = "self-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
@@ -299,6 +299,14 @@ $(document).ready(function(){
     		error:function(){console.log('failed');}
     	});
     });
+    
+    $(document).on('click', '#cancelDeleteKl', function()
+    {
+    	$('.list-group-submenu').css('right', '0'); 
+    	setTimeout(function(){$('.list-group-submenu').removeAttr("style")}, 500);
+
+    	
+    })
     
     // 新增重點標籤
     $(document).on('click', '#submitKL', function(event)
