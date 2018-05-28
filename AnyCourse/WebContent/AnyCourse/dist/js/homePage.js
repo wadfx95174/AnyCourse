@@ -35,7 +35,7 @@ $(document).ready(function(){
 				if(result[i][0].type == 1){
 					$('.content-wrapper').append(
 							'<section class="content-header">'
-							+'<h4><b>推薦影片</b></h4>'
+							+'<h4>推薦影片</h4>'
 							+'</section>'
 							+'<section class="content">'
 							+'<div class="row">'
@@ -83,7 +83,7 @@ $(document).ready(function(){
 				else if(result[i][0].type == 2){
 					$('.content-wrapper').append(
 							'<section class="content-header">'
-							+'<h4><b>推薦清單</b></h4>'
+							+'<h4>推薦清單</h4>'
 							+'</section>'
 							+'<section class="content">'
 							+'<div class="row">'
@@ -130,7 +130,7 @@ $(document).ready(function(){
 				else if(result[i][0].type == 3){
 					$('.content-wrapper').append(
 							'<section class="content-header">'
-							+'<h4><b>課程清單</b></h4>'
+							+'<h4>課程清單</h4>'
 							+'</section>'
 							+'<section class="content">'
 							+'<div class="row">'
@@ -176,7 +176,7 @@ $(document).ready(function(){
 				else if(result[i][0].type == 4){
 					$('.content-wrapper').append(
 							'<section class="content-header">'
-							+'<h4><b>想要觀看</b></h4>'
+							+'<h4>想要觀看</h4>'
 							+'</section>'
 							+'<section class="content">'
 							+'<div class="row">'
@@ -188,7 +188,7 @@ $(document).ready(function(){
 				else if(result[i][0].type == 5){
 					$('.content-wrapper').append(
 							'<section class="content-header">'
-							+'<h4><b>正在觀看</b></h4>'
+							+'<h4>正在觀看</h4>'
 							+'</section>'
 							+'<section class="content">'
 							+'<div class="row">'
@@ -256,7 +256,7 @@ $(document).ready(function(){
 //				}
 				if(window.screen.width >= 1024){
 					var swiper = new Swiper('.swiper-container', {
-					      slidesPerView: 3,
+					      slidesPerView: 4,
 					      spaceBetween: 0,
 					      slidesPerGroup: 1,
 					      loop: false,
@@ -269,7 +269,7 @@ $(document).ready(function(){
 				}
 				else if(window.screen.width <= 480){
 					var swiper = new Swiper('.swiper-container', {
-					      slidesPerView: 1,
+					      slidesPerView: 2,
 					      spaceBetween: 0,
 					      slidesPerGroup: 1,
 					      loop: false,
@@ -282,7 +282,7 @@ $(document).ready(function(){
 				}
 				else {
 					var swiper = new Swiper('.swiper-container', {
-					      slidesPerView: 2,
+					      slidesPerView: 3,
 					      spaceBetween: 0,
 					      slidesPerGroup: 1,
 					      loop: false,

@@ -44,15 +44,9 @@
 <!-- AutoComplete style -->
 <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
 <!-- bootstrap wysihtml5 - text editor -->
-<link
-	href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"
+<link href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"
 	rel="stylesheet" type="text/css" />
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-        <![endif]-->
+<link href="../../dist/css/searchRecord.css" rel="stylesheet" type="text/css">
 </head>
 <body class="skin-blue">
 	<div class="wrapper">
@@ -117,12 +111,12 @@
 								<ul class = "list-group">
 									<li class="list-group-item list-group-body">
 										<div class="row">
-											<div class="col-xs-1 text-left">
+											<div class="col-xs-1 text-center">
 												<input name="checkAll" type="checkbox" onclick="checkAll(this,'checkboxItem')" />
 											</div>
-											<div class="col-xs-5"><strong>搜尋關鍵字</strong></div>
-											<div class="col-xs-4"><strong>搜尋時間</strong></div>
-											<div class="col-xs-1">
+											<div class="col-xs-5 text-center"><strong>搜尋關鍵字</strong></div>
+											<div class="col-xs-4 text-center"><strong>搜尋時間</strong></div>
+											<div class="col-xs-1 text-center">
 												<button type="button" data-toggle="modal" data-target="#deleteModal2"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除選取"></i></button>
 											</div>
 										</div>

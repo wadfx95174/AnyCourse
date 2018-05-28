@@ -77,21 +77,66 @@
     padding-top: 45px;
     padding-bottom: 25px;
   }
-  .info-card .info-card-details .info-card-header h1, 
-  .info-card .info-card-details .info-card-header h3 {
-    color: rgb(62, 62, 62);
-    font-size: 22px;
-    font-weight: 900;
-    text-transform: uppercase;
-    margin: 0 !important;
-    padding: 0 !important;
+  /*h3*/
+  @media (max-width: 480px) {
+    .info-card .info-card-details .info-card-header h1, 
+    .info-card .info-card-details .info-card-header h3 {
+      color: rgb(62, 62, 62);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
   }
-  .info-card .info-card-details .info-card-header h3 {
-    color: rgb(99, 101, 109);
-    font-size: 15px;
-    font-weight: 400;
-    margin-top: 5px;
+  @media (max-width: 767px) and (min-width: 481px) {
+    .info-card .info-card-details .info-card-header h1, 
+    .info-card .info-card-details .info-card-header h3 {
+      color: rgb(62, 62, 62);
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
   }
+  @media (min-width: 768px) {
+    .info-card .info-card-details .info-card-header h1, 
+    .info-card .info-card-details .info-card-header h3 {
+      color: rgb(62, 62, 62);
+      font-size: 22px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  }
+  /*h4*/
+  @media (max-width: 480px) {
+    h4 {
+      color: rgb(62, 62, 62);
+      font-size: 14px;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  }
+  @media (max-width: 767px) and (min-width: 481px) {
+    h4 {
+      color: rgb(62, 62, 62);
+      font-size: 16px;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  }
+  @media (min-width: 768px) {
+    h4 {
+      color: rgb(62, 62, 62);
+      font-size: 18px;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  }
+  
   .info-card .info-card-details .info-card-detail .social {
     list-style: none;
     padding: 0px;
@@ -109,3 +154,14 @@
     background-color: rgb(215, 215, 215);
     border-radius: 40px;
   }
+  
+  
+  /***************************************************************************/
+  .unitNameTitle{
+    vertical-align: middle;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+  }
+  
+  /****************************************************************************/

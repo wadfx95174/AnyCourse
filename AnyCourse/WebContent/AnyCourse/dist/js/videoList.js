@@ -47,13 +47,15 @@ $(document).ready(function() {
 	  		for(var i = 0 ;i < result.length;i++){
 	  			$('#videoListUL').append('<li id = "videoListId_'+videoListId+'" onclick="getId('+videoListId+')">'
 	  					+'<div class="row">'
-	                    +'<div class="handle ui-sortable-handle col-xs-1 col-md-1">'
+	                    +'<div class="handle ui-sortable-handle col-xs-1">'
 	                    +'<i class="fa fa-ellipsis-v"></i>'
 	                    +'</div>'
+	                    +'<div class="col-xs-8">'
 	                    +'<a href="#unitSection" style="color:black;">'
-	                    +'<div class="text col-xs-8 col-md-8" id="videoListText_'+videoListId+'">'+result[i].listName+'</div>'
+	                    +'<div style="width:100%;" class="text" id="videoListText_'+videoListId+'">'+result[i].listName+'</div>'
 	                    +'</a>'
-	                    +'<div class="btn-group col-xs-1 col-md-1">'
+	                    +'</div>'
+	                    +'<div class="btn-group col-xs-1">'
 						+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' 
 						+'<span class="caret caret-up"></span></button>'
 						+'<ul class="dropdown-menu dropdown-menu-right" role="menu">'
@@ -80,7 +82,41 @@ $(document).ready(function() {
 							$('#unit li').each(function(){
 								$(this).remove();
 							}); 
+							
 							unitArray = new Array(resultUnit.length);
+							var pull;
+							var img;
+							var wid;
+							if(window.screen.width >= 1280){
+								pull = '<div class="pull-left" style="padding: 0px;">'
+								img = '<img id="img" class="style-scope yt-img-shadow" alt="" style="width:200px;"'
+								wid = 'width:410px;'
+							}
+							else if(window.screen.width >= 1024 && window.screen.width < 1280){
+								pull = '<div class="pull-left" style="padding: 0px;">'
+								img = '<img id="img" class="style-scope yt-img-shadow" alt="" style="width:170px;"'
+								wid = 'width:250px;'
+							}
+							else if(window.screen.width <= 480){
+								pull = '<div class="pull-left" style="padding: 0px; width:100%">'
+								img = '<img id="img" class="style-scope yt-img-shadow" alt="" style="width:100%;"'
+								
+								if(window.screen.width > 400)wid = 'width:310px;'
+								else if(window.screen.width > 350 && window.screen.width < 375)wid = 'width:260px;'
+								else if(window.screen.width < 350) wid = 'width:220px;'
+								else wid = 'width:280px;'
+							}
+							else{
+								pull = '<div class="pull-left" style="padding: 0px;">'
+								if(window.screen.width >= 960){
+									img = '<img id="img" class="style-scope yt-img-shadow" alt="" style="width:200px;"'
+									wid = 'width:400px;'
+								}
+								else{
+									img = '<img id="img" class="style-scope yt-img-shadow" alt="" style="width:170px;"'
+									wid = 'width:420px;'
+								}
+							}
 							for(var k = 0 ;k < resultUnit.length;k++){
 								$("#unit").append(
 										'<li id="videoItem_'+unitVideoId+'">'
@@ -103,19 +139,17 @@ $(document).ready(function() {
 										+'</span>'
 										+'<a class="list-group-item" onclick="jumpToPlayerInterface('+ resultUnit[k].unitId + ',' + resultUnit[k].videoType+',' + resultUnit[k].courselistId+')">'
 										+'<div class="media">'
-										+'<div class="pull-left" style="padding-left: 0px;">'
+										+pull
 										+'<div class="embed-responsive embed-responsive-16by9 col-xs-12">'
-										+'<img id="img" class="style-scope yt-img-shadow" alt="" width="250"'
+										+img
 										+'src="' + resultUnit[k].videoImgSrc + '">' 
 										+'</div></div>'
-										+'<div class="media-body">'
-										+'<h4 class="unitUi">'
-										+'<b>影片名稱:' + resultUnit[k].unitName + '</b>'
-										+'</h4>'
-										+'<p class="unitUi">開課大學:' + resultUnit[k].schoolName + '</p>'
-										+'<p class="unitUi">授課教師:' + resultUnit[k].teacher + '老師</p>'
-										+'<p class="unitUi">讚數:' + resultUnit[k].likes.toLocaleString() +'</p>'
-										+'<p class="unitUi">課程簡介:' + resultUnit[k].courseInfo + '</p>'
+										+'<div style="width:100%; display:table-cell; vertical-align:top; padding-left:5px;">'
+										+'<h4 class="unitUi" style="'+wid+'">影片名稱:' + resultUnit[k].unitName + '</h4>'
+										+'<p class="unitUi" style="'+wid+'">開課大學:' + resultUnit[k].schoolName + '</p>'
+										+'<p class="unitUi" style="'+wid+'">授課教師:' + resultUnit[k].teacher + '老師</p>'
+										+'<p class="unitUi" style="'+wid+'">讚數:' + resultUnit[k].likes.toLocaleString() +'</p>'
+										+'<p class="unitUi" style="'+wid+'">課程簡介:' + resultUnit[k].courseInfo + '</p>'
 										+'</div></div></a></li>'
 								);
 								unitVideoId++;
