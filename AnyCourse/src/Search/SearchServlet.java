@@ -21,7 +21,8 @@ public class SearchServlet extends HttpServlet {
 			response.setCharacterEncoding("UTF-8");
 			response.setHeader("Cache-Control","max-age=0");
 			Gson gson = new Gson();
-			response.getWriter().print(gson.toJson(manager.getCourseListByKeyword(searchQuery)));
+			HttpSession session = request.getSession();
+			response.getWriter().print(gson.toJson(manager.getCourseListByKeyword(searchQuery, (String)session.getAttribute("userId"))));
 			manager.conClose();
 		}
 	}
