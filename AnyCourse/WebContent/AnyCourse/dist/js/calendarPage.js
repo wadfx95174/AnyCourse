@@ -372,8 +372,13 @@ function getCoursePlanEvent()
 
 function initCalendar(eventSrc)
 {
+	var leng = 1 + (( ( $(window).width()-100 ) / $(window).height() ) - 1) * 0.5;
+	console.log(leng);
 	$('#calendar').fullCalendar({
-		height: 650,
+//		height: $(window).height(),
+//		contentHeight: $(window).width()*1.25,
+		aspectRatio: (leng),
+//		aspectRatio: 1.2,
 		// 視圖的擺放
         header: {
           left: 'prev,next today',
