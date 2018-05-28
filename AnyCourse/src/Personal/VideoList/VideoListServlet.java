@@ -18,15 +18,17 @@ public class VideoListServlet extends HttpServlet{
 		ArrayList<VideoList> videoLists = new ArrayList<VideoList>();
 		ArrayList<UnitVideo> unitVideos = new ArrayList<UnitVideo>();
 		VideoListManager videoListDatebaseManager = new VideoListManager();
+		String userId = (String)session.getAttribute("userId");
+		
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		if(request.getParameter("action").equals("selectList")) {
-			videoLists = videoListDatebaseManager.selectVideoListTable((String)session.getAttribute("userId"));
+			videoLists = videoListDatebaseManager.selectVideoListTable(userId);
 			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(videoLists));
 		}
 		else if(request.getParameter("action").equals("selectUnit")) {
-			unitVideos = videoListDatebaseManager.selectUnitTable((String)session.getAttribute("userId")
+			unitVideos = videoListDatebaseManager.selectUnitTable(userId
 					,request.getParameter("schoolName"),request.getParameter("listName"));
 			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(unitVideos));
@@ -39,13 +41,13 @@ public class VideoListServlet extends HttpServlet{
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
 		HttpSession session = request.getSession();
+		String userId = (String)session.getAttribute("userId");
 		VideoListManager videoListDatebaseManager = new VideoListManager();
 		VideoList videoList = new VideoList();
 		
 		//insert
 		if(request.getParameter("action").equals("insert")) {
-			videoListDatebaseManager.insertCourseListTable((String)session.getAttribute("userId")
-					,request.getParameter("listName"));
+			videoListDatebaseManager.insertCourseListTable(userId,request.getParameter("listName"));
 		}
 		//update
 		else if(request.getParameter("action").equals("update")) {
@@ -59,7 +61,7 @@ public class VideoListServlet extends HttpServlet{
 			videoList.setCourselistId(Integer.parseInt(request.getParameter("courselistId")));
 			videoList.setListName(request.getParameter("listName"));
 			videoList.setCreator(request.getParameter("creator"));
-			videoList.setUserId((String)session.getAttribute("userId"));
+			videoList.setUserId(userId);
 			videoList.setOorder(Integer.parseInt(request.getParameter("oorder")));
 			videoListDatebaseManager.deleteCourseListTable(videoList);
 		}

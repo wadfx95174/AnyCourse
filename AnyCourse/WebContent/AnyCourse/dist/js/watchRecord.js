@@ -1,5 +1,8 @@
 //var ajaxURL="http://140.121.197.130:8400/";
 var ajaxURL="http://localhost:8080/";
+$('#result').slimScroll({
+	height: '400px;'
+});
 
 $(document).ready(function(){
 	checkLogin("../", "../../../");
@@ -10,6 +13,13 @@ $(document).ready(function(){
 		success: function(response){
 			console.log(response);
 			array = response;
+			var img;
+			if(window.screen.width > 480){
+				img = '<img id="img" class="style-scope yt-img-shadow" style="width:200px;"'
+			}
+			else{
+				img = '<img id="img" class="style-scope yt-img-shadow" style="width:100%;"'
+			}
 			for (var i = 0; i < response.length; i++)
 			{
 				
@@ -18,18 +28,14 @@ $(document).ready(function(){
 						+'<a class="list-group-item" href="../PlayerInterface.html?type='+ (response[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].unitId+'">'
 						+'<div class="media">'
 						+'<div class="pull-left" style="padding-left: 0px;">'
-						+'<div class="embed-responsive embed-responsive-16by9">'
-						+'<img id="img" class="style-scope yt-img-shadow" alt="" width="230"'
+						+'<div class="embed-responsive embed-responsive-16by9" style="width:100%; padding-bottom:80%;">'
+						+img
 						+'src="'+ (response[i].videoImgSrc != "" ? response[i].videoImgSrc : "https://i.imgur.com/eKSYvRv.png") +'">' 
 						+'</div>'
 						+'</div>'
 						+'<div class="media-body">'
-						+'<h4 class="media-heading">'
-						+'<b class="video-name">' + response[i].unitName + '</b>'
-						+'</h4>'
-						+'<br>'
+						+'<h4 class="media-heading video-name">' + response[i].unitName +'</h4>'
 						+'<p class="unitUi">' + response[i].schoolName + '</p>'
-						+'<br>'
 						+'<p class="unitUi">' + response[i].likes +' 人喜歡</p>'
 						+'</div>'
 						+'</div>'

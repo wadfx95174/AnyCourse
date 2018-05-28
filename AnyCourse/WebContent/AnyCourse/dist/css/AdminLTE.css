@@ -23,7 +23,17 @@ body {
 .layout-boxed body {
   height: 100%;
 }
-@media (max-width: 480px) {
+@media only screen and (max-width: 480px) {
+  body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size:12px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  }
+}
+@media only screen and (min-width: 481px) and (max-width:1023) {
   body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -33,7 +43,7 @@ body {
   overflow-y: auto;
   }
 }
-@media (min-width: 481px) {
+@media only screen and (min-width:1024){
   body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -4088,17 +4098,21 @@ Gradient Background colors
 /*********************************************/
 
 /****************************************************************************************/
-@media (max-width: 480px) {
+@media only screen and (max-width: 480px) {
+  h4,.h4 {
+ 	font-size: 14px;
+  }
+}
+@media only screen and (min-width: 481px) and (max-width:1023) {
   h4,.h4 {
  	font-size: 16px;
   }
 }
-@media (min-width: 481px) {
+@media only screen and (min-width:1024){
   h4,.h4 {
  	font-size: 18px;
   }
 }
-
 
 
 @media (max-width: 480px) {
