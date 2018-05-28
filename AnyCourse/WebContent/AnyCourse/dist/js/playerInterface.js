@@ -212,7 +212,7 @@ $(document).ready(function(){
     // 設置個人重點標籤
     function addToSelfKeyLabel(index)
     {
-    	var share = keyLabelArray[index].share ? '<a href="javascript:void(0)" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item muted">收回</li></a>' : '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
+    	var share = keyLabelArray[index].share ? '<a href="javascript:void(0)" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item muted">收回</li></a>' : '<a href="javascript:void(0)" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
 
     	$('#keyLabel1').append('<li class="list-group-item">'
 				+ keyLabelArray[index].keyLabelName
