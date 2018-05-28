@@ -32,7 +32,6 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		PlayerInterfaceManager manager = new PlayerInterfaceManager();
 		HttpSession session = request.getSession();
 		String userId = (String)session.getAttribute("userId");
-		int unitId = Integer.parseInt(request.getParameter("unitId"));
 		response.setHeader("Cache-Control","max-age=0");
 		if(request.getParameter("action").equals("getVideoList")) {
 			response.setContentType("application/json");
@@ -44,7 +43,8 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			PlayerInterfaceManager playerInterfaceManager = new PlayerInterfaceManager();
 			
 			playerInterfaceManager.setVideoEndTime(Integer.parseInt(request.getParameter("currentTime"))
-					,unitId,userId,Integer.parseInt(request.getParameter("duration")));
+					,Integer.parseInt(request.getParameter("unitId")),userId
+					,Integer.parseInt(request.getParameter("duration")));
 			
 			playerInterfaceManager.conClose();
 		}
@@ -52,7 +52,8 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			Unit unit = new Unit();
-			unit = manager.setLike(userId,unitId,Integer.parseInt(request.getParameter("like")));
+			unit = manager.setLike(userId,Integer.parseInt(request.getParameter("unitId"))
+					,Integer.parseInt(request.getParameter("like")));
 			Gson gson = new Gson();
 			response.getWriter().write(gson.toJson(unit));
 		}
@@ -69,7 +70,7 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			}
 			else {
 				unit = new Unit();
-				unit = manager.setIsBrowse(userId,unitId);
+				unit = manager.setIsBrowse(userId,Integer.parseInt(request.getParameter("unitId")));
 				Gson gson = new Gson();
 				response.getWriter().write(gson.toJson(unit));
 			}
@@ -82,13 +83,13 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			else {
 				accountId = manager.getAccountId(userId);
 			}
-			manager.setBrowse(accountId,unitId);
-			manager.setRecommendedResult(accountId,unitId);
+			manager.setBrowse(accountId,Integer.parseInt(request.getParameter("unitId")));
+			manager.setRecommendedResult(accountId,Integer.parseInt(request.getParameter("unitId")));
 			ArrayList<Unit> units = new ArrayList<Unit>();
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			try {
-				units = manager.getRecommendList(accountId,unitId);
+				units = manager.getRecommendList(accountId,Integer.parseInt(request.getParameter("unitId")));
 			} catch (NumberFormatException | TasteException e) {
 				e.printStackTrace();
 			}

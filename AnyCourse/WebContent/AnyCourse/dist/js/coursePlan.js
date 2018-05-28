@@ -37,80 +37,37 @@ $(document).ready(function() {
 		method:'GET',
 		cache :false,
 		success:function(result){
+			var listType;
 			listArray = new Array(result.length);
 			for(var i = 0;i < result.length; i++){
 				//想要觀看
-				if(result[i].status == 1){
-					$('#wantList').append(ListBeginningHTML
-							+'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
-							+'<div class="info-card">'
-							+'<div class="embed-responsive embed-responsive-16by9">'
-							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].videoImgSrc+'">' 
-							+'</div>'
-							+'<div class="info-card-details animate">'
-							+'<div class="info-card-header">'
-							+'<h1>'+ result[i].unitName +'</h1>'
-							+'<h3>'+ result[i].schoolName +'</h3>'
-							+'</div>'
-							+'<div class="info-card-detail">'
-							+'<p>授課教師:'+result[i].teacher+'</p>'
-							+'<p>清單名稱:'+result[i].listName+'</p>'
-							+'<p>'+result[i].likes+'人喜歡</p>'
-							+'</div>'
-							+'</div>'
-							+'</div>'
-							+'</a>'
-							+'</li>'
-					);
-				}
+				if(result[i].status == 1)listType = '#wantList';
 				//正在觀看
-				else if(result[i].status == 2){
-					$('#ingList').append(ListBeginningHTML
-							+'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
-							+'<div class="info-card">'
-							+'<div class="embed-responsive embed-responsive-16by9">'
-							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].videoImgSrc+'">' 
-							+'</div>'
-							+'<div class="info-card-details animate">'
-							+'<div class="info-card-header">'
-							+'<h1>'+ result[i].unitName +'</h1>'
-							+'<h3>'+ result[i].schoolName +'</h3>'
-							+'</div>'
-							+'<div class="info-card-detail">'
-							+'<p>授課教師:'+result[i].teacher+'</p>'
-							+'<p>清單名稱:'+result[i].listName+'</p>'
-							+'<p>'+result[i].likes+'人喜歡</p>'
-							+'</div>'
-							+'</div>'
-							+'</div>'
-							+'</a>'
-							+'</li>'
-					);
-				}
+				else if(result[i].status == 2)listType = '#ingList';
 				//已觀看完
-				else if(result[i].status == 3){
-					$('#doneList').append(ListBeginningHTML
-							+'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
-							+'<div class="info-card">'
-							+'<div class="embed-responsive embed-responsive-16by9">'
-							+'<img id="img" class="style-scope yt-img-shadow" alt="" width="350" src="'+result[i].videoImgSrc+'">' 
-							+'</div>'
-							+'<div class="info-card-details animate">'
-							+'<div class="info-card-header">'
-							+'<h1>'+ result[i].unitName +'</h1>'
-							+'<h3>'+ result[i].schoolName +'</h3>'
-							+'</div>'
-							+'<div class="info-card-detail">'
-							+'<p>授課教師:'+result[i].teacher+'</p>'
-							+'<p>清單名稱:'+result[i].listName+'</p>'
-							+'<p>'+result[i].likes+'人喜歡</p>'
-							+'</div>'
-							+'</div>'
-							+'</div>'
-							+'</a>'
-							+'</li>'
-					);
-				}
+				else if(result[i].status == 3)listType = '#doneList';
+					
+				$(listType).append(ListBeginningHTML
+						+'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
+						+'<div class="info-card">'
+						+'<div class="embed-responsive embed-responsive-16by9">'
+						+'<img id="img" class="style-scope yt-img-shadow" alt="" style="width:100%;" src="'+result[i].videoImgSrc+'">' 
+						+'</div>'
+						+'<div class="info-card-details animate">'
+						+'<div class="info-card-header">'
+						+'<h3 class="unitNameTitle">'+ result[i].unitName +'</h3>'
+						+'<h4>'+ result[i].schoolName +'</h4>'
+						+'</div>'
+						+'<div class="info-card-detail">'
+						+'<h4>授課教師:'+result[i].teacher+'</h4>'
+						+'<h4>清單名稱:'+result[i].listName+'</h4>'
+						+'<h4>'+result[i].likes+'人喜歡</h4>'
+						+'</div>'
+						+'</div>'
+						+'</div>'
+						+'</a>'
+						+'</li>');
+				
 				videoId++;
 			}
 			for(var i = 1 ; i <= result.length;i++){

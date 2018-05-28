@@ -25,12 +25,12 @@ $(document).ready(function() {
     		for(var i = 0 ;i < result.length;i++){
     			$('#SearcRecordList').append('<li class="list-group-item" id="searchRecordId_'+ i +'">'
 						+'<div class="row">'
-						+'<div class="col-xs-1 text-left">'
+						+'<div class="col-xs-1 text-center">'
 						+'<input name="checkboxItem" type="checkbox"/>'
 						+'</div>'
-						+'<div class="col-xs-5" id="searchRecordWord_'+ i +'"><a href="../SearchResult.html?searchQuery='+result[i].searchWord+'" style="color:black;">' + result[i].searchWord + '</a></div>'
-						+'<div class="col-xs-4" id="searchRecordTime_'+ i +'">' + result[i].searchTime + '</div>'
-						+'<div class="col-xs-1">'
+						+'<div class="searchWord col-xs-5 text-center" id="searchRecordWord_'+ i +'"><a href="../SearchResult.html?searchQuery='+result[i].searchWord+'" style="color:black;">' + result[i].searchWord + '</a></div>'
+						+'<div class="col-xs-4 text-center" id="searchRecordTime_'+ i +'">' + result[i].searchTime + '</div>'
+						+'<div class="col-xs-1 text-center">'
 						+'<button type="button" data-toggle="modal" data-target="#deleteModal1" onclick="getId('+i+')"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除"></i></button>'
 						+'</div>'
 						+'</div></li>');
