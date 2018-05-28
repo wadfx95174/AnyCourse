@@ -68,26 +68,32 @@ public class VideoListManager {
 	}
 	
 	//尋找對應的單元影片
-	public ArrayList<UnitVideo> selectUnitTable(String userId,String schoolName
-			,String listName) {
+	public ArrayList<UnitVideo> selectUnitTable(String userId,int courselistId) {
 		unitVideos = new ArrayList<UnitVideo>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery("select * from customListVideo,unit,list,courselist where "
+			pst = con.prepareStatement("select * from customListVideo,unit,list,courselist where "
 					+"customListVideo.courselistId = list.courselistId and "
 					+"customListVideo.unitId = unit.unitId and "
 					+"list.courselistId = courselist.courselistId and "
-					+"list.userId = '"+userId+"' and "
-					+"courselist.schoolName = '"+schoolName+"' and "
-					+"courselist.listName = '"+listName+"' order by customListVideo.oorder ASC");
+					+"list.userId = ? and "
+					+"courselist.courselistId = ? order by customListVideo.oorder ASC");
+			pst.setString(1, userId);
+			pst.setInt(2, courselistId);
+			result = pst.executeQuery();
 			while(result.next()) {
 				unitVideo = new UnitVideo();
 				unitVideo.setUserId(result.getString("list.userId"));
 				unitVideo.setUnitName(result.getString("unit.unitName"));
 				unitVideo.setCourseInfo(result.getString("courselist.courseInfo"));
 				unitVideo.setSchoolName(result.getString("courselist.schoolName"));
+				unitVideo.setCreator(result.getString("courselist.creator"));
 				unitVideo.setTeacher(result.getString("courselist.teacher"));
-				unitVideo.setVideoImgSrc(result.getString("unit.videoImgSrc"));
+				if(result.getString("unit.videoImgSrc") == "") {
+					unitVideo.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
+				}
+				else {
+					unitVideo.setVideoImgSrc(result.getString("unit.videoImgSrc"));
+				}
 				unitVideo.setCourselistId(result.getInt("list.courselistId"));
 				unitVideo.setOorder(result.getInt("customListVideo.oorder"));
 				unitVideo.setLikes(result.getInt("unit.likes"));
@@ -216,7 +222,23 @@ public class VideoListManager {
 			Close();
 		}
 	}
-	
+	//刪除使用者點擊的清單中的影片
+	public void deleteUnitVideo(int courselistId, int unitId) {
+		try {
+			//1:listName。2:courselistId。3:creator
+			pst = con.prepareStatement("delete from customListVideo where courselistId = ? and unitId = ?");
+			pst.setInt(1,courselistId);
+			pst.setInt(2,unitId);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("VideoList-updateCourseListTable");
+			System.out.println("Exception update"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
 	public void Close() {
 		try {
 			if(result!=null) {

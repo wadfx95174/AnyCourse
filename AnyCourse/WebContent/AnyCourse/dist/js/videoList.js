@@ -9,7 +9,8 @@ $('#videoListUL').slimScroll({
 });
 ///////////////////////////////////////////////////////////////////////
 
-var checkId;
+var checkListId;
+var checkUnitId;
 var videoListArray;//存放清單資料的陣列
 var unitArray;//存放影片資料的陣列
 
@@ -43,9 +44,10 @@ $(document).ready(function() {
 			action:'selectList'//代表要selectList
 		},
 		success:function(result){
+			console.log(result);
 			videoListArray = new Array(result.length);
 	  		for(var i = 0 ;i < result.length;i++){
-	  			$('#videoListUL').append('<li id = "videoListId_'+videoListId+'" onclick="getId('+videoListId+')">'
+	  			$('#videoListUL').append('<li id = "videoListId_'+videoListId+'" onclick="getListId('+videoListId+')">'
 	  					+'<div class="row">'
 	                    +'<div class="handle ui-sortable-handle col-xs-1">'
 	                    +'<i class="fa fa-ellipsis-v"></i>'
@@ -59,9 +61,9 @@ $(document).ready(function() {
 						+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' 
 						+'<span class="caret caret-up"></span></button>'
 						+'<ul class="dropdown-menu dropdown-menu-right" role="menu">'
-						+'<li><a data-toggle="modal" data-target="#addToCoursePlanList" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
-						+'<li><a data-toggle="modal" data-target="#editModal" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
-						+'<li><a data-toggle="modal" data-target="#deleteModal1" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
+						+'<li><a data-toggle="modal" data-target="#addToCoursePlanList" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+						+'<li><a data-toggle="modal" data-target="#editModal" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
+						+'<li><a data-toggle="modal" data-target="#deleteModal1" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
 						+'</ul></div></div></li>');
 	  			//把modal設為空
 				$('#named').val("");
@@ -74,8 +76,7 @@ $(document).ready(function() {
 						cache :false,
 						data : {
 							action : 'selectUnit',//代表要selectUnit
-							schoolName : videoListArray[checkId-1][5],
-						    listName : videoListArray[checkId-1][1]
+							courselistId : videoListArray[checkListId-1][0]
 						},
 						success:function(resultUnit){
 							//清除原先檢視的unit
@@ -124,12 +125,12 @@ $(document).ready(function() {
 										+'</button>'
 										+'<ul class="dropdown-menu">'
 										+'<li>'
-										+'<a href="#" class=" waves-effect waves-block" data-toggle="modal" data-target="#addToCoursePlan" onclick="getId('+unitVideoId+')">'
+										+'<a href="#" class=" waves-effect waves-block" data-toggle="modal" data-target="#addToCoursePlan" onclick="getUnitId('+unitVideoId+')">'
 										+'<i class="ion ion-clipboard"></i>新增至課程計畫'
 										+'</a></li></ul></div>'
 										+'<span class="pull-right">'
 										+'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal2"'
-										+'onclick="getId('+unitVideoId+')" style="cursor: pointer;"></i>'
+										+'onclick="getUnitId('+unitVideoId+')" style="cursor: pointer;"></i>'
 										+'</span>'
 										+'<a class="list-group-item" onclick="jumpToPlayerInterface('+ resultUnit[k].unitId + ',' + resultUnit[k].videoType+',' + resultUnit[k].courselistId+')">'
 										+'<div class="media">'
@@ -146,9 +147,10 @@ $(document).ready(function() {
 										+'</div></div></a></li>'
 								);
 								unitVideoId++;
-							}
-							for(var z = 0;z < resultUnit.length;z++){
-								unitArray[z] = resultUnit[z].unitId;
+								unitArray[k] = new Array(3);
+								unitArray[k][0] = resultUnit[k].unitId;
+								unitArray[k][1] = resultUnit[k].userId;
+								unitArray[k][2] = resultUnit[k].creator;
 							}
 							//影片新增至課程計畫
 							$('#addToCoursePlanButton').click(function(){
@@ -158,7 +160,7 @@ $(document).ready(function() {
 									cache: false,
 									data:{
 										action:'addToCoursePlan',
-										unitId:unitArray[checkId-1]
+										unitId:unitArray[checkUnitId-1][0]
 									},
 									error:function(){
 										console.log("addToCoursePlan Error!");
@@ -171,17 +173,13 @@ $(document).ready(function() {
 				});
 				videoListId++;
 				videoListArray[i] = new Array(6);
+				videoListArray[i][0] = result[i].courselistId;
+  				videoListArray[i][1] = result[i].listName;
+  				videoListArray[i][2] = result[i].userId;
+  				videoListArray[i][3] = result[i].creator;
+  				videoListArray[i][4] = result[i].oorder;
+  				videoListArray[i][5] = result[i].schoolName;
 			}
-	  		for(var i = 0 ;i < result.length;i++){
-	  			for(var j = 0 ; j < 6;j++){
-	  				if(j == 0)videoListArray[i][j] = result[i].courselistId;
-	  				else if(j == 1)videoListArray[i][j] = result[i].listName;
-	  				else if(j == 2)videoListArray[i][j] = result[i].userId;
-	  				else if(j == 3)videoListArray[i][j] = result[i].creator;
-	  				else if(j == 4)videoListArray[i][j] = result[i].oorder;
-	  				else videoListArray[i][j] = result[i].schoolName;
-	  			}
-	  		}
 		},
 		error:function(){console.log('Display VideoList failed');}
 	});
@@ -201,7 +199,7 @@ $(document).ready(function() {
 					listName : $("#named").val()
 				},
 				success:function(result){
-					$('#videoListUL').append('<li id = "videoListId_'+videoListId+'" onclick="getId('+videoListId+')">'
+					$('#videoListUL').append('<li id = "videoListId_'+videoListId+'" onclick="getListId('+videoListId+')">'
 		  					+'<div class="row">'
 		                    +'<div class="handle ui-sortable-handle col-xs-1 col-md-1">'
 		                    +'<i class="fa fa-ellipsis-v"></i>'
@@ -213,9 +211,9 @@ $(document).ready(function() {
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' 
 							+'<span class="caret caret-up"></span></button>'
 							+'<ul class="dropdown-menu dropdown-menu-right" role="menu">'
-							+'<li><a data-toggle="modal" data-target="#addToCoursePlanList" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
-							+'<li><a data-toggle="modal" data-target="#editModal" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
-							+'<li><a data-toggle="modal" data-target="#deleteModal1" onclick="getId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
+							+'<li><a data-toggle="modal" data-target="#addToCoursePlanList" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+							+'<li><a data-toggle="modal" data-target="#editModal" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
+							+'<li><a data-toggle="modal" data-target="#deleteModal1" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
 							+'</ul></div></div></li>');
 				//把modal設為空
 				$('#named').val("");
@@ -235,7 +233,7 @@ $(document).ready(function() {
 	//編輯courseList名稱
 	$("#editListButton").click(function(e){
 		//不等於null代表使用者就是該清單的creator
-		if(videoListArray[checkId-1][2].match(videoListArray[checkId-1][3]) != null){
+		if(videoListArray[checkListId-1][2].match(videoListArray[checkListId-1][3]) != null){
 			if($("#edited").val()==""){
 				$("#unNewEdit").dialog( "open" );
 			}
@@ -254,12 +252,12 @@ $(document).ready(function() {
 				  			videoListArray[][5] = schoolName;
 				    	 */
 				    	action : 'update',//代表要edit
-				    	courselistId : videoListArray[checkId-1][0],
+				    	courselistId : videoListArray[checkListId-1][0],
 				    	listName : $("#edited").val(),
-						creator : videoListArray[checkId-1][3]
+						creator : videoListArray[checkListId-1][3]
 					},
 					success:function(result){
-						$("#videoListText_"+checkId).text($("#edited").val());
+						$("#videoListText_"+checkListId).text($("#edited").val());
 					    $('#edited').val("");
 			    	},
 			    	error:function(){console.log('Edit VideoList Name failed');}
@@ -274,7 +272,6 @@ $(document).ready(function() {
 
 	//刪courseList的item
 	$("#deleteListButton1").click(function(e){
-		console.log(checkId-1);
 		$.ajax({
 			url : ajaxURL+'AnyCourse/VideoListServlet.do',
 			method : 'POST',
@@ -289,20 +286,41 @@ $(document).ready(function() {
 		  			videoListArray[][5] = schoolName;
 		    	 */
 		    	action : 'remove',//代表要delete
-		    	courselistId : videoListArray[checkId-1][0],
-		    	listName : videoListArray[checkId-1][1],
-				creator : videoListArray[checkId-1][3],
-				oorder : videoListArray[checkId-1][4]
+		    	courselistId : videoListArray[checkListId-1][0],
+		    	listName : videoListArray[checkListId-1][1],
+				creator : videoListArray[checkListId-1][3],
+				oorder : videoListArray[checkListId-1][4]
 		    },
 			success:function(result){
-				$("#videoListId_"+checkId).remove();
+				$("#videoListId_"+checkListId).remove();
 	    	},
 			error:function(){console.log('Delete VideoList failed');}
 		});
 	});
 	//刪除unitVideo
 	$("#deleteListButton2").click(function(e){
-		$("#videoItem_"+checkId).remove();
+		console.log(unitArray[checkUnitId-1][1]);
+		console.log(unitArray[checkUnitId-1][2]);
+		//不等於null代表使用者就是該清單的creator
+		if(unitArray[checkUnitId-1][1].match(unitArray[checkUnitId-1][2]) != null){
+			$.ajax({
+				url : ajaxURL+'AnyCourse/VideoListServlet.do',
+				method : 'POST',
+				cache :false,
+			    data : {
+			    	action : 'removeUnitVideo',//代表要delete
+			    	courselistId : videoListArray[checkListId-1][0],
+			    	unitId : unitArray[checkUnitId-1][0]
+			    },
+				success:function(result){
+					$("#videoItem_"+checkUnitId).remove();
+		    	},
+				error:function(){console.log('Delete unitVideo failed');}
+			});
+		}
+		else{
+			$("#unDelete").dialog( "open" );
+		}
 	});
   
 	//清單整個新增至課程計畫
@@ -313,7 +331,7 @@ $(document).ready(function() {
 			cache: false,
 			data:{
 				action:'addToCoursePlanList',
-				courselistId:videoListArray[checkId-1][0]
+				courselistId:videoListArray[checkListId-1][0]
 			},
 			error:function(e){
 				console.log("addToCoursePlanList Error!");
@@ -321,7 +339,7 @@ $(document).ready(function() {
 		})
 	});
 	
-	$("#unNewEdit,#unAdd,#canNotEdit").dialog({
+	$("#unNewEdit,#unAdd,#canNotEdit,#unDelete").dialog({
 		dialogClass: "dlg-no-close",
 		autoOpen: false,
 		show: {
@@ -339,8 +357,11 @@ $(document).ready(function() {
 		}
 	});
 });
-function getId(id){
-    checkId = id;
+function getListId(id){
+	checkListId = id;
+}
+function getUnitId(id){
+    checkUnitId = id;
   }
 //跳轉頁面
 function jumpToPlayerInterface(unitId,type,listId){

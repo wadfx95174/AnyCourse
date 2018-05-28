@@ -7,30 +7,11 @@ $('#unit').slimScroll({
 $('.box-body').slimScroll({
 	  height: '420px;'
 	  });
+var checkId;
 var listArray;//用來儲存影片的unitId
 $(document).ready(function() {
 	checkLogin("../", "../../../");
-	//想要觀看、正在觀看、已觀看完的每個影片的前段HTML
-	var ListBeginningHTML='<li class="portlet" style="cursor:pointer;">'
-		+'<span class="handle portlet-header">'
-		+'<i class="fa fa-ellipsis-h"></i>'
-		+'</span>'
-		+'<div class="btn-group" style="top: -5px;">'
-		+'<button type="button" class="btn btn-noColor dropdown-toggle"'
-		+'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-		+'<span class="caret"></span>'
-		+'</button>'
-		+'<ul class="dropdown-menu">'
-		+'<li>'
-		+'<a href="#" class=" waves-effect waves-block">'
-		+'<i class="ion ion-clipboard"></i>新增至課程清單'
-		+'</a>'
-		+'</li>'
-		+'</ul>'
-		+'</div>'
-		+'<span class="pull-right">' 
-		+'<i class="fa fa-times" style="cursor: pointer;"></i>'
-		+'</span>';
+	
 	var videoId = 1;//設置每個影片的Id
 	$.ajax({
 		url:ajaxURL+'AnyCourse/CoursePlanServlet.do',
@@ -47,7 +28,26 @@ $(document).ready(function() {
 				//已觀看完
 				else if(result[i].status == 3)listType = '#doneList';
 					
-				$(listType).append(ListBeginningHTML
+				$(listType).append('<li class="portlet" style="cursor:pointer;">'
+						+'<span class="handle portlet-header">'
+						+'<i class="fa fa-ellipsis-h"></i>'
+						+'</span>'
+						+'<div class="btn-group" style="top: -5px;">'
+						+'<button type="button" class="btn btn-noColor dropdown-toggle"'
+						+'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+						+'<span class="caret"></span>'
+						+'</button>'
+						+'<ul class="dropdown-menu">'
+						+'<li>'
+						+'<a data-toggle="modal" data-target="#addToVideoList" onclick="getId('+videoId+')" style="cursor:pointer;" class=" waves-effect waves-block">'
+						+'<i class="ion ion-clipboard"></i>新增至課程清單'
+						+'</a>'
+						+'</li>'
+						+'</ul>'
+						+'</div>'
+						+'<span class="pull-right">' 
+						+'<i class="fa fa-times" style="cursor: pointer;"></i>'
+						+'</span>'
 						+'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
 						+'<div class="info-card">'
 						+'<div class="embed-responsive embed-responsive-16by9">'
@@ -67,15 +67,57 @@ $(document).ready(function() {
 						+'</div>'
 						+'</a>'
 						+'</li>');
-				
 				videoId++;
+				listArray[i] = new Array(3);
+				listArray[i][0] = result[i].unitId;
+				listArray[i][1] = result[i].courselistId;
 			}
-			for(var i = 1 ; i <= result.length;i++){
-				listArray[i] = result[i-1].unitId;
-			}
+			
+			//將計畫中的影片新增至指定清單
+			$('#addToVideoListButton').click(function(){
+				$.ajax({
+					url : ajaxURL+'AnyCourse/HomePageServlet.do',
+					method : 'POST',
+					cache: false,
+					data:{
+						action:'addToVideoList',
+						courselistId:$('#addToVideoListModalBody').val(),
+						unitId:listArray[checkId-1][0]
+					},
+					success:function(result){
+						for(var i = 0;i < result.length;i++){
+							$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
+						}
+					},
+					error:function(){
+						console.log("add video to courselist error");
+					}
+				});
+			});
 		},
 		error:function(){}
-	})
+	});
+	
+	//取得該使用者的所有清單(用來放在下拉式選單，讓使用者選擇要加入哪個清單)
+	$.ajax({
+		url : ajaxURL+'AnyCourse/HomePageServlet.do',
+		method : 'POST',
+		data:{
+			action:'getVideoListName'
+		},
+		cache :false,
+		success:function(result){
+			for(var i = 0;i < result.length;i++){
+				$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
+			}
+		},
+		error:function(){
+			console.log("append videoList to modal error");
+		}
+	});
+	
+	
+	
 //----------------------jQueryUI的sortable套件，並且運用start、update兩個事件去把排序資料存進資料庫中-----------------//
 	$( ".column" ).sortable({
 	    connectWith: ".column",
@@ -110,7 +152,7 @@ $(document).ready(function() {
 		    			newIndex: newIndex + 1,//因為抓到的index是從0開始算，而資料庫是從1開始，所以要加1
 	    				sender: sender,
 		    			received: received,
-		    			unitId: listArray[id]//unitId
+		    			unitId: listArray[id-1][0]//unitId
 		    		},
 		    		error:function(){
 		    			console.log("CoursePlan Sort Error!");
@@ -122,6 +164,9 @@ $(document).ready(function() {
 //----------------------/.jQueryUI的sortable套件，並且運用start、update兩個事件去把排序資料存進資料庫中-----------------//
 	
 });
+function getId(id){
+    checkId = id;
+  }
 //跳轉至播放介面
 function jumpToPlayerInterface(unitId,type,time){
     url = "../PlayerInterface.html?unitId="+unitId+"&type="+type+"&time="+time;//此處拼接內容

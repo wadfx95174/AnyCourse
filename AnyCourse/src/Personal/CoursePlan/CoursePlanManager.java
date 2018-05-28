@@ -49,11 +49,22 @@ public class CoursePlanManager {
 					+ "personalPlan.userId = '"+userId +"' order by personalPlan.oorder ASC");
 			while(result.next()) {
 				coursePlan = new CoursePlan();
+				coursePlan.setCourselistId(result.getInt("courselist.courselistId"));
 				coursePlan.setListName(result.getString("courselist.listName"));
 				coursePlan.setUnitName(result.getString("unit.unitName"));
-				coursePlan.setSchoolName(result.getString("courselist.schoolName"));
+				if(result.getString("courselist.schoolName") == null) {
+					coursePlan.setSchoolName("未知學校");
+				}
+				else {
+					coursePlan.setSchoolName(result.getString("courselist.schoolName"));
+				}
+				if(result.getString("courselist.teacher") == null) {
+					coursePlan.setTeacher("未知");
+				}
+				else {
+					coursePlan.setTeacher(result.getString("courselist.teacher"));
+				}
 				coursePlan.setLastTime(result.getInt("personalPlan.lastTime"));
-				coursePlan.setTeacher(result.getString("courselist.teacher"));
 				coursePlan.setLikes(result.getInt("unit.likes"));
 				coursePlan.setUnitId(result.getInt("unit.unitId"));
 				coursePlan.setStatus(result.getInt("personalPlan.status"));//狀態

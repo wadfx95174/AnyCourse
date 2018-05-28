@@ -7,6 +7,7 @@ public class UnitVideo {
 	private String schoolName;
 	private String teacher;
 	private String videoImgSrc;
+	private String creator;
 	private int videoType;//1:youtube。2:jwplayer
 	private int courselistId;
 	private int oorder;
@@ -61,6 +62,14 @@ public class UnitVideo {
 
 	public void setVideoImgSrc(String videoImgSrc) {
 		this.videoImgSrc = videoImgSrc;
+	}
+	
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
 
 	public int getVideoType() {

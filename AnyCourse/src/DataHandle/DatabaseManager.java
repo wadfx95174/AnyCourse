@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 public class DatabaseManager {
 
-	private String insertCustomListVideoSQL = "insert into customlistVideo (courselistId,unitId,oorder) value(?,?,?)";
+	private String insertCustomListVideoSQL = "insert into customListVideo (courselistId,unitId,oorder) value(?,?,?)";
 	private String selectUnitCourseListSQL = "select * from courselist,unit where courselist.listName = unit.listName and courselist.schoolName = unit.schoolName";
 	
 	

@@ -39,7 +39,6 @@ public class CoursePlanServlet extends HttpServlet {
 		ArrayList<CoursePlan> coursePlans = null;
 		ArrayList<CoursePlan> oldCoursePlans = null;
 		CoursePlan coursePlan = new CoursePlan();
-		CoursePlan oldCoursePlan = new CoursePlan();
 		HttpSession session = request.getSession();
 		//紀錄排序
 		if(request.getParameter("action").equals("sortable")) {

@@ -312,9 +312,9 @@
 	  <p>請輸入新的清單名稱</p>
 	</div>
 	
-	<!-- 無法編輯 -->
+	<!-- 非清單創建者，無法編輯 -->
 	<div id="canNotEdit" title="編輯錯誤">
-	  <p>不是您創立的清單，無法編輯</p>
+	  <p>不是您創建的清單，無法編輯</p>
 	</div>
 	
 	<!-- 沒有輸入清單名稱 -->
@@ -322,12 +322,17 @@
 	  <p>請輸入清單名稱</p>
 	</div>
 	
+	<!-- 非清單創建者，無法刪除影片 -->
+	<div id="unDelete" title="刪除錯誤">
+	  <p>不是您所創建的清單，無法刪除</p>
+	</div>
+	
 	
 	
 	<!--addToCoursePlan_List-->
-	<!--要將整個清淡的單元影片都加進coursePlan-->
-	<div class="modal fade" id="addToCoursePlan_List" tabindex="-1" role="dialog"
-		aria-labelledby=addToCoursePlan_List aria-hidden="true">
+	<!--要將整個清單的單元影片都加進coursePlan-->
+	<div class="modal fade" id="addToCoursePlanList" tabindex="-1" role="dialog"
+		aria-labelledby=addToCoursePlanList aria-hidden="true">
 		
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
@@ -341,7 +346,7 @@
 					<b>已新增至課程計畫</b>
 				</div>
 				<div class="modal-footer">
-					<button id="addToCoursePlanButton_List" type="button"
+					<button id="addToCoursePlanButtonList" type="button"
 						class="btn btn-primary" data-dismiss="modal">關閉</button>
 				</div>
 			</div>
