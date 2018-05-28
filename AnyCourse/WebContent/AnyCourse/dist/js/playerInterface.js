@@ -7,6 +7,7 @@ var maxIndex = 0;		// 標籤的Index
 var selectId = 0;		// 暫存已選擇的項目
 var element;			// 存DOM元素
 var shareState = ['分享','收回'];		// 分享的狀態
+var klAction;	// 要對kl執行的動作 (insert / update)
 
 var $progress = $('.progress'),
 $duration = $('.duration'),
@@ -54,22 +55,16 @@ $(document).ready(function(){
     
     $( "#slider-range" ).slider({
         range: true,
-        min: 0,
-        max: 0,
-        values: [ 0, 0 ],
+//        min: 0,
+//        max: 0,
+//        values: [ 0, 0 ],
         slide: function( event, ui ) {
             $( "#bVideoTime" ).val( formatTime(ui.values[ 0 ]) );
             $( "#eVideoTime" ).val( formatTime(ui.values[ 1 ]) );
           }
         });
-    $( "#bVideoTime" ).val( $( "#slider-range" ).slider( "values", 0 ) );
-    $( "#eVideoTime" ).val( $( "#slider-range" ).slider( "values", 1 ) );
-    
-    $("#addKeyLabelBtn,#submitKL,#cancelKL").click(function(){
-    	$("#newKeyLabel").toggle();
-    	$("#addKeyLabelBtn").toggle();
-    });
-    
+//    $( "#bVideoTime" ).val( $( "#slider-range" ).slider( "values", 0 ) );
+//    $( "#eVideoTime" ).val( $( "#slider-range" ).slider( "values", 1 ) );
     
     $("#editNote").click(function(){
     	if(typeof($("#textArea").attr("disabled")) === "string"){
@@ -212,12 +207,12 @@ $(document).ready(function(){
     // 設置個人重點標籤
     function addToSelfKeyLabel(index)
     {
-    	var share = keyLabelArray[index].share ? '<a href="javascript:void(0)" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item muted">收回</li></a>' : '<a href="#" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
+    	var share = keyLabelArray[index].share ? '<a href="javascript:void(0)" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item muted">收回</li></a>' : '<a href="javascript:void(0)" class = "self skl" id = "self-skl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item info">分享</li></a>'
 
     	$('#keyLabel1').append('<li class="list-group-item">'
 				+ keyLabelArray[index].keyLabelName
 				+'<ul class="list-group-submenu">'
-				+'<a href="javascript:void(0)" class = "self dkl" id = "self-dkl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klDeleteModal"><li class="list-group-submenu-item danger">刪除</li></a>'
+				+'<a href="#" class = "self dkl" id = "self-dkl-' + index + '" style="color: #FFF" data-toggle="modal" data-target="#klDeleteModal"><li class="list-group-submenu-item danger">刪除</li></a>'
 				+'<a href="#" class = "self ekl" id = "self-ekl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item primary">編輯</li></a>'
 				+ share
 				+'<a href="#" class = "self ukl" id = "self-ukl-' + index + '" style="color: #FFF"><li class="list-group-submenu-item lightBlue">使用</li></a>'
@@ -251,8 +246,9 @@ $(document).ready(function(){
  
 //----------------------------------------------keyLabel event----------------------------------------------//   
     
+  // ----使用----
     // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
-    $(document).on('click', '.self.ukl', function(event) 
+    $(document).on('click', '.self.ukl,.temp.ukl,.exchange', function(event) 
     {
     	selectId = parseInt(this.getAttribute("id").split("-")[2]);
     	var beginTime = keyLabelArray[selectId].beginTime;
@@ -262,27 +258,21 @@ $(document).ready(function(){
     	$('.keyLabelDiv').css('width', ((endTime - beginTime) / getDuration() * 100) + '%');
     	$('.keyLabelDiv').attr('data-original-title', keyLabelArray[selectId].keyLabelName);
     });
-    
-    // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
-    $(document).on('click', '.temp.ukl ,.exchange', function(event) 
-    {
-    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
-    	var beginTime = exKeyLabelArray[selectId].beginTime;
-    	var endTime = exKeyLabelArray[selectId].endTime;
-    	seekTo(beginTime);
-    	$('.keyLabelDiv').css('margin-left', (beginTime / getDuration() * 100) + '%');
-    	$('.keyLabelDiv').css('width', ((endTime - beginTime) / getDuration() * 100) + '%');
-    	$('.keyLabelDiv').attr('data-original-title', exKeyLabelArray[selectId].keyLabelName);
-    });
-    
+
+  // ----刪除----
     // 點擊個人標籤刪除按鈕，設置在變數
     $(document).on('click', '.self.dkl', function(event) 
     {
     	element = $(this).parent().parent();
     	selectId = parseInt(this.getAttribute("id").split("-")[2]);
     });
-    
-    // 送去資料庫刪除 
+    // 取消刪除標籤
+    $(document).on('click', '#cancelDeleteKl', function()
+    {
+    	$('.list-group-submenu').css('right', '0'); 
+    	setTimeout(function(){$('.list-group-submenu').removeAttr("style")}, 500);
+    });
+    // 確認刪除標籤，送去資料庫刪除 
     $(document).on('click', '#deleteKlButton', function(event)
     {
     	$.ajax({
@@ -299,17 +289,120 @@ $(document).ready(function(){
     		error:function(){console.log('failed');}
     	});
     });
-    
-    $(document).on('click', '#cancelDeleteKl', function()
+  // ----暫存區----
+    // 點擊暫存標籤刪除按鈕，消除該標籤
+    $(document).on('click', '.temp.dkl', function(event) 
     {
-    	$('.list-group-submenu').css('right', '0'); 
-    	setTimeout(function(){$('.list-group-submenu').removeAttr("style")}, 500);
-
+    	$(this).parent().parent().remove();
+    });
+    // 點擊添加按鈕，新增至個人重點標籤，上傳資料庫      *要改為資料庫傳回正確值
+    $(document).on('click', '.akl', function(event) 
+    {
+    	//	method 1: 移動
+    	//$('#keyLabel1').append($(this).parent().parent().detach());
+    	//	method 2: 添加
+    	element = $(this).parent().parent();
+    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
     	
-    })
+    	//*
+		//	    		keyLabelArray[maxIndex] = keyLabelArray[selectId];
+		//	    		keyLabelArray[maxIndex].keyLabelId = ??;
+    	//*
+    	
+    	$.ajax({
+    		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
+    		method : 'POST',
+    		cache :false,
+    	    data : {
+    	    	"method" : "insert",
+    	    	"keyLabelName" : exKeyLabelArray[selectId].keyLabelName,
+    	    	"beginTime" : exKeyLabelArray[selectId].beginTime,
+    	    	"endTime" : exKeyLabelArray[selectId].endTime,
+    	    	"unitId" : exKeyLabelArray[selectId].unitId
+    		},
+    		dataType : 'json',
+    		cache: false,
+    		success:function(result){
+    			keyLabelArray[maxIndex] = result;
+        		addToSelfKeyLabel(maxIndex++);
+            	element.remove();
+        	},
+    		error:function(){console.log('failed');}
+    	});
+    });
     
-    // 新增重點標籤
+ // ----分享----
+    // 點擊個人標籤分享按鈕
+    $(document).on('click', '.skl', function(event) 
+    {
+    	var ele = $(this).find('li');	// 存該重點標籤的物件
+    	element = $(this).parent().parent();
+    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
+    	$.ajax({
+    		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
+    		method : 'POST',
+    	    data : {
+    	    	"method" : "share",
+    	    	"keyLabelId" : keyLabelArray[selectId].keyLabelId,
+    	    	"share" : (keyLabelArray[selectId].share + 1) % 2
+    		},
+    		cache: false,
+    		success:function(){
+    			keyLabelArray[selectId].share = (keyLabelArray[selectId].share + 1) % 2
+    			ele.toggleClass('muted info');
+    			ele.text(shareState[keyLabelArray[selectId].share]);
+        	},
+    		error:function(){console.log('share failed');}
+    	});
+    });
+    
+  // ----新增  & 編輯----
+    // 設定按鈕動作
+    $("#submitKL,#cancelKL").click(function(){
+    	$("#keyLabelArea").fadeOut();
+    });
+    // 按下添加標籤按鈕，隱藏按鈕並顯示slider
+    $("#addKeyLabelBtn").click(function(){
+    	klAction = 'a';	// 動作為 add
+    	$("#keyLabelArea").fadeIn();
+    	$('#keyLabelName').val('');
+    	setupSlider(0, getDuration());
+    })
+    // 點擊個人標籤編輯按鈕，可編輯名稱
+    $(document).on('click', '.ekl', function(event) 
+    {
+    	element = $(this).parent().parent();
+    	klAction = 'e';	// 動作為 edit
+    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
+    	$('#keyLabelArea').fadeIn();
+    	$('#keyLabelName').val(keyLabelArray[selectId].keyLabelName);
+    	setupSlider(keyLabelArray[selectId].beginTime, keyLabelArray[selectId].endTime);
+    });
+    // 設定slider
+    function setupSlider(start, end){
+  	    // 設置slider的最大時間
+    	$('#bVideoTime').val(formatTime(start));
+    	$('#eVideoTime').val(formatTime(end));
+  	    $( "#slider-range" ).slider( "option", "max", getDuration());
+  	    $( "#slider-range" ).slider( "values", [ start, end ] );
+  		
+  	    // 調整slider會跳至影片該處
+  	    $( "#slider-range" ).slider({
+  		    stop: function( event, ui ) {
+  			    seekTo(Math.floor(ui.value));
+  		    }
+  	    });
+    }
+    // 點擊確認按鈕
     $(document).on('click', '#submitKL', function(event)
+    {
+    	if (klAction == 'a')	// 新增KL
+    		insertKLToDatabase();
+    	else if (klAction == 'e')	// 編輯KL
+    		updateKLToDatabase();
+    })
+    // 新增新的重點標籤至個人資料庫
+    function insertKLToDatabase()
     {
     	var klName = $('#keyLabelName').val();
     	var klBeginTime = $( "#slider-range" ).slider( "values", 0 );
@@ -339,137 +432,53 @@ $(document).ready(function(){
         	    	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / getDuration() * 100) + '%');
         	    	$('.keyLabelDiv').attr('data-original-title', klName);
             	},
-        		error:function(){console.log('failed');}
+        		error:function(){console.log('insert kl failed');}
         	});
     	}
     	else
     	{
     		console.log("標籤名稱不可為空!!");
     	}
-    })
-    
-    // 點擊暫存標籤刪除按鈕，消除該標籤
-    $(document).on('click', '.temp.dkl', function(event) 
+    }
+    // 更新編輯後的重點標籤資料
+    function updateKLToDatabase()
     {
-    	$(this).parent().parent().remove();
-    });
-    
-    // 點擊個人標籤分享按鈕
-    $(document).on('click', '.skl', function(event) 
-    {
-    	var ele = $(this).find('li');	// 存該重點標籤的物件
-    	element = $(this).parent().parent();
-    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
-    	$.ajax({
-    		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
-    		method : 'POST',
-    	    data : {
-    	    	"method" : "share",
-    	    	"keyLabelId" : keyLabelArray[selectId].keyLabelId,
-    	    	"share" : (keyLabelArray[selectId].share + 1) % 2
-    		},
-    		cache: false,
-    		success:function(){
-    			keyLabelArray[selectId].share = (keyLabelArray[selectId].share + 1) % 2
-    			ele.toggleClass('muted info');
-    			ele.text(shareState[keyLabelArray[selectId].share]);
-        	},
-    		error:function(){console.log('share failed');}
-    	});
-    });
-    
-    // 點擊個人標籤編輯按鈕，可編輯名稱
-    $(document).on('click', '.ekl', function(event) 
-    {
-    	element = $(this).parent().parent();
-    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
-    	$('#eKeyLabelName').val(keyLabelArray[selectId].keyLabelName);
-    	$('#eBeginTime').val(keyLabelArray[selectId].beginTime);
-    	$('#eEndTime').val(keyLabelArray[selectId].endTime);
-    });
-    
-    // 送去資料庫更新
-    $(document).on('click', '#editKlButton', function(event)
-    {
-    	var klName = $('#eKeyLabelName').val();
-    	var klBeginTime = parseInt($('#eBeginTime').val());
-    	var klEndTime = parseInt($('#eEndTime').val());
+    	var klName = $('#keyLabelName').val();
+    	var klBeginTime = $( "#slider-range" ).slider( "values", 0 );
+    	var klEndTime = $( "#slider-range" ).slider( "values", 1 );
     	
-    	
-    	$.ajax({
-    		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
-    		method : 'POST',
-    		cache :false,
-    	    data : {
-    	    	"method" : "update",
-    	    	"keyLabelName" : klName,
-    	    	"beginTime" : klBeginTime,
-    	    	"endTime" : klEndTime,
-    	    	"keyLabelId" : keyLabelArray[selectId].keyLabelId
-    		},
-    		cache: false,
-    		success:function(result){
-    			keyLabelArray[selectId].keyLabelName = klName;
-    			keyLabelArray[selectId].beginTime = klBeginTime
-    			keyLabelArray[selectId].endTime = klEndTime
-    	    	$('.keyLabelDiv').css('margin-left', (klBeginTime / getDuration() * 100) + '%');
-    	    	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / getDuration() * 100) + '%');
-        	},
-    		error:function(){console.log('failed');}
-    	});
-    })
+    	if (klName != "")
+    	{
+	    	$.ajax({
+	    		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
+	    		method : 'POST',
+	    		cache :false,
+	    	    data : {
+	    	    	"method" : "update",
+	    	    	"keyLabelName" : klName,
+	    	    	"beginTime" : klBeginTime,
+	    	    	"endTime" : klEndTime,
+	    	    	"keyLabelId" : keyLabelArray[selectId].keyLabelId
+	    		},
+	    		cache: false,
+	    		success:function(result){
+	    			keyLabelArray[selectId].keyLabelName = klName;
+	    			keyLabelArray[selectId].beginTime = klBeginTime
+	    			keyLabelArray[selectId].endTime = klEndTime
+	    	    	$('.keyLabelDiv').css('margin-left', (klBeginTime / getDuration() * 100) + '%');
+	    	    	$('.keyLabelDiv').css('width', ((klEndTime - klBeginTime) / getDuration() * 100) + '%');
+        	    	$('.keyLabelDiv').attr('data-original-title', klName);
+        	    	element[0].firstChild.data = klName;
+	        	},
+	    		error:function(){console.log('update kl failed');}
+	    	});
+    	}
+    	else
+    	{
+    		console.log("標籤名稱不可為空!!");
+    	}
+    }
     
-    // 點擊添加按鈕，新增至個人重點標籤，上傳資料庫      *要改為資料庫傳回正確值
-    $(document).on('click', '.akl', function(event) 
-    {
-    	//	method 1: 移動
-    	//$('#keyLabel1').append($(this).parent().parent().detach());
-    	//	method 2: 添加
-    	element = $(this).parent().parent();
-    	selectId = parseInt(this.getAttribute("id").split("-")[2]);
-    	
-    	//*
-//	    		keyLabelArray[maxIndex] = keyLabelArray[selectId];
-//	    		keyLabelArray[maxIndex].keyLabelId = ??;
-    	//*
-    	
-    	$.ajax({
-    		url : ajaxURL+'AnyCourse/KeyLabelServlet.do',
-    		method : 'POST',
-    		cache :false,
-    	    data : {
-    	    	"method" : "insert",
-    	    	"keyLabelName" : exKeyLabelArray[selectId].keyLabelName,
-    	    	"beginTime" : exKeyLabelArray[selectId].beginTime,
-    	    	"endTime" : exKeyLabelArray[selectId].endTime,
-    	    	"unitId" : exKeyLabelArray[selectId].unitId
-    		},
-    		dataType : 'json',
-    		cache: false,
-    		success:function(result){
-    			keyLabelArray[maxIndex] = result;
-        		addToSelfKeyLabel(maxIndex++);
-            	element.remove();
-        	},
-    		error:function(){console.log('failed');}
-    	});
-    });
-    
-
-    // 按下添加標籤按鈕，隱藏按鈕並顯示slider
-    $("#addKeyLabelBtn").click(function(){
-    	
-  	    // 設置slider的最大時間
-  	    $( "#slider-range" ).slider( "option", "max", getDuration());
-  	    $( "#slider-range" ).slider( "values", [ 0, getDuration() ] );
-  		
-  	    // 調整slider會跳至影片該處
-  	    $( "#slider-range" ).slider({
-  		    stop: function( event, ui ) {
-  			    seekTo(Math.floor(ui.value));
-  		    }
-  	    });
-    });
  //----------------------------------------------進度條----------------------------------------------// 
     
     // 點選progress, seek to 該位置

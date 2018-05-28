@@ -40,7 +40,7 @@ $(document).ready(function(){
 						$('#listArea').show();
 						$('#resultList').append(
 								'<li>'
-								+'<div class="bt  n-group" style="top: -5px;">'
+								+'<div class="btn-group" style="top: -5px;">'
 								+'<button type="button" class="btn btn-noColor dropdown-toggle"'
 								+'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
 								+'<span class="caret"></span>'

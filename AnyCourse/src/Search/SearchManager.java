@@ -19,6 +19,7 @@ public class SearchManager
 	private final String selectTeacherSQL = "select distinct teacher from courselist where teacher is not null";
 	private final String selectDepartmentSQL = "select distinct departmentName from courselist where departmentName is not null";
 	private final String selectPlanMaxSQL = "select MAX(oorder) from personalPlan where status = 1 and userId = ?";
+	private final String insertSearchRecordSQL = "insert into searchRecord (userId, searchWord, searchTime) value(?,?,null)";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -104,7 +105,7 @@ public class SearchManager
 		return query;
 	}
 	
-	public ArrayList<Search> getCourseListByKeyword(String keyword) {
+	public ArrayList<Search> getCourseListByKeyword(String keyword, String userId) {
 		String selectCourseKeywordSQL = selectCourseKeywordSQLStart + selectCourseKeywordSQLMiddle;
 		ArrayList<Search> outputList = new ArrayList<Search>(); 
 		try {
@@ -180,7 +181,20 @@ public class SearchManager
 		finally {
 			Close();
 		}
-		 return outputList;
+		if (userId != null)
+		{
+			try
+			{
+				pst = con.prepareStatement(insertSearchRecordSQL);
+				pst.setString(1, userId);
+				pst.setString(2, keyword);
+				pst.executeUpdate();
+			} catch(SQLException x){
+				System.out.println("SearchManager-getCourseListByKeyword-insertSearchRecord");
+				System.out.println("Exception insert"+x.toString());
+			}
+		}
+		return outputList;
 	}
 	
 	public ArrayList<String> getTeacher()
