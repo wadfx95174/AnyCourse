@@ -14,6 +14,7 @@ public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String searchQuery = request.getParameter("searchQuery");
+		String queryMethod = request.getParameter("queryMethod");
 		if (searchQuery != "")
 		{
 			SearchManager manager = new SearchManager();
@@ -22,7 +23,10 @@ public class SearchServlet extends HttpServlet {
 			response.setHeader("Cache-Control","max-age=0");
 			Gson gson = new Gson();
 			HttpSession session = request.getSession();
-			response.getWriter().print(gson.toJson(manager.getCourseListByKeyword(searchQuery, (String)session.getAttribute("userId"))));
+			if (queryMethod.equals("precise"))
+				response.getWriter().print(gson.toJson(manager.keywordSearch(searchQuery, (String)session.getAttribute("userId"), SearchManager.SearchMethod.DEFAULT)));
+			else if (queryMethod.equals("fuzzy"))
+				response.getWriter().print(gson.toJson(manager.keywordSearch(searchQuery, (String)session.getAttribute("userId"), SearchManager.SearchMethod.FUZZY_COURSE)));
 			manager.conClose();
 		}
 	}

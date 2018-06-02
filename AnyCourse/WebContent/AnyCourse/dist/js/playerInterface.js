@@ -585,7 +585,7 @@ $(document).ready(function(){
     		for(var i = 0;i < result.length; i++){
     			$('#recommendList').append(
         				'<li>'
-    					+'<a class="list-group-item" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].type+')">'
+    					+'<a class="list-group-item" href="PlayerInterface.html?type='+result[i].type+'&unitId='+ result[i].unitId+'">'
     					+'<div class="media">'
     					+'<div class="pull-left" style="padding-left: 0px;">'
     					+'<div class="embed-responsive embed-responsive-16by9 col-xs-12">'

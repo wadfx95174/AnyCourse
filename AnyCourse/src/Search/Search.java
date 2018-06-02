@@ -109,4 +109,16 @@ public class Search
 				+ ", teacher=" + teacher + ", departmentName=" + departmentName + ", creator=" + creator + ", share=" + share + ", likes=" + likes + ", units=" + units + "]";
 	}
 	/*", courseInfo=" + courseInfo + */
+	@Override
+	public boolean equals(Object object)
+	{
+		boolean same = false;
+		
+		if (object != null && object instanceof Search)
+		{
+			same = this.courselistId == ((Search) object).courselistId;
+		}
+		
+		return same;
+	}
 }
