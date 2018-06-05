@@ -12,9 +12,9 @@ public class SearchManager
 {
 	private final String selectCourseListSQL = "select * from courselist where listName like ?";
 	private final String selectUnitKeywordSQL = "select * from unit natural join unitKeyword where unitKeyword like ? ";
-	private final String selectCourseKeywordSQLStart = "select max(courselistId)courselistId, max(schoolName)schoolName, max(listName)listName, max(teacher)teacher, max(departmentName)departmentName, max(courseInfo)courseInfo, max(creator)creator, max(share)share, max(likes)likes from courselist natural join courseKeyword where ";
+	private final String selectCourseKeywordSQLStart = "select max(courselistId)courselistId, max(schoolName)schoolName, max(listName)listName, max(teacher)teacher, max(departmentName)departmentName, max(courseInfo)courseInfo, max(creator)creator, max(share)share, max(likes)likes ,max(tfidf)tfidf from courselist natural join courseKeyword where ";
 	private final String selectCourseKeywordSQLMiddle = "(courseKeyword like ? or listName like ? or teacher like ? or schoolName like ? or departmentName like ?) ";
-	private final String selectCourseKeywordSQLEnd = "group by listName ORDER BY `courselistId` ASC";
+	private final String selectCourseKeywordSQLEnd = "group by listName ORDER BY `tfidf` DESC";
 	private final String selectUnitByCourseIdSQL = "select * from unit natural join customListVideo where courselistId = ?";
 	private final String selectTeacherSQL = "select distinct teacher from courselist where teacher is not null";
 	private final String selectDepartmentSQL = "select distinct departmentName from courselist where departmentName is not null";
@@ -89,13 +89,23 @@ public class SearchManager
 		 return outputList;
 	}
 	
-	// 回傳關鍵字查詢結果 (推薦用)
+	/** 回傳關鍵字查詢結果 (推薦用)
+	 * 
+	 * @param keyword : (String) 關鍵字
+	 * @return 型態為 (Search) 的ArrayList
+	 */
 	public ArrayList<Search> keywordSearch(String keyword)
 	{
 		return keywordSearch(keyword, null, SearchMethod.ALL);
 	}
 
-	// 回傳關鍵字查詢結果 (ex. SearchManager.SearchMethod.ALL -> 回傳全部的結果)
+	/** 回傳關鍵字查詢結果 (ex. SearchManager.SearchMethod.ALL -> 回傳全部的結果)
+	 * 
+	 * @param keyword : (String) 關鍵字
+	 * @param userId : (String) 帳號
+	 * @param method : {PRECISE_COURSE, FUZZY_COURSE, UNIT, DEFAULT, ALL} 搜尋方法
+	 * @return 型態為 (Search) 的ArrayList
+	 */
 	public ArrayList<Search> keywordSearch(String keyword, String userId, SearchMethod method)
 	{
 		ArrayList<Search> rusultList = new ArrayList<Search>();
@@ -133,7 +143,12 @@ public class SearchManager
 		return rusultList;
 	}
 	
-	// 輸入字串回傳含有%的字串
+	/** 輸入字串回傳含有%的字串
+	 * 
+	 * @param keyword : (String) 關鍵字
+	 * @param type : {PRECISE, FUZZY} 精準/模糊搜尋
+	 * @return (String) e.g.微積分 -> PRECISE: %微積分% , FUZZY: %微%積%分%
+	 */
 	private String getQuery(String keyword, QueryType type)
 	{
 		String query = "%";
