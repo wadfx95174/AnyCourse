@@ -40,7 +40,7 @@ function checkLogin(htmlUrl, servletUrl)
 						+'		</li>'
 						+'	</ul></li>'
     			);
-    			$('#user-name').html(result.nickName);
+    			$('#user-name').html(result.nickName + '，您好！');
     			$('.sidebar-menu').append(
     					'<li class="header">功能列表</li>'
     					+'<li class="treeview">'
@@ -127,6 +127,7 @@ function checkLogin(htmlUrl, servletUrl)
 						+'</a>'
 						+'</li>'
     			);
+    			$('#user-name').html('訪客，您好！');
     			$('.sidebar-menu').append(
     					'<li class="header">功能列表</li>'
     					+'<li class="treeview">'
