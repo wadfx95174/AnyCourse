@@ -28,7 +28,7 @@ $(document).ready(function() {
 				//已觀看完
 				else if(result[i].status == 3)listType = '#doneList';
 					
-				$(listType).append('<li class="portlet" style="cursor:pointer;">'
+				$(listType).append('<li id ="videoId_'+videoId+'" class="portlet" style="cursor:pointer;">'
 						+'<span class="handle portlet-header">'
 						+'<i class="fa fa-ellipsis-h"></i>'
 						+'</span>'
@@ -46,7 +46,8 @@ $(document).ready(function() {
 						+'</ul>'
 						+'</div>'
 						+'<span class="pull-right">' 
-						+'<i class="fa fa-times" style="cursor: pointer;"></i>'
+						+'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal"'
+						+'onclick="getId('+videoId+')" style="cursor: pointer;"></i>'
 						+'</span>'
 						+'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
 						+'<div class="info-card">'
@@ -97,6 +98,27 @@ $(document).ready(function() {
 		},
 		error:function(){}
 	});
+	
+	
+	//刪除影片
+	$("#deleteVideoButton").click(function(e){
+		//不等於null代表使用者就是該清單的creator
+		$.ajax({
+			url : ajaxURL+'AnyCourse/CoursePlanServlet.do',
+			method : 'POST',
+			cache :false,
+		    data : {
+		    	action : 'deleteVideo',//代表要delete
+		    	unitId : listArray[checkId-1][0]
+		    },
+			success:function(result){
+				$("#videoId_"+checkId).remove();
+	    	},
+			error:function(){console.log('Delete coursePlan video failed');}
+		});
+	});
+	
+	
 	
 	//取得該使用者的所有清單(用來放在下拉式選單，讓使用者選擇要加入哪個清單)
 	$.ajax({

@@ -125,7 +125,7 @@ $(document).ready(function() {
 										+'</button>'
 										+'<ul class="dropdown-menu">'
 										+'<li>'
-										+'<a href="#" class=" waves-effect waves-block" data-toggle="modal" data-target="#addToCoursePlan" onclick="getUnitId('+unitVideoId+')">'
+										+'<a class=" waves-effect waves-block" data-toggle="modal" data-target="#addToCoursePlan" onclick="getUnitId('+unitVideoId+')">'
 										+'<i class="ion ion-clipboard"></i>新增至課程計畫'
 										+'</a></li></ul></div>'
 										+'<span class="pull-right">'
@@ -299,8 +299,6 @@ $(document).ready(function() {
 	});
 	//刪除unitVideo
 	$("#deleteListButton2").click(function(e){
-		console.log(unitArray[checkUnitId-1][1]);
-		console.log(unitArray[checkUnitId-1][2]);
 		//不等於null代表使用者就是該清單的creator
 		if(unitArray[checkUnitId-1][1].match(unitArray[checkUnitId-1][2]) != null){
 			$.ajax({

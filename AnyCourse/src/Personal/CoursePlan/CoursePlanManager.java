@@ -109,6 +109,7 @@ public class CoursePlanManager {
 				coursePlan.setUnitId(result.getInt("unitId"));
 				coursePlan.setStatus(result.getInt("status"));
 				coursePlan.setOorder(result.getInt("oorder"));
+				coursePlan.setLastTime(result.getInt("lastTime"));
 				coursePlans.add(coursePlan);
 			}
 		}
@@ -125,12 +126,15 @@ public class CoursePlanManager {
 	public void updateCoursePlanList(CoursePlan coursePlan) {
 		try {
 			//1:想要觀看。2:正在觀看。3:已觀看完
-			pst = con.prepareStatement("update personalPlan set status = ? , oorder = ? where userId = ? and unitId = ? ");
-			
-			pst.setString(3,coursePlan.getUserId());
-			pst.setInt(4,coursePlan.getUnitId());
+			pst = con.prepareStatement("update personalPlan set status = ?,oorder = ?,lastTime = ? "
+					+ "where userId = ? and unitId = ? ");
+			if(coursePlan.getStatus() == 1)pst.setInt(3,0);
+			else pst.setInt(3, coursePlan.getLastTime());
 			pst.setInt(1,coursePlan.getStatus());
 			pst.setInt(2,coursePlan.getOorder());
+			pst.setString(4,coursePlan.getUserId());
+			pst.setInt(5,coursePlan.getUnitId());
+			
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
@@ -189,6 +193,27 @@ public class CoursePlanManager {
 			Close();
 		}
 	}
+	
+	//刪除課程計畫中的影片
+	public void deleteVideo(String userId,int unitId) {
+		try {
+			//1:想要觀看。2:正在觀看。3:已觀看完
+			pst = con.prepareStatement("delete from personalPlan where userId = ? and unitId = ?");
+			pst.setString(1,userId);
+			pst.setInt(2,unitId);
+			
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("CoursePlan-updateCoursePlanList");
+			System.out.println("Exception update"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
+	
 	
 	public void Close() {
 		try {
