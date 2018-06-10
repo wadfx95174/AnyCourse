@@ -1,6 +1,7 @@
 //var ajaxURL="http://140.121.197.130:8400/";
 var ajaxURL="http://localhost:8080/";
 var events;
+var fullEvents;
 
 document.write('<script async defer src="https://apis.google.com/js/api.js"'
       +'onload="this.onload=function(){};handleClientLoad()"'
@@ -289,7 +290,8 @@ $(function () {
 		},
 		success: function(response){
 			console.log(response);
-			initCalendar(response);
+			fullEvents = response;
+			initCalendar(fullEvents);
 		} // end succuss
 	})
 	
@@ -327,6 +329,7 @@ $(function () {
       //Remove event from text input
       $("#new-event").val("");
     })
+    
 })
 
 function getCoursePlanEvent()
@@ -364,6 +367,7 @@ function getCoursePlanEvent()
 	  		    	console.log($(this).data('eventObject'));		//********************************
 	  		    	$('#selectedEvent').text($(this).text());
 	  		    	$('#selectedEvent').data($(this).data());
+	  		        $('#checkSelectedListBtn').removeAttr('disabled');
 	  		    });
   			});
   		}
@@ -648,4 +652,41 @@ function initCalendar(eventSrc)
   	        $('#calendar').fullCalendar('refetchEvents');
         } // end eventDrop
     }); // end fullcalendar
+}
+
+// 設定modal裡面的值
+function setSelectedList()
+{
+	var title = $('#selectedEvent').text();
+	$('#modalTitle').text(title);
+    $('#SelectList').html('');
+    for (var i = 0; i < fullEvents.length; i++)
+	{
+    	if (fullEvents[i].title == title)
+    	    $('#SelectList').append(
+    	        	'<li class="list-group-item">'+
+    	    		'<a id="item-0" href="#" data-dismiss="modal" onclick="jumpToDate(\''+fullEvents[i].start.split(' ')[0]+'\')">'+
+    	    		'<div class="row">'+
+    	    		//'2018 年 3 月 4 日 下午 8 點 30 分'+
+    	    		toChineseTimeFormat(fullEvents[i].start, fullEvents[i].allDay) +
+    	    		'</div>'+
+    	    		'</a>'+
+    	    		'</li>'
+    	    );
+	}
+}
+
+//  2018-05-15 20:30:00.0 -> 2018 年 5 月 15 日 下午 8 點 30 分
+function toChineseTimeFormat(time, allday)
+{
+	var array = time.split(/-|:| |\./);
+	var format = array[0] + ' 年 ' + ~~array[1] + ' 月 ' + ~~array[2] + ' 日 ';		// ~~可去掉開頭0
+	format += allday == true ? ' 整天' : (array[3] >= 12 ? '下午 ' + ~~(array[3]-12) : '上午 ' + ~~(array[3])) + ' 點' + (array[4] > 0 ? ' ' + ~~array[4] + ' 分' : ' 整');
+	return format;
+}
+
+// fullcalendar 跳到該日期
+function jumpToDate(date)
+{
+	$('#calendar').fullCalendar('gotoDate', date );
 }
