@@ -171,11 +171,10 @@
 	<!--addToCoursePlan-->
 	<div class="modal fade" id="addToCoursePlan" tabindex="-1" role="dialog"
 		aria-labelledby=addToCoursePlan aria-hidden="true">
-		
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-			    	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			    	<button id="addToCoursePlanButtonClose" type="button" class="close" data-dismiss="modal" aria-label="Close">
 			    	<span aria-hidden="true">×</span>
 			    	</button>
 			    	<b class="modal-title" style="font-size:24px;">提示</b>
@@ -191,28 +190,71 @@
 		</div>
 	</div>
 	
-	<!--addToCoursePlan_List-->
-	<!--要將整個清淡的單元影片都加進coursePlan-->
-	<div class="modal fade" id="addToCoursePlan_List" tabindex="-1" role="dialog"
-		aria-labelledby=addToCoursePlan_List aria-hidden="true">
-		
+	<!--addToCoursePlanList-->
+	<!--要將整個清單的影片都加進coursePlan-->
+	<div class="modal fade" id="addToCoursePlanList" tabindex="-1" role="dialog"
+		aria-labelledby=addToCoursePlanList aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+			    	<button id="addToCoursePlanButtonListClose" type="button" class="close" data-dismiss="modal" aria-label="Close">
+			    	<span aria-hidden="true">×</span>
+			    	</button>
+			    	<b class="modal-title" style="font-size:24px;">提示</b>
+			    </div>
+				<div class="modal-body">
+					<b>已將完整清單新增至您的課程計畫</b>
+				</div>
+				<div class="modal-footer">
+					<button id="addToCoursePlanButtonList" type="button"
+						class="btn btn-primary" data-dismiss="modal">關閉</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--addToVideoList-->
+	<div class="modal fade" id="addToVideoList" tabindex="-1" role="dialog"
+		aria-labelledby=addToVideoList aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 			    	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			    	<span aria-hidden="true">×</span>
 			    	</button>
-			    	<b class="modal-title" style="font-size:24px;">提示</b>
+			    	<b class="modal-title" style="font-size:24px;">請選擇要加入的清單</b>
 			    </div>
 				<div class="modal-body">
-					<b>已新增至課程計畫</b>
+					<select id="addToVideoListModalBody" name="addToVideoListValue"></select>
 				</div>
 				<div class="modal-footer">
-					<button id="addToCoursePlanButton_List" type="button"
-						class="btn btn-primary" data-dismiss="modal">關閉</button>
+					<input id="addToVideoListButton" type="button"
+						class="btn btn-primary" data-dismiss="modal" value="確定">
 				</div>
 			</div>
 		</div>
 	</div>
+	
+	<!--addToVideoListList-->
+	<!--要將整個清單加入課程清單-->
+	<div class="modal fade" id="addToVideoListList" tabindex="-1" role="dialog"
+		aria-labelledby=addToVideoListList aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+			    	<button id="addToVideoListButtonListClose" type="button" class="close" data-dismiss="modal" aria-label="Close">
+			    	<span aria-hidden="true">×</span>
+			    	</button>
+			    	<b class="modal-title" style="font-size:24px;">提示</b>
+			    </div>
+				<div class="modal-body">已將完整清單新增至您的課程清單</div>
+				<div class="modal-footer">
+					<button id="addToVideoListButtonList" type="button"
+						class="btn btn-primary" data-dismiss="modal">確定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 </body>
 </html>

@@ -113,7 +113,7 @@ public class PlayerInterfaceManager
 			result = stat.executeQuery("select * from watchRecord where userId = '"+userId
 					+"' and unitId = "+unitId);
 			boolean check = false;//檢查watchRecord裡面有沒有這筆單元影片的資料，false為沒有
-			while(result.next()) {check = true;}
+			if(result.next())check = true;
 			//如果沒有，就塞資料
 			if(check == false) {
 				pst = con.prepareStatement("insert ignore into watchRecord (userId,unitId,watchTime) value(?,?,null)");
@@ -128,31 +128,47 @@ public class PlayerInterfaceManager
 			}
 			pst.executeUpdate();
 			
-			//檢查有沒有存在在使用者的課程計畫中
-			stat = con.createStatement();
-			result = stat.executeQuery("select unitId from personalPlan where userId = '"+userId
-					+"' and unitId = "+unitId);
+			////////////////////////////////////////////////////////////////////////////////////////////
 			check = false;//檢查有沒有在課程計畫的table中找到這個unitId
-			while(result.next()) {check = true;}
+			int maxOrder = 0,statusInit = 1,status = 1;
+			//檢查有沒有存在在使用者的課程計畫中
+			pst = con.prepareStatement("select status from personalPlan where userId = ? and unitId = ?");
+			pst.setString(1, userId);
+			pst.setInt(2, unitId);
+			result = pst.executeQuery();
+			if(result.next()) {
+				check = true;
+				statusInit = result.getInt("status");
+			}
+			
+			
 			//如果有，就更新影片結束時間，true是有，沒有就不做事
 			if(check == true) { 
-				
-				//判斷結束了沒，currentTime+5秒代表5秒內會結束的都改變status
-				if(currentTime+5 > duration) {
-					pst = con.prepareStatement("update personalPlan set lastTime = ?,status = ? where userId = ? and unitId = ? ");
-					pst.setInt(1,currentTime);
-					pst.setInt(2,3);
-					pst.setString(3,userId);
-					pst.setInt(4, unitId);
-				}
+				if(currentTime+5 > duration)status = 3;
+				//改變status為正在觀看
+				else status = 2;
+				//觀看該影片後status也沒有改變
+				if(statusInit == status)maxOrder = statusInit;
 				else {
-					pst = con.prepareStatement("update personalPlan set lastTime = ?,status = ? where userId = ? and unitId = ? ");
-					pst.setInt(1,currentTime);
-					pst.setInt(2,2);
-					pst.setString(3,userId);
-					pst.setInt(4, unitId);
-					
+					//找order最大值
+					pst = con.prepareStatement("select MAX(oorder) from personalPlan where status = ?");
+					pst.setInt(1, status);
+					result = pst.executeQuery();
+					if(result.next()) {
+						maxOrder = result.getInt("MAX(oorder)") + 1;
+					}
 				}
+				
+				//更新該影片所屬的狀態列表
+				pst = con.prepareStatement("update personalPlan set lastTime = ?,status = ?,oorder = ? "
+						+ "where userId = ? and unitId = ?");
+				pst.setInt(1,currentTime);
+				//判斷結束了沒，currentTime+5秒代表5秒內會結束的都改變status為已觀看完
+				pst.setInt(2,status);
+				pst.setInt(3,maxOrder);
+				pst.setString(4,userId);
+				pst.setInt(5, unitId);
+				
 				pst.executeUpdate();
 			}
 			

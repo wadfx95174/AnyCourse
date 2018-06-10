@@ -68,7 +68,7 @@ $(document).ready(function(){
 							+'</div><div class="card-footer"><div class="btn-group show-on-hover dropup">'
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">新增至' 
 							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
-							+'<li><a data-toggle="modal" data-target="#addToCourseList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
+							+'<li><a data-toggle="modal" data-target="#addToVideoList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
 							+'<li><a data-toggle="modal" data-target="#addToCoursePlan" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
 							+'</ul></div></div></div></div>'
 						);
@@ -114,7 +114,7 @@ $(document).ready(function(){
 							+'</div></div><div class="card-footer"><div class="btn-group show-on-hover dropup">'
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">新增至' 
 							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
-							+'<li><a data-toggle="modal" data-target="#addToCourseListList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
+							+'<li><a data-toggle="modal" data-target="#addToVideoListList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
 							+'<li><a data-toggle="modal" data-target="#addToCoursePlanList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
 							+'</ul></div></div></div></div>'
 						);
@@ -124,7 +124,6 @@ $(document).ready(function(){
 						homePageList[homePageListId][1] = result[i][j].courselistId;
 						homePageListId++;
 					}
-					
 				}
 				//課程清單
 				else if(result[i][0].type == 3){
@@ -161,7 +160,6 @@ $(document).ready(function(){
 							+'</div></div><div class="card-footer"><div class="btn-group show-on-hover dropup">'
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">新增至' 
 							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
-							+'<li><a data-toggle="modal" data-target="#addToCourseListList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
 							+'<li><a data-toggle="modal" data-target="#addToCoursePlanList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
 							+'</ul></div></div></div></div>'
 						);
@@ -222,8 +220,7 @@ $(document).ready(function(){
 							+'</div></div><div class="card-footer"><div class="btn-group show-on-hover dropup">'
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">新增至' 
 							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
-							+'<li><a data-toggle="modal" data-target="#addToCourseList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
-							+'<li><a data-toggle="modal" data-target="#addToCoursePlan" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+							+'<li><a data-toggle="modal" data-target="#addToVideoList" onclick="getId('+homePageListId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>新增至課程清單</a></li>'
 							+'</ul></div></div></div></div>'
 						);
 						$('.snip1492').tooltip({title:result[i][j].listName , scontainer: "body", placement:"bottom", animation: true}); 
@@ -231,9 +228,8 @@ $(document).ready(function(){
 						homePageList[homePageListId][0] = result[i][j].unitId;
 						homePageList[homePageListId][1] = result[i][j].courselistId;
 						homePageListId++;
+					}
 				}
-			}
-				
 //				//台大
 //				else if(result[i][0].type == 6){
 //					
@@ -296,7 +292,7 @@ $(document).ready(function(){
 			}
 			//因為放在外面的話跟初始化首頁的ajax(就是這個外面的ajax)會同時跑，這個會跑比較快，所以抓不到陣列
 			//影片新增至課程計畫
-			$('#addToCoursePlanButton').click(function(){
+			$('#addToCoursePlanButton,#addToCoursePlanButtonClose').click(function(){
 				$.ajax({
 					url : ajaxURL+'AnyCourse/HomePageServlet.do',
 					method : 'POST',
@@ -311,8 +307,7 @@ $(document).ready(function(){
 				})
 			});
 			//清單整個新增至課程計畫
-			$('#addToCoursePlanButtonList').click(function(e){
-				e.preventDefault();
+			$('#addToCoursePlanButtonList,#addToCoursePlanButtonListClose').click(function(){
 				$.ajax({
 					url : ajaxURL+'AnyCourse/HomePageServlet.do',
 					method : 'POST',
@@ -324,12 +319,69 @@ $(document).ready(function(){
 					error:function(e){
 						console.log("addToCoursePlanList Error!");
 					}
-				})
+				});
 			});
-  	},
-		error:function(){}
+			//將影片新增至指定清單
+			$('#addToVideoListButton').click(function(){
+				$.ajax({
+					url : ajaxURL+'AnyCourse/HomePageServlet.do',
+					method : 'POST',
+					cache: false,
+					data:{
+						action:'addToVideoList',
+						courselistId:$('#addToVideoListModalBody').val(),
+						unitId:homePageList[checkId][0]
+					},
+					success:function(result){
+						for(var i = 0;i < result.length;i++){
+							$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
+						}
+					},
+					error:function(){
+						console.log("add video to courselist error");
+					}
+				});
+			});
+			//清單整個新增至課程清單
+			$('#addToVideoListButtonList,#addToVideoListButtonListClose').click(function(){
+				$.ajax({
+					url : ajaxURL+'AnyCourse/HomePageServlet.do',
+					method : 'POST',
+					cache: false,
+					data:{
+						action:'addToVideoListList',
+						courselistId:homePageList[checkId][1]
+					},
+					error:function(e){
+						console.log("add list to courselist error");
+					}
+				});
+			});
+		},
+		error:function(){
+			console.log("get videoList and video error");
+		}
 	});
- }());
+	//取得該使用者的所有清單(用來放在下拉式選單，讓使用者選擇要加入哪個清單)
+	$.ajax({
+		url : ajaxURL+'AnyCourse/HomePageServlet.do',
+		method : 'POST',
+		data:{
+			action:'getVideoListName'
+		},
+		cache :false,
+		success:function(result){
+			for(var i = 0;i < result.length;i++){
+				$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
+			}
+		},
+		error:function(){
+			console.log("append videoList to modal error");
+		}
+	});
+	
+ });
+
 //跳轉至播放介面
 function jumpToPlayerInterface(unitId,type){
     url = "pages/PlayerInterface.html?unitId="+unitId+"&type="+type;//此處拼接內容

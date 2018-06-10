@@ -13,7 +13,16 @@ public class CoursePlan {
 	private int likes;
 	private String videoImgSrc;
 	private int videoType;
+	private int courselistId;
 	
+	public int getCourselistId() {
+		return courselistId;
+	}
+
+	public void setCourselistId(int courselistId) {
+		this.courselistId = courselistId;
+	}
+
 	public CoursePlan() {}
 
 	public String getUserId() {
