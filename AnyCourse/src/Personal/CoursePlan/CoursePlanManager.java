@@ -52,18 +52,8 @@ public class CoursePlanManager {
 				coursePlan.setCourselistId(result.getInt("courselist.courselistId"));
 				coursePlan.setListName(result.getString("courselist.listName"));
 				coursePlan.setUnitName(result.getString("unit.unitName"));
-				if(result.getString("courselist.schoolName") == null) {
-					coursePlan.setSchoolName("未知學校");
-				}
-				else {
-					coursePlan.setSchoolName(result.getString("courselist.schoolName"));
-				}
-				if(result.getString("courselist.teacher") == null) {
-					coursePlan.setTeacher("未知");
-				}
-				else {
-					coursePlan.setTeacher(result.getString("courselist.teacher"));
-				}
+				coursePlan.setSchoolName(result.getString("unit.schoolName"));
+				coursePlan.setTeacher(result.getString("unit.teacher"));
 				coursePlan.setLastTime(result.getInt("personalPlan.lastTime"));
 				coursePlan.setLikes(result.getInt("unit.likes"));
 				coursePlan.setUnitId(result.getInt("unit.unitId"));

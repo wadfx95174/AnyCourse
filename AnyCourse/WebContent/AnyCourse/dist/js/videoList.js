@@ -44,7 +44,7 @@ $(document).ready(function() {
 			action:'selectList'//代表要selectList
 		},
 		success:function(result){
-			console.log(result);
+//			console.log(result);
 			videoListArray = new Array(result.length);
 	  		for(var i = 0 ;i < result.length;i++){
 	  			$('#videoListUL').append('<li id = "videoListId_'+videoListId+'" onclick="getListId('+videoListId+')">'
@@ -126,8 +126,17 @@ $(document).ready(function() {
 										+'<ul class="dropdown-menu">'
 										+'<li>'
 										+'<a class=" waves-effect waves-block" data-toggle="modal" data-target="#addToCoursePlan" onclick="getUnitId('+unitVideoId+')">'
-										+'<i class="ion ion-clipboard"></i>新增至課程計畫'
-										+'</a></li></ul></div>'
+										+'<i class="ion ion-clipboard"></i>新增至課程計畫</a>'
+										+'</li>'
+										+'<li>'
+										+'<a class=" waves-effect waves-block" data-toggle="modal" data-target="" onclick="getUnitId('+unitVideoId+')">'
+										+'<i class="ion ion-clipboard"></i>分享至所有人</a>'
+										+'</li>'
+										+'<li>'
+										+'<a class=" waves-effect waves-block" data-toggle="modal" data-target="" onclick="getUnitId('+unitVideoId+')">'
+										+'<i class="ion ion-clipboard"></i>分享至群組</a>'
+										+'</li>'
+										+'</ul></div>'
 										+'<span class="pull-right">'
 										+'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal2"'
 										+'onclick="getUnitId('+unitVideoId+')" style="cursor: pointer;"></i>'
@@ -152,21 +161,6 @@ $(document).ready(function() {
 								unitArray[k][1] = resultUnit[k].userId;
 								unitArray[k][2] = resultUnit[k].creator;
 							}
-							//影片新增至課程計畫
-							$('#addToCoursePlanButton').click(function(){
-								$.ajax({
-									url : ajaxURL+'AnyCourse/HomePageServlet.do',
-									method : 'POST',
-									cache: false,
-									data:{
-										action:'addToCoursePlan',
-										unitId:unitArray[checkUnitId-1][0]
-									},
-									error:function(){
-										console.log("addToCoursePlan Error!");
-									}
-								})
-							});
 					    },
 						error:function(){console.log('Display Video failed');}
 					});
@@ -320,11 +314,27 @@ $(document).ready(function() {
 			$("#unDelete").dialog( "open" );
 		}
 	});
-  
-	//清單整個新增至課程計畫
-	$('#addToCoursePlanButtonList').click(function(e){
+	
+	//影片新增至課程計畫
+	$('#addToCoursePlanButton,#addToCoursePlanButtonClose').click(function(){
 		$.ajax({
 			url : ajaxURL+'AnyCourse/HomePageServlet.do',
+			method : 'POST',
+			cache: false,
+			data:{
+				action:'addToCoursePlan',
+				unitId:unitArray[checkUnitId-1][0]
+			},
+			error:function(){
+				console.log("addToCoursePlan Error!");
+			}
+		})
+	});
+  
+	//清單整個新增至課程計畫
+	$('#addToCoursePlanButtonList,#addToCoursePlanButtonListClose').click(function(e){
+		$.ajax({
+			url : ajaxURL+'AnyCourse/VideoListServlet.do',
 			method : 'POST',
 			cache: false,
 			data:{

@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import HomePage.HomePage;
+
 
 public class VideoListManager {
 
@@ -42,18 +44,20 @@ public class VideoListManager {
 	public ArrayList<VideoList> selectVideoListTable(String userId) {
 		videoLists = new ArrayList<VideoList>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery("select * from courselist,list where courselist.courselistId "
-					+ "= list.courselistId and list.userId = '"+userId+"' order by list.oorder ASC");
+			pst = con.prepareStatement("select * from courselist natural join list "
+					+ "natural join unit natural join customListVideo where "
+					+ "list.userId = ? order by list.oorder ASC");
+			pst.setString(1, userId);
+			result = pst.executeQuery();
 			while(result.next()) {
 				//選取該使用者的課程清單
 				videoList = new VideoList();
-				videoList.setUserId(result.getString("list.userId"));
-				videoList.setCourselistId(result.getInt("list.courselistId"));
-				videoList.setOorder(result.getInt("list.oorder"));
-				videoList.setListName(result.getString("courselist.listName")); 
-				videoList.setCreator(result.getString("courselist.creator"));
-				videoList.setSchoolName(result.getString("courselist.schoolName"));
+				videoList.setUserId(result.getString("userId"));
+				videoList.setCourselistId(result.getInt("courselistId"));
+				videoList.setOorder(result.getInt("oorder"));
+				videoList.setListName(result.getString("listName")); 
+				videoList.setCreator(result.getString("creator"));
+				videoList.setSchoolName(result.getString("schoolName"));
 				videoLists.add(videoList);
 			}
 		}
@@ -85,9 +89,9 @@ public class VideoListManager {
 				unitVideo.setUserId(result.getString("list.userId"));
 				unitVideo.setUnitName(result.getString("unit.unitName"));
 				unitVideo.setCourseInfo(result.getString("courselist.courseInfo"));
-				unitVideo.setSchoolName(result.getString("courselist.schoolName"));
+				unitVideo.setSchoolName(result.getString("unit.schoolName"));
 				unitVideo.setCreator(result.getString("courselist.creator"));
-				unitVideo.setTeacher(result.getString("courselist.teacher"));
+				unitVideo.setTeacher(result.getString("unit.teacher"));
 				if(result.getString("unit.videoImgSrc") == "") {
 					unitVideo.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
@@ -234,6 +238,46 @@ public class VideoListManager {
 		catch(SQLException x){
 			System.out.println("VideoList-updateCourseListTable");
 			System.out.println("Exception update"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
+	//將整個清單的影片加入至課程計畫
+	public void addToCoursePlanList(String userId,int courselistId) {
+		unitVideos = new ArrayList<UnitVideo>();
+		int maxOrder = 0;
+		try {
+			pst = con.prepareStatement("select Max(oorder) from personalPlan where status = 1 and "
+					+ "userId = ?");
+			pst.setString(1, userId);
+			result = pst.executeQuery();
+			if(result.next())maxOrder = result.getInt("MAX(oorder)");
+			pst = con.prepareStatement("select unitId from customListVideo where courselistId = ?");
+			pst.setInt(1, courselistId);
+			result = pst.executeQuery();
+			
+			while(result.next()) {
+				unitVideo = new UnitVideo();
+				unitVideo.setUnitId(result.getInt("unitId"));
+				unitVideos.add(unitVideo);
+			}
+			System.out.println(unitVideos.size());
+			pst = con.prepareStatement("insert ignore into personalPlan (userId,unitId,lastTime,status,oorder) value(?,?,0,1,?)");
+			for(int i = 0;i < unitVideos.size();i++) {
+				
+				pst.setString(1, userId);
+				pst.setInt(2, unitVideos.get(i).getUnitId());
+				pst.setInt(3, ++maxOrder);
+				//先放到batch，等迴圈跑完再一次新增
+				pst.addBatch();
+			}
+			pst.executeBatch();
+		}
+		catch(SQLException x){
+			System.out.println("HomePage-addToCoursePlanList");
+			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();

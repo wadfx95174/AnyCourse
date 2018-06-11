@@ -18,6 +18,7 @@ $(document).ready(function() {
 		method:'GET',
 		cache :false,
 		success:function(result){
+			console.log(result)
 			var listType;
 			listArray = new Array(result.length);
 			for(var i = 0;i < result.length; i++){

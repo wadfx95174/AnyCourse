@@ -70,6 +70,10 @@ public class VideoListServlet extends HttpServlet{
 			videoListDatebaseManager.deleteUnitVideo(Integer.parseInt(request.getParameter("courselistId"))
 					,Integer.parseInt(request.getParameter("unitId")));
 		}
+		else if(request.getParameter("action").equals("addToCoursePlanList")) {
+			videoListDatebaseManager.addToCoursePlanList(userId
+					,Integer.parseInt(request.getParameter("courselistId")));
+		}
 		//關閉connection
 		videoListDatebaseManager.conClose();
 	}
