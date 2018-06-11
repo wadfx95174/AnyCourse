@@ -57,11 +57,13 @@ $(document).ready(function() {
 	                    +'<div style="width:100%;" class="text" id="videoListText_'+videoListId+'">'+result[i].listName+'</div>'
 	                    +'</a>'
 	                    +'</div>'
-	                    +'<div class="btn-group col-xs-1">'
+	                    +'<div class="btn-group col-xs-1 col-md-1">'
 						+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' 
 						+'<span class="caret caret-up"></span></button>'
 						+'<ul class="dropdown-menu dropdown-menu-right" role="menu">'
 						+'<li><a data-toggle="modal" data-target="#addToCoursePlanList" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+						+'<li><a data-toggle="modal" data-target="#shareVideoList" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-share-square-o"></i>分享</a></li>'
+						+'<li><a data-toggle="modal" data-target="" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-share"></i>分享至群組</a></li>'
 						+'<li><a data-toggle="modal" data-target="#editModal" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
 						+'<li><a data-toggle="modal" data-target="#deleteModal1" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
 						+'</ul></div></div></li>');
@@ -128,14 +130,6 @@ $(document).ready(function() {
 										+'<a class=" waves-effect waves-block" data-toggle="modal" data-target="#addToCoursePlan" onclick="getUnitId('+unitVideoId+')">'
 										+'<i class="ion ion-clipboard"></i>新增至課程計畫</a>'
 										+'</li>'
-										+'<li>'
-										+'<a class=" waves-effect waves-block" data-toggle="modal" data-target="" onclick="getUnitId('+unitVideoId+')">'
-										+'<i class="ion ion-clipboard"></i>分享至所有人</a>'
-										+'</li>'
-										+'<li>'
-										+'<a class=" waves-effect waves-block" data-toggle="modal" data-target="" onclick="getUnitId('+unitVideoId+')">'
-										+'<i class="ion ion-clipboard"></i>分享至群組</a>'
-										+'</li>'
 										+'</ul></div>'
 										+'<span class="pull-right">'
 										+'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal2"'
@@ -198,14 +192,18 @@ $(document).ready(function() {
 		                    +'<div class="handle ui-sortable-handle col-xs-1 col-md-1">'
 		                    +'<i class="fa fa-ellipsis-v"></i>'
 		                    +'</div>'
+		                    +'<div class="col-xs-7">'
 		                    +'<a href="#unitSection" style="color:black;">'
 		                    +'<div class="text col-xs-8 col-md-8" id="videoListText_'+videoListId+'">'+$("#named").val()+'</div>'
 		                    +'</a>'
+		                    +'</div>'
 		                    +'<div class="btn-group col-xs-1 col-md-1">'
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' 
 							+'<span class="caret caret-up"></span></button>'
 							+'<ul class="dropdown-menu dropdown-menu-right" role="menu">'
 							+'<li><a data-toggle="modal" data-target="#addToCoursePlanList" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
+							+'<li><a data-toggle="modal" data-target="#shareVideoList" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-share-square-o"></i>分享</a></li>'
+							+'<li><a data-toggle="modal" data-target="" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-share"></i>分享至群組</a></li>'
 							+'<li><a data-toggle="modal" data-target="#editModal" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
 							+'<li><a data-toggle="modal" data-target="#deleteModal1" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
 							+'</ul></div></div></li>');
@@ -334,9 +332,9 @@ $(document).ready(function() {
 	//清單整個新增至課程計畫
 	$('#addToCoursePlanButtonList,#addToCoursePlanButtonListClose').click(function(e){
 		$.ajax({
-			url : ajaxURL+'AnyCourse/VideoListServlet.do',
-			method : 'POST',
-			cache: false,
+			url:ajaxURL+'AnyCourse/VideoListServlet.do',
+			method:'POST',
+			cache:false,
 			data:{
 				action:'addToCoursePlanList',
 				courselistId:videoListArray[checkListId-1][0]
@@ -344,7 +342,23 @@ $(document).ready(function() {
 			error:function(e){
 				console.log("addToCoursePlanList Error!");
 			}
-		})
+		});
+	});
+	
+	//分享完整清單內容
+	$('#shareVideoListButton,#shareVideoListButtonClose').click(function(){
+		$.ajax({
+			url:ajaxURL+'AnyCourse/VideoListServlet.do',
+			method:'POST',
+			cache:false,
+			data:{
+				action:'shareVideoList',
+				courselistId:videoListArray[checkListId-1][0] 
+			},
+			error:function(e){
+				console.log("shareVideoList Error!")
+			}
+		});
 	});
 	
 	$("#unNewEdit,#unAdd,#canNotEdit,#unDelete").dialog({

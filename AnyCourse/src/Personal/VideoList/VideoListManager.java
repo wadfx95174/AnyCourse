@@ -44,20 +44,19 @@ public class VideoListManager {
 	public ArrayList<VideoList> selectVideoListTable(String userId) {
 		videoLists = new ArrayList<VideoList>();
 		try {
-			pst = con.prepareStatement("select * from courselist natural join list "
-					+ "natural join unit natural join customListVideo where "
-					+ "list.userId = ? order by list.oorder ASC");
+			pst = con.prepareStatement("select * from courselist,list where list.courselistId = "
+					+ "courselist.courselistId and list.userId = ? order by list.oorder ASC");
 			pst.setString(1, userId);
 			result = pst.executeQuery();
 			while(result.next()) {
 				//選取該使用者的課程清單
 				videoList = new VideoList();
-				videoList.setUserId(result.getString("userId"));
-				videoList.setCourselistId(result.getInt("courselistId"));
-				videoList.setOorder(result.getInt("oorder"));
-				videoList.setListName(result.getString("listName")); 
-				videoList.setCreator(result.getString("creator"));
-				videoList.setSchoolName(result.getString("schoolName"));
+				videoList.setUserId(userId);
+				videoList.setCourselistId(result.getInt("list.courselistId"));
+				videoList.setOorder(result.getInt("list.oorder"));
+				videoList.setListName(result.getString("courselist.listName")); 
+				videoList.setCreator(result.getString("courselist.creator"));
+				videoList.setSchoolName(result.getString("courselist.schoolName"));
 				videoLists.add(videoList);
 			}
 		}
@@ -129,11 +128,9 @@ public class VideoListManager {
 		try {
 			//先存入courselist這個table
 			pst = con.prepareStatement("insert into courselist (courselistId,listName"
-					+ ",creator,share,likes) value(null,?,?,?,?)");
+					+ ",creator,share,likes) value(null,?,?,0,0)");
 			pst.setString(1,listName);
 			pst.setString(2,userId);
-			pst.setInt(3,0);
-			pst.setInt(4,0);
 			pst.executeUpdate();
 			
 			//從courselist中抓自動生成的courselistId
@@ -263,7 +260,6 @@ public class VideoListManager {
 				unitVideo.setUnitId(result.getInt("unitId"));
 				unitVideos.add(unitVideo);
 			}
-			System.out.println(unitVideos.size());
 			pst = con.prepareStatement("insert ignore into personalPlan (userId,unitId,lastTime,status,oorder) value(?,?,0,1,?)");
 			for(int i = 0;i < unitVideos.size();i++) {
 				
@@ -283,6 +279,25 @@ public class VideoListManager {
 			Close();
 		}
 	}
+	
+	//分享完整清單的影片給所有人
+	public void shareVideoList(String userId,int courselistId) {
+		try {
+			pst = con.prepareStatement("update courselist set share = ? where courselistId = ? and userId = ? ");
+			pst.setInt(1, 1);
+			pst.setInt(2, courselistId);
+			pst.setString(3, userId);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("HomePage-shareVideoList");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
 	public void Close() {
 		try {
 			if(result!=null) {
