@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import HomePage.HomePage;
+
 
 public class VideoListManager {
 
@@ -42,13 +44,14 @@ public class VideoListManager {
 	public ArrayList<VideoList> selectVideoListTable(String userId) {
 		videoLists = new ArrayList<VideoList>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery("select * from courselist,list where courselist.courselistId "
-					+ "= list.courselistId and list.userId = '"+userId+"' order by list.oorder ASC");
+			pst = con.prepareStatement("select * from courselist,list where list.courselistId = "
+					+ "courselist.courselistId and list.userId = ? order by list.oorder ASC");
+			pst.setString(1, userId);
+			result = pst.executeQuery();
 			while(result.next()) {
 				//選取該使用者的課程清單
 				videoList = new VideoList();
-				videoList.setUserId(result.getString("list.userId"));
+				videoList.setUserId(userId);
 				videoList.setCourselistId(result.getInt("list.courselistId"));
 				videoList.setOorder(result.getInt("list.oorder"));
 				videoList.setListName(result.getString("courselist.listName")); 
@@ -68,26 +71,32 @@ public class VideoListManager {
 	}
 	
 	//尋找對應的單元影片
-	public ArrayList<UnitVideo> selectUnitTable(String userId,String schoolName
-			,String listName) {
+	public ArrayList<UnitVideo> selectUnitTable(String userId,int courselistId) {
 		unitVideos = new ArrayList<UnitVideo>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery("select * from customListVideo,unit,list,courselist where "
+			pst = con.prepareStatement("select * from customListVideo,unit,list,courselist where "
 					+"customListVideo.courselistId = list.courselistId and "
 					+"customListVideo.unitId = unit.unitId and "
 					+"list.courselistId = courselist.courselistId and "
-					+"list.userId = '"+userId+"' and "
-					+"courselist.schoolName = '"+schoolName+"' and "
-					+"courselist.listName = '"+listName+"' order by customListVideo.oorder ASC");
+					+"list.userId = ? and "
+					+"courselist.courselistId = ? order by customListVideo.oorder ASC");
+			pst.setString(1, userId);
+			pst.setInt(2, courselistId);
+			result = pst.executeQuery();
 			while(result.next()) {
 				unitVideo = new UnitVideo();
 				unitVideo.setUserId(result.getString("list.userId"));
 				unitVideo.setUnitName(result.getString("unit.unitName"));
 				unitVideo.setCourseInfo(result.getString("courselist.courseInfo"));
-				unitVideo.setSchoolName(result.getString("courselist.schoolName"));
-				unitVideo.setTeacher(result.getString("courselist.teacher"));
-				unitVideo.setVideoImgSrc(result.getString("unit.videoImgSrc"));
+				unitVideo.setSchoolName(result.getString("unit.schoolName"));
+				unitVideo.setCreator(result.getString("courselist.creator"));
+				unitVideo.setTeacher(result.getString("unit.teacher"));
+				if(result.getString("unit.videoImgSrc") == "") {
+					unitVideo.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
+				}
+				else {
+					unitVideo.setVideoImgSrc(result.getString("unit.videoImgSrc"));
+				}
 				unitVideo.setCourselistId(result.getInt("list.courselistId"));
 				unitVideo.setOorder(result.getInt("customListVideo.oorder"));
 				unitVideo.setLikes(result.getInt("unit.likes"));
@@ -119,11 +128,9 @@ public class VideoListManager {
 		try {
 			//先存入courselist這個table
 			pst = con.prepareStatement("insert into courselist (courselistId,listName"
-					+ ",creator,share,likes) value(null,?,?,?,?)");
+					+ ",creator,share,likes) value(null,?,?,0,0)");
 			pst.setString(1,listName);
 			pst.setString(2,userId);
-			pst.setInt(3,0);
-			pst.setInt(4,0);
 			pst.executeUpdate();
 			
 			//從courselist中抓自動生成的courselistId
@@ -211,6 +218,80 @@ public class VideoListManager {
 		catch(SQLException x){
 			System.out.println("VideoList-updateCourseListTable");
 			System.out.println("Exception update"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	//刪除使用者點擊的清單中的影片
+	public void deleteUnitVideo(int courselistId, int unitId) {
+		try {
+			//1:listName。2:courselistId。3:creator
+			pst = con.prepareStatement("delete from customListVideo where courselistId = ? and unitId = ?");
+			pst.setInt(1,courselistId);
+			pst.setInt(2,unitId);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("VideoList-updateCourseListTable");
+			System.out.println("Exception update"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
+	//將整個清單的影片加入至課程計畫
+	public void addToCoursePlanList(String userId,int courselistId) {
+		unitVideos = new ArrayList<UnitVideo>();
+		int maxOrder = 0;
+		try {
+			pst = con.prepareStatement("select Max(oorder) from personalPlan where status = 1 and "
+					+ "userId = ?");
+			pst.setString(1, userId);
+			result = pst.executeQuery();
+			if(result.next())maxOrder = result.getInt("MAX(oorder)");
+			pst = con.prepareStatement("select unitId from customListVideo where courselistId = ?");
+			pst.setInt(1, courselistId);
+			result = pst.executeQuery();
+			
+			while(result.next()) {
+				unitVideo = new UnitVideo();
+				unitVideo.setUnitId(result.getInt("unitId"));
+				unitVideos.add(unitVideo);
+			}
+			pst = con.prepareStatement("insert ignore into personalPlan (userId,unitId,lastTime,status,oorder) value(?,?,0,1,?)");
+			for(int i = 0;i < unitVideos.size();i++) {
+				
+				pst.setString(1, userId);
+				pst.setInt(2, unitVideos.get(i).getUnitId());
+				pst.setInt(3, ++maxOrder);
+				//先放到batch，等迴圈跑完再一次新增
+				pst.addBatch();
+			}
+			pst.executeBatch();
+		}
+		catch(SQLException x){
+			System.out.println("HomePage-addToCoursePlanList");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
+	//分享完整清單的影片給所有人
+	public void shareVideoList(String userId,int courselistId) {
+		try {
+			pst = con.prepareStatement("update courselist set share = ? where courselistId = ? and userId = ? ");
+			pst.setInt(1, 1);
+			pst.setInt(2, courselistId);
+			pst.setString(3, userId);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("HomePage-shareVideoList");
+			System.out.println("Exception select"+x.toString());
 		}
 		finally {
 			Close();

@@ -1,14 +1,16 @@
 //var ajaxURL="http://140.121.197.130:8400/";
 var ajaxURL="http://localhost:8080/";
-var events;
-var fullEvents;
+var googleEvents;	// 存 Google Calendar Events
+var fullEvents;		// 存 FullCalendar Events
+
+/* ----------------------------------- Google ----------------------------------- */
 
 document.write('<script async defer src="https://apis.google.com/js/api.js"'
       +'onload="this.onload=function(){};handleClientLoad()"'
       +'onreadystatechange="if (this.readyState === "complete") this.onload()">'
     +'</script>');
 
-//Client ID and API key from the Developer Console
+// Client ID and API key from the Developer Console
 var CLIENT_ID = '645783857059-dgmft2d4jb7kgkl1f05l02gorl19r9d0.apps.googleusercontent.com';
 var API_KEY = 'AIzaSyAz3zOHiCMMnShglhMhAvFsRl10juJs2oo';
 
@@ -71,11 +73,10 @@ function updateSigninStatus(isSignedIn) {
         'maxResults': 10000,	// 最多多少個事件
         'orderBy': 'startTime'
       }).then(function(response) {
-     	  console.log(response);
-        events = response.result.items;
+     	console.log(response);
         // 更新每個事件到fullcalendar
-        for (i = 0; i < events.length; i++) {
-            var event = events[i];
+        for (i = 0; i < response.result.items.length; i++) {
+            var event = response.result.items[i];
             event.title = event.summary;
             event.start = event.start.dateTime ? (moment(event.start.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(event.start.date).format('YYYY-MM-DD'));
             event.end = event.end.dateTime ? (moment(event.end.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(event.end.date).format('YYYY-MM-DD'));
@@ -83,6 +84,8 @@ function updateSigninStatus(isSignedIn) {
             event.borderColor =  '#B22222',
             event.url = event.description;
             event.eventType = 'g',
+            fullEvents.push(event);
+//      	    addToFullEvents(event); // 換成 googleEvent
             $('#calendar').fullCalendar('renderEvent', event, true);
         }
       })
@@ -110,14 +113,15 @@ function addEvent(event)
 {
 	var date = moment().format("YYYYMMDDHHmmss");
 	console.log(date);
-	if (!event.allDay)
+	console.log(event.url);
+	if (!event.allDay)	// 存 AllDay (dateTime)
 	{
 		var request = gapi.client.calendar.events.insert({
 	        'calendarId': 'primary',
 	        'resource': {
 		        'summary': event.title,
 		        'location': '',
-		        'description':event.unitId + '/' + event.type,
+		        'description':event.url,
 		        'id':'fullcalendar' + event.id + date,
 		        'start': {
 		          'dateTime': event.start.toISOString(),
@@ -130,14 +134,14 @@ function addEvent(event)
 		     }
 	    });
 	}
-	else
+	else	// 存非 AllDay (date)
 	{
 		var request = gapi.client.calendar.events.insert({
 	        'calendarId': 'primary',
 	        'resource': {
 		        'summary': event.title,
 		        'location': '',
-		        'description':event.unitId + '/' + event.type,
+		        'description':event.url,
 		        'id':'fullcalendar' + event.id + date,
 		        'start': {
 			          'date': event.start,
@@ -150,20 +154,19 @@ function addEvent(event)
 		     }
 	    });
 	}
-      request.execute(function(response){
-//    	  events = response.result;
-//    	  console.log(events);
-    	  if (!response.error)
-    	  {
-    		  response.title = event.title;
-    		  response.backgroundColor = '#B22222';
-    		  response.borderColor =  '#B22222';
-    		  response.url = response.description;
-    		  response.start = response.start.dateTime ? (moment(response.start.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.start.date).format('YYYY-MM-DD'));
-    		  response.end = response.end.dateTime ? (moment(response.end.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.end.date).format('YYYY-MM-DD'));
-              response.eventType = 'g';
+    request.execute(function(response)
+    {
+    	if (!response.error)
+    	{
+    		response.title = event.title;
+    		response.backgroundColor = '#B22222';
+    		response.borderColor =  '#B22222';
+    		response.url = response.description;
+    		response.start = response.start.dateTime ? (moment(response.start.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.start.date).format('YYYY-MM-DD'));
+    		response.end = response.end.dateTime ? (moment(response.end.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.end.date).format('YYYY-MM-DD'));
+            response.eventType = 'g';
 	          
-			  $.ajax({
+			$.ajax({
         		url : ajaxURL+'AnyCourse/CalendarServlet.do',
         		method: 'POST',
         		cache:false,
@@ -175,13 +178,17 @@ function addEvent(event)
         			console.log("Delete Event Fail");
         		},
         		success: function(){
-        			// 從fullcalendar上移除
+        			// 從FullCalendar上移除
 	        		$('#calendar').fullCalendar('removeEvents', event.id);
+    			    fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
+	        		// 把 response 物件放進 FullCalendar
 	  	            $('#calendar').fullCalendar('renderEvent', response, true);
-        		} // end success
+//	  	      	    addToFullEvents(response);
+	  	            fullEvents.push(response);
+        		}
         	}); // end ajax  
-    	  }
-      });
+    	} // end if
+    });
 }
 
 // 更新到Google Calendar
@@ -234,7 +241,6 @@ function updateEvent(event)
 		     }
 	    });
 	}
-	
     request.execute();
 }
 
@@ -248,6 +254,8 @@ function deleteEvent(event)
     request.execute();
 }
 
+/* ----------------------------------- Calendar Page Init ----------------------------------- */
+
 $(function () {
 	checkLogin("../", "../../../");
     var index = 0;	// 跑each迴圈用
@@ -260,7 +268,7 @@ $(function () {
 
 	var m = moment() // Start, End to dateTime
 	
-    // ----初始化外部事件----
+    // 初始化外部事件
 	getCoursePlanEvent();
 
     // 讓已選事件可以被拖動
@@ -270,11 +278,7 @@ $(function () {
       revertDuration: 0  //  original position after the drag
     });
   	
-    
-
-
-    // ----初始化行事曆----
-    
+    // 初始化行事曆
     
     // 從資料庫取得行事曆的資料，並更新至頁面
     $.ajax({
@@ -292,45 +296,47 @@ $(function () {
 			console.log(response);
 			fullEvents = response;
 			initCalendar(fullEvents);
-		} // end succuss
+		}
 	})
 	
-    /* ADDING EVENTS */
-    var currColor = "#3c8dbc"; //Red by default
-    //Color chooser button
-    var colorChooser = $("#color-chooser-btn");
-    $("#color-chooser > li > a").click(function (e) {
-      e.preventDefault();
-      //Save color
-      currColor = $(this).css("color");
-      //Add color effect to button
-      $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
-  	  $('#selectedEvent').css({"background-color": currColor, "border-color": currColor});
-    });
-    $("#add-new-event").click(function (e) {
-      e.preventDefault();
-      //Get value and make sure it is not null
-      var val = $("#new-event").val();
-      if (val.length == 0) {
-        return;
-      }
-
-      //Create events
-      $('#external-events').append(
-  		  '<li><a href="javascript:void(0)">'+val+'</a></li>'
-  	  );
-      
-      //Add draggable funtionality
-      $('#external-events li').last().click(function(){
-    	  $('#selectedEvent').text($(this).text());
-	      $('#selectedEvent').data('eventObject', {title: $(this).text()});
-	  });
-
-      //Remove event from text input
-      $("#new-event").val("");
-    })
+    // 自訂事件
+    var currColor = "#3c8dbc"; // 預設為紅色
+    var colorChooser = $("#color-chooser-btn"); // 選擇顏色的按鈕
     
+    $("#color-chooser > li > a").click(function (e) {
+        e.preventDefault();
+        // 存顏色
+        currColor = $(this).css("color");
+        // 設置 selected event的顏色
+        $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+  	    $('#selectedEvent').css({"background-color": currColor, "border-color": currColor});
+    });
+    
+    $("#add-new-event").click(function (e) {
+        e.preventDefault();
+        // 取使用者輸入的title
+        var val = $("#new-event").val();
+        if (val.length == 0) {
+            return;
+        }
+
+        // 輸出事件
+        $('#external-events').append(
+  		    '<li><a class="external-event-a" href="javascript:void(0)">'+val+'</a></li>'
+  	    );
+      
+        // 添加點擊事件
+        $('#external-events li').last().click(function(){
+    	    $('#selectedEvent').text($(this).text());
+	        $('#selectedEvent').data('eventObject', {title: $(this).text()});
+	    });
+
+        // 清空輸入欄位
+        $("#new-event").val("");
+    })
 })
+
+/* ----------------------------------- CoursePlan Event ----------------------------------- */
 
 function getCoursePlanEvent()
 {
@@ -351,7 +357,7 @@ function getCoursePlanEvent()
   			for(var i = 0; i < coursePlanList.length; i ++)
   			{
 	  			$('#external-events').append(
-	  				'<li><a href="javascript:void(0)">'+coursePlanList[i].unitName+'</a></li>'
+	  				'<li><a class="external-event-a" href="javascript:void(0)">'+coursePlanList[i].unitName+'</a></li>'
 	  			);
   			}
   			$('#external-events li').each(function(index){
@@ -373,6 +379,8 @@ function getCoursePlanEvent()
   		}
   	});
 }
+
+/* ----------------------------------- FullCalendar ----------------------------------- */
 
 function initCalendar(eventSrc)
 {
@@ -416,18 +424,20 @@ function initCalendar(eventSrc)
         // ----用拖曳的方式選擇日期或時間----
         select: function(start, end) {
       	    // 新增一個event Object接selectedEvent
-      	    var selectedObject = $('#selectedEvent').data('eventObject');
-//      	    console.log(selectedObject);
+        	tmpEventObject = $('#selectedEvent').data('eventObject');
       	    // 若沒有選擇則不做任何事
-      	    if (selectedObject == undefined)
+      	    if (tmpEventObject == undefined)
       	    	return;
+      	    var selectedObject = {
+  	      	    title: tmpEventObject.title,
+  	      	    start: start.format('YYYY-MM-DD HH:mm:ss'),
+  	      	    end: end.format('YYYY-MM-DD HH:mm:ss'),
+  	      	    allDay: !start.hasTime() && !end.hasTime(),
+  	      	    backgroundColor: $('#selectedEvent').css('background-color'),
+  	      	    borderColor:  $('#selectedEvent').css('border-color'),
+  	      	    url: tmpEventObject.unitId + '/' + tmpEventObject.type
+      	    }
       	    
-      	    selectedObject.start = start.format('YYYY-MM-DD HH:mm:ss');
-      	    selectedObject.end = end.format('YYYY-MM-DD HH:mm:ss');
-      	    selectedObject.allDay = !start.hasTime() && !end.hasTime();
-      	    selectedObject.backgroundColor = $('#selectedEvent').css('background-color'),
-      	    selectedObject.borderColor =  $('#selectedEvent').css('border-color'),
-      	    selectedObject.url = selectedObject.unitId + '/' + selectedObject.type;
       	    // 送到資料庫更新
       	    $.ajax({
           		url : ajaxURL+'AnyCourse/CalendarServlet.do',
@@ -456,6 +466,7 @@ function initCalendar(eventSrc)
 		            {	
 	 	        	    //alert(copiedEventObject.id + " " + copiedEventObject.title + " " + copiedEventObject.url + " " + copiedEventObject.start + " " + copiedEventObject.end + " " + copiedEventObject.allDay);
 		            };
+		            fullEvents.push(selectedObject); 
           		}
           	}); // end ajax
       	    $('#calendar').fullCalendar('unselect');
@@ -463,31 +474,24 @@ function initCalendar(eventSrc)
         
         // 當外部事件放進Calendar時觸發
         drop: function (date) {
-            // retrieve the dropped element's stored Event Object
+            // 用一個變數去接丟下的 Object
             var originalEventObject = $(this).data('eventObject');
 
-      	    // 若沒有選擇則不做任何事
+      	    // 若 Object 為undefined (沒有選擇) 則不做任何事
       	    if (originalEventObject == undefined)
       	    {
       	    	return;
       	    }
       	    
-            // we need to copy it, so that multiple events don't have a reference to the same object
+            // 複製一個 object，避免多個物件指向同一個物件
             var copiedEventObject = $.extend({}, originalEventObject);
 
-            // assign it the date that was reported
-//	            copiedEventObject.start = new Date(date);
-//	            copiedEventObject.end = new Date(date);
             copiedEventObject.backgroundColor = $(this).css("background-color");
             copiedEventObject.borderColor = $(this).css("border-color");
             copiedEventObject.start = date.toISOString();
             copiedEventObject.allDay = !date.hasTime();
             copiedEventObject.url = copiedEventObject.unitId + '/' + copiedEventObject.type
-//	            var startTime = $.fullCalendar.moment(copiedEventObject.start);
-//	            var endTime = $.fullCalendar.moment(copiedEventObject.end);
-//	            console.log(startTime.format());
-            console.log(date.toISOString());
-//	            console.log(!date.hasTime());
+//            console.log(date.toISOString());
           
             $.ajax({
       		    url : ajaxURL+'AnyCourse/CalendarServlet.do',
@@ -514,6 +518,7 @@ function initCalendar(eventSrc)
 		            {	
 	 	        	    //alert(copiedEventObject.id + " " + copiedEventObject.title + " " + copiedEventObject.url + " " + copiedEventObject.start + " " + copiedEventObject.end + " " + copiedEventObject.allDay);      	
 		            };
+		            fullEvents.push(copiedEventObject);
       		    }
             }); // end ajax
           
@@ -535,7 +540,7 @@ function initCalendar(eventSrc)
         		    if (event.eventType == 'g')
         		    {
 	        		    deleteEvent(event);
-        			    $('#calendar').fullCalendar('removeEvents', event.id)		
+        			    $('#calendar').fullCalendar('removeEvents', event.id)
         		    }
         		    // 刪除資料庫
         		    else
@@ -557,6 +562,7 @@ function initCalendar(eventSrc)
 		            		}
 		            	});
         		    }
+    			    fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
         	    }
         	    return false;
 	        }
@@ -599,6 +605,8 @@ function initCalendar(eventSrc)
 		        		method: "update"
       		    	});
       	    }
+      	    fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
+      	    addToFullEvents(event);
         },
     	// ----移動事件----
         eventDrop: function(event, delta, revertFunc) {
@@ -607,7 +615,8 @@ function initCalendar(eventSrc)
 //      	    // 如果取消改變，就把event還原回去不動作(revertFunc())
 //      	    if (!confirm("Are you sure about this change?")) {
 //      	      revertFunc();
-//      	    }
+//      	    }    
+      	    
       	    // 若是Google日曆的event，則直接更新到Google日曆
       	    if (event.eventType=='g')
   		    {
@@ -650,43 +659,113 @@ function initCalendar(eventSrc)
       		  		    method: "update"
       			    });
   	        $('#calendar').fullCalendar('refetchEvents');
+  	        fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
+  	        addToFullEvents(event); 
         } // end eventDrop
-    }); // end fullcalendar
+    }); // end fullCalendar
+} // end function initCalendar
+
+// 用 Id 找 fullEvents 裡面物件的 index
+function findEventIndexById(id)
+{
+	return $.map(fullEvents, function(item, index) {
+ 				return item.id
+ 			}).indexOf(id)
 }
 
-// 設定modal裡面的值
+//加入一個 FullCalendar Object 到 Array裡面
+function addToFullEvents(event)
+{
+	var newEventObject = {
+		id: event.id,
+		title: event.title,
+		url: event.url,
+		start: event.start.format('YYYY-MM-DD HH:mm:ss'),
+		end: event.end != null ? event.end.format('YYYY-MM-DD HH:mm:ss') : null, 	// 切換 allDay 會有  null 產生
+		backgroundColor: event.backgroundColor,
+		borderColor: event.borderColor,
+		allDay: event.allDay
+	};
+	fullEvents.push(newEventObject);
+}
+
+/* ----------------------------------- Modal ----------------------------------- */
+
+// 設定Modal裡面的值
 function setSelectedList()
 {
+	var outputList = [];
 	var title = $('#selectedEvent').text();
 	$('#modalTitle').text(title);
     $('#SelectList').html('');
+    // 從 fullEvents 裡面挑出所有 selected的 title 加進 outputList
     for (var i = 0; i < fullEvents.length; i++)
 	{
     	if (fullEvents[i].title == title)
-    	    $('#SelectList').append(
-    	        	'<li class="list-group-item">'+
-    	    		'<a id="item-0" href="#" data-dismiss="modal" onclick="jumpToDate(\''+fullEvents[i].start.split(' ')[0]+'\')">'+
-    	    		'<div class="row">'+
-    	    		//'2018 年 3 月 4 日 下午 8 點 30 分'+
-    	    		toChineseTimeFormat(fullEvents[i].start, fullEvents[i].allDay) +
-    	    		'</div>'+
-    	    		'</a>'+
-    	    		'</li>'
-    	    );
+    		outputList.push(fullEvents[i]);
 	}
+    // 有符合的結果
+    if (outputList.length > 0)
+    {
+    	// 將outputList按照日期排序
+    	outputList = outputList.sort(function (a, b) {
+        	return timeCompare(a.start.format==undefined ? a.start : a.start._i, b.start.format==undefined ? b.start : b.start._i) ? 1 : -1;
+        });
+    	// 輸出到 Modal
+        for (var i = 0; i < outputList.length; i++)
+        {
+        	$('#SelectList').append(
+                	'<li class="list-group-item">'+
+            		'<a id="item-0" href="#" data-dismiss="modal" onclick="jumpToDate(\'' + (outputList[i].start.format==undefined ? outputList[i].start.split(' ')[0] : outputList[i].start._i) + '\')">'+
+            		'<div class="row">&emsp;&emsp;'+
+            		//'2018 年 3 月 4 日 下午 8 點 30 分'+
+            		toChineseTimeFormat(outputList[i].start.format==undefined ? outputList[i].start : outputList[i].start._i, outputList[i].allDay) +
+            		'</div>'+
+            		'</a>'+
+            		'</li>'
+            );
+        }
+    }
+    // 無結果
+    else
+    {
+    	$('#SelectList').append('此事件無行程！');
+    }
 }
 
 //  2018-05-15 20:30:00.0 -> 2018 年 5 月 15 日 下午 8 點 30 分
 function toChineseTimeFormat(time, allday)
 {
-	var array = time.split(/-|:| |\./);
+	var array = time.split(/-|:|T| |\./);
 	var format = array[0] + ' 年 ' + ~~array[1] + ' 月 ' + ~~array[2] + ' 日 ';		// ~~可去掉開頭0
 	format += allday == true ? ' 整天' : (array[3] >= 12 ? '下午 ' + ~~(array[3]-12) : '上午 ' + ~~(array[3])) + ' 點' + (array[4] > 0 ? ' ' + ~~array[4] + ' 分' : ' 整');
 	return format;
 }
 
-// fullcalendar 跳到該日期
+// 輸入兩個 time, 若 timeA 較大則回傳 true，否則回傳 false
+function timeCompare(timeA, timeB)
+{
+	var arrayA = timeA.split(/-|:|T| |\./);
+	var arrayB = timeB.split(/-|:|T| |\./);
+	for (var i = 0; i < 6; i++)
+	{
+		if (arrayA[i] > arrayB[i])
+			return true;
+		else if (arrayA[i] < arrayB[i])
+			return false;
+	}
+	return true;
+}
+
+// FullCalendar 跳到該日期
 function jumpToDate(date)
 {
 	$('#calendar').fullCalendar('gotoDate', date );
 }
+
+//// 設置 fullEvents 最後一個元素 start & end 至固定規格
+//function eventTimeFormat(index)
+//{
+//	fullEvents[index].start = fullEvents[index].start._i;
+//	fullEvents[index].end = fullEvents[index].end._i;
+//}

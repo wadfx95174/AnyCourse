@@ -30,16 +30,17 @@ public class HomePageServlet extends HttpServlet {
 		ArrayList<Map<Integer, HomePage>> homePages = null;
 		HttpSession session = request.getSession();
 		HomePageManager homePageDatabaseManager = new HomePageManager();
+		String userId = (String)session.getAttribute("userId");
 		boolean check;//檢查該使用者是訪客、新使用者(沒有觀看紀錄)還是舊使用者(已經有推薦結果)
 		//檢查該使用者有沒有推薦資料、課程清單、想要觀看、正在觀看
-		check = homePageDatabaseManager.checkUser((String)session.getAttribute("userId"));
+		check = homePageDatabaseManager.checkUser(userId);
 		//訪客||新使用者
 		if((String)session.getAttribute("userId") == null || check == false ) {
 			homePages = homePageDatabaseManager.getRandVideo();
 		}
 		//舊使用者
 		else {
-			homePages = homePageDatabaseManager.getAllVideo((String)session.getAttribute("userId"));
+			homePages = homePageDatabaseManager.getAllVideo(userId);
 		}
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
@@ -55,16 +56,36 @@ public class HomePageServlet extends HttpServlet {
 		response.setHeader("Cache-Control","max-age=0");
 		
 		HttpSession session = request.getSession();
+		String userId = (String)session.getAttribute("userId");
 		HomePageManager homePageDatabaseManager = new HomePageManager();
+		ArrayList<HomePage> homePages = new ArrayList<HomePage>();
+		
 		//加單一個影片到課程計畫
-		if(request.getParameter("action").equals("addToCoursePlan")&&(String)session.getAttribute("userId")!=null) {
-			homePageDatabaseManager.addToCoursePlan((String)session.getAttribute("userId")
-					,Integer.parseInt(request.getParameter("unitId")));
+		if(request.getParameter("action").equals("addToCoursePlan")&&userId!=null) {
+			homePageDatabaseManager.addToCoursePlan(userId,Integer.parseInt(request.getParameter("unitId")));
 		}
 		//加整個清單到課程計畫
-		if(request.getParameter("action").equals("addToCoursePlanList")&&(String)session.getAttribute("userId")!=null) {
-			homePageDatabaseManager.addToCoursePlanList((String)session.getAttribute("userId")
-					,Integer.parseInt(request.getParameter("courselistId")));
+		else if(request.getParameter("action").equals("addToCoursePlanList")&&userId!=null) {
+			homePageDatabaseManager.addToCoursePlanList(userId,
+					Integer.parseInt(request.getParameter("courselistId")));
+		}
+		//獲取該使用者所有的清單名稱，讓使用者可以選擇將影片加入哪個清單
+		else if(request.getParameter("action").equals("getVideoListName")&&userId!=null) {
+			
+			homePages = homePageDatabaseManager.getVideoListName(userId);
+			GsonBuilder builder = new GsonBuilder();
+			Gson gson = builder.setPrettyPrinting().create();
+			response.setContentType("application/json");
+			response.getWriter().write(gson.toJson(homePages));
+		}
+		else if(request.getParameter("action").equals("addToVideoList")) {
+			System.out.println("a");
+			homePageDatabaseManager.addToVideoList(Integer.parseInt(request.getParameter("unitId")), 
+					Integer.parseInt(request.getParameter("courselistId")));
+		}
+		else if(request.getParameter("action").equals("addToVideoListList")) {
+			homePageDatabaseManager.addToVideoListList(userId, 
+					Integer.parseInt(request.getParameter("courselistId")));
 		}
 		//關閉資料庫連線
 		homePageDatabaseManager.conClose();

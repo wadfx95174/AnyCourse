@@ -29,7 +29,7 @@ public class VideoListServlet extends HttpServlet{
 		}
 		else if(request.getParameter("action").equals("selectUnit")) {
 			unitVideos = videoListDatebaseManager.selectUnitTable(userId
-					,request.getParameter("schoolName"),request.getParameter("listName"));
+					,Integer.parseInt(request.getParameter("courselistId")));
 			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(unitVideos));
 		}
@@ -64,6 +64,22 @@ public class VideoListServlet extends HttpServlet{
 			videoList.setUserId(userId);
 			videoList.setOorder(Integer.parseInt(request.getParameter("oorder")));
 			videoListDatebaseManager.deleteCourseListTable(videoList);
+		}
+		//delete unitVideo
+		else if(request.getParameter("action").equals("removeUnitVideo")) {
+			videoListDatebaseManager.deleteUnitVideo(Integer.parseInt(request.getParameter("courselistId"))
+					,Integer.parseInt(request.getParameter("unitId")));
+		}
+		//將完整清單添加至課程計畫
+		else if(request.getParameter("action").equals("addToCoursePlanList")) {
+			videoListDatebaseManager.addToCoursePlanList(userId
+					,Integer.parseInt(request.getParameter("courselistId")));
+		}
+		//分享完整清單內容給所有人
+		
+		else if(request.getParameter("action").equals("shareVideoList")) {
+			videoListDatebaseManager.shareVideoList(userId
+					,Integer.parseInt(request.getParameter("courselistId")));
 		}
 		//關閉connection
 		videoListDatebaseManager.conClose();

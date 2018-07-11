@@ -573,7 +573,6 @@ $(document).ready(function(){
     		unitId:get('unitId'),
     	},
     	success:function(result){
-    		console.log(result);
     		//亂數決定順序
 			var temp;
 			for(var j = 0 ;j < result.length;j++){
