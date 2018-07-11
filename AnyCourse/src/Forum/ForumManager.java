@@ -151,7 +151,7 @@ public class ForumManager {
 	
 	 
 	public Reply insertReplyTable(Reply reply){
-		try {
+		try {			
 			pst = con.prepareStatement(insertReplySQL,Statement.RETURN_GENERATED_KEYS);
 			pst.setInt(1,reply.getCommentId());
 			pst.setString(2,reply.getUserId());

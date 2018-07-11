@@ -3,14 +3,14 @@ var ajaxURL="http://localhost:8080/";
 var state;
 var commentId =null;
 var replyId =null;
-var unitId = 1;
-var userId = 111;
-var nickName = "jerry";
+var unitId;
+var userId;
+var nickName;
 var commentTime;
 var commentContent;
 var replyTime;
 var replyContent;
-
+var urlId;
 
 function get(name)
 {
@@ -126,6 +126,7 @@ function displayReply(input){
 
 function setReply(input){
 	var id = input.split('_')[1];
+	var url = location.href;
 	
 	if($("#reply_area_"+id).val() !== ''){
 		var dt = new Date();
@@ -138,13 +139,15 @@ function setReply(input){
 			data : {
 				"state" : "insert",	
 				"commentId" : id,
-				"userId" : userId,
+//				"userId" : userId,
 				"nickName" : nickName,
 				"replyContent" : replyContent,			
 			},
 			success : function(result) {
+				urlId = url+"#rep_"+result.replyId;
+//				alert(urlId);
 				$('#com_'+id).append( 	
-						'<div id="rep_' + result.replyId + '"class="col-xs-12 C" >'+
+						'<div id="rep_' + result.replyId + '"'+'name="rep_' + result.replyId +'" class="col-xs-12 C" >'+
 						'<img src="https://ppt.cc/fi5Q0x@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
 						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result.nickName +'</h4>'+
 						'<h5 style="float:right;">' + result.replyTime +'</h5>'+													
@@ -156,10 +159,29 @@ function setReply(input){
 						'</div>'																
 	    			);	
 				$("#reply_div_" + id ).toggle();
+				$.ajax({					
+					url : ajaxURL+'AnyCourse/NotificationServlet.do',
+					method : 'POST',
+					cache :false,
+					data : {
+						"state" : "insert",	
+						"commentId" : id,
+//						"userId" : userId,
+//						"nickName" : nickName,
+//						"replyContent" : replyContent,	
+						"url" : urlId,
+					},
+					success : function(result) {
+						
+					},
+					error: function (jqXHR, textStatus, errorThrown) {
+//						alert("BBB");
+			         }
+				})
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 	         }
-		})			
+			})			
 	}			
 }
 
@@ -179,7 +201,7 @@ function deleteReply(input){
 		},
 	});
 }
-
+     
 function deleteComment(input){
 	var id = input.split('_')[1];
 	

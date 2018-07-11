@@ -7,9 +7,9 @@
 		var state;
 		var textNoteId =null;
 		var pictureNoteId =null;
-		var unitId = 1;
-		var userId = 111;
-		var textNote = "123456";
+		var unitId;
+		var userId;
+		var textNote;
 		var pictureNoteUrl;
 		var share = 0;
 		var shareTime;
