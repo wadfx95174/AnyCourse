@@ -47,7 +47,7 @@ $(document).ready(function() {
 //			console.log(result);
 			videoListArray = new Array(result.length);
 	  		for(var i = 0 ;i < result.length;i++){
-	  			$('#videoListUL').append('<li id = "videoListId_'+videoListId+'" onclick="getListId('+videoListId+')">'
+	  			$('#videoListUL').append('<li id="videoListId_'+videoListId+'" onclick="getListId('+videoListId+')">'
 	  					+'<div class="row">'
 	                    +'<div class="handle ui-sortable-handle col-xs-1">'
 	                    +'<i class="fa fa-ellipsis-v"></i>'
@@ -70,7 +70,7 @@ $(document).ready(function() {
 	  			//把modal設為空
 				$('#named').val("");
 				//點擊清單，顯示單元影片
-				$("#videoListId_"+videoListId).on("click" , function(){
+				$('#videoListId_'+videoListId).on("click" , function(){
 					unitVideoId = 1;
 					$.ajax({
 						url : ajaxURL+'AnyCourse/VideoListServlet.do',
@@ -383,8 +383,8 @@ function getListId(id){
 	checkListId = id;
 }
 function getUnitId(id){
-    checkUnitId = id;
-  }
+	checkUnitId = id;
+}
 //跳轉頁面
 function jumpToPlayerInterface(unitId,type,listId){
     url = "../PlayerInterface.html?unitId="+unitId+"&type="+type+"&listId="+listId;//此處拼接內容

@@ -23,12 +23,28 @@ public class CoursePlanServlet extends HttpServlet {
 		CoursePlanManager coursePlanManager = new CoursePlanManager();
 		ArrayList<CoursePlan> coursePlans = null;
 		HttpSession session = request.getSession();
-		coursePlans = coursePlanManager.getCoursePlanAllList((String)session.getAttribute("userId"));
+		String userId = (String)session.getAttribute("userId");
 		
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
-		response.setContentType("application/json");
-		response.getWriter().write(gson.toJson(coursePlans));
+		
+		if(request.getParameter("action").equals("getVideoList")) {
+			coursePlans = coursePlanManager.getVideoList(userId);
+			response.setContentType("application/json");
+			response.getWriter().write(gson.toJson(coursePlans));
+		}
+		else if(request.getParameter("action").equals("getUnit")) {
+			coursePlans = coursePlanManager.getCoursePlanUnit(userId
+					,Integer.parseInt(request.getParameter("courselistId")));
+			response.setContentType("application/json");
+			response.getWriter().write(gson.toJson(coursePlans));
+		}
+		else if(request.getParameter("action").equals("getAllUnit")) {
+			coursePlans = coursePlanManager.getCoursePlanAllList(userId);
+			response.setContentType("application/json");
+			response.getWriter().write(gson.toJson(coursePlans));
+		}
+		
 		//關閉connection
 		coursePlanManager.conClose();
 	}

@@ -172,10 +172,9 @@
     <servlet-name>AccountServlet</servlet-name>
     <url-pattern>/AccountServlet.do</url-pattern>
   </servlet-mapping>
-  
-  <listener>
-	<listener-class>
+  <!-- <listener>
+    <listener-class>
 		DataHandle.DataUpdateListener
 	</listener-class>
-  </listener>
+  </listener> -->
 </web-app>
