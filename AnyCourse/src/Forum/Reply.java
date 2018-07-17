@@ -43,5 +43,10 @@ public class Reply {
 	public void setReplyContent(String replyContent) {
 		this.replyContent = replyContent;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Reply [replyId=" + replyId + ", commentId=" + commentId + ", userId=" + userId + ", nickName="
+				+ nickName + ", replyTime=" + replyTime + ", replyContent=" + replyContent + "]";
+	}
 }

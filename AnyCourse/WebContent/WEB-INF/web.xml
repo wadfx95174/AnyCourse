@@ -49,6 +49,10 @@
     <servlet-class>Note.PictureNoteServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>NotificationServlet</servlet-name>
+    <servlet-class>Notification.NotificationServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>SearchRecordServlet</servlet-name>
     <servlet-class>Personal.SearchRecord.SearchRecordServlet</servlet-class>
   </servlet>
@@ -133,6 +137,10 @@
     <url-pattern>/PictureNoteServlet.do</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>NotificationServlet</servlet-name>
+    <url-pattern>/NotificationServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>SearchRecordServlet</servlet-name>
     <url-pattern>/SearchRecordServlet.do</url-pattern>
   </servlet-mapping>
@@ -172,7 +180,11 @@
     <servlet-name>AccountServlet</servlet-name>
     <url-pattern>/AccountServlet.do</url-pattern>
   </servlet-mapping>
+<<<<<<< HEAD
   <!-- <listener>
+=======
+  <listener>
+>>>>>>> branch 'master' of https://github.com/wadfx95174/AnyCourse.git
     <listener-class>
 		DataHandle.DataUpdateListener
 	</listener-class>
