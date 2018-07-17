@@ -180,11 +180,7 @@
     <servlet-name>AccountServlet</servlet-name>
     <url-pattern>/AccountServlet.do</url-pattern>
   </servlet-mapping>
-<<<<<<< HEAD
   <!-- <listener>
-=======
-  <listener>
->>>>>>> branch 'master' of https://github.com/wadfx95174/AnyCourse.git
     <listener-class>
 		DataHandle.DataUpdateListener
 	</listener-class>
