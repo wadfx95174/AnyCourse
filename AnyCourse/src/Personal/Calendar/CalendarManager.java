@@ -17,6 +17,8 @@ public class CalendarManager
 	private final String deleteEventSQL = "delete from event where eventId = ?";
 	private final String deleteCalendarSQL = "delete from calendar where eventId = ?";
 	private final String insertCalendarSQL = "insert into calendar value (?,?)";
+	private final String selectGoogleCalendarIdSQL = "select * from googleCalendarMatch where userId = ?";
+	private final String insertGoogleCalendarIdSQL = "insert into googleCalendarMatch value (?,?)";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -148,6 +150,47 @@ public class CalendarManager
 		}
 	}
 	
+	public String getGoogleCalendarId(String userId)
+	{
+		String gcId = null;
+		try
+		{
+			pst = con.prepareStatement(selectGoogleCalendarIdSQL);
+			pst.setString(1, userId);
+			result = pst.executeQuery();
+			while(result.next())
+			{
+				gcId = result.getString("googleCalendarId");
+			}
+		} catch (final SQLException x)
+		{
+			System.out.println("CalendarManager-getGoogleCalendarId");
+			System.out.println("Exception select" + x.toString());
+		} finally
+		{
+			Close();
+		}
+		return gcId;
+	}
+	
+	public void setGoogleCalendarId(String userId, String gcId)
+	{
+		try
+		{
+			pst = con.prepareStatement(insertGoogleCalendarIdSQL);
+			pst.setString(1, userId);
+			pst.setString(2, gcId);
+			pst.executeUpdate();
+		} catch (final SQLException x)
+		{
+			System.out.println("CalendarManager-setGoogleCalendarId");
+			System.out.println("Exception insert" + x.toString());
+		} finally
+		{
+			Close();
+		}
+	}
+	
 	public void Close() {
 		try {
 			if(result!=null) {
@@ -164,6 +207,7 @@ public class CalendarManager
 			System.out.println("CalendarManager Close Exception :" + e.toString()); 
 		}		
 	} 
+	
 	public void conClose() {
 		try {
 			if(con!=null) {

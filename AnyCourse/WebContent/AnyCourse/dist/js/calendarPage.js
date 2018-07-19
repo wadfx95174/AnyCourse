@@ -2,6 +2,7 @@
 var ajaxURL="http://localhost:8080/";
 var googleEvents;	// 存 Google Calendar Events
 var fullEvents;		// 存 FullCalendar Events
+var googleCalendarId = "j5hm33p0p8vkp8lg4rkls6pnek@group.calendar.google.com"; // 存 Google Calendar Id
 
 /* ----------------------------------- Google ----------------------------------- */
 
@@ -59,14 +60,42 @@ function initClient() {
  *  appropriately. After a sign-in, the API is called.
  */
 function updateSigninStatus(isSignedIn) {
-  if (isSignedIn) {
+	
+
+
+	
+    if (isSignedIn) {
+	var promiseGoogle = $.ajax({
+		url: ajaxURL+'AnyCourse/CalendarServlet.do',
+		type: 'GET',
+		dataType: 'text', 
+		cache :false,
+		data: {
+			method: 'getGCId'
+		},
+		error: function(){
+			console.log('get GoogleCalendar error!');
+		},
+		success: function(response){ // 回傳 id
+			if (response != "")
+			{
+				googleCalendarId = response;
+				console.log(googleCalendarId);
+			}
+			else
+			{
+				console.log("insert");
+				insertCalendar();
+			}
+		}
+	});
     authorizeButton.style.display = 'none';
     // 開始時間從當下時間往前推一個月
 	var date = new Date()
 	date.setMonth(date.getMonth()-1);
 	// 取得google calendar events
     gapi.client.calendar.events.list({
-        'calendarId': 'primary',	// 取個人日曆
+        'calendarId': googleCalendarId,	// 取個人日曆
         'timeMin': date.toISOString(),	// 從哪天開始
         'showDeleted': false,
         'singleEvents': true,
@@ -117,7 +146,7 @@ function addEvent(event)
 	if (!event.allDay)	// 存 AllDay (dateTime)
 	{
 		var request = gapi.client.calendar.events.insert({
-	        'calendarId': 'primary',
+	        'calendarId': googleCalendarId,
 	        'resource': {
 		        'summary': event.title,
 		        'location': '',
@@ -137,7 +166,7 @@ function addEvent(event)
 	else	// 存非 AllDay (date)
 	{
 		var request = gapi.client.calendar.events.insert({
-	        'calendarId': 'primary',
+	        'calendarId': googleCalendarId,
 	        'resource': {
 		        'summary': event.title,
 		        'location': '',
@@ -198,7 +227,7 @@ function updateEvent(event)
 	{
 		console.log('!allday');
 		var request = gapi.client.calendar.events.patch({
-	        'calendarId': 'primary',
+	        'calendarId': googleCalendarId,
 	        'eventId': event.id,
 	        'resource': {
 		        'start': {
@@ -224,7 +253,7 @@ function updateEvent(event)
 		}
 		console.log(event.end);
 		var request = gapi.client.calendar.events.patch({
-	        'calendarId': 'primary',
+	        'calendarId': googleCalendarId,
 	        'eventId': event.id,
 	        'resource': {
 		        'allDay': true,
@@ -248,10 +277,38 @@ function updateEvent(event)
 function deleteEvent(event)
 {
 	var request = gapi.client.calendar.events.delete({
-        'calendarId': 'primary',
+        'calendarId': googleCalendarId,
         'eventId': event.id,
     });
     request.execute();
+}
+
+// 新增 Google Calendar
+function insertCalendar() {
+    return gapi.client.calendar.calendars.insert({
+      "resource": {
+        "summary": "AnyCourse"
+      }
+    }).then(function(response) {
+        // Handle the results here (response.result has the parsed body).
+        console.log("Response", response);
+        $.ajax({
+			url: ajaxURL+'AnyCourse/CalendarServlet.do',
+			type: 'POST',
+			cache :false,
+			data: {
+				method: 'setGCId',
+				gcId: response.result.id
+			},
+			error: function(){
+				console.log('set GoogleCalendarId error!');
+			},
+			success: function(){
+				googleCalendarId = response.result.id;
+				console.log(googleCalendarId);
+			}
+        })
+    },function(err) { console.error("Execute error", err); });
 }
 
 /* ----------------------------------- Calendar Page Init ----------------------------------- */
@@ -280,14 +337,16 @@ $(function () {
   	
     // 初始化行事曆
     
+    var calendarPromises = [];
+    
     // 從資料庫取得行事曆的資料，並更新至頁面
-    $.ajax({
+    var promiseNative = $.ajax({
 		url: ajaxURL+'AnyCourse/CalendarServlet.do',
 		type: 'GET',
-		dataType: "json", 
+		dataType: 'json', 
 		cache :false,
 		data: {
-			method:"getEvent"
+			method: 'getEvent'
 		},
 		error: function(){
 			console.log('get CalendarInfo error!');
@@ -295,9 +354,15 @@ $(function () {
 		success: function(response){
 			console.log(response);
 			fullEvents = response;
-			initCalendar(fullEvents);
 		}
 	})
+	
+	Promise.all(calendarPromises).then(function(){
+		initCalendar(fullEvents);
+    });
+			
+	
+	
 	
     // 自訂事件
     var currColor = "#3c8dbc"; // 預設為紅色
@@ -407,7 +472,7 @@ function initCalendar(eventSrc)
         // 結合Google日曆
         googleCalendarApiKey: 'AIzaSyAz3zOHiCMMnShglhMhAvFsRl10juJs2oo',
         eventSources:{
-	        googleCalendarId: 'primary'
+	        googleCalendarId: googleCalendarId		//'primary'
         },
         // 資料庫中的事件
         events: eventSrc,
