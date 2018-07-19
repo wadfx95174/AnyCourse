@@ -49,10 +49,7 @@
 	rel="stylesheet" type="text/css" />
 	
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-<link href="../dist/css/videoList.css" rel="stylesheet"
-	type="text/css" />
-<link href="../dist/css/searchResult.css" rel="stylesheet" type="text/css">
-
+<link rel="stylesheet" href="../dist/css/Setting.css" type="text/css" />
 
 
 
@@ -117,68 +114,133 @@
 			<section class="content">
 				<div class="row">
 					<section class="content col-md-12">
-						<div class="box box-primary">
-							<!-- box-header -->
-							<div class="box-header ui-sortable-handle">
-								<i class="fa fa-search"></i>
-								<h3 class="box-title">
-									<strong>設定</strong>
-								</h3>
-							</div>
-							<!-- /.box-header -->
-							<!-- box-body -->
-							<div class="register-box-body">
-						        <form action="../../LoginVerificationServlet.do" method="post" onsubmit="return checkInput(this);">
-						          <div>
-						         	帳號: <span id="account"></span>
-						          </div>						          
-						          <br>
-						          <input type="hidden" name="method" value="register"/>
-						          <span style="color:red">*</span>暱稱: <span id ="nickNamePrompt" style="color:red"></span>
-						          <div class="form-group has-feedback">
-						            <input type="text" name="Nickname" id ="nickName" class="form-control" placeholder="Nickname" required/>
-						            <span class="glyphicon glyphicon-sunglasses form-control-feedback"></span>
-						          </div>
-						          <span style="color:red">*</span>信箱: <span id ="emailPrompt" style="color:red"></span>
-						          <div class="form-group has-feedback">
-						            <input type="text" name="Email" id ="email" class="form-control" placeholder="Email" required/>
-						            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-						          </div>
-						          <span style="color:red">*</span>舊密碼: <span id ="oldPasswordPrompt" style="color:red"></span>
-						          <div class="form-group has-feedback">
-						            <input type="password" name="oldPassword" id ="oldPassword" class="form-control" placeholder="oldPassword" required/>
-						            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-						          </div>
-						          <span style="color:red">*</span>新密碼: <span id ="newPasswordPrompt" style="color:red"></span>
-						          <div class="form-group has-feedback">
-						            <input type="password" name="newPassword" id ="newPassword" class="form-control" placeholder="newPassword" required/>
-						            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-						          </div>
-						          <span style="color:red">*</span>確認密碼: <span id ="confirmPwPrompt" style="color:red"></span>
-						          <div class="form-group has-feedback">
-						            <input type="password" class="form-control" id ="confirmPw" placeholder="Retype password" required/>
-						            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
-						          </div>
-						          <div class="row">
-						            <div class="col-xs-8">    
-						              <div class="checkbox icheck">
-						                <label>
-						                  <span style="color:red">*</span>為必填
-						                </label>
-						              </div>                        
-						            </div><!-- /.col -->
-						            <div class="col-xs-4">
-						              <button type="submit" class="btn btn-primary btn-block btn-flat">送出變更</button>
-						            </div><!-- /.col -->
-						          </div>
-						
-						        </form>        
-						      </div><!-- /.form-box -->
-						    </div><!-- /.register-box -->	
+						<div class="row">
+							<div class="box box-primary">
+								<!-- box-header -->
+								<div class="box-header ui-sortable-handle">
+									<i class="fa fa-search"></i>
+									<h3 class="box-title">
+										<strong>設定</strong>
+									</h3>
+								</div>
+								<!-- /.box-header -->
+								<!-- box-body -->
+								<div class="box-body">
+									<div class="user-img">
+										<img src="../dist/img/user2-160x160.jpg" alt="User Image" />
+									</div>
+									<div class="row">
+										<div class="col-xs-3"></div>
+										<div class="col-xs-6">
+											<ul class="list-group user-info">
+												<li class="list-group-item">
+													<span>帳號：</span>
+													<!-- <input type="text" class="input-text" id="user-id" disabled="disabled"> -->
+													<span id="user-id"></span>
+												</li>
+											</ul>
+										</div>
+										<div class="col-xs-3">
+											<!-- <input type="button" id="edit-id" class="edit-btn btn btn-info" value="更改"> -->
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-3"></div>
+										<div class="col-xs-6">
+											<ul class="list-group user-info">
+												<li class="list-group-item">
+													<span>暱稱：</span>
+													<input type="text" class="input-text" id="user-nickname" disabled="disabled">
+													&nbsp;<span class="prompt" id="nickname-prompt"></span>
+												</li>
+											</ul>
+										</div>
+										<div class="col-xs-3">
+											<input type="button" id="edit-nickname" class="edit-btn btn btn-info" value="更改">
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-3"></div>
+										<div class="col-xs-6">
+											<ul class="list-group user-info">
+												<li class="list-group-item">
+													<span>信箱：</span>
+													<!-- <span id="user-email"></span> -->
+													<input type="text" class="input-text" id="user-email" disabled="disabled">
+													&nbsp;<span class="prompt" id="email-prompt"></span>
+												</li>
+											</ul>
+										</div>
+										<div class="col-xs-3">
+											<input type="button" id="edit-email" class="edit-btn btn btn-info" value="更改">
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-3"></div>
+										<div class="col-xs-6">
+											<ul class="list-group user-info">
+												<li class="list-group-item">
+													<span>密碼：</span>
+													<input type="password" class="input-text" id="user-password" disabled="disabled">
+													&nbsp;<span class="prompt" id="password-prompt"></span>
+												</li>
+											</ul>
+										</div>
+										<div class="col-xs-3">
+											<input type="button" id="edit-password" class="edit-btn btn btn-info" value="更改">
+										</div>
+									</div>
+								<!-- 
+							        <form action="../../LoginVerificationServlet.do" method="post" onsubmit="return checkInput(this);">
+							            <div>
+							         	帳號: <span id="account"></span>
+							            </div>						          
+							            <br>
+							            <input type="hidden" name="method" value="register"/>
+							            <span style="color:red">*</span>暱稱: <span id ="nickNamePrompt" style="color:red"></span>
+							            <div class="form-group has-feedback">
+							                <input type="text" name="Nickname" id ="nickName" class="form-control" placeholder="Nickname" required/>
+							                <span class="glyphicon glyphicon-sunglasses form-control-feedback"></span>
+							            </div>
+							            <span style="color:red">*</span>信箱: <span id ="emailPrompt" style="color:red"></span>
+							            <div class="form-group has-feedback">
+							                <input type="text" name="Email" id ="email" class="form-control" placeholder="Email" required/>
+							                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+							            </div>
+							            <span style="color:red">*</span>舊密碼: <span id ="oldPasswordPrompt" style="color:red"></span>
+							            <div class="form-group has-feedback">
+							                <input type="password" name="oldPassword" id ="oldPassword" class="form-control" placeholder="oldPassword" required/>
+							                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+							            </div>
+							            <span style="color:red">*</span>新密碼: <span id ="newPasswordPrompt" style="color:red"></span>
+							            <div class="form-group has-feedback">
+							                <input type="password" name="newPassword" id ="newPassword" class="form-control" placeholder="newPassword" required/>
+							                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+							            </div>
+							            <span style="color:red">*</span>確認密碼: <span id ="confirmPwPrompt" style="color:red"></span>
+							            <div class="form-group has-feedback">
+							                <input type="password" class="form-control" id ="confirmPw" placeholder="Retype password" required/>
+							                <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+							            </div>
+							            <div class="row">
+							                <div class="col-xs-8">    
+							                    <div class="checkbox icheck">
+							                        <label>
+							                            <span style="color:red">*</span>為必填
+							                        </label>
+							                    </div>                        
+							                </div>
+							                <div class="col-xs-4">
+							                    <button type="submit" class="btn btn-primary btn-block btn-flat">送出變更</button>
+							                </div>
+							            </div>
+							        </form>        
+							      -->
+							    </div><!-- /.form-box -->
+							</div><!-- /.register-box -->	
 							<!-- /.box-body -->
 						</div>
 					</section>
-					
 				</div>
 			</section>
 		</div>
@@ -235,8 +297,6 @@
 	<script src="../dist/js/app.js" type="text/javascript"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="../dist/js/demo.js" type="text/javascript"></script>
-	<!-- VideoListJS <script src="../dist/js/videoList.js" type="text/javascript"></script>-->
-	
 	<!-- Account -->
 	<script src="../dist/js/account.js" type="text/javascript"></script>
 	<!-- AutoComplete -->

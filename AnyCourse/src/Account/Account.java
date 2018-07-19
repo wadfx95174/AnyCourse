@@ -1,12 +1,23 @@
 package Account;
 
+import java.util.Map;
+
 public class Account
 {
 	private String userId;
 	private String nickName;
 	private String pictureUrl;
+	private Map<String, Integer> groups;
 	public String getUserId() {
 		return userId;
+	}
+	public Map<String, Integer> getGroups()
+	{
+		return groups;
+	}
+	public void setGroups(Map<String, Integer> groups)
+	{
+		this.groups = groups;
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;

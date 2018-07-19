@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
+import Group.Management.ManagementManager;
+
 public class LoginVerificationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,6 +50,7 @@ public class LoginVerificationServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LoginVerificationManager manager= new LoginVerificationManager(); 
+		ManagementManager managementManager = new ManagementManager();
 		response.setContentType("text/html");
 		response.setHeader("Cache-Control","max-age=0");
 		request.setCharacterEncoding("UTF-8");
@@ -69,6 +72,7 @@ public class LoginVerificationServlet extends HttpServlet {
 				session.setAttribute("userId", user.getUserId());
 				session.setAttribute("nickName", user.getNickName());
 				session.setAttribute("pictureUrl", user.getPictureUrl());
+				session.setAttribute("groups", managementManager.getPersonalGroups(user.getUserId()));
 				response.sendRedirect("AnyCourse/HomePage.html");
 			}
 		}

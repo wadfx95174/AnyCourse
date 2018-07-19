@@ -5,6 +5,14 @@
     <welcome-file>/AnyCourse/HomePage.html</welcome-file>
   </welcome-file-list>
   <servlet>
+    <servlet-name>GroupCommentServlet</servlet-name>
+    <servlet-class>Group.Forum.GroupCommentServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>GroupReplyServlet</servlet-name>
+    <servlet-class>Group.Forum.GroupReplyServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>PersonalTextNoteServlet</servlet-name>
     <servlet-class>Personal.PersonalNote.PersonalTextNoteServlet</servlet-class>
   </servlet>
@@ -92,6 +100,22 @@
     <servlet-name>AccountServlet</servlet-name>
     <servlet-class>Account.AccountServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>SettingServlet</servlet-name>
+    <servlet-class>Setting.SettingServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ManagementServlet</servlet-name>
+    <servlet-class>Group.Management.ManagementServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GroupCommentServlet</servlet-name>
+    <url-pattern>/GroupCommentServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GroupReplyServlet</servlet-name>
+    <url-pattern>/GroupReplyServlet.do</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>PersonalTextNoteServlet</servlet-name>
     <url-pattern>/PersonalTextNoteServlet.do</url-pattern>
@@ -180,9 +204,17 @@
     <servlet-name>AccountServlet</servlet-name>
     <url-pattern>/AccountServlet.do</url-pattern>
   </servlet-mapping>
-  <!-- <listener>
+  <servlet-mapping>
+    <servlet-name>SettingServlet</servlet-name>
+    <url-pattern>/SettingServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ManagementServlet</servlet-name>
+    <url-pattern>/ManagementServlet.do</url-pattern>
+  </servlet-mapping>
+  <listener>
     <listener-class>
 		DataHandle.DataUpdateListener
 	</listener-class>
-  </listener> -->
+  </listener>
 </web-app>

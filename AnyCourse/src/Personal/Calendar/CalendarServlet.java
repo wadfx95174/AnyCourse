@@ -31,6 +31,11 @@ public class CalendarServlet extends HttpServlet {
 			CoursePlanManager coursePlanManager = new CoursePlanManager();
 			response.getWriter().write(new Gson().toJson(coursePlanManager.getCoursePlanAllList(userId)));
 		}
+		else if (request.getParameter("method").equals("getGCId"))
+		{
+			String gcId = calendarManager.getGoogleCalendarId(userId);
+			response.getWriter().write(gcId != null ? gcId : "");
+		}
 		calendarManager.conClose();
 	}
 	
@@ -39,6 +44,8 @@ public class CalendarServlet extends HttpServlet {
 		CalendarDTO event = new CalendarDTO();
 		response.setHeader("Cache-Control","max-age=0");
 		String method = request.getParameter("method");
+		HttpSession session = request.getSession();
+		String userId = (String)session.getAttribute("userId");
 		if (method.equals("insert"))
 		{
 			response.setContentType("application/json");
@@ -50,14 +57,17 @@ public class CalendarServlet extends HttpServlet {
 			event.setAllDay(request.getParameter("allDay").equals("true"));
 			event.setBackgroundColor(request.getParameter("backgroundColor"));
 			event.setBorderColor(request.getParameter("borderColor"));
-			HttpSession session = request.getSession();
-			int newId = calendarManager.insertEvent(event, (String)session.getAttribute("userId"));
+			int newId = calendarManager.insertEvent(event, userId);
 			String json = new Gson().toJson(newId);
 			response.getWriter().write(json);
 		}
 		else if (method.equals("delete"))
 		{
 			calendarManager.deleteEvent(Integer.parseInt(request.getParameter("eventId")));
+		}
+		else if (method.equals("setGCId"))
+		{
+			calendarManager.setGoogleCalendarId(userId, request.getParameter("gcId"));
 		}
 		else
 		{

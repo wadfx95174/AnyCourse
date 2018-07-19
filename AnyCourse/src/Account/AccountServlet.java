@@ -1,6 +1,9 @@
 package Account;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +33,7 @@ public class AccountServlet extends HttpServlet {
 			account.setUserId((String)session.getAttribute("userId"));
 			account.setNickName((String)session.getAttribute("nickName"));
 			account.setPictureUrl((String)session.getAttribute("pictureUrl"));
+			account.setGroups((Map<String, Integer>)session.getAttribute("groups"));
 		}
 		Gson gson = new Gson();
 		response.getWriter().print(gson.toJson(account));
