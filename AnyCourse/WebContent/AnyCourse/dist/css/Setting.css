@@ -1,0 +1,17 @@
+.user-img {
+	text-align: center;
+	margin-bottom: 80px;
+}
+
+.edit-btn {
+	margin-top: 9px;
+	margin-left: -20px;
+}
+
+.input-text,#user-id {
+	padding: 4px 12px;
+}
+
+.prompt {
+	color: red;
+}

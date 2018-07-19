@@ -9,30 +9,94 @@ var newPasswordCheck = false;
 var confirmPwCheck = false;
 var emailCheck = false;
 
+var current;
 
 $(document).ready(function() {
 	checkLogin("", "../../");	
-	  if ($('#nickName').val())nickName();
-	  if ($('#email').val())email();
-	  if ($('#oldPasswordCheck').val())oldPassword();
-	  if ($('#newPasswordCheck').val())newPassword();
-	  if ($('#confirmPw').val())confirmPw();
+//	  if ($('#nickName').val())nickName();
+//	  if ($('#email').val())email();
+//	  if ($('#oldPasswordCheck').val())oldPassword();
+//	  if ($('#newPasswordCheck').val())newPassword();
+//	  if ($('#confirmPw').val())confirmPw();
+	$.ajax({
+		url: ajaxURL+'AnyCourse/SettingServlet.do',
+		method: 'GET',
+		cache: true,
+		success: function(response)
+		{
+			console.log(response);
+			$('#user-id').text(response.userId);
+			$('#user-nickname').val(response.nickName);
+			$('#user-email').val(response.email);
+		},
+		errer: function()
+		{
+			console.log('get setting info error');
+		}
+	})
+})
+
+// 按下更改按鈕
+$(document).on('click','.btn-info',function(){
+	if (current != null)
+	{
+		current.attr('disabled', 'disabled');
+		$('.btn-primary').addClass('btn-info');
+		$('.btn-primary').attr('value','更改');
+		$('.btn-primary').removeClass('btn-primary');
+	}
+	var btnType = $(this).attr("id").split('-')[1];
+	current = $('#user-'+btnType);
+	current.removeAttr('disabled');
+	$(this).attr('value','送出');
+	$(this).removeClass('btn-info');
+	$(this).addClass('btn-primary');
+})
+
+// 按下送出按鈕
+$(document).on('click','.btn-primary',function(){
+	var btnType = $(this).attr("id").split('-')[1];
+	if (current != null)
+	{
+		current.attr('disabled', 'disabled');
+		$.ajax({
+			url: ajaxURL+'AnyCourse/SettingServlet.do',
+			method: 'POST',
+			cache: false,
+			data: {
+				info: current.val(),
+				type: btnType
+			},
+			success: function(response){
+				alert('success update')
+			},
+			errer: function(){
+				console.log('set ' +btnType+ ' info error');
+			}
+		})
+		$('.btn-primary').addClass('btn-info');
+		$('.btn-primary').removeClass('btn-primary');
+	}
+	console.log(btnType);
+	$(this).attr('value','更改');
+	$(this).removeClass('btn-primary');
+	$(this).addClass('btn-info');
 })
 
 //檢查"暱稱"欄位 
-$('#nickName').change(function nickName(){
+$('#user-nickname').change(function nickName(){
  nickNameCheck = false;
     var reg = /^[0-9a-zA-Z\u3E00-\u9FA5]{1,16}$/;//1-16字節，可以中文
-    var nickName = $("#nickName").val();
+    var nickName = $("#user-nickname").val();
     
     if (nickName == "") {
-		$("#nickNamePrompt").html("暱稱不能為空！");
+		$("#nickname-prompt").html("暱稱不能為空！");
 		return false;
 	} else if (!reg.test(nickName)) {
-		$("#nickNamePrompt").html("不合法的格式！(1~16個字)")
+		$("#nickname-prompt").html("不合法的格式！(1~16個字)")
 		return false;
 	} else {
-		$("#nickNamePrompt").html("");
+		$("#nickname-prompt").html("");
 		nickNameCheck = true;
 		return true;
 	}
