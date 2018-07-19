@@ -14,6 +14,7 @@ function checkLogin(htmlUrl, servletUrl)
     	method: 'POST',
     	cache :false,
     	success: function(result){
+    		console.log(result);
     		if (result.userId)
     		{
     			$('.navbar-nav').append(
@@ -82,6 +83,19 @@ function checkLogin(htmlUrl, servletUrl)
     					+'<li class="active treeview">'
     					+'<a href="#">'
     					+'<i class="fa fa-user"></i> '
+    					+'<span>群組頁面</span><i class="fa fa-angle-left pull-right"></i>'
+    					+'</a>'
+    					+'<ul id="group" class="treeview-menu ">'
+    					+'<li class="active">'
+    					+'<a href="'+ htmlUrl +'Group/CreateGroup.html">'
+    					+'<span>---建立群組---</span>'
+    					+'</a>'
+    					+'</li>'
+    					+'</ul>'
+    					+'</li>'
+    					+'<li class="active treeview">'
+    					+'<a href="#">'
+    					+'<i class="fa fa-user"></i> '
     					+'<span>個人頁面</span><i class="fa fa-angle-left pull-right"></i>'
     					+'</a>'
     					+'<ul class="treeview-menu ">'
@@ -112,6 +126,15 @@ function checkLogin(htmlUrl, servletUrl)
     					+'</a>'
     					+'</li>'
     			);
+
+    			for (var keys in result.groups)
+				{
+        			$('#group').append('<li class="active">'
+        					+'<a href="'+ htmlUrl +'Group/Management.html?groupId=' + result.groups[keys] + '">'
+        					+'<span>' + keys + '</span>'
+        					+'</a>'
+        					+'</li>')
+				}
     		}
     		else
     		{

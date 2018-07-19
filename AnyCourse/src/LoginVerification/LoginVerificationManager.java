@@ -9,12 +9,15 @@ import java.sql.Statement;
 
 public class LoginVerificationManager
 {
-	private String selectPasswordSQL = "select password from account where userId = ? or email = ?";
-	private String selectUserSQL = "select * from account where userId = ? or email = ?";
-	private String selectUserIdSQL = "select userId from account where userId = ? or email = ?";
-	private String insertAccountTableSQL = "insert into account value (null,?,null,?,null,?,?,null)";
-	private String insertFavoriteCourseSQL = "insert into favoriteCourse value(?,?)";
-	private String insertGoogleAccountSQL = "insert ignore into account (userId,email,nickName,pictureUrl) values (?,?,?,?)";
+	private final String selectPasswordSQL = "select password from account where userId = ? or email = ?";
+	private final String selectUserSQL = "select * from account where userId = ? or email = ?";
+	private final String selectUserIdSQL = "select userId from account where userId = ? or email = ?";
+	private final String insertAccountTableSQL = "insert into account value (null,?,null,?,null,?,?,null)";
+	private final String insertFavoriteCourseSQL = "insert into favoriteCourse value(?,?)";
+	private final String insertGoogleAccountSQL = "insert ignore into account (userId,email,nickName,pictureUrl) values (?,?,?,?)";
+	private final String updateNickNameSQL = "update account set nickName = ? where userId = ?";
+	private final String updateEmailSQL = "update account set email = ? where userId = ?";
+	private final String updatePasswordSQL = "update account set password = ? where userId = ?";
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -87,6 +90,7 @@ public class LoginVerificationManager
 				user.setUserId(result.getString("userId"));
 				user.setNickName(result.getString("nickName"));
 				user.setPictureUrl(result.getString("pictureUrl"));
+				user.setEmail(result.getString("email"));
 				return user;
 			}
 		}
