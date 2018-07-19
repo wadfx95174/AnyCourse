@@ -1,6 +1,6 @@
-package Forum;
+package Group.Forum;
 
-public class Reply {
+public class GroupReply {
 	public int replyId;
 	public int commentId;
 	public String userId;
@@ -43,10 +43,5 @@ public class Reply {
 	public void setReplyContent(String replyContent) {
 		this.replyContent = replyContent;
 	}
-
-	@Override
-	public String toString() {
-		return "Reply [replyId=" + replyId + ", commentId=" + commentId + ", userId=" + userId + ", nickName="
-				+ nickName + ", replyTime=" + replyTime + ", replyContent=" + replyContent + "]";
-	}
+	
 }

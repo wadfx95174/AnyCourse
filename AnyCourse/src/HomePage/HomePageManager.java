@@ -130,8 +130,8 @@ public class HomePageManager {
 				homePage = new HomePage();
 				homePage.setListName(result.getString("courselist.listName"));
 				homePage.setUnitName(result.getString("unit.unitName"));
-				homePage.setSchoolName(result.getString("courselist.schoolName"));
-				homePage.setTeacher(result.getString("courselist.teacher"));
+				homePage.setSchoolName(result.getString("unit.schoolName"));
+				homePage.setTeacher(result.getString("unit.teacher"));
 				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
 				homePage.setUnitId(result.getInt("unit.unitId"));
@@ -175,8 +175,8 @@ public class HomePageManager {
 				homePage = new HomePage();
 				homePage.setListName(result.getString("courselist.listName"));
 				homePage.setUnitName(result.getString("unit.unitName"));
-				homePage.setSchoolName(result.getString("courselist.schoolName"));
-				homePage.setTeacher(result.getString("courselist.teacher"));
+				homePage.setSchoolName(result.getString("unit.schoolName"));
+				homePage.setTeacher(result.getString("unit.teacher"));
 				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setListLikes(result.getInt("courselist.likes"));
 				homePage.setUnitId(result.getInt("unit.unitId"));
@@ -228,18 +228,8 @@ public class HomePageManager {
 				homePage.setAccountId(result.getInt("recommendedResult.accountId"));
 				homePage.setListName(result.getString("courselist.listName"));
 				homePage.setUnitName(result.getString("unit.unitName"));
-				if(result.getString("courselist.schoolName") == null) {
-					homePage.setSchoolName("未知學校");
-				}
-				else {
-					homePage.setSchoolName(result.getString("courselist.schoolName"));
-				}
-				if(result.getString("courselist.teacher") == null) {
-					homePage.setTeacher("未知");
-				}
-				else {
-					homePage.setTeacher(result.getString("courselist.teacher"));
-				}
+				homePage.setSchoolName(result.getString("unit.schoolName"));
+				homePage.setTeacher(result.getString("unit.teacher"));
 				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
 				homePage.setUnitId(result.getInt("unit.unitId"));
@@ -294,18 +284,8 @@ public class HomePageManager {
 					homePage = new HomePage();
 					homePage.setAccountId(result.getInt("recommendedResult.accountId"));
 					homePage.setListName(result.getString("courselist.listName"));
-					if(result.getString("courselist.schoolName") == null) {
-						homePage.setSchoolName("未知學校");
-					}
-					else {
-						homePage.setSchoolName(result.getString("courselist.schoolName"));
-					}
-					if(result.getString("courselist.teacher") == null) {
-						homePage.setTeacher("未知");
-					}
-					else {
-						homePage.setTeacher(result.getString("courselist.teacher"));
-					}
+					homePage.setSchoolName(result.getString("unit.schoolName"));
+					homePage.setTeacher(result.getString("unit.teacher"));
 					homePage.setCourselistId(result.getInt("courselist.courselistId"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
 					homePage.setUnitId(result.getInt("unit.unitId"));
@@ -382,18 +362,8 @@ public class HomePageManager {
 					homePage = new HomePage();
 					homePage.setUserId(result.getString("list.userId"));
 					homePage.setListName(result.getString("courselist.listName"));
-					if(result.getString("courselist.schoolName") == null) {
-						homePage.setSchoolName("未知學校");
-					}
-					else {
-						homePage.setSchoolName(result.getString("courselist.schoolName"));
-					}
-					if(result.getString("courselist.teacher") == null) {
-						homePage.setTeacher("未知");
-					}
-					else {
-						homePage.setTeacher(result.getString("courselist.teacher"));
-					}
+					homePage.setSchoolName(result.getString("unit.schoolName"));
+					homePage.setTeacher(result.getString("unit.teacher"));
 					homePage.setCourselistId(result.getInt("list.courselistId"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
 					homePage.setUnitId(result.getInt("customListVideo.unitId"));
@@ -448,18 +418,8 @@ public class HomePageManager {
 				homePage.setUserId(result.getString("personalPlan.userId"));
 				homePage.setUnitName(result.getString("unit.unitName"));
 				homePage.setListName(result.getString("courselist.listName"));
-				if(result.getString("courselist.schoolName") == null) {
-					homePage.setSchoolName("未知學校");
-				}
-				else {
-					homePage.setSchoolName(result.getString("courselist.schoolName"));
-				}
-				if(result.getString("courselist.teacher") == null) {
-					homePage.setTeacher("未知");
-				}
-				else {
-					homePage.setTeacher(result.getString("courselist.teacher"));
-				}
+				homePage.setSchoolName(result.getString("unit.schoolName"));
+				homePage.setTeacher(result.getString("unit.teacher"));
 				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
 				homePage.setUnitId(result.getInt("unit.unitId"));
@@ -512,18 +472,8 @@ public class HomePageManager {
 				homePage.setUserId(result.getString("personalPlan.userId"));
 				homePage.setUnitName(result.getString("unit.unitName"));
 				homePage.setListName(result.getString("courselist.listName"));
-				if(result.getString("courselist.schoolName") == null) {
-					homePage.setSchoolName("未知學校");
-				}
-				else {
-					homePage.setSchoolName(result.getString("courselist.schoolName"));
-				}
-				if(result.getString("courselist.teacher") == null) {
-					homePage.setTeacher("未知");
-				}
-				else {
-					homePage.setTeacher(result.getString("courselist.teacher"));
-				}
+				homePage.setSchoolName(result.getString("unit.schoolName"));
+				homePage.setTeacher(result.getString("unit.teacher"));
 				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
 				homePage.setUnitId(result.getInt("unit.unitId"));

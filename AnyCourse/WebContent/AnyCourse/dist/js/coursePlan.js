@@ -7,98 +7,94 @@ $('#unit').slimScroll({
 $('.box-body').slimScroll({
 	  height: '420px;'
 	  });
-var checkId;
-var listArray;//用來儲存影片的unitId
+var checkListId;
+var checkUnitId;
+var listArray;
+var unitArray;
+
 $(document).ready(function() {
 	checkLogin("../", "../../../");
 	
+	var listId = 1;
 	var videoId = 1;//設置每個影片的Id
+
 	$.ajax({
 		url:ajaxURL+'AnyCourse/CoursePlanServlet.do',
 		method:'GET',
-		cache :false,
-		success:function(result){
-			var listType;
-			listArray = new Array(result.length);
-			for(var i = 0;i < result.length; i++){
-				//想要觀看
-				if(result[i].status == 1)listType = '#wantList';
-				//正在觀看
-				else if(result[i].status == 2)listType = '#ingList';
-				//已觀看完
-				else if(result[i].status == 3)listType = '#doneList';
-					
-				$(listType).append('<li id ="videoId_'+videoId+'" class="portlet" style="cursor:pointer;">'
-						+'<span class="handle portlet-header">'
-						+'<i class="fa fa-ellipsis-h"></i>'
-						+'</span>'
-						+'<div class="btn-group" style="top: -5px;">'
-						+'<button type="button" class="btn btn-noColor dropdown-toggle"'
-						+'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
-						+'<span class="caret"></span>'
-						+'</button>'
-						+'<ul class="dropdown-menu">'
-						+'<li>'
-						+'<a data-toggle="modal" data-target="#addToVideoList" onclick="getId('+videoId+')" style="cursor:pointer;" class=" waves-effect waves-block">'
-						+'<i class="ion ion-clipboard"></i>新增至課程清單'
-						+'</a>'
-						+'</li>'
-						+'</ul>'
-						+'</div>'
-						+'<span class="pull-right">' 
-						+'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal"'
-						+'onclick="getId('+videoId+')" style="cursor: pointer;"></i>'
-						+'</span>'
-						+'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[i].unitId + ',' + result[i].videoType + ',' + result[i].lastTime+')">'
-						+'<div class="info-card">'
-						+'<div class="embed-responsive embed-responsive-16by9">'
-						+'<img id="img" class="style-scope yt-img-shadow" alt="" style="width:100%;" src="'+result[i].videoImgSrc+'">' 
-						+'</div>'
-						+'<div class="info-card-details animate">'
-						+'<div class="info-card-header">'
-						+'<h3 class="unitNameTitle">'+ result[i].unitName +'</h3>'
-						+'<h4>'+ result[i].schoolName +'</h4>'
-						+'</div>'
-						+'<div class="info-card-detail">'
-						+'<h4>授課教師:'+result[i].teacher+'</h4>'
-						+'<h4>清單名稱:'+result[i].listName+'</h4>'
-						+'<h4>'+result[i].likes+'人喜歡</h4>'
-						+'</div>'
-						+'</div>'
-						+'</div>'
-						+'</a>'
-						+'</li>');
-				videoId++;
-				listArray[i] = new Array(3);
-				listArray[i][0] = result[i].unitId;
-				listArray[i][1] = result[i].courselistId;
-			}
-			
-			//將計畫中的影片新增至指定清單
-			$('#addToVideoListButton').click(function(){
-				$.ajax({
-					url : ajaxURL+'AnyCourse/HomePageServlet.do',
-					method : 'POST',
-					cache: false,
-					data:{
-						action:'addToVideoList',
-						courselistId:$('#addToVideoListModalBody').val(),
-						unitId:listArray[checkId-1][0]
-					},
-					success:function(result){
-						for(var i = 0;i < result.length;i++){
-							$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
-						}
-					},
-					error:function(){
-						console.log("add video to courselist error");
-					}
-				});
-			});
+		cache:false,
+		data:{
+			action : 'getVideoList'
 		},
-		error:function(){}
+		success:function(response){
+			// console.log(response);
+			listArray = new Array(response.length);
+			for(var i = 0; i < response.length;i++){
+				$('#allVideoListUL').append('<li id="videoListId_'+listId+'" onclick="getListId('+listId+')">'
+				  					+'<div class="row">'
+					                    +'<div class="col-xs-12">'
+						                    +'<a href="#unitSection" style="color:black;">'
+							                    +'<div style="width:100%;" class="text">'+response[i].listName
+							                    +'</div>'
+						                    +'</a>'
+					                    +'</div>'
+				                	+'</div>'
+				                	+'</li>');
+				$('#videoListId_'+listId).on("click" , function(){
+					videoId = 1;
+					$.ajax({
+						url:ajaxURL+'AnyCourse/CoursePlanServlet.do',
+						method:'GET',
+						cache:false,
+						data:{
+							action : 'getUnit',
+							courselistId : listArray[checkListId-1][0]
+						},
+						success:function(result){
+							$('#wantList li,#ingList li,#doneList li').each(function(){
+								$(this).remove();
+							});
+							console.log(result);
+							unitArray = new Array(result.length);
+							showUnitUL(result,unitArray,videoId);
+						},
+						error:function(){
+							console.log("get coursePlane unit failed");
+						}
+					})
+				});
+				listId++;
+				listArray[i] = new Array(2);
+				listArray[i][0] = response[i].courselistId;
+				listArray[i][1] = response[i].listName;
+			}
+		},
+		error:function(){
+			console.log('Get List failed');
+		}
 	});
 	
+	//該按鈕用來獲取所有影片
+	$("#coursePlanSelectAll").click(function(e){
+		$.ajax({
+			url : ajaxURL+'AnyCourse/CoursePlanServlet.do',
+			method : "GET",
+			cache : false,
+			data:{
+				action : "getAllUnit"
+			},
+			success:function(response){
+				$('#wantList li,#ingList li,#doneList li').each(function(){
+					$(this).remove();
+				});
+				console.log(response);
+				unitArray = new Array(response.length);
+				showUnitUL(response,unitArray,videoId);
+			},
+			error:function(){
+				console.log("get all unit error")
+			}
+		})
+	});
 	
 	//刪除影片
 	$("#deleteVideoButton").click(function(e){
@@ -109,10 +105,10 @@ $(document).ready(function() {
 			cache :false,
 		    data : {
 		    	action : 'deleteVideo',//代表要delete
-		    	unitId : listArray[checkId-1][0]
+		    	unitId : unitArray[checkUnitId-1][0]
 		    },
 			success:function(result){
-				$("#videoId_"+checkId).remove();
+				$("#videoId_"+checkUnitId).remove();
 	    	},
 			error:function(){console.log('Delete coursePlan video failed');}
 		});
@@ -174,7 +170,7 @@ $(document).ready(function() {
 		    			newIndex: newIndex + 1,//因為抓到的index是從0開始算，而資料庫是從1開始，所以要加1
 	    				sender: sender,
 		    			received: received,
-		    			unitId: listArray[id-1][0]//unitId
+		    			unitId: unitArray[id-1][0]//unitId
 		    		},
 		    		error:function(){
 		    			console.log("CoursePlan Sort Error!");
@@ -186,11 +182,89 @@ $(document).ready(function() {
 //----------------------/.jQueryUI的sortable套件，並且運用start、update兩個事件去把排序資料存進資料庫中-----------------//
 	
 });
-function getId(id){
-    checkId = id;
-  }
+function getListId(id){
+	checkListId = id;
+}
+function getUnitId(id){
+	checkUnitId = id;
+}
 //跳轉至播放介面
 function jumpToPlayerInterface(unitId,type,time){
     url = "../PlayerInterface.html?unitId="+unitId+"&type="+type+"&time="+time;//此處拼接內容
     window.location.href = url;
+}
+
+function showUnitUL(result,unitArray,videoId){
+	var listType;
+	for(var j = 0;j < result.length;j++){
+		//想要觀看
+		if(result[j].status == 1)listType = '#wantList';
+		//正在觀看
+		else if(result[j].status == 2)listType = '#ingList';
+		//已觀看完
+		else if(result[j].status == 3)listType = '#doneList';
+
+		$(listType).append('<li id ="videoId_'+videoId+'" class="portlet" style="cursor:pointer;">'
+				+'<span class="handle portlet-header">'
+				+'<i class="fa fa-ellipsis-h"></i>'
+				+'</span>'
+				+'<div class="btn-group" style="top: -5px;">'
+				+'<button type="button" class="btn btn-noColor dropdown-toggle"'
+				+'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+				+'<span class="caret"></span>'
+				+'</button>'
+				+'<ul class="dropdown-menu">'
+				+'<li><a data-toggle="modal" data-target="#addToVideoList" onclick="getUnitId('+videoId+')" style="cursor:pointer;" class=" waves-effect waves-block">'
+				+'<i class="ion ion-clipboard"></i>新增至課程清單'
+				+'</a></li></ul>'
+				+'</div>'
+				+'<span class="pull-right">' 
+				+'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal"'
+				+'onclick="getUnitId('+videoId+')" style="cursor: pointer;"></i>'
+				+'</span>'
+				+'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[j].unitId + ',' + result[j].videoType + ',' + result[j].lastTime+')">'
+				+'<div class="info-card">'
+				+'<div class="embed-responsive embed-responsive-16by9">'
+				+'<img id="img" class="style-scope yt-img-shadow" alt="" style="width:100%;" src="'+result[j].videoImgSrc+'">' 
+				+'</div>'
+				+'<div class="info-card-details animate">'
+				+'<div class="info-card-header">'
+				+'<h3 class="unitNameTitle">'+ result[j].unitName +'</h3>'
+				+'<h4>'+ result[j].schoolName +'</h4>'
+				+'</div>'
+				+'<div class="info-card-detail">'
+				+'<h4>授課教師:'+result[j].teacher+'</h4>'
+				+'<h4>清單名稱:'+result[j].listName+'</h4>'
+				+'<h4>'+result[j].likes+'人喜歡</h4>'
+				+'</div>'
+				+'</div>'
+				+'</div>'
+				+'</a>'
+				+'</li>');
+		videoId++;
+		unitArray[j] = new Array(2);
+		unitArray[j][0] = result[j].unitId;
+		unitArray[j][1] = result[j].courselistId;
+	}
+	//將計畫中的影片新增至指定清單
+	$('#addToVideoListButton').click(function(){
+		$.ajax({
+			url : ajaxURL+'AnyCourse/HomePageServlet.do',
+			method : 'POST',
+			cache: false,
+			data:{
+				action:'addToVideoList',
+				courselistId:$('#addToVideoListModalBody').val(),
+				unitId:unitArray[checkUnitId-1][0]
+			},
+			success:function(result){
+				for(var i = 0;i < result.length;i++){
+					$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
+				}
+			},
+			error:function(){
+				console.log("add video to courselist error");
+			}
+		});
+	});
 }

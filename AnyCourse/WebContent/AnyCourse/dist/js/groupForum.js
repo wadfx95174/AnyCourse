@@ -3,7 +3,7 @@ var ajaxURL="http://localhost:8080/";
 var state;
 var commentId =null;
 var replyId =null;
-var unitId;
+var groupId = 1;
 var userId;
 var nickName;
 var commentTime;
@@ -24,12 +24,12 @@ function setComment(){
 		commentContent = document.getElementById('commentArea').value;
 		$("#commentArea").val('');
 		$.ajax({
-			url : ajaxURL+'AnyCourse/CommentServlet.do',
+			url : ajaxURL+'AnyCourse/GroupCommentServlet.do',
 			method : 'POST',
 			cache :false,
 			data : {
 				"state" : "insert",	
-				"unitId" : get("unitId"),
+				"groupId" : groupId,
 				"userId" : userId,
 				"nickName" : nickName,
 				"commentContent" : commentContent,			
@@ -62,11 +62,11 @@ function setComment(){
 
 $(document).ready(function() {
 	$.ajax({
-		url : ajaxURL+'AnyCourse/CommentServlet.do',
+		url : ajaxURL+'AnyCourse/GroupCommentServlet.do',
 		method : 'GET',
 		cache :false,
 		data : {
-			"unitId" : get("unitId"),
+			"groupId" : groupId,
 		},
 		success:function(result){
     		for(var i = 0 ;i < result.length;i++){
@@ -91,7 +91,7 @@ $(document).ready(function() {
 	    			);    			
 			}	
     		$.ajax({
-    			url : ajaxURL+'AnyCourse/ReplyServlet.do',
+    			url : ajaxURL+'AnyCourse/GroupReplyServlet.do',
     			method : 'GET',
     			cache :false,
     			success : function(result) {
@@ -133,7 +133,7 @@ function setReply(input){
 		replyContent = document.getElementById('reply_area_'+id).value;
 		$("#reply_area_"+id).val('');		
 		$.ajax({
-			url : ajaxURL+'AnyCourse/ReplyServlet.do',
+			url : ajaxURL+'AnyCourse/GroupReplyServlet.do',
 			method : 'POST',
 			cache :false,
 			data : {
@@ -189,7 +189,7 @@ function deleteReply(input){
 	var id = input.split('_')[1];
 	
 	$.ajax({
-		url : ajaxURL+'AnyCourse/ReplyServlet.do',
+		url : ajaxURL+'AnyCourse/GroupReplyServlet.do',
 		method : 'POST',
 		cache :false,
 		data : {
@@ -206,7 +206,7 @@ function deleteComment(input){
 	var id = input.split('_')[1];
 	
 	$.ajax({
-		url : ajaxURL+'AnyCourse/CommentServlet.do',
+		url : ajaxURL+'AnyCourse/GroupCommentServlet.do',
 		method : 'POST',
 		cache :false,
 		data : {
@@ -216,7 +216,7 @@ function deleteComment(input){
 		success : function(data) {
 			$("#com_"+id).remove();
 			$.ajax({
-				url : ajaxURL+'AnyCourse/ReplyServlet.do',
+				url : ajaxURL+'AnyCourse/GroupReplyServlet.do',
 				method : 'POST',
 				data : {
 					"state" : "delete2",
@@ -256,12 +256,12 @@ function updateComment(input){
 	commentContent = document.getElementById('comment_'+id).value;
 
 	$.ajax({  
-		url : ajaxURL+'AnyCourse/CommentServlet.do',
+		url : ajaxURL+'AnyCourse/GroupCommentServlet.do',
 		method : 'POST',
 		cache :false,
 		data : {
 			"state" : "update",
-			"unitId" : get("unitId"),
+			"groupId" : groupId,
 			"commentId" : id,
 			"userId" : userId,
 			"nickName" : nickName,
@@ -310,7 +310,7 @@ function updateReply(input){
 	replyContent = document.getElementById('reply_'+id).value;
 
 	$.ajax({  
-		url : ajaxURL+'AnyCourse/ReplyServlet.do',
+		url : ajaxURL+'AnyCourse/GroupReplyServlet.do',
 		method : 'POST',
 		cache :false,
 		data : {

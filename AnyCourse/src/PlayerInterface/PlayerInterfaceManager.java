@@ -143,7 +143,7 @@ public class PlayerInterfaceManager
 			
 			
 			//如果有，就更新影片結束時間，true是有，沒有就不做事
-			if(check == true) { 
+			if(check == true) {
 				if(currentTime+5 > duration)status = 3;
 				//改變status為正在觀看
 				else status = 2;
@@ -171,9 +171,6 @@ public class PlayerInterfaceManager
 				
 				pst.executeUpdate();
 			}
-			
-			pst.executeUpdate();
-			
 		}
 		catch(SQLException x){
 			System.out.println("PlayerInterfaceManager-setVideoEndTime");

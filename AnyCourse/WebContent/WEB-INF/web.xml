@@ -5,6 +5,14 @@
     <welcome-file>/AnyCourse/HomePage.html</welcome-file>
   </welcome-file-list>
   <servlet>
+    <servlet-name>GroupCommentServlet</servlet-name>
+    <servlet-class>Group.Forum.GroupCommentServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>GroupReplyServlet</servlet-name>
+    <servlet-class>Group.Forum.GroupReplyServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>PersonalTextNoteServlet</servlet-name>
     <servlet-class>Personal.PersonalNote.PersonalTextNoteServlet</servlet-class>
   </servlet>
@@ -47,6 +55,10 @@
   <servlet>
     <servlet-name>PictureNoteServlet</servlet-name>
     <servlet-class>Note.PictureNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>NotificationServlet</servlet-name>
+    <servlet-class>Notification.NotificationServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>SearchRecordServlet</servlet-name>
@@ -97,6 +109,14 @@
     <servlet-class>Group.Management.ManagementServlet</servlet-class>
   </servlet>
   <servlet-mapping>
+    <servlet-name>GroupCommentServlet</servlet-name>
+    <url-pattern>/GroupCommentServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GroupReplyServlet</servlet-name>
+    <url-pattern>/GroupReplyServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>PersonalTextNoteServlet</servlet-name>
     <url-pattern>/PersonalTextNoteServlet.do</url-pattern>
   </servlet-mapping>
@@ -139,6 +159,10 @@
   <servlet-mapping>
     <servlet-name>PictureNoteServlet</servlet-name>
     <url-pattern>/PictureNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>NotificationServlet</servlet-name>
+    <url-pattern>/NotificationServlet.do</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>SearchRecordServlet</servlet-name>

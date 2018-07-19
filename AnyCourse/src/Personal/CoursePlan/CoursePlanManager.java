@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import HomePage.HomePage;
+import Personal.VideoList.VideoList;
 
 public class CoursePlanManager {
 	
@@ -37,6 +38,87 @@ public class CoursePlanManager {
 			System.out.println("Exception" + x.toString());
 		}
 	}
+	
+	//拿該使用者所有的課程清單
+	public ArrayList<CoursePlan> getVideoList(String userId){
+		coursePlans = new ArrayList<CoursePlan>();
+		try {
+			pst = con.prepareStatement("select * from personalPlan,customListVideo,courselist where "
+					+ "personalPlan.unitId = customListVideo.unitId and "
+					+ "customListVideo.courselistId = courselist.courselistId and "
+					+ "personalPlan.userId = ?");
+			pst.setString(1, userId);
+			result = pst.executeQuery();
+			while(result.next()) {
+				coursePlan = new CoursePlan();
+				coursePlan.setUserId(userId);
+				coursePlan.setCourselistId(result.getInt("courselist.courselistId"));
+//				coursePlan.setOorder(result.getInt("list.oorder"));
+				coursePlan.setListName(result.getString("courselist.listName"));
+//				coursePlan.setSchoolName(result.getString("courselist.schoolName"));
+				coursePlans.add(coursePlan);
+			}
+		}
+		catch(SQLException x){
+			System.out.println("CoursePlan-getCoursePlanAllList");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return coursePlans;
+	}
+	
+	//拿該使用者課程計畫對應的影片
+	public ArrayList<CoursePlan> getCoursePlanUnit(String userId, int courselistId){
+		coursePlans = new ArrayList<CoursePlan>();
+		try {
+			pst = con.prepareStatement("select * from personalPlan,unit,customListVideo,courselist where "
+					+ "personalPlan.unitId = unit.unitId and "
+					+ "unit.unitId = customListVideo.unitId and "
+					+ "customListVideo.courselistId = courselist.courselistId and "
+					+ "personalPlan.userId = ? and courselist.courselistId = ? "
+					+ "order by personalPlan.oorder ASC");
+			pst.setString(1, userId);
+			pst.setInt(2,courselistId);
+			result = pst.executeQuery();
+			while(result.next()) {
+				coursePlan = new CoursePlan();
+				coursePlan.setCourselistId(result.getInt("courselist.courselistId"));
+				coursePlan.setListName(result.getString("courselist.listName"));
+				coursePlan.setUnitName(result.getString("unit.unitName"));
+				coursePlan.setSchoolName(result.getString("unit.schoolName"));
+				coursePlan.setTeacher(result.getString("unit.teacher"));
+				coursePlan.setLastTime(result.getInt("personalPlan.lastTime"));
+				coursePlan.setLikes(result.getInt("unit.likes"));
+				coursePlan.setUnitId(result.getInt("unit.unitId"));
+				coursePlan.setStatus(result.getInt("personalPlan.status"));//狀態
+				coursePlan.setOorder(result.getInt("oorder"));
+				if(result.getString("unit.videoImgSrc") == "") {
+					coursePlan.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
+				}
+				else {
+					coursePlan.setVideoImgSrc(result.getString("unit.videoImgSrc"));
+				}
+				if(result.getString("unit.videoUrl").split("/")[2].equals("www.youtube.com")) {
+					coursePlan.setVideoType(1);//youtube
+				}
+				else {
+					coursePlan.setVideoType(2);//jwplayer
+				}
+				coursePlans.add(coursePlan);
+			} 
+		}
+		catch(SQLException x){
+			System.out.println("CoursePlan-getCoursePlanAllList");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return coursePlans;
+	}
+	
 	//拿該使用者課程計畫所有影片
 	public ArrayList<CoursePlan> getCoursePlanAllList(String userId){
 		coursePlans = new ArrayList<CoursePlan>();
@@ -52,18 +134,8 @@ public class CoursePlanManager {
 				coursePlan.setCourselistId(result.getInt("courselist.courselistId"));
 				coursePlan.setListName(result.getString("courselist.listName"));
 				coursePlan.setUnitName(result.getString("unit.unitName"));
-				if(result.getString("courselist.schoolName") == null) {
-					coursePlan.setSchoolName("未知學校");
-				}
-				else {
-					coursePlan.setSchoolName(result.getString("courselist.schoolName"));
-				}
-				if(result.getString("courselist.teacher") == null) {
-					coursePlan.setTeacher("未知");
-				}
-				else {
-					coursePlan.setTeacher(result.getString("courselist.teacher"));
-				}
+				coursePlan.setSchoolName(result.getString("unit.schoolName"));
+				coursePlan.setTeacher(result.getString("unit.teacher"));
 				coursePlan.setLastTime(result.getInt("personalPlan.lastTime"));
 				coursePlan.setLikes(result.getInt("unit.likes"));
 				coursePlan.setUnitId(result.getInt("unit.unitId"));
