@@ -16,10 +16,11 @@ public class ManagementManager
 {
 	private final String selectGroupsSQL = "select * from ggroup natural join groupMember where userId = ?";
 	private final String insertGroupSQL = "insert into ggroup value (null,?)";
+	private final String insertMemberSQL = "insert into groupMember value (?,?,?)";
+	private final String selectGroupMemberSQL = "select userId, groupId, groupName, identity, nickName from ggroup natural join groupMember natural join account where groupId = ?";
 	private final String updateEventSQL = "update event set title = ?,url = ?,start = ?,end = ?,allDay = ? where eventId = ?";
 	private final String deleteEventSQL = "delete from event where eventId = ?";
 	private final String deleteCalendarSQL = "delete from calendar where eventId = ?";
-	private final String insertMemberSQL = "insert into groupMember value (?,?,?)";
 	private final String selectGoogleCalendarIdSQL = "select * from googleCalendarMatch where userId = ?";
 	private final String insertGoogleCalendarIdSQL = "insert into googleCalendarMatch value (?,?)";
 	private Connection con = null;
@@ -81,6 +82,38 @@ public class ManagementManager
 		}
 
 		return list;
+	}
+	
+	public GroupInfo getGroupInfo(int groupId)
+	{
+		GroupInfo info = new GroupInfo();
+		try
+		{
+			pst = con.prepareStatement(selectGroupMemberSQL);
+			pst.setInt(1, groupId);
+			result = pst.executeQuery();
+			while (result.next())
+			{
+				info.setGroupId(result.getInt("groupId"));
+				info.setGroupName(result.getString("groupName"));
+				Member member = new Member();
+				member.setUserId(result.getString("userId"));
+				member.setIdentity(result.getBoolean("identity"));
+				member.setUserName(result.getString("nickName"));
+				if (member.isIdentity())
+					info.addManager(member);
+				else
+					info.addMember(member);
+			}
+		} catch (final SQLException x)
+		{
+			System.out.println("ManagementManager-getGroupInfo");
+			System.out.println("Exception select" + x.toString());
+		} finally
+		{
+			Close();
+		}
+		return info;
 	}
 	
 	public int insertGroup(String userId, String groupName)

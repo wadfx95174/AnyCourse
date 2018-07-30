@@ -14,7 +14,6 @@ function checkLogin(htmlUrl, servletUrl)
     	method: 'POST',
     	cache :false,
     	success: function(result){
-    		console.log(result);
     		if (result.userId)
     		{
     			$('.navbar-nav').append(

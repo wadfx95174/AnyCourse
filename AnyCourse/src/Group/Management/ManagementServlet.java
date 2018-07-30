@@ -16,11 +16,13 @@ public class ManagementServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ManagementManager manager = new ManagementManager();
-		HttpSession session = request.getSession();
-		String userId = (String)session.getAttribute("userId");
+//		HttpSession session = request.getSession();
+//		String userId = (String)session.getAttribute("userId");
+//		response.getWriter().write(new Gson().toJson(manager.getGroups(userId)));
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
-		response.getWriter().write(new Gson().toJson(manager.getGroups(userId)));
+		int groupId = Integer.parseInt(request.getParameter("groupId"));
+		response.getWriter().write(new Gson().toJson(manager.getGroupInfo(groupId)));
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
