@@ -403,6 +403,19 @@ $(function () {
 
 /* ----------------------------------- CoursePlan Event ----------------------------------- */
 
+$(function() {
+    $('#sel1').change(function(){
+    	var selectedIndex = $('#sel1')[0].selectedIndex;
+//        $('#external-events').hide(); 
+        $('.pagination').hide();
+        if(selectedIndex == 0) {
+            $('#external-events').show(); 
+        } else {
+            $('#list-events-' + (selectedIndex - 1)).show(); 
+        } 
+    });
+});
+
 function getCoursePlanEvent()
 {
   	$.ajax({
@@ -419,7 +432,7 @@ function getCoursePlanEvent()
   			console.log('coursePlan result:');
   			console.log(result);
   			coursePlanList = result;
-  			for(var i = 0; i < coursePlanList.length; i ++)
+  			for(var i = 0; i < coursePlanList.length; i++)
   			{
 	  			$('#external-events').append(
 	  				'<li><a class="external-event-a" href="javascript:void(0)">'+coursePlanList[i].unitName+'</a></li>'
@@ -431,6 +444,47 @@ function getCoursePlanEvent()
   			          title: coursePlanList[index].unitName,
   		              unitId: coursePlanList[index].unitId,
   		              type: coursePlanList[index].videoType
+  			    	};
+  			    // 把eventObject存到DOM裡面，之後就可以取得
+  			    $(this).data('eventObject', eventObject);
+  			    $(this).click(function(){
+	  		    	console.log($(this).data('eventObject'));		//********************************
+	  		    	$('#selectedEvent').text($(this).text());
+	  		    	$('#selectedEvent').data($(this).data());
+	  		        $('#checkSelectedListBtn').removeAttr('disabled');
+	  		    });
+  			});
+  		}
+  	});
+  	$.ajax({
+  		url: ajaxURL+'AnyCourse/CalendarServlet.do',
+  		method: 'GET',
+  		cache: false,
+  		data:{
+  			method:'getVideoList'
+  		},
+  		error:function(){
+  			console.log('get videoList error');
+  		},
+  		success:function(result){
+  			console.log('videoList result:');
+  			console.log(result);
+  			videoList = result;
+  			for(var i = 0; i < videoList.length; i++)
+  			{
+  				$('#event').append('<ul class="pagination list-events" style="height:160px;" id="list-events-' + i + '"></ul>');
+  				$('#sel1').append('<option>' + videoList[i].listName + '</option>')
+	  			$('#list-events-' + i).append(
+	  				'<li><a class="list-event-a" href="javascript:void(0)">'+videoList[i].unitName+'</a></li>'
+	  			);
+  				$('#list-events-' + i).hide();
+  			}
+  			$('.list-events li').each(function(index){
+  			    // 宣告EventObject (可以不用start跟end)
+  			    var eventObject = {
+  			          title: videoList[index].unitName,
+  		              unitId: videoList[index].unitId,
+  		              type: videoList[index].videoType
   			    	};
   			    // 把eventObject存到DOM裡面，之後就可以取得
   			    $(this).data('eventObject', eventObject);

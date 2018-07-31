@@ -1,0 +1,22 @@
+.box-header > button {
+	float: right;
+}
+
+#manager-area, #member-area {
+	margin-top: 10px;
+}
+
+.manager-info, .member-info {
+	float: left;
+}
+
+.manager-info > img , .member-info > img {
+	display: inline;
+	width: 75px;
+}
+
+.manager-info > h4 , .member-info > h4 {
+	display: inline;
+	margin: 30px;
+	padding: 15px 15px 25px 15px;
+}
