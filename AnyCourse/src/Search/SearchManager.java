@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Set;
+
+import anycourse.JiebaWordFreq;
 
 public class SearchManager
 {
@@ -89,6 +92,24 @@ public class SearchManager
 		 return outputList;
 	}
 	
+	/** 回傳關鍵字切字後查詢結果 (推薦用)
+	 * 
+	 * @param keyword : (String) 要切字的關鍵字
+	 * @return 型態為 (Search) 的 ArrayList
+	 */
+	public ArrayList<Search> keywordSearchWithJieba(String keyword)
+	{
+		JiebaWordFreq jiebaWordFreq = new JiebaWordFreq();
+		jiebaWordFreq.unitJieba(keyword);
+		ArrayList<Search> output = new ArrayList<Search>();
+		ArrayList<String> jiebaResult = new ArrayList<String>(jiebaWordFreq.getAllWordsFreq().keySet());
+		for (int i = 0; i < jiebaResult.size(); i++)
+		{
+			output.addAll(keywordSearch(jiebaResult.get(i), null, SearchMethod.ALL));
+		}
+		return output;	// 切字後的結果
+	}
+	
 	/** 回傳關鍵字查詢結果 (推薦用)
 	 * 
 	 * @param keyword : (String) 關鍵字
@@ -139,7 +160,6 @@ public class SearchManager
 		if (userId != null)
 			insertSearchRecord(keyword, userId);
 		
-		conClose();
 		return rusultList;
 	}
 	
@@ -220,6 +240,7 @@ public class SearchManager
 				output.setLikes(result.getInt("likes"));
 				courseList.add(output);
 		    }
+			getFullCourseInfo(courseList);
 		} catch(SQLException x)
 		{
 			System.out.println("SearchManager-getCourseListByKeyword");
@@ -228,7 +249,6 @@ public class SearchManager
 		finally {
 			Close();
 		}
-		getFullCourseInfo(courseList);
 		return courseList;
 	}
 
@@ -332,7 +352,6 @@ public class SearchManager
 		finally {
 			Close();
 		}
-		conClose();
 		return outputList;
 	}
 
@@ -356,7 +375,6 @@ public class SearchManager
 		finally {
 			Close();
 		}
-		conClose();
 		return outputList;
 	}
 	//將搜尋的單元影片加入課程計畫中
@@ -448,13 +466,14 @@ public class SearchManager
 	
 	public static void main(String []args)
 	{
-//		SearchManager kldm = new SearchManager();
-		
+		SearchManager kldm = new SearchManager();
+		System.out.println(kldm.keywordSearchWithJieba("機場計畫與設計"));
 //		System.out.println(kldm.selectCourseListTable("化學"));
 //		System.out.println(kldm.selectUnitKeywordTable("微積分"));
 //		System.out.println(kldm.getCourseListByKeyword("微積分"));
 //		System.out.println(kldm.getAllKeyword("微積分"));
 //		System.out.println(kldm.getTeacher());
 //		System.out.println(kldm.getDepartment());
+		
 	}
 }
