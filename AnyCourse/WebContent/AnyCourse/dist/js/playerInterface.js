@@ -585,38 +585,66 @@ $(document).ready(function(){
     		action:'getRecommendation',
     		unitId:get('unitId'),
     	},
-    	success:function(result){
+    	success:function(response){
     		//亂數決定順序
 			var temp;
-			for(var j = 0 ;j < result.length;j++){
-				temp = Math.floor(Math.random()*result.length);
-				var video = result[temp];
-				result[temp] = result[j];
-				result[j] = video;
+			for(var j = 0 ;j < response.length;j++){
+				temp = Math.floor(Math.random()*response.length);
+				var video = response[temp];
+				response[temp] = response[j];
+				response[j] = video;
 			}
-    		for(var i = 0;i < result.length; i++){
-    			$('#recommendList').append(
-        				'<li>'
-    					+'<a class="list-group-item" href="PlayerInterface.html?type='+result[i].type+'&unitId='+ result[i].unitId+'">'
-    					+'<div class="media">'
-    					+'<div class="pull-left" style="padding-left: 0px;">'
-    					+'<div class="embed-responsive embed-responsive-16by9 col-xs-12">'
-    					+'<img id="img" class="style-scope yt-img-shadow" alt="" width="250"'
-    					+'src="' + result[i].videoImgSrc + '">' 
-    					+'</div>'
-    					+'</div>'
-    					+'<div class="media-body">'
-    					+'<h5 class="unitUi">'
-    					+'<b>影片名稱:' + result[i].unitName + '</b>'
-    					+'</h5>'
-    					+'<p class="unitUi">開課大學:' + result[i].schoolName + '</p>'
-    					+'<p class="unitUi">授課教師:' + result[i].teacher + '老師</p>'
-    					+'<p class="unitUi">讚數:' + result[i].likes.toLocaleString() +'</p>'
-    					+'</div>'
-    					+'</div>'
-    					+'</a></li>'
-        		);
-    		}
+            if(response.hasOwnProperty("courselistId")){
+                for(var i = 0;i < response.length; i++){
+                    $('#recommendList').append(
+                            '<li>'
+                            +'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[0].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].units[0].unitId+'">'
+                            +'<div class="media">'
+                            +'<div class="pull-left" style="padding-left: 0px;">'
+                            +'<div class="embed-responsive embed-responsive-16by9 col-xs-12">'
+                            +'<img id="img" class="style-scope yt-img-shadow" alt="" width="250"'
+                            +'src="'+ (response[i].units[0].videoImgSrc != "" ? response[i].units[0].videoImgSrc : "https://i.imgur.com/eKSYvRv.png") +'">'
+                            +'</div>'
+                            +'</div>'
+                            +'<div class="media-body">'
+                            +'<h5 class="unitUi">'
+                            +'<b>影片名稱:' + response[i].units[0].unitName + '</b>'
+                            +'</h5>'
+                            +'<p class="unitUi">開課大學:' + response[i].schoolName + '</p>'
+                            +'<p class="unitUi">授課教師:' + response[i].teacher + '老師</p>'
+                            +'<p class="unitUi">讚數:' + response[i].likes.toLocaleString() +'</p>'
+                            +'</div>'
+                            +'</div>'
+                            +'</a></li>'
+                    );
+                }
+            }
+            else{
+                for(var i = 0;i < response.length; i++){
+                    $('#recommendList').append(
+                            '<li>'
+                            +'<a class="list-group-item" href="PlayerInterface.html?type='+response[i].type+'&unitId='+ response[i].unitId+'">'
+                            +'<div class="media">'
+                            +'<div class="pull-left" style="padding-left: 0px;">'
+                            +'<div class="embed-responsive embed-responsive-16by9 col-xs-12">'
+                            +'<img id="img" class="style-scope yt-img-shadow" alt="" width="250"'
+                            +'src="' + response[i].videoImgSrc + '">' 
+                            +'</div>'
+                            +'</div>'
+                            +'<div class="media-body">'
+                            +'<h5 class="unitUi">'
+                            +'<b>影片名稱:' + response[i].unitName + '</b>'
+                            +'</h5>'
+                            +'<p class="unitUi">開課大學:' + response[i].schoolName + '</p>'
+                            +'<p class="unitUi">授課教師:' + response[i].teacher + '老師</p>'
+                            +'<p class="unitUi">讚數:' + response[i].likes.toLocaleString() +'</p>'
+                            +'</div>'
+                            +'</div>'
+                            +'</a></li>'
+                    );
+                }
+            }
+    		
     	},
     	error:function(){
     		console.log("Like Fail!");

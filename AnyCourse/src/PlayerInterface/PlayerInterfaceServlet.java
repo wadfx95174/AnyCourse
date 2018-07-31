@@ -13,6 +13,8 @@ import org.apache.mahout.cf.taste.common.TasteException;
 
 import com.google.gson.Gson;
 
+import Search.SearchManager;
+import Search.Search;
 
 public class PlayerInterfaceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -77,24 +79,36 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		}
 		else if(request.getParameter("action").equals("getRecommendation")) {
 			int accountId = 0;
+			ArrayList<Unit> units = new ArrayList<Unit>();
+			Gson gson = new Gson();
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			
 			if(userId == null) {
-				accountId = manager.getAccountId("1");
+//				accountId = manager.getAccountId("1");
+				SearchManager searchManger = new SearchManager();
+				ArrayList<Search> searchs = new ArrayList<Search>();
+				//
+				searchs = searchManger.keywordSearch("");
+				//
+				response.getWriter().write(gson.toJson(searchs));
 			}
 			else {
 				accountId = manager.getAccountId(userId);
+				manager.setBrowse(accountId,Integer.parseInt(request.getParameter("unitId")));
+				manager.setRecommendedResult(accountId,Integer.parseInt(request.getParameter("unitId")));
+				try {
+					units = manager.getRecommendList(accountId,Integer.parseInt(request.getParameter("unitId")));
+				} catch (NumberFormatException | TasteException e) {
+					e.printStackTrace();
+				}
+				response.getWriter().write(gson.toJson(units));
 			}
-			manager.setBrowse(accountId,Integer.parseInt(request.getParameter("unitId")));
-			manager.setRecommendedResult(accountId,Integer.parseInt(request.getParameter("unitId")));
-			ArrayList<Unit> units = new ArrayList<Unit>();
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			try {
-				units = manager.getRecommendList(accountId,Integer.parseInt(request.getParameter("unitId")));
-			} catch (NumberFormatException | TasteException e) {
-				e.printStackTrace();
-			}
-			Gson gson = new Gson();
-			response.getWriter().write(gson.toJson(units));
+			
+			
+			
+			
+			
 		}
 		manager.conClose();
 	}
