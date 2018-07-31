@@ -13,11 +13,11 @@ var $progress = $('.progress'),
 $duration = $('.duration'),
 $currentTime = $('.current-time');
 
-$('#noteArea').slimScroll({
-    height: '200px'
+$('#note').slimScroll({
+    height: '300px'
   });
 $('.tab-content').slimScroll({
-    height: '300px'
+    height: '350px'
   });
 $('#keyLabel1').slimScroll({
     height: '130px'

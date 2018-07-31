@@ -107,21 +107,17 @@
 					<!-- Main content -->
 					<section class="content">
 						<div class="box box-primary" >
-							<div class="box-header">
-								<ul class = "list-group">
-									<li class="list-group-item list-group-body">
-										<div class="row">
-											<div class="col-xs-1 text-center">
-												<input name="checkAll" type="checkbox" onclick="checkAll(this,'checkboxItem')" />
-											</div>
-											<div class="col-xs-5 text-center"><strong>搜尋關鍵字</strong></div>
-											<div class="col-xs-4 text-center"><strong>搜尋時間</strong></div>
-											<div class="col-xs-1 text-center">
-												<button type="button" data-toggle="modal" data-target="#deleteModal2"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除選取"></i></button>
-											</div>
-										</div>
-									</li>
-								</ul>
+							<div class="box-header with-border">
+								<div class="row" style="padding-left:15px; padding-right: 15px;">
+									<div class="col-xs-1 text-center">
+										<input name="checkAll" type="checkbox" onclick="checkAll(this,'checkboxItem')" />
+									</div>
+									<div class="col-xs-5 text-center"><strong>搜尋關鍵字</strong></div>
+									<div class="col-xs-4 text-center"><strong>搜尋時間</strong></div>
+									<div class="col-xs-1 text-center">
+										<button type="button" data-toggle="modal" data-target="#deleteModal2"><i class="fa fa-trash-o" data-toggle="tooltip" data-placement="top" title="刪除選取"></i></button>
+									</div>
+								</div>
 							</div>
 							<!-- 搜尋結果列表 -->
 							<div class="box-body" style="height: 480px;" id="searchList">
