@@ -173,12 +173,20 @@
 								<!-- /. box -->
 								<div class="box box-primary" id="events">
 									<div class="box-header with-border">
-										<h3 class="box-title"><strong>選擇課程/事件</strong></h3>
+										<h3 class="box-title"><strong>課程/事件</strong></h3>
 									</div>
 									<div class="box-body">
+										<div class="form-group">
+											<label for="sel1">選擇清單/計畫</label>
+											<select class="form-control" id="sel1" name="sel1">
+											    <option>計畫</option>
+											</select>
+										</div>
 										<!-- the events -->
-										<ul class="pagination" style="height:160px;" id='external-events'>
-										</ul>
+										<div id="event">
+											<ul class="pagination" style="height:160px;" id='external-events'>
+											</ul>
+										</div>
 										<!--<div class='external-event bg-green'>微積分一</div>
 										<div class='external-event bg-yellow'>微積分二</div>
 										<div class='external-event bg-aqua'>作業系統</div>

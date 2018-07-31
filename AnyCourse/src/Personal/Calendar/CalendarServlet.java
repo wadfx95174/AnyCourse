@@ -31,6 +31,11 @@ public class CalendarServlet extends HttpServlet {
 			CoursePlanManager coursePlanManager = new CoursePlanManager();
 			response.getWriter().write(new Gson().toJson(coursePlanManager.getCoursePlanAllList(userId)));
 		}
+		else if (request.getParameter("method").equals("getVideoList"))
+		{
+			CoursePlanManager coursePlanManager = new CoursePlanManager();
+			response.getWriter().write(new Gson().toJson(coursePlanManager.getVideoList(userId)));
+		}
 		else if (request.getParameter("method").equals("getGCId"))
 		{
 			String gcId = calendarManager.getGoogleCalendarId(userId);
