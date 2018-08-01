@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 import anycourse.JiebaWordFreq;
@@ -14,7 +15,7 @@ import anycourse.JiebaWordFreq;
 public class SearchManager
 {
 	private final String selectCourseListSQL = "select * from courselist where listName like ?";
-	private final String selectUnitKeywordSQL = "select * from unit natural join unitKeyword where unitKeyword like ? ";
+	private final String selectUnitKeywordSQL = "select * from unit natural join unitKeyword where unitKeyword like ? or unitName like ?";
 	private final String selectCourseKeywordSQLStart = "select max(courselistId)courselistId, max(schoolName)schoolName, max(listName)listName, max(teacher)teacher, max(departmentName)departmentName, max(courseInfo)courseInfo, max(creator)creator, max(share)share, max(likes)likes ,max(tfidf)tfidf from courselist natural join courseKeyword where ";
 	private final String selectCourseKeywordSQLMiddle = "(courseKeyword like ? or listName like ? or teacher like ? or schoolName like ? or departmentName like ?) ";
 	private final String selectCourseKeywordSQLEnd = "group by listName ORDER BY `tfidf` DESC";
@@ -75,6 +76,7 @@ public class SearchManager
 
 			pst = con.prepareStatement(selectUnitKeywordSQL);
 			pst.setString(1,  "%" + keyword + "%" );
+			pst.setString(2,  "%" + keyword + "%" );
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 	
@@ -129,38 +131,69 @@ public class SearchManager
 	 */
 	public ArrayList<Search> keywordSearch(String keyword, String userId, SearchMethod method)
 	{
-		ArrayList<Search> rusultList = new ArrayList<Search>();
-
+		HashMap<Integer, Search> courseMap = new HashMap<>();
+		HashMap<Integer, Search> unitMap = new HashMap<>();
 		switch(method)
 		{
 		// 回傳精準查詢後的 Courselist
 		case PRECISE_COURSE:
-			rusultList.addAll(getCourseListByKeyword(keyword, QueryType.PRECISE));
+			for (Search search: getCourseListByKeyword(keyword, QueryType.PRECISE))
+				courseMap.put(search.getCourselistId(), search);
 			break;
 		// 回傳模糊查詢後的 Courselist
 		case FUZZY_COURSE:
-			rusultList.addAll(getCourseListByKeyword(keyword, QueryType.FUZZY));
+			for (Search search: getCourseListByKeyword(keyword, QueryType.FUZZY))
+				courseMap.put(search.getCourselistId(), search);
 			break;
 		// 回傳查詢後的 Unit
 		case UNIT:
-			rusultList.addAll(getUnitListByKeyword(keyword));
+			for (Search search: getUnitListByKeyword(keyword))
+				courseMap.put(search.getCourselistId(), search);
 			break;
 		// 回傳精準查詢後的Courselist & Unit (為預設的搜尋方法)
 		case DEFAULT:
-			rusultList.addAll(getCourseListByKeyword(keyword, QueryType.PRECISE));
-			rusultList.addAll(getUnitListByKeyword(keyword));
+			for (Search search: getCourseListByKeyword(keyword, QueryType.PRECISE))
+				courseMap.put(search.getCourselistId(), search);
+			for (Search search: getUnitListByKeyword(keyword))
+				unitMap.put(search.getUnits().get(0).getUnitId(), search);
 			break;
 		// 回傳精準、模糊查詢的Courselist & Unit查詢結果
 		case ALL:
-			rusultList.addAll(getCourseListByKeyword(keyword, QueryType.PRECISE));
-			rusultList.addAll(getCourseListByKeyword(keyword, QueryType.FUZZY));
-			rusultList.addAll(getUnitListByKeyword(keyword));
+			for (Search search: getCourseListByKeyword(keyword, QueryType.PRECISE))
+				courseMap.put(search.getCourselistId(), search);
+			for (Search search: getCourseListByKeyword(keyword, QueryType.FUZZY))
+				courseMap.put(search.getCourselistId(), search);
+			for (Search search: getUnitListByKeyword(keyword))
+				unitMap.put(search.getUnits().get(0).getUnitId(), search);
 			break;
 		}
 		if (userId != null)
 			insertSearchRecord(keyword, userId);
-		
-		return rusultList;
+
+		ArrayList<Search> resultList = new ArrayList<Search>();
+		resultList.addAll(courseMap.values());
+		resultList.addAll(unitMap.values());
+		return resultList;
+	}
+	
+	/** 回傳關鍵字切字後查詢結果
+	 * 
+	 * @param keyword : (String) 關鍵字
+	 * @param userId : (String) 帳號
+	 * @param method : {PRECISE_COURSE, FUZZY_COURSE, UNIT, DEFAULT, ALL} 搜尋方法
+	 * @return 型態為 (Search) 的ArrayList
+	 */
+	public ArrayList<Search> keywordSearchWithJieba(String keyword, String userId, SearchMethod method)
+	{
+		JiebaWordFreq jiebaWordFreq = new JiebaWordFreq();
+		jiebaWordFreq.unitJieba(keyword);
+		ArrayList<Search> output = new ArrayList<Search>();
+		ArrayList<String> jiebaResult = new ArrayList<String>(jiebaWordFreq.getAllWordsFreq().keySet());
+		for (int i = 0; i < jiebaResult.size(); i++)
+		{
+			output.addAll(keywordSearch(jiebaResult.get(i), userId, method));
+		}
+		return output;	// 切字後的結果
 	}
 	
 	/** 輸入字串回傳含有%的字串
@@ -291,6 +324,7 @@ public class SearchManager
 		{
 			pst = con.prepareStatement(selectUnitKeywordSQL);
 			pst.setString(1, "%" + keyword + "%" );
+			pst.setString(2, "%" + keyword + "%" );
 			result = pst.executeQuery();
 			while (result.next())
 			{
