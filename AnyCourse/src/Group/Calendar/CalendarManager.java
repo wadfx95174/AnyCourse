@@ -1,4 +1,4 @@
-package Personal.Calendar;
+package Group.Calendar;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,12 +11,12 @@ import java.util.ArrayList;
 
 public class CalendarManager
 {
-	private final String selectEventsSQL = "select * from event natural join calendar where userId = ?";
+	private final String selectEventsSQL = "select * from event natural join groupCalendar where groupId = ?";
 	private final String insertEventSQL = "insert into event value (null,1,?,?,?,?,?,?,?,?)";
 	private final String updateEventSQL = "update event set title = ?,url = ?,start = ?,end = ?,allDay = ? where eventId = ?";
 	private final String deleteEventSQL = "delete from event where eventId = ?";
-	private final String deleteCalendarSQL = "delete from calendar where eventId = ?";
-	private final String insertCalendarSQL = "insert into calendar value (?,?)";
+	private final String deleteCalendarSQL = "delete from groupCalendar where eventId = ?";
+	private final String insertCalendarSQL = "insert into groupCalendar value (?,?)";
 	private final String selectGoogleCalendarIdSQL = "select * from googleCalendarMatch where userId = ?";
 	private final String insertGoogleCalendarIdSQL = "insert into googleCalendarMatch value (?,?)";
 	private final String insertGoogleEventIdSQL = "update event set googleEventId = ? where eventId = ?";
@@ -42,13 +42,13 @@ public class CalendarManager
 		}
 	}
 	
-	public ArrayList<CalendarDTO> getEvents(String userId)
+	public ArrayList<CalendarDTO> getEvents(int groupId)
 	{
 		ArrayList<CalendarDTO> list = new ArrayList<CalendarDTO>();
 		try
 		{
 			pst = con.prepareStatement(selectEventsSQL);
-			pst.setString(1, userId);
+			pst.setInt(1, groupId);
 			result = pst.executeQuery();
 			while (result.next())
 			{
@@ -76,7 +76,7 @@ public class CalendarManager
 		return list;
 	}
 	
-	public int insertEvent(CalendarDTO dto, String userId)
+	public int insertEvent(CalendarDTO dto, int groupId)
 	{
 		try
 		{
@@ -95,7 +95,7 @@ public class CalendarManager
 			{
 				int newEventId = generatedKeys.getInt(1);
 				pst = con.prepareStatement(insertCalendarSQL);
-				pst.setString(1, userId);
+				pst.setInt(1, groupId);
 				pst.setInt(2, newEventId);
 				pst.executeUpdate();
 				return newEventId;
@@ -243,6 +243,7 @@ public class CalendarManager
 	public static void main(String []args)
 	{
 		CalendarManager manager = new CalendarManager();
-		System.out.println(manager.getEvents("1"));
+		System.out.println(manager.getEvents(1));
 	}
 }
+

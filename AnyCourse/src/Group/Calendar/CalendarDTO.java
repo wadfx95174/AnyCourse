@@ -1,5 +1,4 @@
-package Personal.Calendar;
-
+package Group.Calendar;
 public class CalendarDTO
 {
 	private int id;

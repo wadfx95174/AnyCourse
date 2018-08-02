@@ -2,7 +2,13 @@
 var ajaxURL="http://localhost:8080/";
 var googleEvents;	// 存 Google Calendar Events
 var fullEvents;		// 存 FullCalendar Events
-var googleCalendarId = "j5hm33p0p8vkp8lg4rkls6pnek@group.calendar.google.com"; // 存 Google Calendar Id
+var googleCalendarId = ""; // 存 Google Calendar Id
+
+function get(name)
+{
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+}
 
 /* ----------------------------------- Google ----------------------------------- */
 
@@ -60,67 +66,66 @@ function initClient() {
  *  appropriately. After a sign-in, the API is called.
  */
 function updateSigninStatus(isSignedIn) {
-	
-
-
-	
     if (isSignedIn) {
-	var promiseGoogle = $.ajax({
-		url: ajaxURL+'AnyCourse/CalendarServlet.do',
-		type: 'GET',
-		dataType: 'text', 
-		cache :false,
-		data: {
-			method: 'getGCId'
-		},
-		error: function(){
-			console.log('get GoogleCalendar error!');
-		},
-		success: function(response){ // 回傳 id
-			if (response != "")
-			{
-				googleCalendarId = response;
-				console.log(googleCalendarId);
+		var promiseGoogle = $.ajax({
+			url: ajaxURL+'AnyCourse/GroupCalendarServlet.do',
+			type: 'GET',
+			dataType: 'text', 
+			cache :false,
+			data: {
+				method: 'getGCId'
+			},
+			error: function(){
+				console.log('get GoogleCalendar error!');
+			},
+			success: function(response){ // 回傳 id
+				if (response != "")
+				{
+					googleCalendarId = response;
+					console.log(googleCalendarId);
+				}
+				else
+				{
+					console.log("insert");
+					insertCalendar();
+				}
 			}
-			else
-			{
-				console.log("insert");
-				insertCalendar();
-			}
-		}
-	});
-    authorizeButton.style.display = 'none';
-    // 開始時間從當下時間往前推一個月
-	var date = new Date()
-	date.setMonth(date.getMonth()-1);
-	// 取得google calendar events
-    gapi.client.calendar.events.list({
-        'calendarId': googleCalendarId,	// 取個人日曆
-        'timeMin': date.toISOString(),	// 從哪天開始
-        'showDeleted': false,
-        'singleEvents': true,
-        'maxResults': 10000,	// 最多多少個事件
-        'orderBy': 'startTime'
-      }).then(function(response) {
-     	console.log(response);
-        // 更新每個事件到fullcalendar
-        for (i = 0; i < response.result.items.length; i++) {
-            var event = response.result.items[i];
-            event.title = event.summary;
-            event.start = event.start.dateTime ? (moment(event.start.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(event.start.date).format('YYYY-MM-DD'));
-            event.end = event.end.dateTime ? (moment(event.end.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(event.end.date).format('YYYY-MM-DD'));
-            event.backgroundColor = '#B22222',
-            event.borderColor =  '#B22222',
-            event.url = event.description;
-            event.eventType = 'g',
-            fullEvents.push(event);
-//      	    addToFullEvents(event); // 換成 googleEvent
-            $('#calendar').fullCalendar('renderEvent', event, true);
-        }
-      })
-  } else {
-    authorizeButton.style.display = 'block';
-  }
+		});
+		promiseGoogle.then(function(){
+			authorizeButton.style.display = 'none';
+		    // 開始時間從當下時間往前推一個月
+			var date = new Date()
+			date.setMonth(date.getMonth()-1);
+			// 取得google calendar events
+		    gapi.client.calendar.events.list({
+		        'calendarId': googleCalendarId,	// 取個人日曆
+		        'timeMin': date.toISOString(),	// 從哪天開始
+		        'showDeleted': false,
+		        'singleEvents': true,
+		        'maxResults': 10000,	// 最多多少個事件
+		        'orderBy': 'startTime'
+		    }).then(function(response) {
+		     	console.log(response);
+		        // 更新每個事件到fullcalendar
+//		        for (i = 0; i < response.result.items.length; i++) {
+//		            var event = response.result.items[i];
+//		            event.title = event.summary;
+//		            event.start = event.start.dateTime ? (moment(event.start.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(event.start.date).format('YYYY-MM-DD'));
+//		            event.end = event.end.dateTime ? (moment(event.end.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(event.end.date).format('YYYY-MM-DD'));
+//		            event.backgroundColor = '#B22222',
+//		            event.borderColor =  '#B22222',
+//		            event.url = event.description;
+//		            event.inGoogleCalendar = true,
+//		            fullEvents.push(event);
+//	      	    addToFullEvents(event); // 換成 googleEvent
+//		            $('#calendar').fullCalendar('renderEvent', event, true);
+//		        }
+		    })
+		})
+    } 
+    else {
+    	authorizeButton.style.display = 'block';
+    }
 }
 
 /**
@@ -187,33 +192,35 @@ function addEvent(event)
     {
     	if (!response.error)
     	{
-    		response.title = event.title;
-    		response.backgroundColor = '#B22222';
-    		response.borderColor =  '#B22222';
-    		response.url = response.description;
-    		response.start = response.start.dateTime ? (moment(response.start.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.start.date).format('YYYY-MM-DD'));
-    		response.end = response.end.dateTime ? (moment(response.end.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.end.date).format('YYYY-MM-DD'));
-            response.eventType = 'g';
-	          
+//    		response.title = event.title;
+//    		response.backgroundColor = '#B22222';
+//    		response.borderColor =  '#B22222';
+//    		response.url = response.description;
+//    		response.start = response.start.dateTime ? (moment(response.start.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.start.date).format('YYYY-MM-DD'));
+//    		response.end = response.end.dateTime ? (moment(response.end.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.end.date).format('YYYY-MM-DD'));
+//            response.inGoogleCalendar = true;
+    		event.googleEventId = response.id;
 			$.ajax({
-        		url : ajaxURL+'AnyCourse/CalendarServlet.do',
+        		url : ajaxURL+'AnyCourse/GroupCalendarServlet.do',
         		method: 'POST',
         		cache:false,
         		data: {
         			eventId: event.id,
-        		  		method: "delete"
+        			googleEventId: event.googleEventId,
+        		  	method: "insertGCEvent"
         		},
         		error: function(){
-        			console.log("Delete Event Fail");
+        			console.log("insertGC Event Fail");
         		},
         		success: function(){
-        			// 從FullCalendar上移除
-	        		$('#calendar').fullCalendar('removeEvents', event.id);
-    			    fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
-	        		// 把 response 物件放進 FullCalendar
-	  	            $('#calendar').fullCalendar('renderEvent', response, true);
-//	  	      	    addToFullEvents(response);
-	  	            fullEvents.push(response);
+        			console.log("success insertGC");
+//        			// 從FullCalendar上移除
+//	        		$('#calendar').fullCalendar('removeEvents', event.id);
+//    			    fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
+//	        		// 把 response 物件放進 FullCalendar
+	  	            $('#calendar').fullCalendar('renderEvent', event, true);
+////	  	      	    addToFullEvents(response);
+//	  	            fullEvents.push(response);
         		}
         	}); // end ajax  
     	} // end if
@@ -223,6 +230,7 @@ function addEvent(event)
 // 更新到Google Calendar
 function updateEvent(event)
 {
+	console.log(event);
 	if (!event.allDay)
 	{
 		console.log('!allday');
@@ -254,7 +262,7 @@ function updateEvent(event)
 		console.log(event.end);
 		var request = gapi.client.calendar.events.patch({
 	        'calendarId': googleCalendarId,
-	        'eventId': event.id,
+	        'eventId': event.googleEventId,
 	        'resource': {
 		        'allDay': true,
 		        'start': {
@@ -276,9 +284,10 @@ function updateEvent(event)
 // 刪除 Google Calendar 事件
 function deleteEvent(event)
 {
+	console.log(event);
 	var request = gapi.client.calendar.events.delete({
         'calendarId': googleCalendarId,
-        'eventId': event.id,
+        'eventId': event.googleEventId,
     });
     request.execute();
 }
@@ -293,7 +302,7 @@ function insertCalendar() {
         // Handle the results here (response.result has the parsed body).
         console.log("Response", response);
         $.ajax({
-			url: ajaxURL+'AnyCourse/CalendarServlet.do',
+			url: ajaxURL+'AnyCourse/GroupCalendarServlet.do',
 			type: 'POST',
 			cache :false,
 			data: {
@@ -341,11 +350,12 @@ $(function () {
     
     // 從資料庫取得行事曆的資料，並更新至頁面
     var promiseNative = $.ajax({
-		url: ajaxURL+'AnyCourse/CalendarServlet.do',
+		url: ajaxURL+'AnyCourse/GroupCalendarServlet.do',
 		type: 'GET',
 		dataType: 'json', 
 		cache :false,
 		data: {
+			groupId: get('groupId'),
 			method: 'getEvent'
 		},
 		error: function(){
@@ -357,7 +367,10 @@ $(function () {
 		}
 	})
 	
+	calendarPromises.push(promiseNative);
+	
 	Promise.all(calendarPromises).then(function(){
+		console.log(fullEvents);
 		initCalendar(fullEvents);
     });
 			
@@ -419,7 +432,7 @@ $(function() {
 function getCoursePlanEvent()
 {
   	$.ajax({
-  		url: ajaxURL+'AnyCourse/CalendarServlet.do',
+  		url: ajaxURL+'AnyCourse/GroupCalendarServlet.do',
   		method: 'GET',
   		cache: false,
   		data:{
@@ -457,7 +470,7 @@ function getCoursePlanEvent()
   		}
   	});
   	$.ajax({
-  		url: ajaxURL+'AnyCourse/CalendarServlet.do',
+  		url: ajaxURL+'AnyCourse/GroupCalendarServlet.do',
   		method: 'GET',
   		cache: false,
   		data:{
@@ -503,6 +516,7 @@ function getCoursePlanEvent()
 
 function initCalendar(eventSrc)
 {
+	console.log(eventSrc);
 	var leng = 1 + (( ( $(window).width()-100 ) / $(window).height() ) - 1) * 0.5;
 	console.log(leng);
 	$('#calendar').fullCalendar({
@@ -524,10 +538,10 @@ function initCalendar(eventSrc)
           day: '天'
         },
         // 結合Google日曆
-        googleCalendarApiKey: 'AIzaSyAz3zOHiCMMnShglhMhAvFsRl10juJs2oo',
-        eventSources:{
-	        googleCalendarId: googleCalendarId		//'primary'
-        },
+//        googleCalendarApiKey: 'AIzaSyAz3zOHiCMMnShglhMhAvFsRl10juJs2oo',
+//        eventSources:{
+//	        googleCalendarId: googleCalendarId		//'primary'
+//        },
         // 資料庫中的事件
         events: eventSrc,
         // 日期格式
@@ -554,12 +568,13 @@ function initCalendar(eventSrc)
   	      	    allDay: !start.hasTime() && !end.hasTime(),
   	      	    backgroundColor: $('#selectedEvent').css('background-color'),
   	      	    borderColor:  $('#selectedEvent').css('border-color'),
-  	      	    url: tmpEventObject.unitId + '/' + tmpEventObject.type
+  	      	    url: tmpEventObject.unitId + '/' + tmpEventObject.type,
+  	      	    googleEventId: null
       	    }
       	    
       	    // 送到資料庫更新
       	    $.ajax({
-          		url : ajaxURL+'AnyCourse/CalendarServlet.do',
+          		url : ajaxURL+'AnyCourse/GroupCalendarServlet.do',
           		method: 'POST',
           		cache: false,
           		data: {
@@ -570,6 +585,7 @@ function initCalendar(eventSrc)
   	                allDay: selectedObject.allDay,
   	                backgroundColor: selectedObject.backgroundColor,
 	        		borderColor: selectedObject.borderColor,
+	    			groupId: get('groupId'),
 	        		method: "insert"
           		},
           		error: function(){
@@ -609,11 +625,12 @@ function initCalendar(eventSrc)
             copiedEventObject.borderColor = $(this).css("border-color");
             copiedEventObject.start = date.toISOString();
             copiedEventObject.allDay = !date.hasTime();
-            copiedEventObject.url = copiedEventObject.unitId + '/' + copiedEventObject.type
+            copiedEventObject.url = copiedEventObject.unitId + '/' + copiedEventObject.type;
+            copiedEventObject.googleEventId = null;
 //            console.log(date.toISOString());
           
             $.ajax({
-      		    url : ajaxURL+'AnyCourse/CalendarServlet.do',
+      		    url : ajaxURL+'AnyCourse/GroupCalendarServlet.do',
       		    method: 'POST',
       		    cache :false,
       		    data: {
@@ -625,6 +642,7 @@ function initCalendar(eventSrc)
       			    allDay: copiedEventObject.allDay,
       			    backgroundColor: copiedEventObject.backgroundColor,
       			    borderColor: copiedEventObject.borderColor,
+      				groupId: get('groupId'),
       			    method: "insert"
       		    },
       		    error: function(){
@@ -656,37 +674,34 @@ function initCalendar(eventSrc)
         	    if (confirm('確定要刪除 "'+event.title+'"')) 
         	    {
               	    // 若是Google日曆的event，則直接刪除Google日曆上的event
-        		    if (event.eventType == 'g')
+        		    if (event.googleEventId != null)
         		    {
 	        		    deleteEvent(event);
         			    $('#calendar').fullCalendar('removeEvents', event.id)
         		    }
-        		    // 刪除資料庫
-        		    else
-        		    {		        			  
-	        		    $.ajax({
-		            		url : ajaxURL+'AnyCourse/CalendarServlet.do',
-		            		method: 'POST',
-		            		cache :false,
-		            		data: {
-		            			eventId: event.id,
-	   	        		  		method: "delete"
-		            		},
-		            		error: function(){
-		            			console.log("Delete Event Fail");
-		            		},
-		            		success: function(){
-		            			// 從fullcalendar上移除
-				        		$('#calendar').fullCalendar('removeEvents', event.id)
-		            		}
-		            	});
-        		    }
+        		    // 刪除資料庫		  
+        		    $.ajax({
+	            		url : ajaxURL+'AnyCourse/GroupCalendarServlet.do',
+	            		method: 'POST',
+	            		cache :false,
+	            		data: {
+	            			eventId: event.id,
+   	        		  		method: "delete"
+	            		},
+	            		error: function(){
+	            			console.log("Delete Event Fail");
+	            		},
+	            		success: function(){
+	            			// 從fullcalendar上移除
+			        		$('#calendar').fullCalendar('removeEvents', event.id)
+	            		}
+	            	});
     			    fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
         	    }
         	    return false;
 	        }
 	        // 如果添加到Google行事曆為勾選狀態，且事件非Google的事件
-	        else if (($('#click-add').is(':checked')) && event.eventType != 'g')
+	        else if (($('#click-add').is(':checked')) && event.googleEventId == null)
 	        {
 	        	addEvent(event)
 	        	return false;
@@ -706,24 +721,21 @@ function initCalendar(eventSrc)
       	    console.log(event);
 
       	    // 若是Google日曆的event，則直接更新到Google日曆
-      	    if (event.eventType=='g')
+      	    if (event.googleEventId != null)
   		    {
       	 	    updateEvent(event);
   		    }
       	    // 更新資料庫
-      	    else
-      	    {
-      		    $.post(ajaxURL+"AnyCourse/CalendarServlet.do", 
-      		    	{
-		        		id: event.id,
-		        		title: event.title,
-		        		url: event.url,
-		        		start: event.start.toISOString(),
-		        		end: event.end.toISOString(),
-		        		allDay: event.allDay,
-		        		method: "update"
-      		    	});
-      	    }
+  		    $.post(ajaxURL+"AnyCourse/GroupCalendarServlet.do", 
+  		    	{
+	        		id: event.id,
+	        		title: event.title,
+	        		url: event.url,
+	        		start: event.start.toISOString(),
+	        		end: event.end.toISOString(),
+	        		allDay: event.allDay,
+	        		method: "update"
+  		    	});
       	    fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
       	    addToFullEvents(event);
         },
@@ -737,7 +749,7 @@ function initCalendar(eventSrc)
 //      	    }    
       	    
       	    // 若是Google日曆的event，則直接更新到Google日曆
-      	    if (event.eventType=='g')
+      	    if (event.googleEventId != null)
   		    {
       	    	// 若沒有end且不是allday，預設為開始時間 +2 小時
       	    	if (event.end == null)
@@ -756,8 +768,8 @@ function initCalendar(eventSrc)
       	 	    updateEvent(event);
   		    }
       	    // 更新資料庫
-      	    else if (event.end != null)
-  	            $.post(ajaxURL+"AnyCourse/CalendarServlet.do",
+      	    if (event.end != null)
+  	            $.post(ajaxURL+"AnyCourse/GroupCalendarServlet.do",
       			    {
       		  		    id: event.id,
       		  		    title: event.title,
@@ -768,7 +780,7 @@ function initCalendar(eventSrc)
       		  		    method: "update"
       			    });
   	        else 
-  		        $.post(ajaxURL+"AnyCourse/CalendarServlet.do",
+  		        $.post(ajaxURL+"AnyCourse/GroupCalendarServlet.do",
       			    {
       		  		    id: event.id,
       		  		    title: event.title,
