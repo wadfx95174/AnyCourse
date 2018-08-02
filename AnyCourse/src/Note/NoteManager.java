@@ -12,11 +12,11 @@ import java.util.Random;
 import com.google.gson.Gson;;
 
 public class NoteManager {
-	public String insertTextNoteSQL = "insert into textNote (textNoteId,unitId,userId,textNote,share,shareTime,likes) value(null,?,?,?,?,?,?)";
+	public String insertTextNoteSQL = "insert into textNote (textNoteId,unitId,userId,textNote,share,shareTime,likes,categoryId) value(null,?,?,?,?,?,?,?)";
 	public String selectTextNoteSQL = "select * from textNote where unitId = ? and userId= ? ";
 	public String deleteTextNoteSQL = "delete from textNote where textNoteId = ?";
-	public String updateTextNoteSQL = "update textNote set unitId = ?,userId = ?,textNote = ?,share = ?,shareTime = ?,likes = ? where textNoteId = ?";
-	public String insertPictureNoteSQL = "insert into pictureNote (pictureNoteId,unitId,userId,pictureNoteUrl,share,shareTime,likes) value(null,?,?,?,?,?,?)";
+	public String updateTextNoteSQL = "update textNote set unitId = ?,userId = ?,textNote = ?,share = ?,shareTime = ?,likes = ?,categoryId = ? where textNoteId = ?";
+	public String insertPictureNoteSQL = "insert into pictureNote (pictureNoteId,unitId,userId,pictureNoteUrl,share,shareTime,likes,categoryId) value(null,?,?,?,?,?,?,?)";
 	public String selectPictureNoteSQL = "select * from pictureNote where unitId = ? and userId= ?";
 	public String deletePictureNoteSQL = "delete from pictureNote where pictureNoteId = ?";
 	public String shareTextNoteSQL = "UPDATE textNote SET share=1  WHERE unitId = ? and userId = ? and share=0 ";
@@ -24,8 +24,12 @@ public class NoteManager {
 	public String sharePictureNoteSQL = "UPDATE pictureNote SET share=1  WHERE unitId = ? and userId = ? and share=0 ";
 	public String notSharePictureNoteSQL = "UPDATE pictureNote SET share=0  WHERE unitId = ? and userId = ? and share=1 ";
 	
+	public String insertNoteCategorySQL = "insert into noteCategory (userId,categoryId,categoryName) value(?,null,?)";
+	public String selectNoteCategorySQL = "select * from noteCategory where userId= ? ";
+	
 	public TextNote textNote;
 	public PictureNote pictureNote;
+	public NoteCategory noteCategory;
 	public Connection con = null;
 	public Statement stat = null;
 	public ResultSet result = null;
@@ -47,6 +51,48 @@ public class NoteManager {
 		}
 	}
 	
+	public void insertNoteCategoryTable(NoteCategory noteCategory){
+		try {
+			pst = con.prepareStatement(insertNoteCategorySQL);
+			pst.setString(1,noteCategory.getUserId());
+			pst.setString(2,noteCategory.getCategoryName());
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("NoteManager-insertNoteCategoryTable");
+			System.out.println("Exception insert"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	public String selectNoteCategoryTable(String userId) {
+		ArrayList<NoteCategory> noteCategorys = new ArrayList<>();
+		try {
+			pst = con.prepareStatement(selectNoteCategorySQL);
+			pst.setString(1, userId);
+			result = pst.executeQuery();
+			 while(result.next()) 
+		     { 	
+				 noteCategory = new NoteCategory();
+				 noteCategory.setUserId(result.getString("userId"));
+				 noteCategory.setCategoryId(result.getInt("categoryId"));
+				 noteCategory.setCategoryName(result.getString("categoryName"));					
+				 noteCategorys.add(noteCategory);
+		     }
+		}
+		catch(SQLException x){
+			System.out.println("NoteManager-selectNoteCategoryTable");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		String json = new Gson().toJson(noteCategorys);
+		return json;
+	}
+	
+	
 	public void insertTextNoteTable(TextNote textNote){
 		try {
 			pst = con.prepareStatement(insertTextNoteSQL);
@@ -56,6 +102,7 @@ public class NoteManager {
 			pst.setInt(4,textNote.getShare());
 			pst.setString(5,textNote.getShareTime());
 			pst.setInt(6,textNote.getLikes());
+			pst.setInt(7,textNote.getCategoryId());
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
@@ -113,14 +160,14 @@ public class NoteManager {
 	public void updateTextNoteTable(TextNote textNote){
 		try {
 			pst = con.prepareStatement(updateTextNoteSQL);	
-			pst.setInt(7,textNote.getTextNoteId());
+			pst.setInt(8,textNote.getTextNoteId());
 			pst.setInt(1,textNote.getUnitId());
 			pst.setString(2,textNote.getUserId());
 			pst.setString(3,textNote.getTextNote());
 			pst.setInt(4,textNote.getShare());
 			pst.setString(5,textNote.getShareTime());
 			pst.setInt(6,textNote.getLikes());
-			
+			pst.setInt(7,textNote.getCategoryId());
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
@@ -142,6 +189,7 @@ public class NoteManager {
 			pst.setInt(4,pictureNote.getShare());
 			pst.setString(5,pictureNote.getShareTime());
 			pst.setInt(6,pictureNote.getLikes());
+			pst.setInt(7,pictureNote.getCategoryId());
 			pst.executeUpdate();
 			ResultSet generatedKeys = pst.getGeneratedKeys();
 			if (generatedKeys.next())

@@ -22,8 +22,9 @@
 		   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
 		      return decodeURIComponent(name[1]);
 			}
-			
-		filechooser.onchange = function() {
+		
+		
+		filechooser.onchange = function() {			
 			var files = this.files;
 			var file = files[0];
 
@@ -51,8 +52,13 @@
 			};
 			reader.readAsDataURL(file);
 		};
-
+		
+		
 		function toPreviewer(dataUrl) {
+			if($('#categoryList').val() == "Null"){
+				$("#errorModal").modal('show');
+			}
+			else{
 			var dataUrl = dataUrl;
 			filechooser.value = '';
 				$.ajax({
@@ -66,7 +72,8 @@
 						"pictureNoteUrl" : dataUrl,
 						"share" : share,
 						"shareTime" : shareTime,
-						"likes" : likes
+						"likes" : likes,
+						"categoryId" : $('#categoryList').val()						
 					},
 					success : function(result) {
 						$('#container').append( 	 
@@ -77,7 +84,7 @@
 					error: function (jqXHR, textStatus, errorThrown) {
 		             }
 				})				
-				
+			}	
 		}
 		
 		
@@ -158,18 +165,83 @@
 			});
 		}
 		
+		$('#chooseButton').click(function(){
+//			alert($('#categoryList').val());
+			if($('#categoryList').val() != "Null"){
+				$('#chooseNoteCategory').text("已選擇");
+				$('#chooseNoteCategory').removeClass('btn-primary');
+	        	$('#chooseNoteCategory').addClass('btn-danger');
+	        	shareNote();
+	        	
+			}
+			else{$('#chooseNoteCategory').text("選擇分類");
+				$('#chooseNoteCategory').removeClass('btn-danger');
+	        	$('#chooseNoteCategory').addClass('btn-primary');
+	        	notShareNote();
+			}
+		});
+		
+		$('#addListButton').click(function(){
+			$.ajax({
+				url : ajaxURL+'AnyCourse/NoteCategoryServlet.do',
+				method : 'POST',
+				cache :false,
+				data : {
+					"state" : "insert",
+					"userId" : userId,
+					"categoryName" : $("#named").val()
+				},
+				success : function(categoryName) {
+					console.log(categoryName);
+				},
+			});
+			
+		});
+		
+		$(document).ready(function() {
+			$.ajax({
+				url : ajaxURL+'AnyCourse/NoteCategoryServlet.do',
+				method : 'GET',
+				cache :false,
+				data : {					
+					"userId" : userId
+				},
+				success:function(result){
+					for(var i = 0 ;i < result.length;i++){
+		    			
+		    			$('#categoryList').append( 		    					
+					         '<option value="'+ result[i].categoryId +'">'+ result[i].categoryName +'</option>'
+
+		    			);
+					}
+		    	},
+				error:function(){alert("aaa")}
+			});
+		});
+		
 		function setText(){	
 			        
 			if(textNoteId == null)
 				{
-					setTextNote();
-					$("#textArea").attr("disabled","false");
-		    		$("#noteFooter").slideToggle();
+					if($('#categoryList').val() == "Null"){
+						$("#errorModal").modal('show');
+					}
+					else{
+						setTextNote();
+						$("#textArea").attr("disabled","false");
+			    		$("#noteFooter").slideToggle();
+					}					
 				}
 			else{
-					updateTextNote();
-					$("#textArea").attr("disabled","false");
-		    		$("#noteFooter").slideToggle();
+
+					if($('#categoryList').val() == "Null"){
+						$("#errorModal").modal('show');
+					}
+					else{
+						updateTextNote();
+						$("#textArea").attr("disabled","false");
+			    		$("#noteFooter").slideToggle();
+					}
 				}	
 		};
 		
@@ -186,7 +258,8 @@
 					"textNote" : textNote,
 					"share" : share,
 					"shareTime" : shareTime,
-					"likes" : likes
+					"likes" : likes,
+					"categoryId" : $('#categoryList').val()	
 				},
 				success : function(textNote) {
 					console.log(textNote);
@@ -224,7 +297,8 @@
 					"textNote" : textNote,
 					"share" : share,
 					"shareTime" : shareTime,
-					"likes" : likes
+					"likes" : likes,
+					"categoryId" : $('#categoryList').val()	
 				},				
 				success : function(data) {
 					$('#textArea').append( data.textNote );
