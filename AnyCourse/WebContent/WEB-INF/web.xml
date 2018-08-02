@@ -49,6 +49,10 @@
     <servlet-class>HomePage.HomePageServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>NoteCategoryServlet</servlet-name>
+    <servlet-class>Note.NoteCategoryServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>TextNoteServlet</servlet-name>
     <servlet-class>Note.TextNoteServlet</servlet-class>
   </servlet>
@@ -155,6 +159,10 @@
   <servlet-mapping>
     <servlet-name>ReplyServlet</servlet-name>
     <url-pattern>/ReplyServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>NoteCategoryServlet</servlet-name>
+    <url-pattern>/NoteCategoryServlet.do</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>TextNoteServlet</servlet-name>
