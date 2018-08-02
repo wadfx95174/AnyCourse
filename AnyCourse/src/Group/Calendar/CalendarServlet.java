@@ -1,4 +1,4 @@
-package Personal.Calendar;
+package Group.Calendar;
 
 import java.io.IOException;
 
@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 
 import Personal.CoursePlan.CoursePlanManager;
 
+
 public class CalendarServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -24,7 +25,8 @@ public class CalendarServlet extends HttpServlet {
 		String userId = (String)session.getAttribute("userId");
 		if (request.getParameter("method").equals("getEvent"))
 		{
-			response.getWriter().write(new Gson().toJson(calendarManager.getEvents(userId)));
+			int groupId = Integer.parseInt(request.getParameter("groupId"));
+			response.getWriter().write(new Gson().toJson(calendarManager.getEvents(groupId)));
 		}
 		else if (request.getParameter("method").equals("getCoursePlan"))
 		{
@@ -53,6 +55,7 @@ public class CalendarServlet extends HttpServlet {
 		String userId = (String)session.getAttribute("userId");
 		if (method.equals("insert"))
 		{
+			int groupId = Integer.parseInt(request.getParameter("groupId"));
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			event.setTitle(request.getParameter("title"));
@@ -62,7 +65,7 @@ public class CalendarServlet extends HttpServlet {
 			event.setAllDay(request.getParameter("allDay").equals("true"));
 			event.setBackgroundColor(request.getParameter("backgroundColor"));
 			event.setBorderColor(request.getParameter("borderColor"));
-			int newId = calendarManager.insertEvent(event, userId);
+			int newId = calendarManager.insertEvent(event, groupId);
 			String json = new Gson().toJson(newId);
 			response.getWriter().write(json);
 		}

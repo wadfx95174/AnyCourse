@@ -1,0 +1,15 @@
+@media (max-width: 768px) {
+    #calendar,.fc-day-number{
+        font-size:70%;
+    }
+    .fc-center>h2{
+    	font-size:130%;
+    }
+}
+.fc-next-button>span,.fc-prev-button>span{
+	overflow:inherit;
+	font-size:initial;
+}
+.external-event-a{
+	width:100%;
+}
