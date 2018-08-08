@@ -44,6 +44,7 @@ public class TextNoteServlet extends HttpServlet {
 			int share = Integer.parseInt(request.getParameter("share"));
 			String shareTime = request.getParameter("shareTime");
 			int likes = Integer.parseInt(request.getParameter("likes"));
+			int categoryId = Integer.parseInt(request.getParameter("categoryId"));
 			
 			TextNote textNote = new TextNote();
 			
@@ -53,6 +54,7 @@ public class TextNoteServlet extends HttpServlet {
 			textNote.setShare(share);
 			textNote.setShareTime(shareTime);
 			textNote.setLikes(likes);
+			textNote.setCategoryId(categoryId);
 			
 			dbnote.insertTextNoteTable(textNote);
 			response.setContentType("application/json");
@@ -66,6 +68,7 @@ public class TextNoteServlet extends HttpServlet {
 			int share = Integer.parseInt(request.getParameter("share"));
 			String shareTime = request.getParameter("shareTime");
 			int likes = Integer.parseInt(request.getParameter("likes"));
+			int categoryId = Integer.parseInt(request.getParameter("categoryId"));
 			
 			TextNote textNote = new TextNote();
 			textNote.setTextNoteId(textNoteId);
@@ -75,6 +78,7 @@ public class TextNoteServlet extends HttpServlet {
 			textNote.setShare(share);
 			textNote.setShareTime(shareTime);
 			textNote.setLikes(likes);
+			textNote.setCategoryId(categoryId);
 
 			dbnote.updateTextNoteTable(textNote);
 			dbnote.conClose();

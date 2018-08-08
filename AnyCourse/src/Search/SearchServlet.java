@@ -24,9 +24,9 @@ public class SearchServlet extends HttpServlet {
 			Gson gson = new Gson();
 			HttpSession session = request.getSession();
 			if (queryMethod.equals("precise"))
-				response.getWriter().print(gson.toJson(manager.keywordSearch(searchQuery, (String)session.getAttribute("userId"), SearchManager.SearchMethod.DEFAULT)));
+				response.getWriter().print(gson.toJson(manager.keywordSearchWithJieba(searchQuery, (String)session.getAttribute("userId"), SearchManager.SearchMethod.DEFAULT)));
 			else if (queryMethod.equals("fuzzy"))
-				response.getWriter().print(gson.toJson(manager.keywordSearch(searchQuery, (String)session.getAttribute("userId"), SearchManager.SearchMethod.FUZZY_COURSE)));
+				response.getWriter().print(gson.toJson(manager.keywordSearchWithJieba(searchQuery, (String)session.getAttribute("userId"), SearchManager.SearchMethod.FUZZY_COURSE)));
 			manager.conClose();
 		}
 	}

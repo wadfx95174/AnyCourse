@@ -10,7 +10,16 @@ public class TextNote {
 	public int share;
 	public String shareTime;
 	public int likes;
+	public int categoryId;
 	
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
 	public String getNickName() {
 		return nickName;
 	}

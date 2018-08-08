@@ -2,6 +2,7 @@
 var ajaxURL="http://localhost:8080/";
 
 var resultFlag = false;
+var resultArray = new Map();
 
 function get(name)
 {
@@ -27,6 +28,12 @@ $(document).ready(function(){
 		success: function(response){
 //			$('#loading').hide();
 			$('#result').show();
+			for (var i = 0; i < response.length; i++)
+			{
+				resultArray.set(response[i].courselistId != null ? response[i].courselistId : response[i].units[i].unitId , response[i]);
+			}
+			console.log(response);
+			
 			printResult(response);
 		},
 		error: function(){
@@ -54,7 +61,15 @@ $(document).ready(function(){
 		success: function(response){
 			$('#loading').hide();
 			$('#result').show();
-			printResult(response);
+			
+			var fuzzyResult = []; 
+			for (var i = 0; i < response.length; i++)
+			{
+				if (resultArray.has(response[i].courselistId != null ? response[i].courselistId : response[i].units[i].unitId))
+					fuzzyResult.push(response[i]);
+			}
+			console.log(response);
+			printResult(fuzzyResult);
 		},
 		error: function(){
 			if (resultFlag)
@@ -71,7 +86,7 @@ $(document).ready(function(){
 });
 
 function printResult(response){
-	console.log(response);
+//	console.log(response);
 	array = response;
 	if (response.length == 0)
 	{

@@ -49,12 +49,20 @@
     <servlet-class>HomePage.HomePageServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>NoteCategoryServlet</servlet-name>
+    <servlet-class>Note.NoteCategoryServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>TextNoteServlet</servlet-name>
     <servlet-class>Note.TextNoteServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>PictureNoteServlet</servlet-name>
     <servlet-class>Note.PictureNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>HandoutServlet</servlet-name>
+    <servlet-class>Handout.HandoutServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>NotificationServlet</servlet-name>
@@ -108,6 +116,10 @@
     <servlet-name>ManagementServlet</servlet-name>
     <servlet-class>Group.Management.ManagementServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>GroupCalendarServlet</servlet-name>
+    <servlet-class>Group.Calendar.CalendarServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>GroupCommentServlet</servlet-name>
     <url-pattern>/GroupCommentServlet.do</url-pattern>
@@ -153,12 +165,20 @@
     <url-pattern>/ReplyServlet.do</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>NoteCategoryServlet</servlet-name>
+    <url-pattern>/NoteCategoryServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>TextNoteServlet</servlet-name>
     <url-pattern>/TextNoteServlet.do</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>PictureNoteServlet</servlet-name>
     <url-pattern>/PictureNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>HandoutServlet</servlet-name>
+    <url-pattern>/HandoutServlet.do</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>NotificationServlet</servlet-name>
@@ -211,6 +231,10 @@
   <servlet-mapping>
     <servlet-name>ManagementServlet</servlet-name>
     <url-pattern>/ManagementServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GroupCalendarServlet</servlet-name>
+    <url-pattern>/GroupCalendarServlet.do</url-pattern>
   </servlet-mapping>
   <listener>
     <listener-class>

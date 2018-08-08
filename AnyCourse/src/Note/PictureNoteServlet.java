@@ -51,6 +51,8 @@ public class PictureNoteServlet extends HttpServlet {
 			int share = Integer.parseInt(request.getParameter("share"));
 			String shareTime = request.getParameter("shareTime");
 			int likes = Integer.parseInt(request.getParameter("likes"));
+			int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+			
 			NoteManager dbnote = new NoteManager();
 						
 			PictureNote pictureNote = new PictureNote();
@@ -60,6 +62,7 @@ public class PictureNoteServlet extends HttpServlet {
 			pictureNote.setShare(share);
 			pictureNote.setShareTime(shareTime);
 			pictureNote.setLikes(likes);
+			pictureNote.setCategoryId(categoryId);
 			
 			int id =dbnote.insertPictureNoteTable(pictureNote);
 			pictureNote.setPictureNoteId(id);
