@@ -43,6 +43,28 @@ public class PlayerInterfaceManager
 		}
 	}
 	
+	public String getUnitName(int unitId) {
+		String unitName = null;
+		try {
+			pst = con.prepareStatement("select unitName from unit where unitId = ?");
+			pst.setInt(1, unitId);
+			result = pst.executeQuery();
+			while(result.next()) 
+			{
+				unitName = result.getString("unitName");
+			}
+		}
+		catch(SQLException x){
+			System.out.println("PlayerInterfaceManager-getUnitName");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		
+		return unitName;
+	}
+	
 	public String getVideoUrl(int unitId) {
 		Unit unit = null;
 		try {

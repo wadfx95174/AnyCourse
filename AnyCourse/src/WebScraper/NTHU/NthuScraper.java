@@ -39,21 +39,28 @@ public class NthuScraper implements CourseList{
 		
 		Elements courseURLElement = null;
 		Elements unitList = null;
-		Elements tableListTr = null;
 		Elements tableListTd = null;
 
-		String courseURLToken;
-		String videoURLToken;
-		String unitURLToken;
+		String courseURLToken = null;
+		String videoURLToken = null;
+		String unitURLToken = null;
 		String courseName = null;
 		String unitNameFirstHalf = null;
 		String unitNameSecondHalf = null;
 
+		String teacher = null;
 		String videoIframe = null;
-		String videoURL;
+		
+		String URLId = null;
+		String URLFilename = null;
+		
+		String otherUnitURLToken = null;
+		String otherUnitURL = null;
+		String otherImgURLToken = null;
+		String otherImgURL = null;
 		
 		int x;
-
+		//總共14頁
 		for (int i = 1; i <= 14; ++i) {
 			res = Jsoup.connect(TARGET_URL + i)
 					.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0")
@@ -77,11 +84,11 @@ public class NthuScraper implements CourseList{
 				x++;
 			}
 		}
-		for(String s:courseURLLists) {
-			System.out.println(s);
-		}
-		System.out.println();
-		System.out.println(courseURLLists.size());
+//		for(String s:courseURLLists) {
+//			System.out.println(s);
+//		}
+//		System.out.println();
+//		System.out.println(courseURLLists.size());
 		/*瘥�玨蝔��惜�銝���<div class="entry">�嚗��誑銝嗾蝔�
 		 * 1.div嚗5,11,47,50,58,]
 		 * 2.蝚砌��嚗26,]
@@ -110,56 +117,141 @@ public class NthuScraper implements CourseList{
 				document = res.parse();
 			
 				courseName = document.select("#content > div > h2").get(0).text();
+				
+				teacher = document.select("#content > div.content-left > div:nth-child(1) > div > div > div.title").get(0).text();
 			}
 			catch(Exception e) {
 				e.printStackTrace();
 			}
-//			videoImgSrc = document.select("#content > div.content-left > div:nth-child(1) > div > div > div:nth-child(7) > img").get(0).attr("src");
-			output.setUniversity("國立清華大學");
-			output.setCourseName(courseName);
-//			output.setUnitImgSrc(videoImgSrc);
+			
 			try {
 				unitList = document.select("#search2 > ul > li");
 			}
 			catch(Exception e) {
 				e.printStackTrace();
 			}
-			for(Element count : unitList) {
-				try {
-					videoURLToken = count.select("div > a").get(0).attr("href");
-					unitNameFirstHalf = count.select("div > a").get(0).text();
+			//每個單元影片裡的td下的結構不一樣，從"第三世界政治"開始不一樣
+			if(i < 114) {
+				for(Element count : unitList) {
+					try {
+						videoURLToken = count.select("div > a").get(0).attr("href");
+						unitNameFirstHalf = count.select("div > a").get(0).text();
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+//					System.out.println(videoURLToken);
+					
+//					System.out.println(unitNameFirstHalf);
+					unitNameLists.add(unitNameFirstHalf);
+					
+					try {
+						res2 = Jsoup.connect(COURSE_URL + videoURLToken)
+								.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0")
+								.method(Method.GET).execute();
+						document2 = res2.parse();
+						tableListTd = document2.select("#page > div.content-left2 > div:nth-child(1) > div > div > div:nth-child(5) > table > tbody > tr > td");
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+//					System.out.println(tableListTd);
+					for(Element td : tableListTd) {
+						try {
+							unitNameSecondHalf = td.select("label").get(0).text();
+							output.setUnitName(unitNameFirstHalf+"_"+unitNameSecondHalf);
+							unitURLToken = td.select("a:nth-child(2)").get(0).attr("href");
+							res3 = Jsoup.connect(COURSE_URL + unitURLToken)
+									.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0")
+									.method(Method.GET).execute();
+							document3 = res3.parse();
+							videoIframe = document3.select("#videoFrame").get(0).attr("src");
+						}
+						catch(Exception e) {
+							e.printStackTrace();
+						}
+//						System.out.println(unitNameFirstHalf+"_"+unitNameSecondHalf);
+						
+//						System.out.println(videoIframe);
+						try {
+							URLId = videoIframe.split("=")[2].split("&")[0];
+							URLFilename = videoIframe.split("=")[3].split("&")[0];
+							
+//							System.out.println(VIDEO_IMG_URL + URLId + "/" + URLFilename);
+							output.setUnitURL(VIDEO_IMG_URL + URLId + "/" + URLFilename);
+							
+						}
+						catch(Exception e) {
+							output.setUnitURL(null);
+							output.setUnitImgSrc(null);
+						}
+					}
+					
 				}
-				catch(Exception e) {
-					e.printStackTrace();
-				}
-				System.out.println(videoURLToken);
-				
-				System.out.println(unitNameFirstHalf);
-				unitNameLists.add(unitNameFirstHalf);
-				
-				try {
-					res2 = Jsoup.connect(COURSE_URL + videoURLToken)
-							.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0")
-							.method(Method.GET).execute();
-					document2 = res2.parse();
-					tableListTr = document2.select("#page > div.content-left2 > div:nth-child(1) > div > div > div:nth-child(5) > table > tbody > tr");
-				}
-				catch(Exception e) {
-					e.printStackTrace();
-				}
-//				System.out.println(tableListTr);
-//				for(Element tr : tableListTr) {
-//					try {
-//						tableListTd = tableListTr.select("td");
-//					}
-//					catch(Exception e) {
-//						e.printStackTrace();
-//					}
-////					System.out.println(tableListTd);
-//					for(Element td : tableListTd) {
+			}
+			//每個單元影片裡的td下的結構不一樣
+			else {
+				otherImgURLToken = document.select("#content > div.content-left > div:nth-child(1) > div > div > div:nth-child(3) > img").get(0).attr("src");
+				otherImgURL = COURSE_URL + otherImgURLToken.split("\\./")[1];
+//				System.out.println(otherImgURL);
+				for(Element count : unitList) {
+					try {
+						videoURLToken = count.select("div > a").get(0).attr("href");
+						unitNameFirstHalf = count.select("div > a").get(0).text();
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+//					System.out.println(videoURLToken);
+					
+//					System.out.println(unitNameFirstHalf);
+					unitNameLists.add(unitNameFirstHalf);
+					
+					try {
+						res2 = Jsoup.connect(COURSE_URL + videoURLToken)
+								.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0")
+								.method(Method.GET).execute();
+						document2 = res2.parse();
+						tableListTd = document2.select("#page > div.content-left2 > div:nth-child(1) > div > div > div:nth-child(5) > table > tbody > tr > td");
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+//					System.out.println(tableListTd);
+					for(Element td : tableListTd) {
+						output.setUniversity("國立清華大學");
+						output.setCourseName(courseName);
+						output.setTeacher(teacher);
+						output.setUnitName(unitNameFirstHalf);
+						output.setUnitImgSrc(otherImgURL);
+						//後面十幾個課程都是例外，要從下載這個網址切出影片網址
+						try {
+							otherUnitURLToken = td.select("a:nth-child(4)").get(0).attr("href");
+//							System.out.println(otherUnitURLToken);
+//							System.out.println(otherUnitURLToken.split("2F")[6].split("%")[0]);
+//							System.out.println(otherUnitURLToken.split("2F")[7].split("%")[0]);
+//							System.out.println(otherUnitURLToken.split("2F")[8].split("%")[0]);
+//							System.out.println(otherUnitURLToken.split("2F")[9].split("%")[0]);
+							otherUnitURL = VIDEO_IMG_URL + "old_video/" 
+									+ otherUnitURLToken.split("2F")[6].split("%")[0] +"/"
+									+ otherUnitURLToken.split("2F")[7].split("%")[0] +"/"
+									+ otherUnitURLToken.split("2F")[8].split("%")[0] +"/"
+									+ otherUnitURLToken.split("2F")[9].split("%")[0].split("\\.")[0]
+									+ "_320k."
+									+ otherUnitURLToken.split("2F")[9].split("%")[0].split("\\.")[1];
+//							System.out.println(otherUnitURL);
+							output.setUnitURL(otherUnitURL);
+						}
+						catch(Exception e) {
+							output.setUnitURL(null);
+							output.setUnitImgSrc(null);
+							e.printStackTrace();
+						}
+						
+						
+						
 //						try {
-//							unitNameSecondHalf = td.select("label").get(0).text();
-//							output.setUnitName(unitNameLists.get(i)+"_"+unitNameSecondHalf);
+//							
 //							unitURLToken = td.select("a:nth-child(2)").get(0).attr("href");
 //							res3 = Jsoup.connect(COURSE_URL + unitURLToken)
 //									.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0")
@@ -170,25 +262,28 @@ public class NthuScraper implements CourseList{
 //						catch(Exception e) {
 //							e.printStackTrace();
 //						}
-////						System.out.println(unitNameLists.get(i)+"_"+unitNameSecondHalf);
-//						
-////						System.out.println(videoIframe);
+//						System.out.println(unitNameFirstHalf+"_"+unitNameSecondHalf);
+						
+//						System.out.println(videoIframe);
 //						try {
-//							String temp1 = videoIframe.split("=")[2].split("&")[0];
-//							String temp2 = videoIframe.split("=")[3].split("&")[0];
-//							System.out.println(VIDEO_IMG_URL+temp1+"/"+temp2);
-//							System.out.println(VIDEO_IMG_URL+temp1+"/cover.png");
-//							output.setUnitURL(VIDEO_IMG_URL+temp1+"/"+temp2);
-//							output.setUnitImgSrc(VIDEO_IMG_URL+temp1+"/cover.png");
+//							URLId = videoIframe.split("=")[2].split("&")[0];
+//							URLFilename = videoIframe.split("=")[3].split("&")[0];
+//							
+//							System.out.println(VIDEO_IMG_URL + URLId + "/" + URLFilename);
+//							output.setUnitURL(VIDEO_IMG_URL + URLId + "/" + URLFilename);
+//							
 //						}
 //						catch(Exception e) {
 //							output.setUnitURL(null);
 //							output.setUnitImgSrc(null);
 //						}
-//					}
-//				}
+					}
+					
+				}
 			}
-//			outputs.add(output);
+//			System.out.println(VIDEO_IMG_URL + URLId + "/cover.png");
+//			output.setUnitImgSrc(VIDEO_IMG_URL + URLId + "/cover.png");
+			outputs.add(output);
 		}
 		
 	}

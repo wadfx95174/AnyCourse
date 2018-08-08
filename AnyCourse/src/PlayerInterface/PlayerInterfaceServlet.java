@@ -87,10 +87,11 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			if(userId == null) {
 //				accountId = manager.getAccountId("1");
 				SearchManager searchManger = new SearchManager();
+				PlayerInterfaceManager playerInterfaceManager = new PlayerInterfaceManager();
 				ArrayList<Search> searchs = new ArrayList<Search>();
-				//
-				searchs = searchManger.keywordSearch("");
-				//
+				String unitName = playerInterfaceManager.getUnitName(Integer.parseInt(request.getParameter("unitId")));
+				searchs = searchManger.keywordSearchWithJieba(unitName);
+				
 				response.getWriter().write(gson.toJson(searchs));
 			}
 			else {
@@ -104,10 +105,6 @@ public class PlayerInterfaceServlet extends HttpServlet {
 				}
 				response.getWriter().write(gson.toJson(units));
 			}
-			
-			
-			
-			
 			
 		}
 		manager.conClose();

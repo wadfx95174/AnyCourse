@@ -594,21 +594,25 @@ $(document).ready(function(){
 				response[temp] = response[j];
 				response[j] = video;
 			}
-            if(response.hasOwnProperty("courselistId")){
+            if(response[0].hasOwnProperty("courselistId")){
+                console.log(response);
                 for(var i = 0;i < response.length; i++){
+                    var random = Math.floor(Math.random()*response[i].units.length);
+                    console.log(i);
+                    console.log(random);
                     $('#recommendList').append(
                             '<li>'
-                            +'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[0].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].units[0].unitId+'">'
+                            +'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[random].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].units[random].unitId+'">'
                             +'<div class="media">'
                             +'<div class="pull-left" style="padding-left: 0px;">'
                             +'<div class="embed-responsive embed-responsive-16by9 col-xs-12">'
                             +'<img id="img" class="style-scope yt-img-shadow" alt="" width="250"'
-                            +'src="'+ (response[i].units[0].videoImgSrc != "" ? response[i].units[0].videoImgSrc : "https://i.imgur.com/eKSYvRv.png") +'">'
+                            +'src="'+ (response[i].units[random].videoImgSrc != "" ? response[i].units[random].videoImgSrc : "https://i.imgur.com/eKSYvRv.png") +'">'
                             +'</div>'
                             +'</div>'
                             +'<div class="media-body">'
                             +'<h5 class="unitUi">'
-                            +'<b>影片名稱:' + response[i].units[0].unitName + '</b>'
+                            +'<b>影片名稱:' + response[i].units[random].unitName + '</b>'
                             +'</h5>'
                             +'<p class="unitUi">開課大學:' + response[i].schoolName + '</p>'
                             +'<p class="unitUi">授課教師:' + response[i].teacher + '老師</p>'
@@ -620,6 +624,7 @@ $(document).ready(function(){
                 }
             }
             else{
+                console.log(response);
                 for(var i = 0;i < response.length; i++){
                     $('#recommendList').append(
                             '<li>'
