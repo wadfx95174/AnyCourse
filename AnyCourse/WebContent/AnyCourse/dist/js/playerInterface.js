@@ -1,5 +1,5 @@
-//var ajaxURL="http://140.121.197.130:8400/";
-var ajaxURL="http://localhost:8080/";
+var ajaxURL="http://140.121.197.131:7603/";
+//var ajaxURL="http://localhost:8080/";
 var video;		// 播放器
 var keyLabelArray;		// 存放個人標籤
 var exKeyLabelArray;	// 存放交流標籤
