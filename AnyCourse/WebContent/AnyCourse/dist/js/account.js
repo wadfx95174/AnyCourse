@@ -92,7 +92,7 @@ function checkLogin(htmlUrl, servletUrl)
     					       +'</li>'
     					   +'</ul>'
     					+'</li>'
-    					+'<li class="treeview">'
+    					+'<li class="treeview active">'
     					   +'<a href="#">'
     					       +'<i class="fa fa-user"></i> '
     					       +'<span>個人頁面</span><i class="fa fa-angle-left pull-right"></i>'

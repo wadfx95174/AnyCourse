@@ -263,8 +263,8 @@ $.AdminLTE.tree = function (menu) {
     //Get the clicked link and the next element
     var $this = $(this);
     var checkElement = $this.next();
-
-    //Check if the next element is a menu and is visible
+    console.log("testtt000");
+    //Check if the next element is a treeview-menu and is visible
     if ((checkElement.is('.treeview-menu')) && (checkElement.is(':visible'))) {
       //Close the menu
       checkElement.slideUp('normal', function () {
@@ -282,6 +282,7 @@ $.AdminLTE.tree = function (menu) {
       ul.removeClass('menu-open');
       //Get the parent li
       var parent_li = $this.parent("li");
+      console.log(parent_li);
 
       //Open the target menu and add the menu-open class
       checkElement.slideDown('normal', function () {
