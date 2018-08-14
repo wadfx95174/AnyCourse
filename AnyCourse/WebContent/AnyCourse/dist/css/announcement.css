@@ -1,0 +1,35 @@
+.box-header > button {
+	float: right;
+}
+
+#manager-area, #member-area {
+	margin-top: 10px;
+}
+
+.user-info {
+	float: left;
+}
+
+.box-header > img {
+	display: inline;
+	width: 75px;
+}
+
+.user-info > h4 {
+	display: inline;
+	margin: 30px;
+	padding: 15px 15px 25px 15px;
+}
+
+.announcement-area > h2 {
+	color: red;
+	text-align: center;
+	font-weight: bold;
+	margin-bottom: 20px;
+	margin-top: -20px;
+}
+
+.announcement-area > p {
+	text-align: center;
+	font-size: 30px;
+}

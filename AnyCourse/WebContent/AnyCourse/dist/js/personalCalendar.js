@@ -1,11 +1,11 @@
-var ajaxURL="http://140.121.197.131:7603/";
-//var ajaxURL="http://localhost:8080/";
+//var ajaxURL="http://140.121.197.131:7603/";
+var ajaxURL="http://localhost:8080/";
 var googleEvents;	// 存 Google Calendar Events
 var fullEvents;		// 存 FullCalendar Events
 var googleCalendarId = ""; // 存 Google Calendar Id
 
 /* ----------------------------------- Google ----------------------------------- */
-
+document.write('<script async defer src="../../dist/js/ajax.js"');
 document.write('<script async defer src="https://apis.google.com/js/api.js"'
       +'onload="this.onload=function(){};handleClientLoad()"'
       +'onreadystatechange="if (this.readyState === "complete") this.onload()">'
