@@ -1,6 +1,8 @@
 //var ajaxURL="http://140.121.197.131:7603/";
 var ajaxURL="http://localhost:8080/";
 
+// AdminLTE App
+document.write("<script type='text/javascript' src='dist/js/app.js'></script>");
 
 $(document).on('click', '#logout', function logout()
 {
@@ -79,7 +81,7 @@ function checkLogin(htmlUrl, servletUrl)
     					       +'<span>重點標籤</span>'
     					   +'</a>'
     					+'</li>'
-    					+'<li class="treeview">'
+    					+'<li class="treeview active">'
     					   +'<a href="#">'
     					       +'<i class="fa fa-user"></i> '
     					       +'<span>群組頁面</span><i class="fa fa-angle-left pull-right"></i>'
