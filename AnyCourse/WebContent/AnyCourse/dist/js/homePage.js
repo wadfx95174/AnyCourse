@@ -323,24 +323,26 @@ $(document).ready(function(){
 			});
 			//將影片新增至指定清單
 			$('#addToVideoListButton').click(function(){
-				$.ajax({
-					url : ajaxURL+'AnyCourse/HomePageServlet.do',
-					method : 'POST',
-					cache: false,
-					data:{
-						action:'addToVideoList',
-						courselistId:$('#addToVideoListModalBody').val(),
-						unitId:homePageList[checkId][0]
-					},
-					success:function(result){
-						for(var i = 0;i < result.length;i++){
-							$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
+				if($('#addToVideoListModalBody').val() != null){
+					$.ajax({
+						url : ajaxURL+'AnyCourse/HomePageServlet.do',
+						method : 'POST',
+						cache: false,
+						data:{
+							action:'addToVideoList',
+							courselistId:$('#addToVideoListModalBody').val(),
+							unitId:homePageList[checkId][0]
+						},
+						success:function(result){
+							for(var i = 0;i < result.length;i++){
+								$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
+							}
+						},
+						error:function(){
+							console.log("add video to courselist error");
 						}
-					},
-					error:function(){
-						console.log("add video to courselist error");
-					}
-				});
+					});
+				}
 			});
 			//清單整個新增至課程清單
 			$('#addToVideoListButtonList,#addToVideoListButtonListClose').click(function(){
@@ -371,9 +373,16 @@ $(document).ready(function(){
 		},
 		cache :false,
 		success:function(result){
-			for(var i = 0;i < result.length;i++){
-				$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
+			if(result.length == 0){
+				$('#addToVideoListModalBody').append('<option value="null">無</option>');
 			}
+			else{
+				for(var i = 0;i < result.length;i++){
+					$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
+				}
+			}
+			
+			
 		},
 		error:function(){
 			console.log("append videoList to modal error");
