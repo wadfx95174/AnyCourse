@@ -132,6 +132,9 @@ function checkLogin(htmlUrl, servletUrl)
     					+'</a>'
     					+'</li>'
     			);
+    			$('.treeview').click(function(){
+    				$(this).toggleClass('active');
+    			})
 
     			for (var keys in result.groups)
 				{

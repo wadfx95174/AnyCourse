@@ -33,7 +33,7 @@ $(function(){
 										+ 	'<h4>' + result.members[i].userName + '</h4>'
 										+ '</div>');
 			}
-			$('section.content').first().append('<a href="CalendarPage.html?groupId=' + get('groupId') + '"><button>Calendar</button></a>');
+//			$('section.content').first().append('<a href="CalendarPage.html?groupId=' + get('groupId') + '"><button>Calendar</button></a>');
 		},
 		error: function(){
 			console.log('get groupId error');

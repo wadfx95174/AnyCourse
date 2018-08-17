@@ -5,7 +5,7 @@ var fullEvents;		// 存 FullCalendar Events
 var googleCalendarId = ""; // 存 Google Calendar Id
 
 /* ----------------------------------- Google ----------------------------------- */
-
+document.write('<script async defer src="../../dist/js/ajax.js"');
 document.write('<script async defer src="https://apis.google.com/js/api.js"'
       +'onload="this.onload=function(){};handleClientLoad()"'
       +'onreadystatechange="if (this.readyState === "complete") this.onload()">'
