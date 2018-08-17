@@ -73,7 +73,7 @@ public class NotificationServlet extends HttpServlet {
 			
 			notification.setUserId(userId);
 			notification.setType(type);
-			notification.setNickName(nickName);
+			notification.setNickname(nickName);
 			notification.setUrl(url);
 			notification.setIsBrowse(isBrowse);
 			

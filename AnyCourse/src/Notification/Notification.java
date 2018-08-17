@@ -1,20 +1,16 @@
 package Notification;
 
 public class Notification {
-	public int  NotificationId;
-	public String userId;
-	public String type;
-	public String nickName;
-	public String releaseTime;
-	public String url;
-	public int isBrowse;
+	private int  NotificationId;
+	private String userId;
+	private String type;
+	private String nickname;
+	private String releaseTime;
+	private String url;
+	private String message;
+	private String fromUser;
+	private int isBrowse;
 	
-	public int getIsBrowse() {
-		return isBrowse;
-	}
-	public void setIsBrowse(int isBrowse) {
-		this.isBrowse = isBrowse;
-	}
 	public int getNotificationId() {
 		return NotificationId;
 	}
@@ -33,11 +29,11 @@ public class Notification {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getNickName() {
-		return nickName;
+	public String getNickname() {
+		return nickname;
 	}
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 	public String getReleaseTime() {
 		return releaseTime;
@@ -51,4 +47,24 @@ public class Notification {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public String getFromUser() {
+		return fromUser;
+	}
+	public void setFromUser(String fromUser) {
+		this.fromUser = fromUser;
+	}
+	public int getIsBrowse() {
+		return isBrowse;
+	}
+	public void setIsBrowse(int isBrowse) {
+		this.isBrowse = isBrowse;
+	}
+	
+	
 }

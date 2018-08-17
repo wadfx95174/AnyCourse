@@ -59,6 +59,7 @@ public class HomePageServlet extends HttpServlet {
 		String userId = (String)session.getAttribute("userId");
 		HomePageManager homePageDatabaseManager = new HomePageManager();
 		ArrayList<HomePage> homePages = new ArrayList<HomePage>();
+		Gson gson = new Gson();
 		
 		//加單一個影片到課程計畫
 		if(request.getParameter("action").equals("addToCoursePlan")&&userId!=null) {
@@ -73,8 +74,6 @@ public class HomePageServlet extends HttpServlet {
 		else if(request.getParameter("action").equals("getVideoListName")&&userId!=null) {
 			
 			homePages = homePageDatabaseManager.getVideoListName(userId);
-			GsonBuilder builder = new GsonBuilder();
-			Gson gson = builder.setPrettyPrinting().create();
 			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(homePages));
 		}
