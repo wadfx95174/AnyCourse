@@ -1,6 +1,6 @@
 //var ajaxURL="http://140.121.197.131:7603/";
 var ajaxURL="http://localhost:8080/";
-
+//載入頁面
 $(document).ready(function() {
 	$.ajax({
 		url : ajaxURL+'AnyCourse/NotificationServlet.do',
@@ -9,8 +9,8 @@ $(document).ready(function() {
 		
 		success:function(result){
 			$('#notificationNumber').text(result.length);
-			$('#introduction').removeClass("active");
-			$('#forum').addClass("active");
+//			$('#introduction').removeClass("active");
+//			$('#forum').addClass("active");
     		for(var i = 0 ;i < result.length;i++){    			
     			$('#notificationList').append( 	 
     					'<li>'+

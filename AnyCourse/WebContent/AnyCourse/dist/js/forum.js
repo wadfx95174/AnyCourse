@@ -17,7 +17,6 @@ function get(name)
    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
       return decodeURIComponent(name[1]);
 }
-
 function setComment(){	
 	if($("#commentArea").val() !== ''){
 		var dt = new Date();
@@ -59,7 +58,7 @@ function setComment(){
 		})				
 	}	
 }
-
+//載入頁面
 $(document).ready(function() {
 	$.ajax({
 		url : ajaxURL+'AnyCourse/CommentServlet.do',
@@ -118,12 +117,12 @@ $(document).ready(function() {
 	});
 	
 });
-
+//跳出reply框
 function displayReply(input){
 	var id = input.split('_')[1]; 
 	$("#reply_div_" + id ).toggle();
 }
-
+//新增reply
 function setReply(input){
 	var id = input.split('_')[1];
 	var url = location.href;
@@ -184,7 +183,7 @@ function setReply(input){
 			})			
 	}			
 }
-
+//刪除reply
 function deleteReply(input){
 	var id = input.split('_')[1];
 	
@@ -201,7 +200,7 @@ function deleteReply(input){
 		},
 	});
 }
-     
+//刪除comment     
 function deleteComment(input){
 	var id = input.split('_')[1];
 	
@@ -228,7 +227,7 @@ function deleteComment(input){
 		},
 	});	
 }
-
+//comment編輯框點選取消,comment1_+id 刪除button,comment2_+id 編輯button,comment3_+id 回覆button,comment4_+id 確認button,comment5_+id 取消button
 function can(input){
 	var id = input.split('_')[1];
 	$("#comment_"+id).attr("disabled","false");
@@ -239,7 +238,7 @@ function can(input){
 	$("#comment5_"+id).toggle();
 	
 }
-
+//跳出comment編輯框,comment1_+id 刪除button,comment2_+id 編輯button,comment3_+id 回覆button,comment4_+id 確認button,comment5_+id 取消button
 function edit(input){
 	var id = input.split('_')[1];
 	$("#comment_"+id).removeAttr("disabled");
@@ -249,7 +248,7 @@ function edit(input){
 	$("#comment4_"+id).toggle();
 	$("#comment5_"+id).toggle();	
 }
-
+//update comment,comment1_+id 刪除button,comment2_+id 編輯button,comment3_+id 回覆button,comment4_+id 確認button,comment5_+id 取消button
 function updateComment(input){
 	var id = input.split('_')[1];
 
@@ -281,7 +280,7 @@ function updateComment(input){
 		}
 	});
 };
-
+//reply編輯框點選取消,reply1_+id 刪除button,reply2_+id 編輯button,reply3_+id 確認button,reply4_+id 取消button
 function can2(input){
 	var id = input.split('_')[1];
 	var id2 = input.split('_')[2];
@@ -292,7 +291,7 @@ function can2(input){
 	$("#reply4_"+id+"_"+id2).toggle();
 	
 }
-
+//跳出reply編輯框,reply1_+id 刪除button,reply2_+id 編輯button,reply3_+id 確認button,reply4_+id 取消button
 function edit2(input){
 	var id = input.split('_')[1];
 	var id2 = input.split('_')[2];
@@ -302,7 +301,7 @@ function edit2(input){
 	$("#reply3_"+id+"_"+id2).toggle();
 	$("#reply4_"+id+"_"+id2).toggle();	
 }
-
+//update reply,reply1_+id 刪除button,reply2_+id 編輯button,reply3_+id 確認button,reply4_+id 取消button
 function updateReply(input){
 	var id = input.split('_')[1];
 	var id2 = input.split('_')[2];
