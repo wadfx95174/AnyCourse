@@ -120,6 +120,10 @@
     <servlet-name>GroupCalendarServlet</servlet-name>
     <servlet-class>Group.Calendar.CalendarServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>GroupKeyLabelServlet</servlet-name>
+    <servlet-class>Group.KeyLabel.GroupKeyLabelServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>GroupCommentServlet</servlet-name>
     <url-pattern>/GroupCommentServlet.do</url-pattern>
@@ -235,6 +239,10 @@
   <servlet-mapping>
     <servlet-name>GroupCalendarServlet</servlet-name>
     <url-pattern>/GroupCalendarServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GroupKeyLabelServlet</servlet-name>
+    <url-pattern>/GroupKeyLabelServlet.do</url-pattern>
   </servlet-mapping>
   <listener>
     <listener-class>
