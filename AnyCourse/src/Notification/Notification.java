@@ -8,7 +8,7 @@ public class Notification {
 	private String releaseTime;
 	private String url;
 	private String message;
-	private String fromUser;
+	private String toUserId;
 	private int isBrowse;
 	
 	public int getNotificationId() {
@@ -53,11 +53,11 @@ public class Notification {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public String getFromUser() {
-		return fromUser;
+	public String getToUserId() {
+		return toUserId;
 	}
-	public void setFromUser(String fromUser) {
-		this.fromUser = fromUser;
+	public void setToUser(String toUserId) {
+		this.toUserId = toUserId;
 	}
 	public int getIsBrowse() {
 		return isBrowse;

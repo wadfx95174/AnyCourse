@@ -1,8 +1,9 @@
 //var ajaxURL="http://140.121.197.131:7603/";
 var ajaxURL="http://localhost:8080/";
 
-// AdminLTE App
-document.write("<script type='text/javascript' src='dist/js/app.js'></script>");
+$('.sidebar-menu').slimScroll({
+    height: window.screen.height
+});
 
 $(document).on('click', '#logout', function logout()
 {
@@ -18,8 +19,6 @@ function checkLogin(htmlUrl, servletUrl)
     	cache :false,
         async:false,
     	success: function(result){
-            console.log(result.userId);
-            console.log(result.nickName);
     		if (result.userId)
     		{
                 returnValue = true;
@@ -86,7 +85,7 @@ function checkLogin(htmlUrl, servletUrl)
     					       +'<span>重點標籤</span>'
     					   +'</a>'
     					+'</li>'
-    					+'<li class="treeview active">'
+    					+'<li class="treeview">'
     					   +'<a href="#">'
     					       +'<i class="fa fa-user"></i> '
     					       +'<span>群組頁面</span><i class="fa fa-angle-left pull-right"></i>'
@@ -99,7 +98,7 @@ function checkLogin(htmlUrl, servletUrl)
     					       +'</li>'
     					   +'</ul>'
     					+'</li>'
-    					+'<li class="treeview active">'
+    					+'<li class="treeview">'
     					   +'<a href="#">'
     					       +'<i class="fa fa-user"></i> '
     					       +'<span>個人頁面</span><i class="fa fa-angle-left pull-right"></i>'

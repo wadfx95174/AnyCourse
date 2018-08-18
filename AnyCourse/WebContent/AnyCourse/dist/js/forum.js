@@ -16,7 +16,7 @@ function get(name)
 {
    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
       return decodeURIComponent(name[1]);
-	}
+}
 
 function setComment(){	
 	if($("#commentArea").val() !== ''){
@@ -334,9 +334,3 @@ function updateReply(input){
 		}
 	});
 };
-
-
-
-
-
-	   
