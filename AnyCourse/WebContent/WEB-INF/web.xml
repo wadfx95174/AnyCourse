@@ -124,6 +124,10 @@
     <servlet-name>GroupKeyLabelServlet</servlet-name>
     <servlet-class>Group.KeyLabel.GroupKeyLabelServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>AnnouncementServlet</servlet-name>
+    <servlet-class>Group.Announcement.AnnouncementServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>GroupCommentServlet</servlet-name>
     <url-pattern>/GroupCommentServlet.do</url-pattern>
@@ -243,6 +247,10 @@
   <servlet-mapping>
     <servlet-name>GroupKeyLabelServlet</servlet-name>
     <url-pattern>/GroupKeyLabelServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AnnouncementServlet</servlet-name>
+    <url-pattern>/AnnouncementServlet.do</url-pattern>
   </servlet-mapping>
   <listener>
     <listener-class>
