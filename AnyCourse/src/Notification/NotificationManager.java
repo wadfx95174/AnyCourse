@@ -32,9 +32,9 @@ public class NotificationManager {
 	
 	public NotificationManager() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");//µù¥UDriver
+			Class.forName("com.mysql.jdbc.Driver");//ï¿½ï¿½ï¿½UDriver
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
-					, "root", "peter");//¨ú±oconnection
+					, "root", "peter");//ï¿½ï¿½ï¿½oconnection
 			
 		}
 		catch(ClassNotFoundException e){
@@ -50,7 +50,7 @@ public class NotificationManager {
 			pst = con.prepareStatement(insertNotificationSQL);
 			pst.setString(1,notification.getUserId());
 			pst.setString(2,notification.getType());
-			pst.setString(3,notification.getNickName());
+			pst.setString(3,notification.getNickname());
 //			pst.setString(4,notification.getReleaseTime());
 			pst.setString(4,notification.getUrl());
 			pst.setInt(5,notification.getIsBrowse());
@@ -77,7 +77,7 @@ public class NotificationManager {
 				 notification.setNotificationId(result.getInt("notificationId"));
 				 notification.setUserId(result.getString("userId"));
 				 notification.setType(result.getString("type"));
-				 notification.setNickName(result.getString("nickName"));
+				 notification.setNickname(result.getString("nickName"));
 				 notification.setReleaseTime(result.getString("releaseTime"));
 				 notification.setUrl(result.getString("url"));
 				 notification.setIsBrowse(result.getInt("isBrowse"));
@@ -107,7 +107,7 @@ public class NotificationManager {
 				 notification.setNotificationId(result.getInt("notificationId"));
 				 notification.setUserId(result.getString("userId"));
 				 notification.setType(result.getString("type"));
-				 notification.setNickName(result.getString("nickName"));
+				 notification.setNickname(result.getString("nickName"));
 				 notification.setReleaseTime(result.getString("releaseTime"));
 				 notification.setUrl(result.getString("url"));
 				 notification.setIsBrowse(result.getInt("isBrowse"));

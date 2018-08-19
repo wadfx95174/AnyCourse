@@ -10,7 +10,7 @@ var checkId;//用來存使用者點擊哪個物件的Id，用這個Id與homePage
 $(document).ready(function(){
 	homePageList = new Array();
 	checkLogin("pages/", "../");
-	
+
 	//swiper-button
 	var swiperButton = '</div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div>'
 		+'</div></div></section>'

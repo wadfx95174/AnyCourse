@@ -1,8 +1,9 @@
 //var ajaxURL="http://140.121.197.131:7603/";
 var ajaxURL="http://localhost:8080/";
 
-// AdminLTE App
-document.write("<script type='text/javascript' src='dist/js/app.js'></script>");
+$('.sidebar-menu').slimScroll({
+    height: window.screen.height
+});
 
 $(document).on('click', '#logout', function logout()
 {
@@ -11,13 +12,16 @@ $(document).on('click', '#logout', function logout()
 
 function checkLogin(htmlUrl, servletUrl)
 {
+    var returnValue;//用來回傳，確認是否已登入，值為true or false
 	$.ajax({
     	url: ajaxURL+'AnyCourse/AccountServlet.do',
     	method: 'POST',
     	cache :false,
+        async:false,
     	success: function(result){
     		if (result.userId)
     		{
+                returnValue = true;
     			$('.navbar-nav').append(
 						'<li class="dropdown user user-menu"><a href="#"'
 						+'	class="dropdown-toggle" data-toggle="dropdown"> <img'
@@ -81,7 +85,7 @@ function checkLogin(htmlUrl, servletUrl)
     					       +'<span>重點標籤</span>'
     					   +'</a>'
     					+'</li>'
-    					+'<li class="treeview active">'
+    					+'<li class="treeview">'
     					   +'<a href="#">'
     					       +'<i class="fa fa-user"></i> '
     					       +'<span>群組頁面</span><i class="fa fa-angle-left pull-right"></i>'
@@ -94,7 +98,7 @@ function checkLogin(htmlUrl, servletUrl)
     					       +'</li>'
     					   +'</ul>'
     					+'</li>'
-    					+'<li class="treeview active">'
+    					+'<li class="treeview">'
     					   +'<a href="#">'
     					       +'<i class="fa fa-user"></i> '
     					       +'<span>個人頁面</span><i class="fa fa-angle-left pull-right"></i>'
@@ -139,9 +143,23 @@ function checkLogin(htmlUrl, servletUrl)
         					+'</a>'
         					+'</li>')
 				}
+                //////////////////////登入時連接WebSocket///////////////////////////
+                var ws = new WebSocket (getRootUri() + "/AnyCourse/WebSocket");
+
+                //開啟連接WebSocket，並送出userId存在該WebSocket的session中
+                ws.onopen = function(event){
+                    ws.send(JSON.stringify({
+                        type: "connection",
+                        userId: result.userId
+                    }));
+                };
+                ///////////////////////////////////////////////////////////////////
+
+
     		}
     		else
     		{
+                returnValue = false;
     			$('.navbar-nav').append(
     					'<li class="dropdown user user-menu">'
     					+'<a href="'+htmlUrl+'login.html">'
@@ -176,4 +194,12 @@ function checkLogin(htmlUrl, servletUrl)
     		console.log("get Account error");
     	}
     });
+    // return returnValue;
 }
+
+////////////////////////////////取得root網址///////////////////////////////////
+function getRootUri() {
+    return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
+            (document.location.port == "" ? "8080" : document.location.port);
+};
+//////////////////////////////////////////////////////////////////////////////
