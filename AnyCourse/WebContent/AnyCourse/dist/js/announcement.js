@@ -16,8 +16,16 @@ function setGroupUrl()
       });
 }
 
+// 檢查網址是否沒有 groupId，若沒有則跳轉至首頁
+function checkGroupId()
+{
+      if (get('groupId') == undefined)
+            window.location = ajaxURL + 'AnyCourse/AnyCourse/HomePage.html';
+}
+
 $(function(){
-	checkLogin("../", "../../../");
+      checkLogin("../", "../../../");
+      checkGroupId();
 	$.ajax({
 		url: ajaxURL + 'AnyCourse/AnnouncementServlet.do',
 		method: 'GET',
@@ -27,6 +35,7 @@ $(function(){
 		success: function(result){
                   // 在 success 時設置好網址
                   setGroupUrl();
+                  var sameUserFlag = false;
                   for (var i = 0; i < result.length; i++)
                   {
                         $('#main-area').append('<div class="box box-primary">'
@@ -46,15 +55,25 @@ $(function(){
                               +'<div class="box-footer clearfix no-border"></div>'
                               +'</div>');
                         // 添加更改的按鈕 (改自己的公告)
-                        let changeBtn = '<button class="btn btn-primary">更改公告內容</button>';
                         if (result[i].sameUser)
-                              $("#header-" + i).append(changeBtn);
+                        {
+                              let changeBtn = '<button class="btn btn-primary">更改</button>';
+                              let deleteBtn = '<button class="btn btn-danger">刪除</button>';
+                              $("#header-" + i).append(deleteBtn + changeBtn);
+                              sameUserFlag = true;
+                        }
                         // 塞公告內容
                         var contents = result[i].content.split('\n');
                         for (var index in contents)
                         {
                               $("#body-" + i).append('<p>' + contents[index] + '</p>');
                         }
+                  }
+                  // 若沒有自己的公告，則在下方設置新增按鈕
+                  if (sameUserFlag)
+                  {
+                        let createBtn = '<button class="btn btn-primary">新增</button>';
+                        $('#main-area').append(createBtn);
                   }
 		},
 		error: function(){
