@@ -1,6 +1,8 @@
 //var ajaxURL="http://140.121.197.131:7603/";
 var ajaxURL="http://localhost:8080/";
 
+var ws;
+
 $('.sidebar-menu').slimScroll({
     height: window.screen.height
 });
@@ -23,7 +25,25 @@ function checkLogin(htmlUrl, servletUrl)
     		{
                 returnValue = true;
     			$('.navbar-nav').append(
-						'<li class="dropdown user user-menu"><a href="#"'
+                        ////////////////////通知///////////////////////////////////
+                        '<li class="dropdown notifications-menu">'
+                            +'<a href="#" class="dropdown-toggle" data-toggle="dropdown">'
+                              +'<i class="fa fa-bell-o"></i>'
+                              +'<span id="notificationNumber" class="label label-warning"></span>'
+                            +'</a>'
+                            +'<ul class="dropdown-menu">'
+                              +'<li id="notificationHeader" class="header">'
+                              +'</li>'
+                              +'<li>'
+                                +'<ul id="notificationList" class="menu">'
+                                +'</ul>'
+                              +'</li>'
+                              +'<li class="footer"><a href="#">View all</a></li>'
+                            +'</ul>'
+                          +'</li>'
+                        ////////////////////////////////////////////////////////////
+                        ////////////////////使用者頭像///////////////////////////////
+						+'<li class="dropdown user user-menu"><a href="#"'
 						+'	class="dropdown-toggle" data-toggle="dropdown"> <img'
 						+'		src="'+ajaxURL+'AnyCourse/AnyCourse/dist/img/user2-160x160.jpg" class="user-image"'
 						+'		alt="User Image" /> <span>'+result.nickName+'</span>'
@@ -45,6 +65,7 @@ function checkLogin(htmlUrl, servletUrl)
 						+'			</div>'
 						+'		</li>'
 						+'	</ul></li>'
+                        ///////////////////////////////////////////////////////////
     			);
     			$('#user-name').html(result.nickName + '，您好！');
     			$('.sidebar-menu').append(
@@ -143,8 +164,9 @@ function checkLogin(htmlUrl, servletUrl)
         					+'</a>'
         					+'</li>')
 				}
+
                 //////////////////////登入時連接WebSocket///////////////////////////
-                var ws = new WebSocket (getRootUri() + "/AnyCourse/WebSocket");
+                ws = new WebSocket (getRootUri() + "/AnyCourse/WebSocket");
 
                 //開啟連接WebSocket，並送出userId存在該WebSocket的session中
                 ws.onopen = function(event){
@@ -154,8 +176,6 @@ function checkLogin(htmlUrl, servletUrl)
                     }));
                 };
                 ///////////////////////////////////////////////////////////////////
-
-
     		}
     		else
     		{

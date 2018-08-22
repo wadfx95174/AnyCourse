@@ -1,12 +1,14 @@
 package Forum;
 
 public class Reply {
-	public int replyId;
-	public int commentId;
-	public String userId;
-	public String nickName;	
-	public String replyTime;
-	public String replyContent;
+	private int replyId;//回覆的ID
+	private int commentId;//提問的ID
+	private String userId;//回覆的使用者ID
+	private String nickName;//回覆的使用者名稱
+	private String replyTime;
+	private String replyContent;//回覆內容
+	private String commentUserId;//提問的使用者ID
+	
 	public int getReplyId() {
 		return replyId;
 	}
@@ -44,6 +46,12 @@ public class Reply {
 		this.replyContent = replyContent;
 	}
 
+	public String getCommentUserId() {
+		return commentUserId;
+	}
+	public void setCommentUserId(String commentUserId) {
+		this.commentUserId = commentUserId;
+	}
 	@Override
 	public String toString() {
 		return "Reply [replyId=" + replyId + ", commentId=" + commentId + ", userId=" + userId + ", nickName="

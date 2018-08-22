@@ -22,23 +22,26 @@ public class WebSocketServer {
 		Gson gson = new Gson();
 		//從前端傳送來的JSON，將他轉成Notification物件
 		Notification notification = gson.fromJson(message, Notification.class);
-		//此Notification物件是用來回傳給前端的
-		Notification returnNotification = new Notification();
+		
 		
 		//檢查是否用來開啟連接，存userId進session
         if(notification.getType().equals("connection")) {
         	session.getUserProperties().put("userId", notification.getUserId());
         	System.out.println((String)session.getUserProperties().get("userId"));
-//        	return;
         }
         //播放介面-討論區"回覆"通知
         else if(notification.getType().equals("playerInterfaceReply")) {
+        	String sessionsUserId = null;
         	for (Session s : sessions) {
-                if (s.isOpen() && s.getUserProperties().get("userId") == notification.getToUserId()) {
-                	returnNotification.setNickname((String)session.getUserProperties().get("userName"));
-//                	System.out.println((String)session.getUserProperties().get("userName"));
-                	returnNotification.setMessage(notification.getMessage());
-                    s.getBasicRemote().sendText(gson.toJson(returnNotification));
+        		sessionsUserId = (String)s.getUserProperties().get("userId");
+        		System.out.println("sessionsUserId" + sessionsUserId);
+        		System.out.println("toUserId" + notification.getToUserId());
+                if (s.isOpen() && sessionsUserId.equals(notification.getToUserId())) {
+                	System.out.println(notification.getType());
+            		System.out.println(notification.getNickname());
+                	System.out.println(notification.getUrl());
+                	System.out.println(notification.getToUserId());
+                    s.getBasicRemote().sendText(gson.toJson(notification));
                 }
             }
         }
