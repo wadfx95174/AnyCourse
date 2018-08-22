@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class ReplyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -21,11 +22,12 @@ public class ReplyServlet extends HttpServlet {
 		ForumManager dbreply = new ForumManager();
 		response.setHeader("Cache-Control","max-age=0");
 		ArrayList<Reply> replys = new ArrayList<Reply>();
-
-		dbreply.selectReplyTable(replys);
-		String replyJson = new Gson().toJson(replys);
+		int unitId = Integer.parseInt(request.getParameter("unitId"));
+		
+		dbreply.selectReplyTable(replys,unitId);
 		response.setContentType("application/json;charset = utf-8;");
-		response.getWriter().write(replyJson);
+		response.getWriter().write(new Gson().toJson(replys));
+		
 		dbreply.conClose();
 	}
 

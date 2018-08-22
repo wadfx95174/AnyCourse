@@ -1,21 +1,21 @@
 package Notification;
 
 public class Notification {
-	private int  NotificationId;
-	private String userId;
+	private int  notificationId;
+	private String userId;//回覆者的ID
 	private String type;
-	private String nickname;
+	private String nickname;//回覆者的名稱
 	private String releaseTime;
 	private String url;
 	private String message;
-	private String toUserId;
+	private String toUserId;//提問者的ID
 	private int isBrowse;
 	
 	public int getNotificationId() {
-		return NotificationId;
+		return notificationId;
 	}
 	public void setNotificationId(int notificationId) {
-		NotificationId = notificationId;
+		this.notificationId = notificationId;
 	}
 	public String getUserId() {
 		return userId;
@@ -56,7 +56,7 @@ public class Notification {
 	public String getToUserId() {
 		return toUserId;
 	}
-	public void setToUser(String toUserId) {
+	public void setToUserId(String toUserId) {
 		this.toUserId = toUserId;
 	}
 	public int getIsBrowse() {

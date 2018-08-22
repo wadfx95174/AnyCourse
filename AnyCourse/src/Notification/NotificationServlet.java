@@ -17,71 +17,55 @@ import Forum.ForumManager;
 import Note.NoteManager;
 import Note.TextNote;
 
-/**
- * Servlet implementation class NotificationServlet
- */
 
 public class NotificationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    
     public NotificationServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		NotificationManager dbnotification = new NotificationManager();
 		HttpSession session = request.getSession();
 		response.setHeader("Cache-Control","max-age=0");
-		ArrayList<Notification> notifications = new ArrayList<Notification>();
 		
-		String notificationJson = new Gson().toJson(notifications);
-		notificationJson = dbnotification.selectNotificationTable((String)session.getAttribute("userId"));
-		response.setContentType("application/json;charset = utf-8;");	
+		String notificationJson = dbnotification.getNotification((String)session.getAttribute("userId"));
+		response.setContentType("application/json;charset = utf-8;");
 		response.getWriter().write(notificationJson);
-//		System.out.print(notificationJson);
 		dbnotification.conClose();
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		NotificationManager notificationManager = new NotificationManager();
+		String userId = (String)session.getAttribute("userId");
 		String state = request.getParameter("state");
 		response.setHeader("Cache-Control","max-age=0");
-		int commentId = Integer.parseInt(request.getParameter("commentId"));
+		String action = request.getParameter("action");
+		if(action.equals("setNotificationIsBrowse")) {
+			System.out.println(Integer.parseInt(request.getParameter("notificationId")));
+			notificationManager.setNotificationIsBrowse(userId,Integer.parseInt(request.getParameter("notificationId")));
+		}
 		
-		
-		if(state.equals("insert"))
+		if(action.equals("insertNotification"))
 		{
-//			System.out.print("AAA");
-			NotificationManager dbnotification = new NotificationManager();
-			String userId = (String)dbnotification.findCommentUser(commentId);
-			String type = "Forum";
-			String nickName = (String)session.getAttribute("nickName");			
+			int commentId = Integer.parseInt(request.getParameter("commentId"));
+			String toUserId = notificationManager.findCommentUser(commentId);
+			String nickName = (String)session.getAttribute("nickName");
 			String url = request.getParameter("url");
-			int isBrowse = 0;
 			
 			Notification notification = new Notification();
 			
-			notification.setUserId(userId);
-			notification.setType(type);
+			notification.setToUserId(toUserId);
+			notification.setNotificationId(notificationManager.insertNotification(
+					toUserId,"playerInterfaceReply",nickName,url));
 			notification.setNickname(nickName);
-			notification.setUrl(url);
-			notification.setIsBrowse(isBrowse);
 			
-			
-			dbnotification.insertNotificationTable(notification);
 			response.setContentType("application/json");
-			dbnotification.conClose();
+			response.getWriter().write(new Gson().toJson(notification));
 		}
+		
+		
 //		if(state.equals("update"))
 //		{
 //			NoteManager dbnote = new NoteManager();
@@ -103,7 +87,7 @@ public class NotificationServlet extends HttpServlet {
 //			dbnote.updateTextNoteTable(textNote);
 //			dbnote.conClose();
 //		}
-		
+		notificationManager.conClose();
 	}
 
 }

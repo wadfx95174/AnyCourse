@@ -21,7 +21,7 @@ public class ForumManager {
 	public String updateCommentSQL = "update comment set unitId = ?,userId = ?,nickName = ?,commentTime = ?,commentContent = ? where commentId = ?";
 	
 	public String insertReplySQL = "insert into reply (replyId,commentId,userId,nickName,replyTime,replyContent) value(null,?,?,?,null,?)";
-	public String selectReplySQL = "select * from reply";
+	public String selectReplySQL = "select * from reply,comment where unitId = ? and reply.commentId = comment.commentId";
 	public String deleteReplySQL = "delete from reply where replyId = ?";
 	public String deleteReplySQL2 = "delete from reply where commentId = ?";
 	public String updateReplySQL = "update reply set commentId = ?,userId = ?,nickName = ?,replyTime = ?,replyContent = ? where replyId = ?";
@@ -161,19 +161,20 @@ public class ForumManager {
 			ResultSet generatedKeys = pst.getGeneratedKeys();
 			if (generatedKeys.next())
 			{
-				int id =generatedKeys.getInt(1);
-				pst = con.prepareStatement("SELECT * FROM reply WHERE replyId = ?");
+				int id = generatedKeys.getInt(1);
+				pst = con.prepareStatement("select * from reply,comment where replyId = ? and reply.commentId = comment.commentId");
 				pst.setInt(1,id);
 				result = pst.executeQuery();
 				 while(result.next()) 
 			     { 
-				 reply = new Reply();
-				 reply.setReplyId(result.getInt("replyId"));
-				 reply.setCommentId(result.getInt("commentId"));
-				 reply.setUserId(result.getString("userId"));
-				 reply.setNickName(result.getString("nickName"));
-				 reply.setReplyTime(result.getString("replyTime"));
-				 reply.setReplyContent(result.getString("replyContent"));
+					 reply = new Reply();
+					 reply.setReplyId(result.getInt("replyId"));
+					 reply.setCommentId(result.getInt("reply.commentId"));
+					 reply.setUserId(result.getString("reply.userId"));
+					 reply.setNickName(result.getString("nickName"));
+					 reply.setReplyTime(result.getString("replyTime"));
+					 reply.setReplyContent(result.getString("replyContent"));
+					 reply.setCommentUserId(result.getString("comment.userId"));
 			     }
 				 return reply;
 			}
@@ -188,11 +189,12 @@ public class ForumManager {
 		}
 		return reply;
 	}	 
-	public void selectReplyTable(ArrayList<Reply> replys) {
+	public void selectReplyTable(ArrayList<Reply> replys,int unitId) {
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery(selectReplySQL);
-			 while(result.next()) 
+			pst = con.prepareStatement(selectReplySQL);
+			pst.setInt(1,unitId);
+			result = pst.executeQuery();
+			 while(result.next())
 		     { 
 				 reply = new Reply();
 				 reply.setReplyId(result.getInt("replyId"));
@@ -201,6 +203,7 @@ public class ForumManager {
 				 reply.setNickName(result.getString("nickName"));
 				 reply.setReplyTime(result.getString("replyTime"));
 				 reply.setReplyContent(result.getString("replyContent"));
+				 reply.setCommentUserId(result.getString("comment.userId"));
 				 replys.add(reply);
 		     }
 		}

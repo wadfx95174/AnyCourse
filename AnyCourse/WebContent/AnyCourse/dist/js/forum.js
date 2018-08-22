@@ -1,5 +1,7 @@
 //var ajaxURL="http://140.121.197.131:7603/";
 var ajaxURL="http://localhost:8080/";
+
+
 var state;
 var commentId =null;
 var replyId =null;
@@ -17,6 +19,7 @@ function get(name)
    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
       return decodeURIComponent(name[1]);
 }
+//新增comment
 function setComment(){	
 	if($("#commentArea").val() !== ''){
 		var dt = new Date();
@@ -65,7 +68,7 @@ $(document).ready(function() {
 		method : 'GET',
 		cache :false,
 		data : {
-			"unitId" : get("unitId"),
+			"unitId" : get("unitId")
 		},
 		success:function(result){
     		for(var i = 0 ;i < result.length;i++){
@@ -88,23 +91,27 @@ $(document).ready(function() {
 						'<button id="hide_' + result[i].commentId +'" type="button" class="btn btn-default btnCss" onclick="displayReply(this.id)">取消</button>'+
 						'</div>'
 	    			);    			
-			}	
+			}
     		$.ajax({
     			url : ajaxURL+'AnyCourse/ReplyServlet.do',
     			method : 'GET',
     			cache :false,
-    			success : function(result) {
-    				for(var i = 0 ;i < result.length;i++){
-    				$('#com_'+result[i].commentId).append( 	
-    						'<div id="rep_' + result[i].replyId + '"class="col-xs-12 C" >'+
+    			data:{
+    				unitId: get("unitId")
+    			},
+    			success : function(response) {
+
+    				for(var i = 0 ;i < response.length;i++){
+    				$('#com_'+response[i].commentId).append( 	
+    						'<div id="rep_' + response[i].replyId + '"class="col-xs-12 C" >'+
     						'<img src="https://ppt.cc/fi5Q0x@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
-    						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result[i].nickName +'</h4>'+
-    						'<h5 style="float:right;">' + result[i].replyTime +'</h5>'+													
-    						'<textarea class="col-xs-12" rows="2" cols="50" id="reply_' + result[i].replyId + '" disabled="disabled" style="float:left;">' + result[i].replyContent + '</textarea>'+																			
-    						'<button id="reply3_' + result[i].replyId + '_' + result[i].commentId +'" type="button" class="btn btn-default btnCss" style="display:none;" onclick="updateReply(this.id)">確認</button>'+
-    						'<button id="reply4_' + result[i].replyId + '_' + result[i].commentId +'" type="button" class="btn btn-default btnCss" style="display:none;" onclick="can2(this.id)">取消</button>'+	
-    						'<button id="reply1_' + result[i].replyId + '_' + result[i].commentId +'" type="button" class="btn btn-default btnCss" onclick="deleteReply(this.id)">刪除</button>'+
-    						'<button id="reply2_' + result[i].replyId + '_' + result[i].commentId +'" type="button" class="btn btn-default btnCss" onclick="edit2(this.id)">編輯</button>'+							
+    						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + response[i].nickName +'</h4>'+
+    						'<h5 style="float:right;">' + response[i].replyTime +'</h5>'+													
+    						'<textarea class="col-xs-12" rows="2" cols="50" id="reply_' + response[i].replyId + '" disabled="disabled" style="float:left;">' + response[i].replyContent + '</textarea>'+																			
+    						'<button id="reply3_' + response[i].replyId + '_' + response[i].commentId +'" type="button" class="btn btn-default btnCss" style="display:none;" onclick="updateReply(this.id)">確認</button>'+
+    						'<button id="reply4_' + response[i].replyId + '_' + response[i].commentId +'" type="button" class="btn btn-default btnCss" style="display:none;" onclick="can2(this.id)">取消</button>'+	
+    						'<button id="reply1_' + response[i].replyId + '_' + response[i].commentId +'" type="button" class="btn btn-default btnCss" onclick="deleteReply(this.id)">刪除</button>'+
+    						'<button id="reply2_' + response[i].replyId + '_' + response[i].commentId +'" type="button" class="btn btn-default btnCss" onclick="edit2(this.id)">編輯</button>'+							
     						'</div>'																	
     					);
     				}
@@ -124,6 +131,7 @@ function displayReply(input){
 }
 //新增reply
 function setReply(input){
+	console.log("input:"+input);
 	var id = input.split('_')[1];
 	var url = location.href;
 	
@@ -136,15 +144,14 @@ function setReply(input){
 			method : 'POST',
 			cache :false,
 			data : {
-				"state" : "insert",	
-				"commentId" : id,
-//				"userId" : userId,
-				"nickName" : nickName,
-				"replyContent" : replyContent,			
+				state : "insert",	
+				commentId : id,
+				nickName : nickName,
+				replyContent : replyContent			
 			},
 			success : function(result) {
-				urlId = url+"#rep_"+result.replyId;
-//				alert(urlId);
+				console.log(result);
+				urlId = url.split("#")[0]+"#rep_"+result.replyId;
 				$('#com_'+id).append( 	
 						'<div id="rep_' + result.replyId + '"'+'name="rep_' + result.replyId +'" class="col-xs-12 C" >'+
 						'<img src="https://ppt.cc/fi5Q0x@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
@@ -158,29 +165,39 @@ function setReply(input){
 						'</div>'																
 	    			);	
 				$("#reply_div_" + id ).toggle();
-				$.ajax({					
-					url : ajaxURL+'AnyCourse/NotificationServlet.do',
-					method : 'POST',
-					cache :false,
-					data : {
-						"state" : "insert",	
-						"commentId" : id,
-//						"userId" : userId,
-//						"nickName" : nickName,
-//						"replyContent" : replyContent,	
-						"url" : urlId,
-					},
-					success : function(result) {
-						
-					},
-					error: function (jqXHR, textStatus, errorThrown) {
-//						alert("BBB");
-			         }
-				})
+
+				///////////////////通知提問者有人回復他/////////////////////////////
+				//檢查提問者與回覆者是否為不同人，不同人才通知
+				if(result.commentUserId != result.userId){
+					$.ajax({
+						url : ajaxURL+'AnyCourse/NotificationServlet.do',
+						method : 'POST',
+						cache :false,
+						data : {
+							action : "insertNotification",
+							commentId : id,
+							url : urlId
+						},
+						success : function(response) {
+							ws.send(JSON.stringify({
+			                    type: "playerInterfaceReply",
+			                    toUserId: response.toUserId,
+			                    notificationId: response.notificationId,
+			                    nickname: response.nickname,
+			                    url: urlId
+			                }));
+						},
+						error: function (jqXHR, textStatus, errorThrown) {
+							console.log("forum.js insertNotification error");
+				        }
+					});
+				}
+				///////////////////////////////////////////////////////////////////
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
-	         }
-			})			
+				console.log("forum.js insert reply error");
+	        }
+		});			
 	}			
 }
 //刪除reply
@@ -333,3 +350,14 @@ function updateReply(input){
 		}
 	});
 };
+
+
+////////////////////////////回覆時送資料給WebSocket，藉此通知提問者/////////////////////
+
+//commentUserId:提問者的UserID
+//replyUserId:回覆者的UserID
+//
+function sendMessage(commentUserId,replyUserId){
+
+}
+/////////////////////////////////////////////////////////////////////////////////////

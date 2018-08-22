@@ -18,8 +18,7 @@ import Notification.Notification;
 public class NotificationManager {
 	
 	public String insertNotificationSQL = "insert into notification value (null,?,?,?,null,?,?)";
-	public String selectNotificationSQL = "select * from notification where userId = ? and isBrowse = 0";
-	public String selectNotification1SQL = "select * from notification where userId = ?";
+	public String selectNotificationSQL = "select * from notification where userId = ? order by releaseTime desc";
 	public String updateNotificationSQL = "update notification set isBrowse = ? where notificationId = ?";	
 	public String findCommentUserSQL = "select * from comment where commentId = ?";
 	
@@ -32,9 +31,9 @@ public class NotificationManager {
 	
 	public NotificationManager() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");//���UDriver
+			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
-					, "root", "peter");//���oconnection
+					, "root", "peter");
 			
 		}
 		catch(ClassNotFoundException e){
@@ -45,16 +44,26 @@ public class NotificationManager {
 		}
 	}
 	
-	public void insertNotificationTable(Notification notification){
+	//儲存通知，並且取得剛新增的通知的notificationId
+	//(方法為用userId、nickname取，接著因為可能會有不只一個，所以用releaseTime排序，遠到近，所以抓最後一筆資料)
+	public int insertNotification(String toUserId,String type,String nickname,String url){
+		int notificationId = 0;
 		try {
 			pst = con.prepareStatement(insertNotificationSQL);
-			pst.setString(1,notification.getUserId());
-			pst.setString(2,notification.getType());
-			pst.setString(3,notification.getNickname());
-//			pst.setString(4,notification.getReleaseTime());
-			pst.setString(4,notification.getUrl());
-			pst.setInt(5,notification.getIsBrowse());
+			pst.setString(1,toUserId);
+			pst.setString(2,type);
+			pst.setString(3,nickname);
+			pst.setString(4,url);
+			pst.setInt(5,0);
 			pst.executeUpdate();
+			
+			pst = con.prepareStatement("select notificationId from notification where userId = ? and nickname = ? order by releaseTime ASC");
+			pst.setString(1, toUserId);
+			pst.setString(2,nickname);
+			result = pst.executeQuery();
+			while(result.next()) {
+				notificationId = result.getInt("notificationId");
+			}
 		}
 		catch(SQLException x){
 			System.out.println("NotificationManager-insertNotificationTable");
@@ -63,9 +72,11 @@ public class NotificationManager {
 		finally {
 			Close();
 		}
+		return notificationId;
 	}
 	
-	public String selectNotificationTable(String userId) {
+	//取得通知
+	public String getNotification(String userId) {
 		ArrayList<Notification> notifications = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectNotificationSQL);
@@ -78,7 +89,7 @@ public class NotificationManager {
 				 notification.setUserId(result.getString("userId"));
 				 notification.setType(result.getString("type"));
 				 notification.setNickname(result.getString("nickName"));
-				 notification.setReleaseTime(result.getString("releaseTime"));
+//				 notification.setReleaseTime(result.getString("releaseTime"));
 				 notification.setUrl(result.getString("url"));
 				 notification.setIsBrowse(result.getInt("isBrowse"));
 				 notifications.add(notification);
@@ -86,36 +97,6 @@ public class NotificationManager {
 		}
 		catch(SQLException x){
 			System.out.println("NotificationManager-selectNotificationTable");
-			System.out.println("Exception select"+x.toString());
-		}
-		finally {
-			Close();
-		}
-		String json = new Gson().toJson(notifications);
-		return json;
-	}
-	
-	public String selectNotification1Table(int userId) {
-		ArrayList<Notification> notifications = new ArrayList<>();
-		try {
-			pst = con.prepareStatement(selectNotification1SQL);
-			pst.setInt(1, userId);
-			result = pst.executeQuery();
-			 while(result.next()) 
-		     { 	
-				 notification = new Notification();
-				 notification.setNotificationId(result.getInt("notificationId"));
-				 notification.setUserId(result.getString("userId"));
-				 notification.setType(result.getString("type"));
-				 notification.setNickname(result.getString("nickName"));
-				 notification.setReleaseTime(result.getString("releaseTime"));
-				 notification.setUrl(result.getString("url"));
-				 notification.setIsBrowse(result.getInt("isBrowse"));
-				 notifications.add(notification);
-		     }
-		}
-		catch(SQLException x){
-			System.out.println("NotificationManager-selectNotification1Table");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -141,22 +122,16 @@ public class NotificationManager {
 		}
 	}
 	
+	//找提問者的ID
 	public String findCommentUser(int commentId) {
-		ArrayList<Comment> comments = new ArrayList<>();
+		String toUserId = null;
 		try {
 			pst = con.prepareStatement(findCommentUserSQL);
 			pst.setInt(1, commentId);
 			result = pst.executeQuery();
 			 while(result.next()) 
 		     { 	
-				 comment = new Comment();
-				 comment.setCommentId(result.getInt("commentId"));
-				 comment.setUnitId(result.getInt("unitId"));
-				 comment.setUserId(result.getString("userId"));
-				 comment.setNickName(result.getString("nickName"));
-				 comment.setCommentTime(result.getString("commentTime"));
-				 comment.setCommentContent(result.getString("commentContent"));
-				 comments.add(comment);
+				 toUserId = result.getString("userId");
 		     }
 		}
 		catch(SQLException x){
@@ -165,9 +140,28 @@ public class NotificationManager {
 		}
 		finally {
 			Close();
-		}		
-		return comment.userId;
+		}
+		return toUserId;
 	}
+	
+	//更新該使用者的通知，將isBrowse改為1(代表已經看過)
+	public void setNotificationIsBrowse(String userId,int notificationId){
+		try {
+			pst = con.prepareStatement("update notification set isBrowse = ? where userId = ? and notificationId = ?");
+			pst.setInt(1,1);
+			pst.setString(2,userId);
+			pst.setInt(3, notificationId);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("NotificationManager-setNotificationIsBrowse");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
 	
 	public void Close() {
 		try {
