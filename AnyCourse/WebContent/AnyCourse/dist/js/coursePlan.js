@@ -2,11 +2,11 @@
 var ajaxURL="http://localhost:8080/";
 //////////////////////////////設置拉霸///////////////////////////////////
 $('#unit').slimScroll({
-    height: '420px;'
-    });
+	height: '420px;'
+});
 $('.box-body').slimScroll({
-	  height: '420px;'
-	  });
+	height: '420px;'
+});
 var checkListId;
 var checkUnitId;
 var listArray;
@@ -175,6 +175,30 @@ function jumpToPlayerInterface(unitId,type,time){
     window.location.href = url;
 }
 
+//取得個別清單的單元影片
+function getSeparateUnit(videoId){
+	$.ajax({
+		url:ajaxURL+'AnyCourse/CoursePlanServlet.do',
+		method:'GET',
+		cache:false,
+		data:{
+			action : 'getUnit',
+			courselistId : listArray[checkListId-1][0]
+		},
+		success:function(response){
+			$('#wantList li,#ingList li,#doneList li').each(function(){
+				$(this).remove();
+			});
+			console.log(response);
+			unitArray = new Array(response.length);
+			showUnitUL(response,unitArray,videoId);
+		},
+		error:function(){
+			console.log("get coursePlan unit failed");
+		}
+	});
+}
+
 function showUnitUL(result,unitArray,videoId){
 	var listType;
 	for(var j = 0;j < result.length;j++){
@@ -247,29 +271,5 @@ function showUnitUL(result,unitArray,videoId){
 				console.log("add video to courselist error");
 			}
 		});
-	});
-}
-
-//取得個別清單的單元影片
-function getSeparateUnit(videoId){
-	$.ajax({
-		url:ajaxURL+'AnyCourse/CoursePlanServlet.do',
-		method:'GET',
-		cache:false,
-		data:{
-			action : 'getUnit',
-			courselistId : listArray[checkListId-1][0]
-		},
-		success:function(response){
-			$('#wantList li,#ingList li,#doneList li').each(function(){
-				$(this).remove();
-			});
-			console.log(response);
-			unitArray = new Array(response.length);
-			showUnitUL(response,unitArray,videoId);
-		},
-		error:function(){
-			console.log("get coursePlane unit failed");
-		}
 	});
 }

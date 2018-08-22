@@ -129,7 +129,7 @@ public class PlayerInterfaceManager
 	//watchRecord的watchTime是存入資料時資料庫自動抓現在的時間
 	//如果該影片有存在在使用者的課程計畫中，則personalPlan的lastTime也要update，並且判斷要不要改status
 	//設定shareLikes	的觀看紀錄，將isBrowse+1
-	public void setVideoEndTime(int currentTime,int unitId,String userId,int duration) {
+	public void setVideoCloseTime(int currentTime,int unitId,String userId,int duration) {
 		try {
 			stat = con.createStatement();
 			result = stat.executeQuery("select * from watchRecord where userId = '"+userId
@@ -195,7 +195,7 @@ public class PlayerInterfaceManager
 			}
 		}
 		catch(SQLException x){
-			System.out.println("PlayerInterfaceManager-setVideoEndTime");
+			System.out.println("PlayerInterfaceManager-setVideoCloseTime");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
