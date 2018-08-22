@@ -1,34 +1,23 @@
 //var ajaxURL="http://140.121.197.131:7603/";
 var ajaxURL="http://localhost:8080/";
+
 var googleEvents;	// 存 Google Calendar Events
 var fullEvents;		// 存 FullCalendar Events
+
+var matchEvents = new Map();	// 存 fullEvents 裡面有 Google EventId 的
+var unmatchEvents = [];			// 存 fullEvnets 不在 matchEvnets 裡面的
+
 var googleCalendarId = ""; // 存 Google Calendar Id
 
+var deleteFlag = false; // 存 刪除按鈕是否按下
+var googleFlag = false; // 存 是否登入 Google
 
 /* ----------------------------------- Calendar Page Init ----------------------------------- */
 $(function () {
 	checkLogin("../", "../../../");
-    var index = 0;	// 跑each迴圈用
 
-    // calendar的Date型態
-    var date = new Date();
-    var d = date.getDate(),
-            m = date.getMonth(),
-            y = date.getFullYear();
-
-	var m = moment() // Start, End to dateTime
-	
-	// 初始化事件設定 (上)
-	initEventObject();
-    // 初始化事件物件 (中)
-	getCoursePlanEvent();
-	getVideoListEvent();
-
-  	
-    // 初始化行事曆
     // 從資料庫取得行事曆的資料，並更新至頁面
-    var calendarPromises = [];
-    var promiseNative = $.ajax({
+    $.ajax({
 		url: ajaxURL+'AnyCourse/CalendarServlet.do',
 		type: 'GET',
 		dataType: 'json', 
@@ -43,20 +32,24 @@ $(function () {
 			console.log(response);
 			fullEvents = response;
 		}
-	})
+	}).then(function(){
+		// console.log(fullEvents);
 	
-	calendarPromises.push(promiseNative);
-	
-	Promise.all(calendarPromises).then(function(){
-		console.log(fullEvents);
+		// 初始化事件設定 (上)
+		initEventObject();
+		// 初始化事件物件 (中)
+		getCoursePlanEvent();
+		getVideoListEvent();
+		initEventSelecter();
+		// 初始化自訂事件 (下)
+		initCustomEvent();
+		// 初始化行事曆
 		initCalendar(fullEvents);
 	});
-	
 })
 
-
-
-// 自訂事件
+/* ----------------------------------- 初始化事件設定 (上) ----------------------------------- */
+// 初始化事件設定 (上)
 function initEventObject()
 {
 	var currColor = "#3c8dbc"; // 預設為天空藍
@@ -66,9 +59,9 @@ function initEventObject()
         e.preventDefault();
         // 存顏色
         currColor = $(this).css("color");
-        // 設置 selected event的顏色
-        $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+        // 設置 selected event & 自訂事件按鈕 的顏色
   	    $('#selectedEvent').css({"background-color": currColor, "border-color": currColor});
+		$('#add-new-event').css({"background-color": currColor, "border-color": currColor});
     });
 	
     // 讓已選事件可以被拖動
@@ -76,41 +69,20 @@ function initEventObject()
         zIndex: 1070,
         revert: true, // will cause the event to go back to its
         revertDuration: 0  //  original position after the drag
-    });
+	});
 	
-	//** 下面的
-    $("#add-new-event").click(function (e) {
-        e.preventDefault();
-        // 取使用者輸入的title
-        var val = $("#new-event").val();
-        if (val.length == 0) {
-            return;
-        }
-
-        // 輸出事件
-        $('#external-events').append(
-  		    '<li><a class="external-event-a" href="javascript:void(0)">'+val+'</a></li>'
-  	    );
-      
-        // 添加點擊事件
-        $('#external-events li').last().click(function(){
-    	    $('#selectedEvent').text($(this).text());
-	        $('#selectedEvent').data('eventObject', {title: $(this).text()});
-	    });
-
-        // 清空輸入欄位
-        $("#new-event").val("");
-	})
-
-	$('#external-events').slimScroll({
-		  height:'100px;'
+	$('#click-remove').click(function (e) { 
+		e.preventDefault();
+		deleteFlag = !deleteFlag;
+		$(this).toggleClass('btn-secondary btn-danger');
+		$(this).text(deleteFlag ? '取消刪除' : '刪除事件');
 	});
 }
 
-/* ----------------------------------- CoursePlan/VideoList Event ----------------------------------- */
-
-$(function() {
-	// 選擇 課程計畫/清單
+/* ----------------------------------- 初始化事件物件 (中) ----------------------------------- */
+// 選擇 課程計畫/清單
+function initEventSelecter()
+{
     $('#sel1').change(function(){
     	var selectedIndex = $('#sel1')[0].selectedIndex;
 //        $('#external-events').hide(); 
@@ -121,7 +93,11 @@ $(function() {
             $('#list-events-' + (selectedIndex - 1)).show(); 
         } 
     });
-});
+
+	$('#external-events').slimScroll({
+		  height:'100px;'
+	});
+}
 
 function getCoursePlanEvent()
 {
@@ -209,9 +185,35 @@ function getVideoListEvent()
 		}
 	});
 }
+/* ----------------------------------- 初始化自訂事件 (下) ----------------------------------- */
+// 自訂事件
+function initCustomEvent()
+{
+    $("#add-new-event").click(function (e) {
+        e.preventDefault();
+        // 取使用者輸入的title
+        var val = $("#new-event").val();
+        if (val.length == 0) {
+            return;
+        }
+
+        // 輸出事件
+        $('#external-events').append(
+  		    '<li><a class="external-event-a" href="javascript:void(0)">'+val+'</a></li>'
+  	    );
+      
+        // 添加點擊事件
+        $('#external-events li').last().click(function(){
+    	    $('#selectedEvent').text($(this).text());
+	        $('#selectedEvent').data('eventObject', {title: $(this).text()});
+	    });
+
+        // 清空輸入欄位
+        $("#new-event").val("");
+	})
+}
 
 /* ----------------------------------- FullCalendar ----------------------------------- */
-
 function initCalendar(eventSrc)
 {
 	console.log(eventSrc);
@@ -322,8 +324,6 @@ function initCalendar(eventSrc)
       			    title: copiedEventObject.title,
       			    url: copiedEventObject.url,
       			    start: copiedEventObject.start,//copiedEventObject.start.toISOString(),
-//	        		  		start: startTime.format('YYYY-MM-DD HH:mm:ss'),//copiedEventObject.start.toISOString(),
-//	        		  		end: endTime.format('YYYY-MM-DD HH:mm:ss'),//copiedEventObject.end.toISOString(),
       			    allDay: copiedEventObject.allDay,
       			    backgroundColor: copiedEventObject.backgroundColor,
       			    borderColor: copiedEventObject.borderColor,
@@ -348,7 +348,7 @@ function initCalendar(eventSrc)
         eventClick: function(event, jsEvent, view) { 
       	    console.log(event);
       	    // 如果移除按鈕為勾選狀態
-	        if ($('#click-remove').is(':checked')) 
+	        if (deleteFlag) 
 	        {
         	    if (confirm('確定要刪除 "'+event.title+'"')) 
         	    {
@@ -378,12 +378,6 @@ function initCalendar(eventSrc)
     			    fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
         	    }
         	    return false;
-	        }
-	        // 如果添加到Google行事曆為勾選狀態，且事件非Google的事件
-	        else if (($('#click-add').is(':checked')) && event.googleEventId == null)
-	        {
-	        	addEvent(event)
-	        	return false;
 	        }
 	  	    // 都沒勾選且有網址，則前往該事件網址
 	        else if (event.url && event.url != 'undefined/undefined') 
@@ -422,10 +416,6 @@ function initCalendar(eventSrc)
         eventDrop: function(event, delta, revertFunc) {
       	    console.log(event.id + " " + event.title + " was dropped on " + event.start.format());
       	    console.log(event.allDay);
-//      	    // 如果取消改變，就把event還原回去不動作(revertFunc())
-//      	    if (!confirm("Are you sure about this change?")) {
-//      	      revertFunc();
-//      	    }    
       	    
       	    // 若是Google日曆的event，則直接更新到Google日曆
       	    if (event.googleEventId != null)
@@ -658,6 +648,11 @@ function updateSigninStatus(isSignedIn) {
 		});
 		promiseGoogle.then(function(){
 			authorizeButton.style.display = 'none';
+			
+			$('#import-button,#export-button').css('display','inline');
+			$('#import-button').click(function(){importGoogleEvent();});
+			$('#export-button').click(function(){exportGoogleEvent();});
+
 		    // 開始時間從當下時間往前推一個月
 			var date = new Date()
 			date.setMonth(date.getMonth()-1);
@@ -670,13 +665,55 @@ function updateSigninStatus(isSignedIn) {
 		        'maxResults': 10000,	// 最多多少個事件
 		        'orderBy': 'startTime'
 		    }).then(function(response) {
-		     	console.log(response);
+				console.log(response);
+				googleEvents = response.result.items; 
+				// checkEventMatch();
 		    })
 		})
     } 
     else {
     	authorizeButton.style.display = 'inline';
     }
+}
+
+function importGoogleEvent()
+{
+	// for (var i = 0; i < googleEvents.length; i++)
+	// {
+
+	// }
+	checkMatch()
+	matchEvents.forEach(function(value, key){
+		
+	});
+}
+
+function exportGoogleEvent()
+{
+	// console.log('EXPORT');
+
+	checkMatch()
+}
+
+function checkMatch()
+{
+	// 初始化
+	matchEvents.clear;
+	unmatchEvents = [];
+	for (var i = 0; i < fullEvents.length; i++)
+	{
+		if (fullEvents[i].googleEventId != undefined)
+			matchEvents.set(fullEvents[i].googleEventId, fullEvents[i]);
+		else
+			unmatchEvents.push(fullEvents[i]);
+	}
+	console.log(matchEvents);
+	console.log(unmatchEvents);
+
+	// for (var eventObj of matchEvents.keys())
+	// {
+	// 	console.log(eventObj);
+	// }
 }
 
 /**
