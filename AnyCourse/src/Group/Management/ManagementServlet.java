@@ -21,8 +21,16 @@ public class ManagementServlet extends HttpServlet {
 //		response.getWriter().write(new Gson().toJson(manager.getGroups(userId)));
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
-		int groupId = Integer.parseInt(request.getParameter("groupId"));
-		response.getWriter().write(new Gson().toJson(manager.getGroupInfo(groupId)));
+        // 檢查是否為該群組
+        HttpSession session = request.getSession();
+        Map<String, Integer> groups = (Map<String, Integer>)session.getAttribute("groups");
+
+        // 檢查 session 裡面有沒有傳進來的 groupId
+        if (groups.containsValue(Integer.parseInt(request.getParameter("groupId"))))  
+        {
+        	int groupId = Integer.parseInt(request.getParameter("groupId"));
+    		response.getWriter().write(new Gson().toJson(manager.getGroupInfo(groupId)));
+        }
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
