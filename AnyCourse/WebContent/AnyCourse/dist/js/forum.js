@@ -150,7 +150,7 @@ function setReply(input){
 				replyContent : replyContent			
 			},
 			success : function(result) {
-				console.log(result);
+				// console.log(result);
 				urlId = url.split("#")[0]+"#rep_"+result.replyId;
 				$('#com_'+id).append( 	
 						'<div id="rep_' + result.replyId + '"'+'name="rep_' + result.replyId +'" class="col-xs-12 C" >'+
