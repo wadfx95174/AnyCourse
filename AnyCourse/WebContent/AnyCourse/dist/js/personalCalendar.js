@@ -4,318 +4,8 @@ var googleEvents;	// 存 Google Calendar Events
 var fullEvents;		// 存 FullCalendar Events
 var googleCalendarId = ""; // 存 Google Calendar Id
 
-/* ----------------------------------- Google ----------------------------------- */
-document.write('<script async defer src="../../dist/js/ajax.js"');
-document.write('<script async defer src="https://apis.google.com/js/api.js"'
-      +'onload="this.onload=function(){};handleClientLoad()"'
-      +'onreadystatechange="if (this.readyState === "complete") this.onload()">'
-    +'</script>');
-
-// Client ID and API key from the Developer Console
-var CLIENT_ID = '645783857059-dgmft2d4jb7kgkl1f05l02gorl19r9d0.apps.googleusercontent.com';
-var API_KEY = 'AIzaSyAz3zOHiCMMnShglhMhAvFsRl10juJs2oo';
-
-// Array of API discovery doc URLs for APIs used by the quickstart
-var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-
-// Authorization scopes required by the API; multiple scopes can be
-// included, separated by spaces.
-var SCOPES = "https://www.googleapis.com/auth/calendar";
-
-var authorizeButton = document.getElementById('authorize-button');
-
-$('#external-events').slimScroll({
-	  height:'100px;'
-});
-
-/**
- *  On load, called to load the auth2 library and API client library.
- */
-function handleClientLoad() {
-  gapi.load('client:auth2', initClient);
-}
-
-/**
- *  Initializes the API client library and sets up sign-in state
- *  listeners.
- */
-function initClient() {
-  gapi.client.init({
-    apiKey: API_KEY,
-    clientId: CLIENT_ID,
-    discoveryDocs: DISCOVERY_DOCS,
-    scope: SCOPES
-  }).then(function () {
-    // Listen for sign-in state changes.
-    gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-
-    // Handle the initial sign-in state.
-    updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-    authorizeButton.onclick = handleAuthClick;
-  });
-}
-
-/**
- *  Called when the signed in status changes, to update the UI
- *  appropriately. After a sign-in, the API is called.
- */
-function updateSigninStatus(isSignedIn) {
-    if (isSignedIn) {
-		var promiseGoogle = $.ajax({
-			url: ajaxURL+'AnyCourse/CalendarServlet.do',
-			type: 'GET',
-			dataType: 'text', 
-			cache :false,
-			data: {
-				method: 'getGCId'
-			},
-			error: function(){
-				console.log('get GoogleCalendar error!');
-			},
-			success: function(response){ // 回傳 id
-				if (response != "")
-				{
-					googleCalendarId = response;
-					console.log(googleCalendarId);
-				}
-				else
-				{
-					console.log("insert");
-					insertCalendar();
-				}
-			}
-		});
-		promiseGoogle.then(function(){
-			authorizeButton.style.display = 'none';
-		    // 開始時間從當下時間往前推一個月
-			var date = new Date()
-			date.setMonth(date.getMonth()-1);
-			// 取得google calendar events
-		    gapi.client.calendar.events.list({
-		        'calendarId': googleCalendarId,	// 取個人日曆
-		        'timeMin': date.toISOString(),	// 從哪天開始
-		        'showDeleted': false,
-		        'singleEvents': true,
-		        'maxResults': 10000,	// 最多多少個事件
-		        'orderBy': 'startTime'
-		    }).then(function(response) {
-		     	console.log(response);
-		        // 更新每個事件到fullcalendar
-//		        for (i = 0; i < response.result.items.length; i++) {
-//		            var event = response.result.items[i];
-//		            event.title = event.summary;
-//		            event.start = event.start.dateTime ? (moment(event.start.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(event.start.date).format('YYYY-MM-DD'));
-//		            event.end = event.end.dateTime ? (moment(event.end.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(event.end.date).format('YYYY-MM-DD'));
-//		            event.backgroundColor = '#B22222',
-//		            event.borderColor =  '#B22222',
-//		            event.url = event.description;
-//		            event.inGoogleCalendar = true,
-//		            fullEvents.push(event);
-//	      	    addToFullEvents(event); // 換成 googleEvent
-//		            $('#calendar').fullCalendar('renderEvent', event, true);
-//		        }
-		    })
-		})
-    } 
-    else {
-    	authorizeButton.style.display = 'block';
-    }
-}
-
-/**
- *  Sign in the user upon button click.
- */
-function handleAuthClick(event) {
-  gapi.auth2.getAuthInstance().signIn();
-}
-
-/**
- *  Sign out the user upon button click.
- */
-//function handleSignoutClick(event) {
-//  gapi.auth2.getAuthInstance().signOut();
-//}
-
-// 加入到 Google Calendar
-function addEvent(event)
-{
-	var date = moment().format("YYYYMMDDHHmmss");
-	console.log(date);
-	console.log(event.url);
-	if (!event.allDay)	// 存 AllDay (dateTime)
-	{
-		var request = gapi.client.calendar.events.insert({
-	        'calendarId': googleCalendarId,
-	        'resource': {
-		        'summary': event.title,
-		        'location': '',
-		        'description':event.url,
-		        'id':'fullcalendar' + event.id + date,
-		        'start': {
-		          'dateTime': event.start.toISOString(),
-		          'timeZone': 'Asia/Taipei'
-		        },
-		        'end': {
-		          'dateTime': event.end.toISOString(),
-		          'timeZone': 'Asia/Taipei'
-		        }
-		     }
-	    });
-	}
-	else	// 存非 AllDay (date)
-	{
-		var request = gapi.client.calendar.events.insert({
-	        'calendarId': googleCalendarId,
-	        'resource': {
-		        'summary': event.title,
-		        'location': '',
-		        'description':event.url,
-		        'id':'fullcalendar' + event.id + date,
-		        'start': {
-			          'date': event.start,
-			          'timeZone': 'Asia/Taipei'
-		        },
-		        'end': {
-			          'date': event.end,
-			          'timeZone': 'Asia/Taipei'
-		        }
-		     }
-	    });
-	}
-    request.execute(function(response)
-    {
-    	if (!response.error)
-    	{
-//    		response.title = event.title;
-//    		response.backgroundColor = '#B22222';
-//    		response.borderColor =  '#B22222';
-//    		response.url = response.description;
-//    		response.start = response.start.dateTime ? (moment(response.start.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.start.date).format('YYYY-MM-DD'));
-//    		response.end = response.end.dateTime ? (moment(response.end.dateTime).format('YYYY-MM-DD HH:mm:ss')) : (moment(response.end.date).format('YYYY-MM-DD'));
-//            response.inGoogleCalendar = true;
-    		event.googleEventId = response.id;
-			$.ajax({
-        		url : ajaxURL+'AnyCourse/CalendarServlet.do',
-        		method: 'POST',
-        		cache:false,
-        		data: {
-        			eventId: event.id,
-        			googleEventId: event.googleEventId,
-        		  	method: "insertGCEvent"
-        		},
-        		error: function(){
-        			console.log("insertGC Event Fail");
-        		},
-        		success: function(){
-        			console.log("success insertGC");
-//        			// 從FullCalendar上移除
-//	        		$('#calendar').fullCalendar('removeEvents', event.id);
-//    			    fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
-//	        		// 把 response 物件放進 FullCalendar
-	  	            $('#calendar').fullCalendar('renderEvent', event, true);
-////	  	      	    addToFullEvents(response);
-//	  	            fullEvents.push(response);
-        		}
-        	}); // end ajax  
-    	} // end if
-    });
-}
-
-// 更新到Google Calendar
-function updateEvent(event)
-{
-	console.log(event);
-	if (!event.allDay)
-	{
-		console.log('!allday');
-		var request = gapi.client.calendar.events.patch({
-	        'calendarId': googleCalendarId,
-	        'eventId': event.id,
-	        'resource': {
-		        'start': {
-				  'date': null,
-		          'dateTime': event.start,
-		          'timeZone': 'Asia/Taipei'
-		        },
-		        'end': {
-		          'date': null,
-		          'dateTime': event.end,
-		          'timeZone': 'Asia/Taipei'
-		        }
-		     }
-	    });
-	}
-	else
-	{
-		// end day null
-//		console.log('allday');
-		if (event.end == null)
-		{
-			event.end = event.start
-		}
-		console.log(event.end);
-		var request = gapi.client.calendar.events.patch({
-	        'calendarId': googleCalendarId,
-	        'eventId': event.googleEventId,
-	        'resource': {
-		        'allDay': true,
-		        'start': {
-			      'dateTime': null,
-		          'date': event.start.format('YYYY-MM-DD'),
-		          'timeZone': 'Asia/Taipei'
-		        },
-		        'end': {
-				  'dateTime': null,
-		          'date': event.end.format('YYYY-MM-DD'),
-		          'timeZone': 'Asia/Taipei'
-		        }
-		     }
-	    });
-	}
-    request.execute();
-}
-
-// 刪除 Google Calendar 事件
-function deleteEvent(event)
-{
-	console.log(event);
-	var request = gapi.client.calendar.events.delete({
-        'calendarId': googleCalendarId,
-        'eventId': event.googleEventId,
-    });
-    request.execute();
-}
-
-// 新增 Google Calendar
-function insertCalendar() {
-    return gapi.client.calendar.calendars.insert({
-      "resource": {
-        "summary": "AnyCourse"
-      }
-    }).then(function(response) {
-        // Handle the results here (response.result has the parsed body).
-        console.log("Response", response);
-        $.ajax({
-			url: ajaxURL+'AnyCourse/CalendarServlet.do',
-			type: 'POST',
-			cache :false,
-			data: {
-				method: 'setGCId',
-				gcId: response.result.id
-			},
-			error: function(){
-				console.log('set GoogleCalendarId error!');
-			},
-			success: function(){
-				googleCalendarId = response.result.id;
-				console.log(googleCalendarId);
-			}
-        })
-    },function(err) { console.error("Execute error", err); });
-}
 
 /* ----------------------------------- Calendar Page Init ----------------------------------- */
-
 $(function () {
 	checkLogin("../", "../../../");
     var index = 0;	// 跑each迴圈用
@@ -328,21 +18,16 @@ $(function () {
 
 	var m = moment() // Start, End to dateTime
 	
-    // 初始化外部事件
+	// 初始化事件設定 (上)
+	initEventObject();
+    // 初始化事件物件 (中)
 	getCoursePlanEvent();
+	getVideoListEvent();
 
-    // 讓已選事件可以被拖動
-    $('#selectedEvent').draggable({
-      zIndex: 1070,
-      revert: true, // will cause the event to go back to its
-      revertDuration: 0  //  original position after the drag
-    });
   	
     // 初始化行事曆
-    
-    var calendarPromises = [];
-    
     // 從資料庫取得行事曆的資料，並更新至頁面
+    var calendarPromises = [];
     var promiseNative = $.ajax({
 		url: ajaxURL+'AnyCourse/CalendarServlet.do',
 		type: 'GET',
@@ -365,13 +50,16 @@ $(function () {
 	Promise.all(calendarPromises).then(function(){
 		console.log(fullEvents);
 		initCalendar(fullEvents);
-    });
-			
+	});
 	
-	
-	
-    // 自訂事件
-    var currColor = "#3c8dbc"; // 預設為紅色
+})
+
+
+
+// 自訂事件
+function initEventObject()
+{
+	var currColor = "#3c8dbc"; // 預設為天空藍
     var colorChooser = $("#color-chooser-btn"); // 選擇顏色的按鈕
     
     $("#color-chooser > li > a").click(function (e) {
@@ -382,7 +70,15 @@ $(function () {
         $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
   	    $('#selectedEvent').css({"background-color": currColor, "border-color": currColor});
     });
-    
+	
+    // 讓已選事件可以被拖動
+    $('#selectedEvent').draggable({
+        zIndex: 1070,
+        revert: true, // will cause the event to go back to its
+        revertDuration: 0  //  original position after the drag
+    });
+	
+	//** 下面的
     $("#add-new-event").click(function (e) {
         e.preventDefault();
         // 取使用者輸入的title
@@ -404,12 +100,17 @@ $(function () {
 
         // 清空輸入欄位
         $("#new-event").val("");
-    })
-})
+	})
 
-/* ----------------------------------- CoursePlan Event ----------------------------------- */
+	$('#external-events').slimScroll({
+		  height:'100px;'
+	});
+}
+
+/* ----------------------------------- CoursePlan/VideoList Event ----------------------------------- */
 
 $(function() {
+	// 選擇 課程計畫/清單
     $('#sel1').change(function(){
     	var selectedIndex = $('#sel1')[0].selectedIndex;
 //        $('#external-events').hide(); 
@@ -435,8 +136,8 @@ function getCoursePlanEvent()
   			console.log('get coursePlan error');
   		},
   		success:function(result){
-  			console.log('coursePlan result:');
-  			console.log(result);
+  			// console.log('coursePlan result:');
+  			// console.log(result);
   			coursePlanList = result;
   			for(var i = 0; i < coursePlanList.length; i++)
   			{
@@ -454,7 +155,7 @@ function getCoursePlanEvent()
   			    // 把eventObject存到DOM裡面，之後就可以取得
   			    $(this).data('eventObject', eventObject);
   			    $(this).click(function(){
-	  		    	console.log($(this).data('eventObject'));		//********************************
+//	  		    	console.log($(this).data('eventObject'));
 	  		    	$('#selectedEvent').text($(this).text());
 	  		    	$('#selectedEvent').data($(this).data());
 	  		        $('#checkSelectedListBtn').removeAttr('disabled');
@@ -462,47 +163,51 @@ function getCoursePlanEvent()
   			});
   		}
   	});
-  	$.ajax({
-  		url: ajaxURL+'AnyCourse/CalendarServlet.do',
-  		method: 'GET',
-  		cache: false,
-  		data:{
-  			method:'getVideoList'
-  		},
-  		error:function(){
-  			console.log('get videoList error');
-  		},
-  		success:function(result){
-  			console.log('videoList result:');
-  			console.log(result);
-  			videoList = result;
-  			for(var i = 0; i < videoList.length; i++)
-  			{
-  				$('#event').append('<ul class="pagination list-events" style="height:160px;" id="list-events-' + i + '"></ul>');
-  				$('#sel1').append('<option>' + videoList[i].listName + '</option>')
-	  			$('#list-events-' + i).append(
-	  				'<li><a class="list-event-a" href="javascript:void(0)">'+videoList[i].unitName+'</a></li>'
-	  			);
-  				$('#list-events-' + i).hide();
-  			}
-  			$('.list-events li').each(function(index){
-  			    // 宣告EventObject (可以不用start跟end)
-  			    var eventObject = {
-  			          title: videoList[index].unitName,
-  		              unitId: videoList[index].unitId,
-  		              type: videoList[index].videoType
-  			    	};
-  			    // 把eventObject存到DOM裡面，之後就可以取得
-  			    $(this).data('eventObject', eventObject);
-  			    $(this).click(function(){
-	  		    	console.log($(this).data('eventObject'));		//********************************
-	  		    	$('#selectedEvent').text($(this).text());
-	  		    	$('#selectedEvent').data($(this).data());
-	  		        $('#checkSelectedListBtn').removeAttr('disabled');
-	  		    });
-  			});
-  		}
-  	});
+}
+
+function getVideoListEvent()
+{
+	$.ajax({
+		url: ajaxURL+'AnyCourse/CalendarServlet.do',
+		method: 'GET',
+		cache: false,
+		data:{
+			method:'getVideoList'
+		},
+		error:function(){
+			console.log('get videoList error');
+		},
+		success:function(result){
+			// console.log('videoList result:');
+			// console.log(result);
+			videoList = result;
+			for(var i = 0; i < videoList.length; i++)
+			{
+				$('#event').append('<ul class="pagination list-events" style="height:160px;" id="list-events-' + i + '"></ul>');
+				$('#sel1').append('<option>' + videoList[i].listName + '</option>')
+				$('#list-events-' + i).append(
+					'<li><a class="list-event-a" href="javascript:void(0)">'+videoList[i].unitName+'</a></li>'
+				);
+				$('#list-events-' + i).hide();
+			}
+			$('.list-events li').each(function(index){
+				// 宣告EventObject (可以不用start跟end)
+				var eventObject = {
+					  title: videoList[index].unitName,
+					  unitId: videoList[index].unitId,
+					  type: videoList[index].videoType
+					};
+				// 把eventObject存到DOM裡面，之後就可以取得
+				$(this).data('eventObject', eventObject);
+				$(this).click(function(){
+//					console.log($(this).data('eventObject'));
+					$('#selectedEvent').text($(this).text());
+					$('#selectedEvent').data($(this).data());
+					$('#checkSelectedListBtn').removeAttr('disabled');
+				});
+			});
+		}
+	});
 }
 
 /* ----------------------------------- FullCalendar ----------------------------------- */
@@ -513,10 +218,7 @@ function initCalendar(eventSrc)
 	var leng = 1 + (( ( $(window).width()-100 ) / $(window).height() ) - 1) * 0.5;
 	console.log(leng);
 	$('#calendar').fullCalendar({
-//		height: $(window).height(),
-//		contentHeight: $(window).width()*1.25,
 		aspectRatio: (leng),
-//		aspectRatio: 1.2,
 		// 視圖的擺放
         header: {
           left: 'prev,next today',
@@ -530,23 +232,16 @@ function initCalendar(eventSrc)
           week: '周',
           day: '天'
         },
-        // 結合Google日曆
-//        googleCalendarApiKey: 'AIzaSyAz3zOHiCMMnShglhMhAvFsRl10juJs2oo',
-//        eventSources:{
-//	        googleCalendarId: googleCalendarId		//'primary'
-//        },
         // 資料庫中的事件
         events: eventSrc,
         // 日期格式
         timeFormat: 'hh:mm a',
-//	          allDayDefault: true,
         // 行事曆的操作
         editable: true,
         droppable: true,
         selectable: true,
     	// 在week跟day select時顯示時間
         selectHelper: true,
-        
         // ----用拖曳的方式選擇日期或時間----
         select: function(start, end) {
       	    // 新增一個event Object接selectedEvent
@@ -584,10 +279,8 @@ function initCalendar(eventSrc)
           			console.log('InsertFail');
           		},
           		success: function(response){
-          			console.log(response);
+          			// console.log(response);
           			selectedObject.id = response;
-	        		//$('#calendar').fullCalendar('updateEvent', event);
-          			
           			// 把新增的Object更新到fullcalendar
         			$('#calendar').fullCalendar('renderEvent', selectedObject, true)
 		            {	
@@ -649,11 +342,6 @@ function initCalendar(eventSrc)
 		            fullEvents.push(copiedEventObject);
       		    }
             }); // end ajax
-          
-          // 若勾選抓取後移除，則移除該元件
-//            if ($('#drop-remove').is(':checked')) {
-//          	    $(this).remove();
-//            }
         }, // end drop
         
         // ----點擊事件----
@@ -891,3 +579,281 @@ function jumpToDate(date)
 //	fullEvents[index].start = fullEvents[index].start._i;
 //	fullEvents[index].end = fullEvents[index].end._i;
 //}
+
+/* ----------------------------------- Google ----------------------------------- */
+document.write('<script async defer src="https://apis.google.com/js/api.js"'
+      +'onload="this.onload=function(){};handleClientLoad()"'
+      +'onreadystatechange="if (this.readyState === "complete") this.onload()">'
+      +'</script>');
+
+// Client ID and API key from the Developer Console
+var CLIENT_ID = '645783857059-dgmft2d4jb7kgkl1f05l02gorl19r9d0.apps.googleusercontent.com';
+var API_KEY = 'AIzaSyAz3zOHiCMMnShglhMhAvFsRl10juJs2oo';
+
+// Array of API discovery doc URLs for APIs used by the quickstart
+var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+
+// Authorization scopes required by the API; multiple scopes can be
+// included, separated by spaces.
+var SCOPES = "https://www.googleapis.com/auth/calendar";
+
+var authorizeButton = document.getElementById('authorize-button');
+
+/**
+ *  On load, called to load the auth2 library and API client library.
+ */
+function handleClientLoad() {
+  gapi.load('client:auth2', initClient);
+}
+
+/**
+ *  Initializes the API client library and sets up sign-in state
+ *  listeners.
+ */
+function initClient() {
+  gapi.client.init({
+    apiKey: API_KEY,
+    clientId: CLIENT_ID,
+    discoveryDocs: DISCOVERY_DOCS,
+    scope: SCOPES
+  }).then(function () {
+    // Listen for sign-in state changes.
+    gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+    // Handle the initial sign-in state.
+    updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+    authorizeButton.onclick = handleAuthClick;
+  });
+}
+
+/**
+ *  Called when the signed in status changes, to update the UI
+ *  appropriately. After a sign-in, the API is called.
+ */
+function updateSigninStatus(isSignedIn) {
+    if (isSignedIn) {
+		var promiseGoogle = $.ajax({
+			url: ajaxURL+'AnyCourse/CalendarServlet.do',
+			type: 'GET',
+			dataType: 'text', 
+			cache :false,
+			data: {
+				method: 'getGCId'
+			},
+			error: function(){
+				console.log('get GoogleCalendar error!');
+			},
+			success: function(response){ // 回傳 id
+				if (response != "")
+				{
+					googleCalendarId = response;
+					console.log(googleCalendarId);
+				}
+				else
+				{
+					console.log("insert");
+					insertCalendar();
+				}
+			}
+		});
+		promiseGoogle.then(function(){
+			authorizeButton.style.display = 'none';
+		    // 開始時間從當下時間往前推一個月
+			var date = new Date()
+			date.setMonth(date.getMonth()-1);
+			// 取得google calendar events
+		    gapi.client.calendar.events.list({
+		        'calendarId': googleCalendarId,	// 取個人日曆
+		        'timeMin': date.toISOString(),	// 從哪天開始
+		        'showDeleted': false,
+		        'singleEvents': true,
+		        'maxResults': 10000,	// 最多多少個事件
+		        'orderBy': 'startTime'
+		    }).then(function(response) {
+		     	console.log(response);
+		    })
+		})
+    } 
+    else {
+    	authorizeButton.style.display = 'inline';
+    }
+}
+
+/**
+ *  Sign in the user upon button click.
+ */
+function handleAuthClick(event) {
+  gapi.auth2.getAuthInstance().signIn();
+}
+
+/**
+ *  Sign out the user upon button click.
+ */
+//function handleSignoutClick(event) {
+//  gapi.auth2.getAuthInstance().signOut();
+//}
+
+// 加入到 Google Calendar
+function addEvent(event)
+{
+	var date = moment().format("YYYYMMDDHHmmss");
+	console.log(date);
+	console.log(event.url);
+	if (!event.allDay)	// 存 AllDay (dateTime)
+	{
+		var request = gapi.client.calendar.events.insert({
+	        'calendarId': googleCalendarId,
+	        'resource': {
+		        'summary': event.title,
+		        'location': '',
+		        'description':event.url,
+		        'id':'fullcalendar' + event.id + date,
+		        'start': {
+		          'dateTime': event.start.toISOString(),
+		          'timeZone': 'Asia/Taipei'
+		        },
+		        'end': {
+		          'dateTime': event.end.toISOString(),
+		          'timeZone': 'Asia/Taipei'
+		        }
+		     }
+	    });
+	}
+	else	// 存非 AllDay (date)
+	{
+		var request = gapi.client.calendar.events.insert({
+	        'calendarId': googleCalendarId,
+	        'resource': {
+		        'summary': event.title,
+		        'location': '',
+		        'description':event.url,
+		        'id':'fullcalendar' + event.id + date,
+		        'start': {
+			          'date': event.start,
+			          'timeZone': 'Asia/Taipei'
+		        },
+		        'end': {
+			          'date': event.end,
+			          'timeZone': 'Asia/Taipei'
+		        }
+		     }
+	    });
+	}
+    request.execute(function(response)
+    {
+    	if (!response.error)
+    	{
+    		event.googleEventId = response.id;
+			$.ajax({
+        		url : ajaxURL+'AnyCourse/CalendarServlet.do',
+        		method: 'POST',
+        		cache:false,
+        		data: {
+        			eventId: event.id,
+        			googleEventId: event.googleEventId,
+        		  	method: "insertGCEvent"
+        		},
+        		error: function(){
+        			console.log("insertGC Event Fail");
+        		},
+        		success: function(){
+        			console.log("success insertGC");
+	  	            $('#calendar').fullCalendar('renderEvent', event, true);
+        		}
+        	}); // end ajax  
+    	} // end if
+    });
+}
+
+// 更新到Google Calendar
+function updateEvent(event)
+{
+	console.log(event);
+	if (!event.allDay)
+	{
+		console.log('!allday');
+		var request = gapi.client.calendar.events.patch({
+	        'calendarId': googleCalendarId,
+	        'eventId': event.id,
+	        'resource': {
+		        'start': {
+				  'date': null,
+		          'dateTime': event.start,
+		          'timeZone': 'Asia/Taipei'
+		        },
+		        'end': {
+		          'date': null,
+		          'dateTime': event.end,
+		          'timeZone': 'Asia/Taipei'
+		        }
+		     }
+	    });
+	}
+	else
+	{
+		// end day null
+//		console.log('allday');
+		if (event.end == null)
+		{
+			event.end = event.start
+		}
+		console.log(event.end);
+		var request = gapi.client.calendar.events.patch({
+	        'calendarId': googleCalendarId,
+	        'eventId': event.googleEventId,
+	        'resource': {
+		        'allDay': true,
+		        'start': {
+			      'dateTime': null,
+		          'date': event.start.format('YYYY-MM-DD'),
+		          'timeZone': 'Asia/Taipei'
+		        },
+		        'end': {
+				  'dateTime': null,
+		          'date': event.end.format('YYYY-MM-DD'),
+		          'timeZone': 'Asia/Taipei'
+		        }
+		     }
+	    });
+	}
+    request.execute();
+}
+
+// 刪除 Google Calendar 事件
+function deleteEvent(event)
+{
+	console.log(event);
+	var request = gapi.client.calendar.events.delete({
+        'calendarId': googleCalendarId,
+        'eventId': event.googleEventId,
+    });
+    request.execute();
+}
+
+// 新增 Google Calendar
+function insertCalendar() {
+    return gapi.client.calendar.calendars.insert({
+      "resource": {
+        "summary": "AnyCourse"
+      }
+    }).then(function(response) {
+        // Handle the results here (response.result has the parsed body).
+        console.log("Response", response);
+        $.ajax({
+			url: ajaxURL+'AnyCourse/CalendarServlet.do',
+			type: 'POST',
+			cache :false,
+			data: {
+				method: 'setGCId',
+				gcId: response.result.id
+			},
+			error: function(){
+				console.log('set GoogleCalendarId error!');
+			},
+			success: function(){
+				googleCalendarId = response.result.id;
+				console.log(googleCalendarId);
+			}
+        })
+    },function(err) { console.error("Execute error", err); });
+}

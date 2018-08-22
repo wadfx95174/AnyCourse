@@ -31,7 +31,7 @@ $(function(){
 
       // 把 groupId 送到 Servlet 檢查
       $.ajax({
-		url: ajaxURL + 'AnyCourse/AnnouncementServlet.do',
+		url: ajaxURL + 'AnyCourse/......Servlet.do',
 		method: 'GET',
 		data: {
 			'groupId': get('groupId')
