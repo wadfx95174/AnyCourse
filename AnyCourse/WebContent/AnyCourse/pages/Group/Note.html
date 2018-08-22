@@ -49,6 +49,8 @@
 	href="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css"
 	rel="stylesheet" type="text/css" />
 <link href="../../dist/css/personalNote.css" rel="stylesheet" type="text/css">
+<link href="../../dist/css/groupNote.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../../plugins/Gallery-Popup-jQuery-Fs-Gal/css/fs-gal.css" />
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -134,13 +136,13 @@
 								<ul class="nav nav-tabs">
 									<li class="tabClass"><a href="#announcement"
 										data-toggle="tab" aria-expanded="true">公告</a></li>
-									<li class="active tabClass"><a href="#forum" data-toggle="tab"
+									<li class="tabClass"><a href="#forum" data-toggle="tab"
 										aria-expanded="false">討論區</a></li>	
 									<li class="tabClass"><a href="#list" data-toggle="tab"
 										aria-expanded="false">清單</a></li>
 									<li class="tabClass"><a href="#plan" data-toggle="tab"
 										aria-expanded="false">共同計畫</a></li>
-									<li class="tabClass"><a href="#note" data-toggle="tab"
+									<li class="active tabClass"><a href="#note" data-toggle="tab"
 										aria-expanded="false">筆記</a></li>
 									<li class="tabClass"><a href="#resource" data-toggle="tab"
 										aria-expanded="false">資源庫</a></li>
@@ -152,7 +154,7 @@
 										
 									</div>									
 									<!-- /.tab-pane -->
-									<div class="tab-pane active" style="height:600px" id="forum">
+									<div class="tab-pane" style="height:600px" id="forum">
 										<div class="A">
 											<h2><label>發表評論</label></h2>											
 											<textarea id="commentArea" class="col-xs-12" rows="3" cols="50" placeholder="Comment something..." style="float:left;"></textarea>
@@ -164,23 +166,44 @@
 										</div>
 									</div>
 									<!-- /.tab-pane -->
-									<div class="list-group tab-pane A" id="list">
+									<div class="tab-pane" id="list">
 										
 									</div>
 									<!-- /.tab-pane -->
-									<div class="list-group tab-pane " id="plan">
+									<div class="tab-pane" id="plan">
 										
 									</div>
 									<!-- /.tab-pane -->
-									<div class="list-group tab-pane A" id="note">
+									<div class="tab-pane active" id="note">
+									<section class="content col-md-12">
+										<div class="box box-primary">
+											<!-- box-header -->
+											<div class="box-header with-border">
+												<div class="row" style="padding-left:15px; padding-right: 15px;">
+													<div class="col-xs-4 text-center"><strong>單元名稱</strong></div>
+													<div class="col-xs-4 text-center"><strong>文字筆記</strong></div>
+													<div class="col-xs-4 text-center"><strong>圖片筆記</strong></div>
+												</div>
+											</div>
+											<!-- /.box-header -->
+											<!-- box-body -->
+											<div class="box-body">
+												<ul class="todo-list ui-sortable" style="height: 480px;" id="result">
+													<!-- 顯示相對應的影片筆記 -->
+													
+												</ul>
+											</div>
+											<!-- /.box-body -->
+											<div class="box-footer clearfix no-border"></div>
+										</div>
+									</section>
+									</div>
+									<!-- /.tab-pane -->
+									<div class="tab-pane" id="resource">
 										
 									</div>
 									<!-- /.tab-pane -->
-									<div class="list-group tab-pane " id="resource">
-										
-									</div>
-									<!-- /.tab-pane -->
-									<div class="list-group tab-pane A" id="member">
+									<div class="tab-pane" id="member">
 										
 									</div>							
 								</div>
@@ -247,7 +270,7 @@
 	<script src="../../dist/js/autoComplete.js" type="text/javascript"></script>
 	<!-- Account -->
 	<script src="../../dist/js/account.js" type="text/javascript"></script>
-	<script src="../../dist/js/personalNote.js" type="text/javascript"></script>
+	<script src="../../dist/js/groupNote.js" type="text/javascript"></script>
 	<!-- Notification -->
 	<script src="../../dist/js/notification.js" type="text/javascript"></script>
 	<!-- GroupForum -->
