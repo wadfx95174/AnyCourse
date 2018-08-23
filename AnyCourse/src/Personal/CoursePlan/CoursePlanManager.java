@@ -39,7 +39,7 @@ public class CoursePlanManager {
 		}
 	}
 	
-	//拿該使用者所有的課程清單
+	//取得該使用者所有的課程清單
 	public ArrayList<CoursePlan> getVideoList(String userId){
 		coursePlans = new ArrayList<CoursePlan>();
 		try {
@@ -60,7 +60,7 @@ public class CoursePlanManager {
 			}
 		}
 		catch(SQLException x){
-			System.out.println("CoursePlan-getCoursePlanAllList");
+			System.out.println("CoursePlan-getVideoList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -69,7 +69,7 @@ public class CoursePlanManager {
 		return coursePlans;
 	}
 	
-	//拿該使用者課程計畫對應的影片
+	//取得該使用者課程計畫對應的影片
 	public ArrayList<CoursePlan> getCoursePlanUnit(String userId, int courselistId){
 		coursePlans = new ArrayList<CoursePlan>();
 		try {
@@ -110,7 +110,7 @@ public class CoursePlanManager {
 			} 
 		}
 		catch(SQLException x){
-			System.out.println("CoursePlan-getCoursePlanAllList");
+			System.out.println("CoursePlan-getCoursePlanUnit");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {

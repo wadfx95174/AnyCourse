@@ -31,26 +31,27 @@ public class PlayerInterfaceServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
+		response.setHeader("Cache-Control","max-age=0");
 		PlayerInterfaceManager manager = new PlayerInterfaceManager();
 		HttpSession session = request.getSession();
+		String action = request.getParameter("action");
 		String userId = (String)session.getAttribute("userId");
-		response.setHeader("Cache-Control","max-age=0");
-		if(request.getParameter("action").equals("getVideoList")) {
+		
+		
+		if(action.equals("getVideoList")) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(manager.getList(Integer.parseInt(request.getParameter("courselistId"))));
 		}
-		else if(request.getParameter("action").equals("setVideoCloseTime")
+		else if(action.equals("setVideoCloseTime")
 				&& userId != null) {
-			PlayerInterfaceManager playerInterfaceManager = new PlayerInterfaceManager();
+			System.out.println("test");
 			
-			playerInterfaceManager.setVideoEndTime(Integer.parseInt(request.getParameter("currentTime"))
+			manager.setVideoCloseTime(Integer.parseInt(request.getParameter("currentTime"))
 					,Integer.parseInt(request.getParameter("unitId")),userId
 					,Integer.parseInt(request.getParameter("duration")));
-			
-			playerInterfaceManager.conClose();
 		}
-		else if(request.getParameter("action").equals("like")&& userId != null) {
+		else if(action.equals("like")&& userId != null) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			Unit unit = new Unit();
@@ -59,7 +60,7 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			Gson gson = new Gson();
 			response.getWriter().write(gson.toJson(unit));
 		}
-		else if(request.getParameter("action").equals("setIsBrowse")) {
+		else if(action.equals("setIsBrowse")) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			Unit unit = new Unit();
@@ -77,7 +78,7 @@ public class PlayerInterfaceServlet extends HttpServlet {
 				response.getWriter().write(gson.toJson(unit));
 			}
 		}
-		else if(request.getParameter("action").equals("getRecommendation")) {
+		else if(action.equals("getRecommendation")) {
 			int accountId = 0;
 			ArrayList<Unit> units = new ArrayList<Unit>();
 			Gson gson = new Gson();

@@ -15,7 +15,7 @@ var videoListArray;//存放清單資料的陣列
 var unitArray;//存放影片資料的陣列
 
 $(document).ready(function() {
-	//跑出modal時直接把focus放在modal中的格子
+	//呼叫modal時直接把focus放在modal中的格子
 	$('#addModal').on('shown.bs.modal', function () {
 	  $('#named').focus();
   	});
@@ -32,6 +32,8 @@ $(document).ready(function() {
   	});
 
   	checkLogin("../", "../../../");
+  	// 載入頁面時，先檢查有沒有 groupId 這個參數
+    checkGroupId();
   
   	var videoListId = 1;
   	var unitVideoId = 1;
@@ -389,4 +391,30 @@ function getUnitId(id){
 function jumpToPlayerInterface(unitId,type,listId){
     url = "../PlayerInterface.html?unitId="+unitId+"&type="+type+"&listId="+listId;//此處拼接內容
     window.location.href = url;
+}
+
+
+
+
+// 取網址列的參數
+function get(name)
+{
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+}
+
+// 設置每個群組內的網址 (ex. 公告、討論區...)
+function setGroupUrl()
+{
+      var groupId = get('groupId');
+      $('.tabClass>a').each(function () {
+            $(this).attr("href", $(this).attr("href") + '?groupId=' + groupId);
+      });
+}
+
+// 檢查網址是否沒有 groupId，若沒有則跳轉至首頁
+function checkGroupId()
+{
+      if (get('groupId') == undefined)
+            window.location = ajaxURL + 'AnyCourse/AnyCourse/HomePage.html';
 }

@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>AnyCourse</display-name>
+  <!-- welcome-file -->
   <welcome-file-list>
     <welcome-file>/AnyCourse/HomePage.html</welcome-file>
   </welcome-file-list>
-  <servlet>
-    <servlet-name>GroupCommentServlet</servlet-name>
-    <servlet-class>Group.Forum.GroupCommentServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>GroupReplyServlet</servlet-name>
-    <servlet-class>Group.Forum.GroupReplyServlet</servlet-class>
-  </servlet>
+  <!-- /.welcome-file -->
+  
+  <!-- Personal servlet-name -->
   <servlet>
     <servlet-name>PersonalTextNoteServlet</servlet-name>
     <servlet-class>Personal.PersonalNote.PersonalTextNoteServlet</servlet-class>
@@ -19,6 +15,10 @@
   <servlet>
     <servlet-name>PersonalPictureNoteServlet</servlet-name>
     <servlet-class>Personal.PersonalNote.PersonalPictureNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PersonalKeyLabelServlet</servlet-name>
+    <servlet-class>Personal.KeyLabel.PersonalKeyLabelServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>WatchRecordServlet</servlet-name>
@@ -97,10 +97,6 @@
     <servlet-class>Search.SearchServlet</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>PersonalKeyLabelServlet</servlet-name>
-    <servlet-class>Personal.KeyLabel.PersonalKeyLabelServlet</servlet-class>
-  </servlet>
-  <servlet>
     <servlet-name>PlayerInterfaceServlet</servlet-name>
     <servlet-class>PlayerInterface.PlayerInterfaceServlet</servlet-class>
   </servlet>
@@ -112,10 +108,9 @@
     <servlet-name>SettingServlet</servlet-name>
     <servlet-class>Setting.SettingServlet</servlet-class>
   </servlet>
-  <servlet>
-    <servlet-name>ManagementServlet</servlet-name>
-    <servlet-class>Group.Management.ManagementServlet</servlet-class>
-  </servlet>
+  <!-- /.Personal servlet-name -->
+  
+  <!-- Group servlet-name -->
   <servlet>
     <servlet-name>GroupCalendarServlet</servlet-name>
     <servlet-class>Group.Calendar.CalendarServlet</servlet-class>
@@ -128,14 +123,30 @@
     <servlet-name>AnnouncementServlet</servlet-name>
     <servlet-class>Group.Announcement.AnnouncementServlet</servlet-class>
   </servlet>
-  <servlet-mapping>
+  <servlet>
+    <servlet-name>ManagementServlet</servlet-name>
+    <servlet-class>Group.Management.ManagementServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>GroupCommentServlet</servlet-name>
-    <url-pattern>/GroupCommentServlet.do</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
+    <servlet-class>Group.Forum.GroupCommentServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>GroupReplyServlet</servlet-name>
-    <url-pattern>/GroupReplyServlet.do</url-pattern>
-  </servlet-mapping>
+    <servlet-class>Group.Forum.GroupReplyServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>GroupVideoListServlet</servlet-name>
+    <servlet-class>Group.VideoList.GroupVideoListServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>GroupCoursePlanServlet</servlet-name>
+    <servlet-class>Group.CoursePlan.GroupCoursePlanServlet</servlet-class>
+  </servlet>
+  <!-- /.Group servlet-name -->
+  
+  
+  <!-- Personal servlet-mapping -->
   <servlet-mapping>
     <servlet-name>PersonalTextNoteServlet</servlet-name>
     <url-pattern>/PersonalTextNoteServlet.do</url-pattern>
@@ -236,6 +247,17 @@
     <servlet-name>SettingServlet</servlet-name>
     <url-pattern>/SettingServlet.do</url-pattern>
   </servlet-mapping>
+  <!-- /.Personal servlet-mapping -->
+  
+  <!-- Group servlet-mapping -->
+  <servlet-mapping>
+    <servlet-name>GroupCommentServlet</servlet-name>
+    <url-pattern>/GroupCommentServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GroupReplyServlet</servlet-name>
+    <url-pattern>/GroupReplyServlet.do</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ManagementServlet</servlet-name>
     <url-pattern>/ManagementServlet.do</url-pattern>
@@ -252,9 +274,21 @@
     <servlet-name>AnnouncementServlet</servlet-name>
     <url-pattern>/AnnouncementServlet.do</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GroupVideoListServlet</servlet-name>
+    <url-pattern>/GroupVideoListServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GroupCoursePlanServlet</servlet-name>
+    <url-pattern>/GroupCoursePlanServlet.do</url-pattern>
+  </servlet-mapping>
+  <!-- /.Group servlet-mapping -->
+  
+  <!-- listener -->
   <listener>
     <listener-class>
 		DataHandle.DataUpdateListener
 	</listener-class>
   </listener>
+  <!-- /.listener -->
 </web-app>

@@ -23,9 +23,7 @@ public class HomePageServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
-		response.setHeader("content-type","text/html;charset=UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
-		
 		
 		ArrayList<Map<Integer, HomePage>> homePages = null;
 		HttpSession session = request.getSession();
