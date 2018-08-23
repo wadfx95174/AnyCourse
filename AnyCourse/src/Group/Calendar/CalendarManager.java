@@ -11,12 +11,12 @@ import java.util.ArrayList;
 
 public class CalendarManager
 {
-	private final String selectEventsSQL = "select * from event natural join groupCalendar where groupId = ?";
+	private final String selectEventsSQL = "select * from event natural join groupCalendar natural join account where groupId = ?";
 	private final String insertEventSQL = "insert into event value (null,1,?,?,?,?,?,?,?,?)";
 	private final String updateEventSQL = "update event set title = ?,url = ?,start = ?,end = ?,allDay = ? where eventId = ?";
 	private final String deleteEventSQL = "delete from event where eventId = ?";
 	private final String deleteCalendarSQL = "delete from groupCalendar where eventId = ?";
-	private final String insertCalendarSQL = "insert into groupCalendar value (?,?)";
+	private final String insertCalendarSQL = "insert into groupCalendar value (?,?,?)";
 	private final String selectGoogleCalendarIdSQL = "select * from googleCalendarMatch where userId = ?";
 	private final String insertGoogleCalendarIdSQL = "insert into googleCalendarMatch value (?,?)";
 	private final String insertGoogleEventIdSQL = "update event set googleEventId = ? where eventId = ?";
@@ -42,6 +42,21 @@ public class CalendarManager
 		}
 	}
 	
+	// 回傳群組 Events 陣列 (含該事件是否為已登入之使用者)
+	public ArrayList<CalendarDTO> getEventsWithCheckingUser(int groupId, String userId)
+	{
+		ArrayList<CalendarDTO> result = getEvents(groupId);
+		CalendarDTO eachEvent;
+		for (int i = 0; i < result.size(); i++)
+		{
+			eachEvent = result.get(i);
+			// 如果為同個使用者 -> sameUser=true
+			eachEvent.setSameUser(eachEvent.getUserId().equals(userId));
+		}
+		return result;
+	}
+	
+	// 回傳群組 Events 陣列
 	public ArrayList<CalendarDTO> getEvents(int groupId)
 	{
 		ArrayList<CalendarDTO> list = new ArrayList<CalendarDTO>();
@@ -54,6 +69,8 @@ public class CalendarManager
 			{
 				CalendarDTO dto = new CalendarDTO();
 				dto.setId(result.getInt("eventId"));
+				dto.setUserId(result.getString("userId"));
+				dto.setNickName(result.getString("nickName"));
 				dto.setTitle(result.getString("title"));
 				dto.setUrl(result.getString("url"));
 				dto.setStart(result.getString("start"));
@@ -97,6 +114,7 @@ public class CalendarManager
 				pst = con.prepareStatement(insertCalendarSQL);
 				pst.setInt(1, groupId);
 				pst.setInt(2, newEventId);
+				pst.setString(3, dto.getUserId());
 				pst.executeUpdate();
 				return newEventId;
 			}

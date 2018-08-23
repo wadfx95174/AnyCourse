@@ -565,7 +565,19 @@ function initCalendar(eventSrc)
 //	        googleCalendarId: googleCalendarId		//'primary'
 //        },
         // 資料庫中的事件
-        events: eventSrc,
+        events:function(start,end,timezone,callback){
+			let groupColor = '#880000';
+			for (var i = 0; i < eventSrc.length; i++)
+			{
+				if (!eventSrc[i].sameUser)
+				{
+					eventSrc[i].backgroundColor = groupColor;
+					eventSrc[i].borderColor = groupColor;
+					eventSrc[i].editable = false;
+				}
+			}
+			callback(eventSrc);
+		},
         // 日期格式
         timeFormat: 'hh:mm a',
 //	          allDayDefault: true,
@@ -814,7 +826,17 @@ function initCalendar(eventSrc)
   	        $('#calendar').fullCalendar('refetchEvents');
   	        fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
   	        addToFullEvents(event); 
-        } // end eventDrop
+		}, // end eventDrop
+		// ----Tooltip----
+		eventRender: function(eventObj, $el) {
+			$el.popover({
+			  title: eventObj.nickName,
+			  content: eventObj.title,
+			  trigger: 'hover',
+			  placement: 'top',
+			  container: 'body'
+			});
+		},
     }); // end fullCalendar
 } // end function initCalendar
 

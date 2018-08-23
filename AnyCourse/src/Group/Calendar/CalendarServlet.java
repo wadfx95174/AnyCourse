@@ -33,7 +33,7 @@ public class CalendarServlet extends HttpServlet {
 		    if (groups.containsValue(Integer.parseInt(request.getParameter("groupId"))))
 		    {
 		    	int groupId = Integer.parseInt(request.getParameter("groupId"));
-				response.getWriter().write(new Gson().toJson(calendarManager.getEvents(groupId)));	
+				response.getWriter().write(new Gson().toJson(calendarManager.getEventsWithCheckingUser(groupId, userId)));	
 		    }
 		}
 		else if (request.getParameter("method").equals("getCoursePlan"))
@@ -66,6 +66,7 @@ public class CalendarServlet extends HttpServlet {
 			int groupId = Integer.parseInt(request.getParameter("groupId"));
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
+			event.setUserId(userId);
 			event.setTitle(request.getParameter("title"));
 			event.setUrl(request.getParameter("url"));
 			event.setStart(request.getParameter("start"));
