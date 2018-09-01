@@ -1,4 +1,3 @@
-
 //var ajaxURL="http://140.121.197.131:7603/";
 var ajaxURL="http://localhost:8080/";
 

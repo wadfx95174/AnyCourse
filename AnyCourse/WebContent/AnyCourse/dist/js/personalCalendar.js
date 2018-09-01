@@ -1,6 +1,3 @@
-//var ajaxURL="http://140.121.197.131:7603/";
-var ajaxURL="http://localhost:8080/";
-
 var googleEvents;	// 存 Google Calendar Events
 var fullEvents;		// 存 FullCalendar Events
 

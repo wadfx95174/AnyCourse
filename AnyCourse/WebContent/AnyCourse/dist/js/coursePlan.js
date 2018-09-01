@@ -1,5 +1,3 @@
-//var ajaxURL="http://140.121.197.131:7603/";
-var ajaxURL="http://localhost:8080/";
 //////////////////////////////設置拉霸///////////////////////////////////
 $('#unit').slimScroll({
 	height: '420px;'
@@ -183,7 +181,7 @@ function getSeparateUnit(){
 			$('#wantList li,#ingList li,#doneList li').each(function(){
 				$(this).remove();
 			});
-			console.log(response);
+			// console.log(response);
 			unitArray = new Array(response.length);
 			showUnitUL(response,unitArray);
 		},
