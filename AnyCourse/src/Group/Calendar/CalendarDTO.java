@@ -2,6 +2,8 @@ package Group.Calendar;
 public class CalendarDTO
 {
 	private int id;
+	private String userId;
+	private String nickName;
 	private String title;
 	private String url;
 	private String start;
@@ -9,6 +11,7 @@ public class CalendarDTO
 	private String backgroundColor;
 	private String borderColor;
 	private boolean allDay;
+	private boolean sameUser;
 	private String googleEventId;
 	
 	public int getId()
@@ -18,6 +21,18 @@ public class CalendarDTO
 	public void setId(int id)
 	{
 		this.id = id;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 	public String getTitle()
 	{
@@ -74,6 +89,12 @@ public class CalendarDTO
 	public void setAllDay(boolean allDay)
 	{
 		this.allDay = allDay;
+	}
+	public boolean isSameUser() {
+		return sameUser;
+	}
+	public void setSameUser(boolean sameUser) {
+		this.sameUser = sameUser;
 	}
 	public String getGoogleEventId()
 	{
