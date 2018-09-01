@@ -36,15 +36,14 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String action = request.getParameter("action");
 		String userId = (String)session.getAttribute("userId");
-		
+		System.out.println(action);
 		
 		if(action.equals("getVideoList")) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(manager.getList(Integer.parseInt(request.getParameter("courselistId"))));
 		}
-		else if(action.equals("setVideoCloseTime")
-				&& userId != null) {
+		else if(action.equals("setVideoCloseTime")&& userId != null) {
 			System.out.println("test");
 			
 			manager.setVideoCloseTime(Integer.parseInt(request.getParameter("currentTime"))

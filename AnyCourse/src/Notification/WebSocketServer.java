@@ -34,13 +34,13 @@ public class WebSocketServer {
         	String sessionsUserId = null;
         	for (Session s : sessions) {
         		sessionsUserId = (String)s.getUserProperties().get("userId");
-        		System.out.println("sessionsUserId" + sessionsUserId);
-        		System.out.println("toUserId" + notification.getToUserId());
+//        		System.out.println("sessionsUserId" + sessionsUserId);
+//        		System.out.println("toUserId" + notification.getToUserId());
                 if (s.isOpen() && sessionsUserId.equals(notification.getToUserId())) {
-                	System.out.println(notification.getType());
-            		System.out.println(notification.getNickname());
-                	System.out.println(notification.getUrl());
-                	System.out.println(notification.getToUserId());
+//                	System.out.println(notification.getType());
+//            		System.out.println(notification.getNickname());
+//                	System.out.println(notification.getUrl());
+//                	System.out.println(notification.getToUserId());
                     s.getBasicRemote().sendText(gson.toJson(notification));
                 }
             }

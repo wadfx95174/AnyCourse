@@ -97,23 +97,80 @@ public class GroupCoursePlanManager {
 				groupCoursePlan.setUnitId(result.getInt("unit.unitId"));
 				groupCoursePlan.setStatus(result.getInt("groupPlan.status"));//狀態
 				groupCoursePlan.setOorder(result.getInt("oorder"));
+				
 				if(result.getString("unit.videoImgSrc") == "") {
 					groupCoursePlan.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
 				else {
 					groupCoursePlan.setVideoImgSrc(result.getString("unit.videoImgSrc"));
 				}
+				
+				//youtube
 				if(result.getString("unit.videoUrl").split("/")[2].equals("www.youtube.com")) {
-					groupCoursePlan.setVideoType(1);//youtube
+					groupCoursePlan.setVideoType(1);
 				}
+				//jwplayer
 				else {
-					groupCoursePlan.setVideoType(2);//jwplayer
+					groupCoursePlan.setVideoType(2);
 				}
 				groupCoursePlans.add(groupCoursePlan);
 			} 
 		}
 		catch(SQLException x){
 			System.out.println("GroupCoursePlanManager-getCoursePlanUnit");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return new Gson().toJson(groupCoursePlans);
+	}
+	
+	//取得該使用者課程計畫所有影片
+	public String getCoursePlanAllList(String userId , int groupId){
+		groupCoursePlans = new ArrayList<GroupCoursePlan>();
+		try {
+			pst = con.prepareStatement("select * from groupPlan,unit,customListVideo,courselist where "
+					+ "groupPlan.unitId = unit.unitId and "
+					+ "unit.unitId = customListVideo.unitId and "
+					+ "customListVideo.courselistId = courselist.courselistId and "
+					+ "groupPlan.groupId = ? and groupPlan.userId = ? order by groupPlan.oorder ASC");
+			pst.setInt(1, groupId);
+			pst.setString(2,userId);
+			result = pst.executeQuery();
+			while(result.next()) {
+				groupCoursePlan = new GroupCoursePlan();
+				groupCoursePlan.setCourselistId(result.getInt("courselist.courselistId"));
+				groupCoursePlan.setListName(result.getString("courselist.listName"));
+				groupCoursePlan.setUnitName(result.getString("unit.unitName"));
+				groupCoursePlan.setSchoolName(result.getString("unit.schoolName"));
+				groupCoursePlan.setTeacher(result.getString("unit.teacher"));
+				groupCoursePlan.setLastTime(result.getInt("groupPlan.lastTime"));
+				groupCoursePlan.setUnitLikes(result.getInt("unit.likes"));
+				groupCoursePlan.setUnitId(result.getInt("unit.unitId"));
+				groupCoursePlan.setStatus(result.getInt("groupPlan.status"));//狀態
+				groupCoursePlan.setOorder(result.getInt("oorder"));
+				
+				if(result.getString("unit.videoImgSrc") == "") {
+					groupCoursePlan.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
+				}
+				else {
+					groupCoursePlan.setVideoImgSrc(result.getString("unit.videoImgSrc"));
+				}
+				
+				//youtube
+				if(result.getString("unit.videoUrl").split("/")[2].equals("www.youtube.com")) {
+					groupCoursePlan.setVideoType(1);
+				}
+				//jwplayer
+				else {
+					groupCoursePlan.setVideoType(2);
+				}
+				groupCoursePlans.add(groupCoursePlan);
+			} 
+		}
+		catch(SQLException x){
+			System.out.println("GroupCoursePlanManager-getCoursePlanAllList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {

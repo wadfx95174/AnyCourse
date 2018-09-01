@@ -35,6 +35,9 @@ public class GroupCoursePlanServlet extends HttpServlet {
 	    	response.getWriter().write(manager.getCoursePlanUnit(userId, 
 	    			Integer.parseInt(request.getParameter("courselistId")),groupId));
 	    }
+	    if(groups.containsValue(groupId) && action.equals("getAllUnit")) {
+	    	response.getWriter().write(manager.getCoursePlanAllList(userId,groupId));
+	    }
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

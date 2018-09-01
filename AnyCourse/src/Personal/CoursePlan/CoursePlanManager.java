@@ -53,9 +53,7 @@ public class CoursePlanManager {
 				coursePlan = new CoursePlan();
 				coursePlan.setUserId(userId);
 				coursePlan.setCourselistId(result.getInt("courselist.courselistId"));
-//				coursePlan.setOorder(result.getInt("list.oorder"));
 				coursePlan.setListName(result.getString("courselist.listName"));
-//				coursePlan.setSchoolName(result.getString("courselist.schoolName"));
 				coursePlans.add(coursePlan);
 			}
 		}
@@ -100,11 +98,13 @@ public class CoursePlanManager {
 				else {
 					coursePlan.setVideoImgSrc(result.getString("unit.videoImgSrc"));
 				}
+				//youtube
 				if(result.getString("unit.videoUrl").split("/")[2].equals("www.youtube.com")) {
-					coursePlan.setVideoType(1);//youtube
+					coursePlan.setVideoType(1);
 				}
+				//jwplayer
 				else {
-					coursePlan.setVideoType(2);//jwplayer
+					coursePlan.setVideoType(2);
 				}
 				coursePlans.add(coursePlan);
 			} 
@@ -119,7 +119,7 @@ public class CoursePlanManager {
 		return coursePlans;
 	}
 	
-	//拿該使用者課程計畫所有影片
+	//取得該使用者課程計畫所有影片
 	public ArrayList<CoursePlan> getCoursePlanAllList(String userId){
 		coursePlans = new ArrayList<CoursePlan>();
 		try {

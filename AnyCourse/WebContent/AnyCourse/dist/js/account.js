@@ -38,7 +38,7 @@ function checkLogin(htmlUrl, servletUrl)
                                 +'<ul id="notificationList" class="menu">'
                                 +'</ul>'
                               +'</li>'
-                              +'<li class="footer"><a href="#">View all</a></li>'
+                              +'<li class="footer"></li>'
                             +'</ul>'
                           +'</li>'
                         ////////////////////////////////////////////////////////////

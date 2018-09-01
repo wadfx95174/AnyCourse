@@ -34,19 +34,24 @@ $(document).ready(function(){
   //---------------------------抓影片結束時間，並儲存------------------------------------------//
   //---------------------------要設perconalPlan跟watchRecord兩個table-------------------------//
     window.onbeforeunload = function(event) {
-		// console.log(Math.floor(getCurrentTime()));
+		console.log(Math.floor(getCurrentTime()));
+        console.log(Math.floor(getDuration()));
+        console.log(get("unitId"));
         $.ajax({
         	url:ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
         	method: 'POST',
         	cache :false,
+            //必須取消非同步，否則還沒執行完就已經跳轉至其他頁面
+            async:false,
         	data:{
-        		action: 'setVideoCloseTime',//代表要設定關閉頁面的時間
-        		currentTime: Math.floor(getCurrentTime()),//關閉的時間
-        		duration: Math.floor(getDuration()),//影片總共有多長時間
-        		unitId : get("unitId")
+        		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
+        		"currentTime": Math.floor(getCurrentTime()),//關閉的時間
+        		"duration": Math.floor(getDuration()),//影片總共有多長時間
+        		"unitId": get("unitId")
         	},
             error:function(xhr, ajaxOptions, thrownError){
                   console.log("setVideoEndTime failed");
+                  console.log(xhr);
                   console.log(xhr.status);
                   console.log(xhr.responseText);
                   console.log(thrownError);

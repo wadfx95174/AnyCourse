@@ -7,16 +7,11 @@ $('#unit').slimScroll({
 $('.box-body').slimScroll({
 	height: '420px;'
 });
-var checkListId;
-var checkUnitId;
-var listArray;
-var unitArray;
 
 $(document).ready(function() {
 	checkLogin("../", "../../../");
 	
 	var listId = 1;
-	var videoId = 1;//設置每個影片的Id
 
 	$.ajax({
 		url:ajaxURL+'AnyCourse/CoursePlanServlet.do',
@@ -26,7 +21,7 @@ $(document).ready(function() {
 			action : 'getVideoList'
 		},
 		success:function(response){
-			// console.log(response);
+			console.log(response);
 			listArray = new Array(response.length);
 			for(var i = 0; i < response.length;i++){
 				$('#allVideoListUL').append('<li id="videoListId_'+listId+'" onclick="getListId('+listId+')">'
@@ -40,8 +35,7 @@ $(document).ready(function() {
 				                	+'</div>'
 				                	+'</li>');
 				$('#videoListId_'+listId).on("click" , function(){
-					videoId = 1;
-					getSeparateUnit(videoId);
+					getSeparateUnit();
 				});
 				listId++;
 				listArray[i] = new Array(2);
@@ -69,7 +63,7 @@ $(document).ready(function() {
 				});
 				// console.log(response);
 				unitArray = new Array(response.length);
-				showUnitUL(response,unitArray,videoId);
+				showUnitUL(response,unitArray);
 			},
 			error:function(){
 				console.log("get all unit error")
@@ -176,7 +170,7 @@ function jumpToPlayerInterface(unitId,type,time){
 }
 
 //取得個別清單的單元影片
-function getSeparateUnit(videoId){
+function getSeparateUnit(){
 	$.ajax({
 		url:ajaxURL+'AnyCourse/CoursePlanServlet.do',
 		method:'GET',
@@ -191,7 +185,7 @@ function getSeparateUnit(videoId){
 			});
 			console.log(response);
 			unitArray = new Array(response.length);
-			showUnitUL(response,unitArray,videoId);
+			showUnitUL(response,unitArray);
 		},
 		error:function(){
 			console.log("get coursePlan unit failed");
@@ -199,7 +193,8 @@ function getSeparateUnit(videoId){
 	});
 }
 
-function showUnitUL(result,unitArray,videoId){
+function showUnitUL(result,unitArray){
+	var videoId = 1;
 	var listType;
 	for(var j = 0;j < result.length;j++){
 		//想要觀看

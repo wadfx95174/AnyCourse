@@ -46,9 +46,17 @@ $(document).ready(function() {
 				for(var i = 0; i < result.length ;i++){
 					if(result[i].isBrowse == 0)notifications++;
 				}
-				$('#notificationNumber').text(notifications);
-				if(notifications == 1){
-					$('#notificationHeader').text("You have 1 notification");
+				//沒有通知時不需要顯示有幾個通知
+				if(notifications == 0){
+					$('#notificationNumber').text();
+				}
+				//有通知才要顯示有幾個通知
+				else{
+					$('#notificationNumber').text(notifications);
+				}
+				
+				if(notifications == 0 && notifications == 1){
+					$('#notificationHeader').text("You have " + notifications + " notification");
 				}
 				else{
 					$('#notificationHeader').text("You have " + notifications + " notifications");

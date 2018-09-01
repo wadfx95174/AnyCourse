@@ -1,5 +1,3 @@
-//----------------------------------------- In JS -----------------------------------------
-
 // 取網址列的參數
 function get(name)
 {
@@ -31,7 +29,6 @@ $(document).ready(function(){
 
 
       var listId = 1;
-      var videoId = 1;//設置每個影片的Id
       // 把 groupId 送到 Servlet 檢查
       $.ajax({
 		url: ajaxURL + 'AnyCourse/GroupCoursePlanServlet.do',
@@ -42,7 +39,7 @@ $(document).ready(function(){
 			groupId: get('groupId')
 		},
             success: function (response) {
-                  console.log(response);
+                  // console.log(response);
                   // 在 success 時設置好網址
                   setGroupUrl();
 
@@ -81,15 +78,17 @@ $(document).ready(function(){
                   method : "GET",
                   cache : false,
                   data:{
-                        action : "getAllUnit"
+                        action : "getAllUnit",
+                        groupId: get('groupId')
                   },
                   success:function(response){
+                        console.log(response);
                         $('#wantList li,#ingList li,#doneList li').each(function(){
                               $(this).remove();
                         });
                         // console.log(response);
                         unitArray = new Array(response.length);
-                        showUnitUL(response,unitArray,videoId);
+                        showUnitUL(response,unitArray);
                   },
                   error:function(){
                         console.log("get all unit error")
@@ -216,7 +215,7 @@ function getSeparateUnit(){
                   $('#wantList li,#ingList li,#doneList li').each(function(){
                         $(this).remove();
                   });
-                  console.log(response);
+                  // console.log(response);
                   unitArray = new Array(response.length);
                   showUnitUL(response,unitArray);
             },
@@ -230,6 +229,7 @@ function getSeparateUnit(){
 }
 
 function showUnitUL(result,unitArray){
+      // console.log(result);
       var videoId = 1;
       var listType;
       for(var j = 0;j < result.length;j++){
