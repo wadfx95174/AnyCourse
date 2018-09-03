@@ -14,6 +14,7 @@ public class VideoListServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
+		response.setContentType("application/json");
 		HttpSession session = request.getSession();
 		ArrayList<VideoList> videoLists = new ArrayList<VideoList>();
 		ArrayList<UnitVideo> unitVideos = new ArrayList<UnitVideo>();
@@ -23,15 +24,17 @@ public class VideoListServlet extends HttpServlet{
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
 		if(request.getParameter("action").equals("selectList")) {
+			
 			videoLists = videoListDatebaseManager.selectVideoListTable(userId);
-			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(videoLists));
+			
 		}
 		else if(request.getParameter("action").equals("selectUnit")) {
+			
 			unitVideos = videoListDatebaseManager.selectUnitTable(userId
 					,Integer.parseInt(request.getParameter("courselistId")));
-			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(unitVideos));
+			
 		}
 		//關閉connection
 		videoListDatebaseManager.conClose();

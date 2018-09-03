@@ -3,29 +3,6 @@ var checkUnitId;
 var videoListArray;//存放清單資料的陣列
 var unitArray;//存放影片資料的陣列
 
-// 取網址列的參數
-function get(name)
-{
-   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
-      return decodeURIComponent(name[1]);
-}
-
-// 設置每個群組內的網址 (ex. 公告、討論區...)
-function setGroupUrl()
-{
-      var groupId = get('groupId');
-      $('.tabClass>a').each(function () {
-            $(this).attr("href", $(this).attr("href") + '?groupId=' + groupId);
-      });
-}
-
-// 檢查網址是否沒有 groupId，若沒有則跳轉至首頁
-function checkGroupId()
-{
-      if (get('groupId') == undefined)
-            window.location = ajaxURL + 'AnyCourse/AnyCourse/HomePage.html';
-}
-
 $(document).ready(function() {
 	//呼叫modal時直接把focus放在modal中的格子
 	$('#addModal').on('shown.bs.modal', function () {
@@ -51,14 +28,17 @@ $(document).ready(function() {
   	var unitVideoId = 1;
   	//取得資料庫的資料(courselist&list)
 	$.ajax({
-		url : ajaxURL+'AnyCourse/VideoListServlet.do',
+		url : ajaxURL+'AnyCourse/GroupVideoListServlet.do',
 		method : 'GET',
 		cache :false,
 		data:{
-			action:'selectList'//代表要selectList
+			action:'getList',
+			groupId:get('groupId')
 		},
 		success:function(result){
-//			console.log(result);
+			console.log(result);
+			// 在 success 時設置好網址
+            setGroupUrl();
 			videoListArray = new Array(result.length);
 	  		for(var i = 0 ;i < result.length;i++){
 	  			$('#videoListUL').append('<li id="videoListId_'+videoListId+'" onclick="getListId('+videoListId+')">'
@@ -87,14 +67,16 @@ $(document).ready(function() {
 				$('#videoListId_'+videoListId).on("click" , function(){
 					unitVideoId = 1;
 					$.ajax({
-						url : ajaxURL+'AnyCourse/VideoListServlet.do',
+						url : ajaxURL+'AnyCourse/GroupVideoListServlet.do',
 						method : 'GET',
 						cache :false,
 						data : {
-							action : 'selectUnit',//代表要selectUnit
-							courselistId : videoListArray[checkListId-1][0]
+							action : 'getUnit',
+							courselistId : videoListArray[checkListId-1][0],
+							groupId:get('groupId')
 						},
 						success:function(resultUnit){
+							console.log(resultUnit);
 							//清除原先檢視的unit
 							$('#unit li').each(function(){
 								$(this).remove();
@@ -183,7 +165,11 @@ $(document).ready(function() {
   				videoListArray[i][5] = result[i].schoolName;
 			}
 		},
-		error:function(){console.log('Display VideoList failed');}
+		error:function(){
+			// 當 servlet 沒有回傳東西 -> 非該群組成員
+          	$('.content-wrapper').first().html('<div><h2 style="text-align:center; padding-top:50px;">很抱歉，您尚未加入該群組</h2></div>');
+          	console.log('get groupId error');
+		}
 	});
   
 	//新增courseList
@@ -193,7 +179,7 @@ $(document).ready(function() {
 		}
 		else{
 			$.ajax({
-				url : ajaxURL+'AnyCourse/VideoListServlet.do',
+				url : ajaxURL+'AnyCourse/GroupVideoListServlet.do',
 				method : 'POST', 
 				cache :false,
 				data : {
@@ -245,7 +231,7 @@ $(document).ready(function() {
 			}
 			else{
 				$.ajax({
-					url : ajaxURL+'AnyCourse/VideoListServlet.do',
+					url : ajaxURL+'AnyCourse/GroupVideoListServlet.do',
 					method : 'POST',
 					cache :false,
 					data : {
@@ -279,7 +265,7 @@ $(document).ready(function() {
 	//刪courseList的item
 	$("#deleteListButton1").click(function(e){
 		$.ajax({
-			url : ajaxURL+'AnyCourse/VideoListServlet.do',
+			url : ajaxURL+'AnyCourse/GroupVideoListServlet.do',
 			method : 'POST',
 			cache :false,
 		    data : {
@@ -308,7 +294,7 @@ $(document).ready(function() {
 		//不等於null代表使用者就是該清單的creator
 		if(unitArray[checkUnitId-1][1].match(unitArray[checkUnitId-1][2]) != null){
 			$.ajax({
-				url : ajaxURL+'AnyCourse/VideoListServlet.do',
+				url : ajaxURL+'AnyCourse/GroupVideoListServlet.do',
 				method : 'POST',
 				cache :false,
 			    data : {
@@ -328,52 +314,52 @@ $(document).ready(function() {
 	});
 	
 	//影片新增至課程計畫
-	$('#addToCoursePlanButton,#addToCoursePlanButtonClose').click(function(){
-		$.ajax({
-			url : ajaxURL+'AnyCourse/HomePageServlet.do',
-			method : 'POST',
-			cache: false,
-			data:{
-				action:'addToCoursePlan',
-				unitId:unitArray[checkUnitId-1][0]
-			},
-			error:function(){
-				console.log("addToCoursePlan Error!");
-			}
-		})
-	});
+	// $('#addToCoursePlanButton,#addToCoursePlanButtonClose').click(function(){
+	// 	$.ajax({
+	// 		url : ajaxURL+'AnyCourse/HomePageServlet.do',
+	// 		method : 'POST',
+	// 		cache: false,
+	// 		data:{
+	// 			action:'addToCoursePlan',
+	// 			unitId:unitArray[checkUnitId-1][0]
+	// 		},
+	// 		error:function(){
+	// 			console.log("addToCoursePlan Error!");
+	// 		}
+	// 	})
+	// });
   
 	//清單整個新增至課程計畫
-	$('#addToCoursePlanButtonList,#addToCoursePlanButtonListClose').click(function(e){
-		$.ajax({
-			url:ajaxURL+'AnyCourse/VideoListServlet.do',
-			method:'POST',
-			cache:false,
-			data:{
-				action:'addToCoursePlanList',
-				courselistId:videoListArray[checkListId-1][0]
-			},
-			error:function(e){
-				console.log("addToCoursePlanList Error!");
-			}
-		});
-	});
+	// $('#addToCoursePlanButtonList,#addToCoursePlanButtonListClose').click(function(e){
+	// 	$.ajax({
+	// 		url:ajaxURL+'AnyCourse/VideoListServlet.do',
+	// 		method:'POST',
+	// 		cache:false,
+	// 		data:{
+	// 			action:'addToCoursePlanList',
+	// 			courselistId:videoListArray[checkListId-1][0]
+	// 		},
+	// 		error:function(e){
+	// 			console.log("addToCoursePlanList Error!");
+	// 		}
+	// 	});
+	// });
 	
 	//分享完整清單內容
-	$('#shareVideoListButton,#shareVideoListButtonClose').click(function(){
-		$.ajax({
-			url:ajaxURL+'AnyCourse/VideoListServlet.do',
-			method:'POST',
-			cache:false,
-			data:{
-				action:'shareVideoList',
-				courselistId:videoListArray[checkListId-1][0] 
-			},
-			error:function(e){
-				console.log("shareVideoList Error!")
-			}
-		});
-	});
+	// $('#shareVideoListButton,#shareVideoListButtonClose').click(function(){
+	// 	$.ajax({
+	// 		url:ajaxURL+'AnyCourse/VideoListServlet.do',
+	// 		method:'POST',
+	// 		cache:false,
+	// 		data:{
+	// 			action:'shareVideoList',
+	// 			courselistId:videoListArray[checkListId-1][0] 
+	// 		},
+	// 		error:function(e){
+	// 			console.log("shareVideoList Error!")
+	// 		}
+	// 	});
+	// });
 	
 	$("#unNewEdit,#unAdd,#canNotEdit,#unDelete").dialog({
 		dialogClass: "dlg-no-close",

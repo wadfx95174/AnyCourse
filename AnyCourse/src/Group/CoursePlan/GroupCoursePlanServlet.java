@@ -29,14 +29,20 @@ public class GroupCoursePlanServlet extends HttpServlet {
 	    
 	    // 檢查 session 裡面有沒有傳進來的 groupId
 	    if (groups.containsValue(groupId) && action.equals("getVideoList")) {
+	    	
 	    	response.getWriter().write(manager.getVideoList(groupId,userId));
+	    	
 	    }
 	    if(groups.containsValue(groupId) && action.equals("getUnit")) {
+	    	
 	    	response.getWriter().write(manager.getCoursePlanUnit(userId, 
 	    			Integer.parseInt(request.getParameter("courselistId")),groupId));
+	    	
 	    }
 	    if(groups.containsValue(groupId) && action.equals("getAllUnit")) {
+	    	
 	    	response.getWriter().write(manager.getCoursePlanAllList(userId,groupId));
+	    	
 	    }
 	}
 	

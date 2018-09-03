@@ -18,7 +18,7 @@ public class VideoListManager {
 
 	private VideoList videoList;
 	private UnitVideo unitVideo;
-	private ArrayList<VideoList> videoLists; 
+	private ArrayList<VideoList> videoLists;
 	private ArrayList<UnitVideo> unitVideos;
 	
 	private Connection con = null;

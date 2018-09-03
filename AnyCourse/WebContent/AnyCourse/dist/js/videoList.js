@@ -39,7 +39,7 @@ $(document).ready(function() {
 		method : 'GET',
 		cache :false,
 		data:{
-			action:'selectList'//代表要selectList
+			action:'selectList'
 		},
 		success:function(result){
 //			console.log(result);
@@ -75,7 +75,7 @@ $(document).ready(function() {
 						method : 'GET',
 						cache :false,
 						data : {
-							action : 'selectUnit',//代表要selectUnit
+							action : 'selectUnit',
 							courselistId : videoListArray[checkListId-1][0]
 						},
 						success:function(resultUnit){

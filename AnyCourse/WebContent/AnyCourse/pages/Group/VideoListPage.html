@@ -119,6 +119,52 @@
 								<li class="tabClass"><a href="Management.html">成員</a></li>						
 							</ul>
 						</div>
+						<section class="content col-md-4">
+							<div class="box box-primary">
+								<!-- box-header -->
+								<div class="box-header ui-sortable-handle with-border">
+									<i class="ion ion-clipboard"></i>
+									<h3 class="box-title">
+										<strong>課程清單</strong>
+									</h3>
+								</div>
+								<!-- /.box-header -->
+								<div class="box-body">
+									<ul class="todo-list ui-sortable" style="height: 450px;" id="videoListUL">
+										<!--新增清單-->
+										
+										<!--/.新增清單-->
+									</ul>
+								</div>
+								<!-- /.box-body -->
+								<div class="box-footer clearfix no-border">
+									<button type="button" class="btn btn-default pull-right"
+										data-toggle="modal" data-target="#addModal">
+										<i class="fa fa-plus"></i> 新增清單
+									</button>
+								</div>
+							</div>
+						</section>
+						<section class="content col-md-8" id="unitSection">
+							<div class="box box-primary">
+								<!-- box-header -->
+								<div class="box-header ui-sortable-handle with-border">
+									<i class="ion  ion-ios-film-outline"></i>
+									<h3 class="box-title">
+										<strong>課程影片</strong>
+									</h3>
+								</div>
+								<!-- /.box-header -->
+								<!-- box-body -->
+								<div class="box-body">
+									<ul class="todo-list" style="height: 480px;" id="unit">
+										<!-- 顯示相對應的單元影片 -->
+									</ul>
+								</div>
+								<!-- /.box-body -->
+								<div class="box-footer clearfix no-border"></div>
+							</div>
+						</section>
 					</section>
 					<!-- /.content -->
 				</div>
@@ -186,6 +232,6 @@
 	<!-- VideoList.js -->
 	<script src="../../dist/js/groupVideoList.js" type="text/javascript"></script>
 	<!-- Notification -->
-	<script src="../dist/js/notification.js" type="text/javascript"></script>
+	<script src="../../dist/js/notification.js" type="text/javascript"></script>
 </body>
 </html>
