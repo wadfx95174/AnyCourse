@@ -61,12 +61,14 @@ public class HomePageServlet extends HttpServlet {
 		
 		//加單一個影片到課程計畫
 		if(request.getParameter("action").equals("addToCoursePlan")&&userId!=null) {
-			homePageDatabaseManager.addToCoursePlan(userId,Integer.parseInt(request.getParameter("unitId")));
+			homePageDatabaseManager.addToCoursePlan(userId,Integer.parseInt(request.getParameter("unitId")),
+					(String)request.getParameter("creator"));
 		}
 		//加整個清單到課程計畫
 		else if(request.getParameter("action").equals("addToCoursePlanList")&&userId!=null) {
 			homePageDatabaseManager.addToCoursePlanList(userId,
-					Integer.parseInt(request.getParameter("courselistId")));
+					Integer.parseInt(request.getParameter("courselistId")),
+					(String)request.getParameter("creator"));
 		}
 		//獲取該使用者所有的清單名稱，讓使用者可以選擇將影片加入哪個清單
 		else if(request.getParameter("action").equals("getVideoListName")&&userId!=null) {

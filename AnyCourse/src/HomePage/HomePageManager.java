@@ -135,6 +135,7 @@ public class HomePageManager {
 				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
 				homePage.setUnitId(result.getInt("unit.unitId"));
+				homePage.setCreator(result.getString("courselist.creator"));
 				//沒有圖片就塞預設的
 				if(result.getString("unit.videoImgSrc") == "") {
 					homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
@@ -180,6 +181,7 @@ public class HomePageManager {
 				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setListLikes(result.getInt("courselist.likes"));
 				homePage.setUnitId(result.getInt("unit.unitId"));
+				homePage.setCreator(result.getString("courselist.creator"));
 				if(result.getString("unit.videoImgSrc") == "") {
 					homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
@@ -233,6 +235,7 @@ public class HomePageManager {
 				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
 				homePage.setUnitId(result.getInt("unit.unitId"));
+				homePage.setCreator(result.getString("courselist.creator"));
 				if(result.getString("unit.videoImgSrc") == "") {
 					homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}
@@ -289,6 +292,7 @@ public class HomePageManager {
 					homePage.setCourselistId(result.getInt("courselist.courselistId"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
 					homePage.setUnitId(result.getInt("unit.unitId"));
+					homePage.setCreator(result.getString("courselist.creator"));
 					if(result.getString("unit.videoImgSrc") == "") {
 						homePage.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 					}
@@ -367,6 +371,7 @@ public class HomePageManager {
 					homePage.setCourselistId(result.getInt("list.courselistId"));
 					homePage.setListLikes(result.getInt("courselist.likes"));
 					homePage.setUnitId(result.getInt("customListVideo.unitId"));
+					homePage.setCreator(result.getString("courselist.creator"));
 					homePage.setNum(max);
 					homePage.setType(3);//代表課程清單
 					if(result.getString("unit.videoImgSrc") == "") {
@@ -423,6 +428,7 @@ public class HomePageManager {
 				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
 				homePage.setUnitId(result.getInt("unit.unitId"));
+				homePage.setCreator(result.getString("courselist.creator"));
 				homePage.setNum(max);
 				homePage.setType(4);//代表想要觀看
 				if(result.getString("unit.videoImgSrc") == "") {
@@ -477,6 +483,7 @@ public class HomePageManager {
 				homePage.setCourselistId(result.getInt("courselist.courselistId"));
 				homePage.setUnitLikes(result.getInt("unit.likes"));
 				homePage.setUnitId(result.getInt("unit.unitId"));
+				homePage.setCreator(result.getString("courselist.creator"));
 				homePage.setNum(max);
 				homePage.setType(5);//代表想要觀看
 				if(result.getString("unit.videoImgSrc") == "") {
@@ -505,16 +512,17 @@ public class HomePageManager {
 		return map;
 	}
 	//將首頁的單元影片加入課程計畫中
-	public void addToCoursePlan(String userId,int unitId){
+	public void addToCoursePlan(String userId,int unitId,String creator){
 		int maxOrder = 0;
 		try {
 			stat = con.createStatement();
 			result = stat.executeQuery(selectPlanMax+" 1 and userId = '" + userId+"'");
 			if(result.next())maxOrder = result.getInt("MAX(oorder)");
-			pst = con.prepareStatement("insert ignore into personalPlan (userId,unitId,lastTime,status,oorder) value(?,?,0,1,?)");
+			pst = con.prepareStatement("insert ignore into personalPlan (userId,unitId,lastTime,status,oorder,creator) value(?,?,0,1,?,?)");
 			pst.setString(1, userId);
 			pst.setInt(2, unitId);
 			pst.setInt(3, ++maxOrder);
+			pst.setString(4, creator);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
@@ -527,7 +535,7 @@ public class HomePageManager {
 	}
 	
 	//將首頁的清單中的所有單元影片加入課程計畫中
-	public void addToCoursePlanList(String userId,int courselistId){
+	public void addToCoursePlanList(String userId,int courselistId,String creator){
 		homePages = new ArrayList<HomePage>();
 		int maxOrder = 0;
 		try {
@@ -544,12 +552,13 @@ public class HomePageManager {
 				homePage.setUnitId(result.getInt("unit.unitId"));
 				homePages.add(homePage);
 			}
-			pst = con.prepareStatement("insert ignore into personalPlan (userId,unitId,lastTime,status,oorder) value(?,?,0,1,?)");
+			pst = con.prepareStatement("insert ignore into personalPlan (userId,unitId,lastTime,status,oorder,creator) value(?,?,0,1,?,?)");
 			for(int i = 0;i < homePages.size();i++) {
 				
 				pst.setString(1, userId);
 				pst.setInt(2, homePages.get(i).getUnitId());
 				pst.setInt(3, ++maxOrder);
+				pst.setString(4, creator);
 				//先放到batch，等迴圈跑完再一次新增
 				pst.addBatch();
 			}

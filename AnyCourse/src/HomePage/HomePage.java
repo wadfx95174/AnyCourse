@@ -16,6 +16,7 @@ public class HomePage {
 	private int share;
 	private int num;
 	private int videoType;
+	private String creator;
 	/*
 	 * 1代表推薦影片，2代表推薦清單，3代表課程清單，4代表想要觀看，5代表正在觀看
 	 * 6代表台大，7代表清大，8代表交大，9代表成大，10代表政大，11代表中央，12代表台科大，13南台科大
@@ -117,5 +118,11 @@ public class HomePage {
 	}
 	public void setType(int type) {
 		this.type = type;
+	}
+	public String getCreator() {
+		return creator;
+	}
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
 }

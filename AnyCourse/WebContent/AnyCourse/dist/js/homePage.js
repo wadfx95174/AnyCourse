@@ -19,7 +19,7 @@ $(document).ready(function(){
 		method : 'GET',
 		cache :false,
 		success:function(result){
-//			console.log(result);
+			console.log(result);
 			for(var i = 0;i < result.length ; i++){
 				//亂數決定順序
 				var temp;
@@ -74,6 +74,7 @@ $(document).ready(function(){
 						homePageList[homePageListId] = new Array(2);
 						homePageList[homePageListId][0] = result[i][j].unitId;
 						homePageList[homePageListId][1] = result[i][j].courselistId;
+						homePageList[homePageListId][2] = result[i][j].creator;
 						homePageListId++;
 					}
 				}
@@ -120,6 +121,7 @@ $(document).ready(function(){
 						homePageList[homePageListId] = new Array(2);
 						homePageList[homePageListId][0] = result[i][j].unitId;
 						homePageList[homePageListId][1] = result[i][j].courselistId;
+						homePageList[homePageListId][2] = result[i][j].creator;
 						homePageListId++;
 					}
 				}
@@ -165,6 +167,7 @@ $(document).ready(function(){
 						homePageList[homePageListId] = new Array(2);
 						homePageList[homePageListId][0] = result[i][j].unitId;
 						homePageList[homePageListId][1] = result[i][j].courselistId;
+						homePageList[homePageListId][2] = result[i][j].creator;
 						homePageListId++;
 					}
 				}
@@ -225,6 +228,7 @@ $(document).ready(function(){
 						homePageList[homePageListId] = new Array(2);
 						homePageList[homePageListId][0] = result[i][j].unitId;
 						homePageList[homePageListId][1] = result[i][j].courselistId;
+						homePageList[homePageListId][2] = result[i][j].creator;
 						homePageListId++;
 					}
 				}
@@ -289,7 +293,7 @@ $(document).ready(function(){
 				}
 			}
 			//因為放在外面的話跟初始化首頁的ajax(就是這個外面的ajax)會同時跑，這個會跑比較快，所以抓不到陣列
-			//影片新增至課程計畫
+			//個別影片新增至課程計畫
 			$('#addToCoursePlanButton,#addToCoursePlanButtonClose').click(function(){
 				$.ajax({
 					url : ajaxURL+'AnyCourse/HomePageServlet.do',
@@ -297,7 +301,8 @@ $(document).ready(function(){
 					cache: false,
 					data:{
 						action:'addToCoursePlan',
-						unitId:homePageList[checkId][0]
+						unitId:homePageList[checkId][0],
+						creator:homePageList[checkId][2]
 					},
 					error:function(){
 						console.log("addToCoursePlan Error!");
@@ -312,7 +317,8 @@ $(document).ready(function(){
 					cache: false,
 					data:{
 						action:'addToCoursePlanList',
-						courselistId:homePageList[checkId][1]
+						courselistId:homePageList[checkId][1],
+						creator:homePageList[checkId][2]
 					},
 					error:function(e){
 						console.log("addToCoursePlanList Error!");

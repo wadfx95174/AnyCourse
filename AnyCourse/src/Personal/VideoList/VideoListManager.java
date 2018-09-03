@@ -242,7 +242,7 @@ public class VideoListManager {
 	}
 	
 	//將整個清單的影片加入至課程計畫
-	public void addToCoursePlanList(String userId,int courselistId) {
+	public void addToCoursePlanList(String userId,int courselistId,String creator) {
 		unitVideos = new ArrayList<UnitVideo>();
 		int maxOrder = 0;
 		try {
@@ -260,12 +260,13 @@ public class VideoListManager {
 				unitVideo.setUnitId(result.getInt("unitId"));
 				unitVideos.add(unitVideo);
 			}
-			pst = con.prepareStatement("insert ignore into personalPlan (userId,unitId,lastTime,status,oorder) value(?,?,0,1,?)");
+			pst = con.prepareStatement("insert ignore into personalPlan (userId,unitId,lastTime,status,oorder,creator) value(?,?,0,1,?,?)");
 			for(int i = 0;i < unitVideos.size();i++) {
 				
 				pst.setString(1, userId);
 				pst.setInt(2, unitVideos.get(i).getUnitId());
 				pst.setInt(3, ++maxOrder);
+				pst.setString(4, creator);
 				//先放到batch，等迴圈跑完再一次新增
 				pst.addBatch();
 			}

@@ -79,6 +79,7 @@ $(document).ready(function() {
 							courselistId : videoListArray[checkListId-1][0]
 						},
 						success:function(resultUnit){
+							console.log(resultUnit);
 							//清除原先檢視的unit
 							$('#unit li').each(function(){
 								$(this).remove();
@@ -144,7 +145,6 @@ $(document).ready(function() {
 										+'<h4 class="unitUi" style="'+wid+'">' + resultUnit[k].unitName + '</h4>'
 										+'<p class="unitUi" style="'+wid+'">' + resultUnit[k].schoolName + '</p>'
 										+'<p class="unitUi" style="'+wid+'">' + resultUnit[k].teacher + '老師</p>'
-										+'<p class="unitUi" style="'+wid+'">' + resultUnit[k].courseInfo + '</p>'
 										+'</div></div></a></li>'
 								);
 								unitVideoId++;
@@ -287,6 +287,7 @@ $(document).ready(function() {
 			error:function(){console.log('Delete VideoList failed');}
 		});
 	});
+
 	//刪除unitVideo
 	$("#deleteListButton2").click(function(e){
 		//不等於null代表使用者就是該清單的creator
@@ -319,7 +320,8 @@ $(document).ready(function() {
 			cache: false,
 			data:{
 				action:'addToCoursePlan',
-				unitId:unitArray[checkUnitId-1][0]
+				unitId:unitArray[checkUnitId-1][0],
+				creator:unitArray[checkUnitId-1][2]
 			},
 			error:function(){
 				console.log("addToCoursePlan Error!");
@@ -329,13 +331,15 @@ $(document).ready(function() {
   
 	//清單整個新增至課程計畫
 	$('#addToCoursePlanButtonList,#addToCoursePlanButtonListClose').click(function(e){
+		console.log(videoListArray[checkListId-1][3])
 		$.ajax({
 			url:ajaxURL+'AnyCourse/VideoListServlet.do',
 			method:'POST',
 			cache:false,
 			data:{
 				action:'addToCoursePlanList',
-				courselistId:videoListArray[checkListId-1][0]
+				courselistId:videoListArray[checkListId-1][0],
+				creator:videoListArray[checkListId-1][3]
 			},
 			error:function(e){
 				console.log("addToCoursePlanList Error!");

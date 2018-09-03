@@ -1,16 +1,30 @@
-//////////////////////////////設置拉霸///////////////////////////////////
-$('#unit').slimScroll({
-    height: '400px;'
-});
-$('#videoListUL').slimScroll({
-    height: '400px;'
-});
-///////////////////////////////////////////////////////////////////////
-
 var checkListId;
 var checkUnitId;
 var videoListArray;//存放清單資料的陣列
 var unitArray;//存放影片資料的陣列
+
+// 取網址列的參數
+function get(name)
+{
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+}
+
+// 設置每個群組內的網址 (ex. 公告、討論區...)
+function setGroupUrl()
+{
+      var groupId = get('groupId');
+      $('.tabClass>a').each(function () {
+            $(this).attr("href", $(this).attr("href") + '?groupId=' + groupId);
+      });
+}
+
+// 檢查網址是否沒有 groupId，若沒有則跳轉至首頁
+function checkGroupId()
+{
+      if (get('groupId') == undefined)
+            window.location = ajaxURL + 'AnyCourse/AnyCourse/HomePage.html';
+}
 
 $(document).ready(function() {
 	//呼叫modal時直接把focus放在modal中的格子
@@ -416,3 +430,12 @@ function checkGroupId()
       if (get('groupId') == undefined)
             window.location = ajaxURL + 'AnyCourse/AnyCourse/HomePage.html';
 }
+
+//////////////////////////////設置拉霸///////////////////////////////////
+$('#unit').slimScroll({
+    height: '400px;'
+});
+$('#videoListUL').slimScroll({
+    height: '400px;'
+});
+///////////////////////////////////////////////////////////////////////

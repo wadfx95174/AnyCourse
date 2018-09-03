@@ -14,7 +14,6 @@ $(document).on('click', '#logout', function logout()
 
 function checkLogin(htmlUrl, servletUrl)
 {
-    var returnValue;//用來回傳，確認是否已登入，值為true or false
 	$.ajax({
     	url: ajaxURL+'AnyCourse/AccountServlet.do',
     	method: 'POST',
@@ -214,7 +213,6 @@ function checkLogin(htmlUrl, servletUrl)
     		console.log("get Account error");
     	}
     });
-    // return returnValue;
 }
 
 ////////////////////////////////取得root網址///////////////////////////////////

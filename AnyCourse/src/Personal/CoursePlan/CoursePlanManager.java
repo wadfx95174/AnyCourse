@@ -43,9 +43,11 @@ public class CoursePlanManager {
 	public ArrayList<CoursePlan> getVideoList(String userId){
 		coursePlans = new ArrayList<CoursePlan>();
 		try {
-			pst = con.prepareStatement("select * from personalPlan,customListVideo,courselist where "
+			pst = con.prepareStatement("select distinct courselist.courselistId,courselist.listName "
+					+ "from personalPlan,customListVideo,courselist where "
 					+ "personalPlan.unitId = customListVideo.unitId and "
 					+ "customListVideo.courselistId = courselist.courselistId and "
+					+ "personalPlan.creator = courselist.creator and "
 					+ "personalPlan.userId = ?");
 			pst.setString(1, userId);
 			result = pst.executeQuery();

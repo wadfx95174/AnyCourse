@@ -20,6 +20,8 @@ public class CoursePlanServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("content-type","text/html;charset=UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
+		response.setContentType("application/json");
+		
 		CoursePlanManager coursePlanManager = new CoursePlanManager();
 		ArrayList<CoursePlan> coursePlans = null;
 		HttpSession session = request.getSession();
@@ -30,18 +32,15 @@ public class CoursePlanServlet extends HttpServlet {
 		
 		if(request.getParameter("action").equals("getVideoList")) {
 			coursePlans = coursePlanManager.getVideoList(userId);
-			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(coursePlans));
 		}
 		else if(request.getParameter("action").equals("getUnit")) {
 			coursePlans = coursePlanManager.getCoursePlanUnit(userId
 					,Integer.parseInt(request.getParameter("courselistId")));
-			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(coursePlans));
 		}
 		else if(request.getParameter("action").equals("getAllUnit")) {
 			coursePlans = coursePlanManager.getCoursePlanAllList(userId);
-			response.setContentType("application/json");
 			response.getWriter().write(gson.toJson(coursePlans));
 		}
 		

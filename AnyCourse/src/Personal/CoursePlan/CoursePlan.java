@@ -14,6 +14,7 @@ public class CoursePlan {
 	private String videoImgSrc;
 	private int videoType;
 	private int courselistId;
+	private String creator;
 	
 	public int getCourselistId() {
 		return courselistId;
@@ -119,6 +120,14 @@ public class CoursePlan {
 
 	public void setVideoType(int videoType) {
 		this.videoType = videoType;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
 
 	

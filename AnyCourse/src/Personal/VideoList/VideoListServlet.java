@@ -73,7 +73,8 @@ public class VideoListServlet extends HttpServlet{
 		//將完整清單添加至課程計畫
 		else if(request.getParameter("action").equals("addToCoursePlanList")) {
 			videoListDatebaseManager.addToCoursePlanList(userId
-					,Integer.parseInt(request.getParameter("courselistId")));
+					,Integer.parseInt(request.getParameter("courselistId")),
+					(String)request.getParameter("creator"));
 		}
 		//分享完整清單內容給所有人
 		
