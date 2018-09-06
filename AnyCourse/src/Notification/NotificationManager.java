@@ -137,6 +137,7 @@ public class NotificationManager {
 				 notification.setUserId(result.getString("userId"));
 				 notification.setType(result.getString("type"));
 				 notification.setNickname(result.getString("nickName"));
+				 notification.setGroupId(result.getInt("groupId"));
 //				 notification.setReleaseTime(result.getString("releaseTime"));
 				 notification.setUrl(result.getString("url"));
 				 notification.setIsBrowse(result.getInt("isBrowse"));

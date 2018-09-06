@@ -25,14 +25,27 @@ public class NotificationServlet extends HttpServlet {
         super();
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		NotificationManager dbnotification = new NotificationManager();
+		NotificationManager manager = new NotificationManager();
 		HttpSession session = request.getSession();
-		response.setHeader("Cache-Control","max-age=0");
 		
-		String notificationJson = dbnotification.getNotification((String)session.getAttribute("userId"));
-		response.setContentType("application/json;charset = utf-8;");
-		response.getWriter().write(notificationJson);
-		dbnotification.conClose();
+		String action = request.getParameter("action");
+		
+		if(action.equals("setNotificationIsBrowse")) {
+			
+			System.out.println(Integer.parseInt(request.getParameter("notificationId")));
+			manager.setNotificationIsBrowse(Integer.parseInt(request.getParameter("notificationId")));
+			
+		}
+		else if(action.equals("getNotification")) {
+			
+			String notificationJson = manager.getNotification((String)session.getAttribute("userId"));
+			response.setHeader("Cache-Control","max-age=0");
+			response.setContentType("application/json;charset = utf-8;");
+			response.getWriter().write(notificationJson);
+			
+		}
+		
+		manager.conClose();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,19 +57,11 @@ public class NotificationServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		String nickName = (String)session.getAttribute("nickName");
 		
-		
-		if(action.equals("setNotificationIsBrowse")) {
-			
-			System.out.println(Integer.parseInt(request.getParameter("notificationId")));
-			manager.setNotificationIsBrowse(Integer.parseInt(request.getParameter("notificationId")));
-			
-		}
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control","max-age=0");
+		response.setContentType("application/json");
 		
 		if(action.equals("insertNotification")){
-			
-			response.setCharacterEncoding("UTF-8");
-			response.setHeader("Cache-Control","max-age=0");
-			response.setContentType("application/json");
 			
 			int commentId = Integer.parseInt(request.getParameter("commentId"));
 			String toUserId = manager.findCommentUser(commentId);
@@ -74,10 +79,6 @@ public class NotificationServlet extends HttpServlet {
 		}
 		
 		if (action.equals("sendGroupInviteNotification")) {
-			
-			response.setCharacterEncoding("UTF-8");
-			response.setHeader("Cache-Control","max-age=0");
-			response.setContentType("application/json");
 			
 			String toUserId = (String)request.getParameter("toUserId");
 			int groupId = Integer.parseInt(request.getParameter("groupId"));

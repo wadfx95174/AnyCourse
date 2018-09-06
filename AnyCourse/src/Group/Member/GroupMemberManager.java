@@ -88,6 +88,57 @@ public class GroupMemberManager {
 		}
 		return new Gson().toJson(groupMember);
 	}
+	
+	//檢查該使用者是否以加入該群組
+	public String checkJoinGroup(String userId, int groupId) {
+		String check = "false";//false尚未加入，true已加入
+		try
+		{
+			
+			//有該使用者，輸入的字串可能為userId或nickName
+			pst = con.prepareStatement("select userId from groupMember where userId = ? and groupId = ?");
+			pst.setString(1,userId);
+			pst.setInt(2,groupId);
+			result = pst.executeQuery();
+			if(result.next()) {
+				check = "true";
+			}
+			
+		} 
+		catch (final SQLException x)
+		{
+			System.out.println("GroupMemberManager-checkJoinGroup");
+			System.out.println("Exception insert" + x.toString());
+		} 
+		finally
+		{
+			Close();
+		}
+		return check;
+	}
+	
+	//被邀請加入群組的使用者答應加入群組
+	public void agreeGroupInvitation(String userId, int groupId) {
+		try
+		{
+			
+			pst = con.prepareStatement("insert into groupMember value (?,?,?)");
+			pst.setInt(1,groupId);
+			pst.setString(2,userId);
+			pst.setInt(3, 0);
+			pst.executeUpdate();
+			
+		} 
+		catch (final SQLException x)
+		{
+			System.out.println("GroupMemberManager-agreeGroupInvitation");
+			System.out.println("Exception insert" + x.toString());
+		} 
+		finally
+		{
+			Close();
+		}
+	}
 
 	public void Close() {
 		try {
