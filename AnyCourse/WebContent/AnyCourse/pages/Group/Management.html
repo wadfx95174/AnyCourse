@@ -144,7 +144,7 @@
 								<h3 class="box-title">
 									<strong>成員</strong>
 								</h3>
-								<button class="btn btn-primary">新增成員</button>
+								<button onclick=setDialogClear() class="btn btn-primary" data-toggle="modal" data-target="#addModal">新增成員</button>
 							</div>
 							<!-- /.box-header -->
 							<!-- box-body -->
@@ -217,11 +217,124 @@
 
 	<!-- Account -->
 	<script src="../../dist/js/account.js" type="text/javascript"></script>
-	<!-- Management -->
-	<script src="../../dist/js/management.js" type="text/javascript"></script>
 	<!-- AutoComplete -->
 	<script src="../../dist/js/autoComplete.js" type="text/javascript"></script>
+	<!-- Management -->
+	<script src="../../dist/js/management.js" type="text/javascript"></script>
 	<!-- Notification -->
 	<script src="../../dist/js/notification.js" type="text/javascript"></script>
+
+	<!--                             新增組員                                -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+		aria-labelledby="addModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title" style="text-align: center;">
+						<b>請輸入使用者名稱或帳號!</b>
+					</h2>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<input type="text" class="form-control" id="named"
+								placeholder="Named a user Name or Account!">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">關閉</button>
+					<button id="addUserButton" type="button" class="btn btn-primary"
+						data-dismiss="modal">新增</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 沒有輸入使用者名稱or帳號 -->
+	<div class="modal fade" id="unAddModal" tabindex="-1" role="dialog"
+		aria-labelledby="unAddLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title" style="text-align: center;">
+						<b>新增錯誤</b>
+					</h2>
+				</div>
+				<div class="modal-body">
+					<h4>請輸入使用者名稱或帳號</h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">關閉</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 群組邀請成功 -->
+	<div class="modal fade" id="inviteSuccessModal" tabindex="-1" role="dialog"
+		aria-labelledby="inviteSuccessLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title" style="text-align: center;">
+						<b>邀請成功</b>
+					</h2>
+				</div>
+				<div class="modal-body">
+					<h4 id="inviteSuccess"></h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">關閉</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 沒有此使用者 -->
+	<div class="modal fade" id="inviteInvalidModal" tabindex="-1" role="dialog"
+		aria-labelledby="inviteInvalidLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title" style="text-align: center;">
+						<b>邀請失敗</b>
+					</h2>
+				</div>
+				<div class="modal-body">
+					<h4>無效使用者</h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">關閉</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 此使用者已加入該群組 -->
+	<div class="modal fade" id="inviteHasJoinedModal" tabindex="-1" role="dialog"
+		aria-labelledby="inviteHasJoinedLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title" style="text-align: center;">
+						<b>邀請失敗</b>
+					</h2>
+				</div>
+				<div class="modal-body">
+					<h4>該使用者已經加入您的群組</h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">關閉</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </body>
 </html>

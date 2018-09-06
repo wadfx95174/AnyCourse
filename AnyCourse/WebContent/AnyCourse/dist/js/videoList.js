@@ -172,6 +172,7 @@ $(document).ready(function() {
   
 	//新增courseList
 	$("#addListButton").click(function(){
+		//判斷有無輸入清單名稱
 		if($("#named").val()==""){
 			$("#unAdd").dialog( "open" );
 		}
@@ -181,7 +182,7 @@ $(document).ready(function() {
 				method : 'POST', 
 				cache :false,
 				data : {
-					action : 'insert',//代表要insert
+					action : 'insert',
 					listName : $("#named").val()
 				},
 				success:function(result){

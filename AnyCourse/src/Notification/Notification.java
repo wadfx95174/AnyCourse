@@ -5,6 +5,7 @@ public class Notification {
 	private String userId;//回覆者的ID
 	private String type;
 	private String nickname;//回覆者的名稱
+	private int groupId;
 	private String releaseTime;
 	private String url;
 	private String message;
@@ -34,6 +35,12 @@ public class Notification {
 	}
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	public int getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
 	}
 	public String getReleaseTime() {
 		return releaseTime;

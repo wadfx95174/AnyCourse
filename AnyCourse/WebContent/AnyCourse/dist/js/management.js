@@ -56,9 +56,109 @@ $(function(){
 			$('.content-wrapper').first().html('<div><h2 style="text-align:center; padding-top:50px;">很抱歉，您尚未加入該群組</h2></div>');
 			console.log('get groupId error');
 		}
-	})
+	});
+
+	//跑出modal時直接把focus放在modal中的格子
+	$('#addModal').on('shown.bs.modal', function () {
+	  $('#named').focus();
+  	});
+	
+
+	//邀請組員
+	$('#addUserButton').on("click",function(){
+		//判斷有無輸入使用者名稱或帳號
+		if($("#named").val()==""){
+			$("#unAddModal").modal("show");
+		}
+		else{
+			//送出邀請通知，包括WebSocket
+			$.ajax({
+				url: ajaxURL + 'AnyCourse/GroupMemberServlet.do',
+				method: 'POST',
+				data: {
+					'action':"checkUserExist",
+					'groupId':get('groupId'),
+					'user':$("#named").val()//userId or nickName
+				},
+				success: function(response){
+					// console.log(response);
+
+					//資料庫中沒有這個使用者
+					if(response.situation.match("invalidUser") != null){
+						$("#inviteInvalidModal").modal("show");
+					}
+					//資料庫中有這個使用者，但該使用者已經在該群組中
+					else if(response.situation.match("hasJoinedTheUser") != null){
+						$("#inviteHasJoinedModal").modal("show");
+					}
+					//資料庫中有這個使用者
+					else if(response.situation.match("legalUser") != null){
+						
+						$.ajax({
+							url: ajaxURL + 'AnyCourse/NotificationServlet.do',
+							method: 'POST',
+							data: {
+								'action':"sendGroupInviteNotification",
+								'groupId':get('groupId'),
+								'toUserId':response.toUserId
+							},
+							success: function(response){
+								console.log(response);
+								$("#inviteSuccess").text("邀請"+$("#named").val()+"成功");
+								$('#inviteSuccessModal').modal( 'show' );
+								
+								ws.send(JSON.stringify({
+					                type: "groupInvitation",
+					                toUserId: response.toUserId,
+					                notificationId: response.notificationId,
+					                nickname: response.nickname,
+					                groupId: response.groupId
+					            }));
+
+								
+							},
+							error: function(xhr, ajaxOptions, thrownError){
+								// console.log(xhr);
+								// console.log(thrownError);
+								// console.log(managment.js invite error);
+							}
+						});
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError){
+					// console.log(xhr);
+					// console.log(thrownError);
+					console.log("managment.js invite error");
+				}
+			});
+			
+		}
+	});
+
+	//設置dialog
+	$("#unAddDialog,#inviteSuccessDialog,#inviteFailedDialog").dialog({
+		dialogClass: "dlg-no-close",//取消右上角的X
+		autoOpen: false,
+		show: {
+			effect: "blind",
+			duration: 500
+		},
+		hide: {
+			effect: "fade",
+			duration: 500
+		},
+		buttons: {
+			"確定": function() {
+				$(this).dialog("close");
+			},
+		}
+	});
 }) 
 
+function setDialogClear(){
+	//清空群組邀請的輸入框
+	$('#named').val("");
+}
 
 
 //									<div class="member-info">

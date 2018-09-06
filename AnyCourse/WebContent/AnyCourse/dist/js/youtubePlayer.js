@@ -40,7 +40,7 @@ $(document).ready(function(){
         	method: 'POST',
         	cache :false,
             //必須取消非同步，否則還沒執行完就已經跳轉至其他頁面
-            async:false,
+          async:false,
         	data:{
         		"action": 'setVideoCloseTime',//代表要設定關閉頁面的時間
         		"currentTime": Math.floor(getCurrentTime()),//關閉的時間

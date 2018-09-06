@@ -175,6 +175,7 @@ function setReply(input){
 							url : urlId
 						},
 						success : function(response) {
+							console.log(response);
 							ws.send(JSON.stringify({
 			                    type: "playerInterfaceReply",
 			                    toUserId: response.toUserId,

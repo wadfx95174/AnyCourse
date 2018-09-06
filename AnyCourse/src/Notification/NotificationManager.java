@@ -17,7 +17,8 @@ import Notification.Notification;
 
 public class NotificationManager {
 	
-	public String insertNotificationSQL = "insert into notification value (null,?,?,?,null,?,?)";
+	public String insertNotificationWithoutGroupIdSQL = "insert into notification value (null,?,?,?,null,null,?,?)";
+	public String insertNotificationWithGroupIdSQL = "insert into notification value (null,?,?,?,?,null,null,?)";
 	public String selectNotificationSQL = "select * from notification where userId = ? order by releaseTime desc";
 	public String updateNotificationSQL = "update notification set isBrowse = ? where notificationId = ?";	
 	public String findCommentUserSQL = "select * from comment where commentId = ?";
@@ -44,12 +45,20 @@ public class NotificationManager {
 		}
 	}
 	
-	//儲存通知，並且取得剛新增的通知的notificationId
+	//儲存通知(個人討論區回覆)，並且取得剛新增的通知的notificationId
 	//(方法為用userId、nickname取，接著因為可能會有不只一個，所以用releaseTime排序，遠到近，所以抓最後一筆資料)
+	/** 新增通知(無groupId)
+	 * 
+	 * @param toUserId : (String) 要被通知的使用者
+	 * @param type : (String) 通知的類型
+	 * @param nickname : (String) 通知者的名稱
+	 * @param url : (String) 通知對應的網址
+	 * @return notificationId
+	 */
 	public int insertNotification(String toUserId,String type,String nickname,String url){
 		int notificationId = 0;
 		try {
-			pst = con.prepareStatement(insertNotificationSQL);
+			pst = con.prepareStatement(insertNotificationWithoutGroupIdSQL);
 			pst.setString(1,toUserId);
 			pst.setString(2,type);
 			pst.setString(3,nickname);
@@ -66,7 +75,46 @@ public class NotificationManager {
 			}
 		}
 		catch(SQLException x){
-			System.out.println("NotificationManager-insertNotificationTable");
+			System.out.println("NotificationManager-insertNotificationWithoutGroup");
+			System.out.println("Exception insert"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return notificationId;
+	}
+	
+	//儲存通知(群組邀請)，並且取得剛新增的通知的notificationId
+	//(方法為用userId、nickname取，接著因為可能會有不只一個，所以用releaseTime排序，遠到近，所以抓最後一筆資料)
+	/** 新增通知(有groupId)
+	 * 
+	 * @param toUserId : (String) 要被通知的使用者
+	 * @param type : (String) 通知的類型
+	 * @param nickname : (String) 通知者的名稱
+	 * @param groupId : (String) 通知對應的群組ID
+	 * @return notificationId
+	 */
+	public int insertNotification(String toUserId,String type,String nickname,int groupId){
+		int notificationId = 0;
+		try {
+			pst = con.prepareStatement(insertNotificationWithGroupIdSQL);
+			pst.setString(1, toUserId);
+			pst.setString(2, type);
+			pst.setString(3, nickname);
+			pst.setInt(4, groupId);
+			pst.setInt(5, 0);
+			pst.executeUpdate();
+			
+			pst = con.prepareStatement("select notificationId from notification where userId = ? and nickname = ? order by releaseTime ASC");
+			pst.setString(1, toUserId);
+			pst.setString(2, nickname);
+			result = pst.executeQuery();
+			while(result.next()) {
+				notificationId = result.getInt("notificationId");
+			}
+		}
+		catch(SQLException x){
+			System.out.println("NotificationManager-insertNotificationWithGroup");
 			System.out.println("Exception insert"+x.toString());
 		}
 		finally {
@@ -145,12 +193,11 @@ public class NotificationManager {
 	}
 	
 	//更新該使用者的通知，將isBrowse改為1(代表已經看過)
-	public void setNotificationIsBrowse(String userId,int notificationId){
+	public void setNotificationIsBrowse(int notificationId){
 		try {
-			pst = con.prepareStatement("update notification set isBrowse = ? where userId = ? and notificationId = ?");
+			pst = con.prepareStatement("update notification set isBrowse = ? where notificationId = ?");
 			pst.setInt(1,1);
-			pst.setString(2,userId);
-			pst.setInt(3, notificationId);
+			pst.setInt(2, notificationId);
 			pst.executeUpdate();
 		}
 		catch(SQLException x){

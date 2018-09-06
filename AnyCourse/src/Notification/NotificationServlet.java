@@ -37,33 +37,61 @@ public class NotificationServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		NotificationManager notificationManager = new NotificationManager();
+		
+		Notification notification;
+		NotificationManager manager = new NotificationManager();
 		String userId = (String)session.getAttribute("userId");
-		String state = request.getParameter("state");
-		response.setHeader("Cache-Control","max-age=0");
 		String action = request.getParameter("action");
+		String nickName = (String)session.getAttribute("nickName");
+		
+		
 		if(action.equals("setNotificationIsBrowse")) {
+			
 			System.out.println(Integer.parseInt(request.getParameter("notificationId")));
-			notificationManager.setNotificationIsBrowse(userId,Integer.parseInt(request.getParameter("notificationId")));
+			manager.setNotificationIsBrowse(Integer.parseInt(request.getParameter("notificationId")));
+			
 		}
 		
-		if(action.equals("insertNotification"))
-		{
+		if(action.equals("insertNotification")){
+			
+			response.setCharacterEncoding("UTF-8");
+			response.setHeader("Cache-Control","max-age=0");
+			response.setContentType("application/json");
+			
 			int commentId = Integer.parseInt(request.getParameter("commentId"));
-			String toUserId = notificationManager.findCommentUser(commentId);
-			String nickName = (String)session.getAttribute("nickName");
+			String toUserId = manager.findCommentUser(commentId);
+			
 			String url = request.getParameter("url");
 			
-			Notification notification = new Notification();
+			notification = new Notification();
 			
 			notification.setToUserId(toUserId);
-			notification.setNotificationId(notificationManager.insertNotification(
+			notification.setNotificationId(manager.insertNotification(
 					toUserId,"playerInterfaceReply",nickName,url));
 			notification.setNickname(nickName);
 			
-			response.setContentType("application/json");
 			response.getWriter().write(new Gson().toJson(notification));
 		}
+		
+		if (action.equals("sendGroupInviteNotification")) {
+			
+			response.setCharacterEncoding("UTF-8");
+			response.setHeader("Cache-Control","max-age=0");
+			response.setContentType("application/json");
+			
+			String toUserId = (String)request.getParameter("toUserId");
+			int groupId = Integer.parseInt(request.getParameter("groupId"));
+			
+			notification = new Notification();
+			notification.setToUserId(toUserId);
+			notification.setNotificationId(manager.insertNotification(
+					toUserId,"groupInvitation",nickName,groupId));
+			notification.setNickname(nickName);
+			notification.setGroupId(groupId);
+			
+	    	response.getWriter().write(new Gson().toJson(notification));
+	    	
+	    }
 		
 		
 //		if(state.equals("update"))
@@ -87,7 +115,7 @@ public class NotificationServlet extends HttpServlet {
 //			dbnote.updateTextNoteTable(textNote);
 //			dbnote.conClose();
 //		}
-		notificationManager.conClose();
+		manager.conClose();
 	}
 
 }

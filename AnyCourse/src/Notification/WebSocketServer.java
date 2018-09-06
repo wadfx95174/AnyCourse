@@ -23,14 +23,15 @@ public class WebSocketServer {
 		//從前端傳送來的JSON，將他轉成Notification物件
 		Notification notification = gson.fromJson(message, Notification.class);
 		
+		String type = notification.getType();
 		
 		//檢查是否用來開啟連接，存userId進session
-        if(notification.getType().equals("connection")) {
+        if(type.equals("connection")) {
         	session.getUserProperties().put("userId", notification.getUserId());
         	System.out.println((String)session.getUserProperties().get("userId"));
         }
         //播放介面-討論區"回覆"通知
-        else if(notification.getType().equals("playerInterfaceReply")) {
+        else if(type.equals("playerInterfaceReply")) {
         	String sessionsUserId = null;
         	for (Session s : sessions) {
         		sessionsUserId = (String)s.getUserProperties().get("userId");
@@ -45,44 +46,57 @@ public class WebSocketServer {
                 }
             }
         }
-        //群組討論區(有人"提問"或"回覆"都會通知)
-        else if(notification.getType().equals("groupForum")) {
-        	
-        }
         //群組邀請
-        else if(notification.getType().equals("groupInvitation")) {
+        else if(type.equals("groupInvitation")) {
+        	String sessionsUserId = null;
+        	for (Session s : sessions) {
+        		sessionsUserId = (String)s.getUserProperties().get("userId");
+//        		System.out.println("sessionsUserId:" + sessionsUserId);
+//        		System.out.println("toUserId:" + notification.getToUserId());
+                if (s.isOpen() && sessionsUserId.equals(notification.getToUserId())) {
+                	System.out.println(notification.getType());
+            		System.out.println(notification.getNickname());
+                	System.out.println(notification.getGroupId());
+                	System.out.println(notification.getToUserId());
+                	System.out.println(notification.getNotificationId());
+                    s.getBasicRemote().sendText(gson.toJson(notification));
+                }
+            }
+        }
+        //群組討論區(有人"提問"或"回覆"都會通知)
+        else if(type.equals("groupForum")) {
         	
         }
         //群組公告
-        else if(notification.getType().equals("groupAnnouncement")) {
+        else if(type.equals("groupAnnouncement")) {
         	
         }
         //個人行事曆到期提醒
-        else if(notification.getType().equals("personalCalanderNotify")) {
+        else if(type.equals("personalCalanderNotify")) {
         	
         }
         //群組行事曆到期提醒
-        else if(notification.getType().equals("groupCalanderNotify")) {
+        else if(type.equals("groupCalanderNotify")) {
         	
         }
         //群組共同清單
-        else if(notification.getType().equals("groupVideoList")) {
+        else if(type.equals("groupVideoList")) {
         	
         }
         //群組共同計畫
-        else if(notification.getType().equals("groupCoursePlan")) {
+        else if(type.equals("groupCoursePlan")) {
         	
         }
         //群組筆記
-        else if(notification.getType().equals("groupNote")) {
+        else if(type.equals("groupNote")) {
         	
         }
         //群組資源庫
-        else if(notification.getType().equals("groupResourceLibrary")) {
+        else if(type.equals("groupResourceLibrary")) {
         	
         }
         //群組有其他成員加入
-        else if(notification.getType().equals("groupMember")) {
+        else if(type.equals("groupMember")) {
         	
         }
 //        session.getBasicRemote().sendText("From Server :"+message);

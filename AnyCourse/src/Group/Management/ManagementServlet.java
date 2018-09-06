@@ -23,6 +23,7 @@ public class ManagementServlet extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
         // 檢查是否為該群組
         HttpSession session = request.getSession();
+        @SuppressWarnings("unchecked")
         Map<String, Integer> groups = (Map<String, Integer>)session.getAttribute("groups");
 
         // 檢查 session 裡面有沒有傳進來的 groupId
@@ -41,6 +42,7 @@ public class ManagementServlet extends HttpServlet {
 		response.setContentType("text/html");
 		
 		int groupId = manager.insertGroup(userId, groupName);
+		@SuppressWarnings("unchecked")
 		Map<String, Integer> groups = (Map<String, Integer>)session.getAttribute("groups");
 		groups.put(groupName, groupId);
 		session.setAttribute("groups", groups);
