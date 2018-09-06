@@ -65,57 +65,23 @@ public class NotificationServlet extends HttpServlet {
 			
 			int commentId = Integer.parseInt(request.getParameter("commentId"));
 			String toUserId = manager.findCommentUser(commentId);
-			
 			String url = request.getParameter("url");
 			
-			notification = new Notification();
-			
-			notification.setToUserId(toUserId);
-			notification.setNotificationId(manager.insertNotification(
+			response.getWriter().write(manager.insertNotification(
 					toUserId,"playerInterfaceReply",nickName,url));
-			notification.setNickname(nickName);
-			
-			response.getWriter().write(new Gson().toJson(notification));
 		}
 		
 		if (action.equals("sendGroupInviteNotification")) {
 			
 			String toUserId = (String)request.getParameter("toUserId");
 			int groupId = Integer.parseInt(request.getParameter("groupId"));
+			String groupName = manager.getGroupName(groupId);
 			
-			notification = new Notification();
-			notification.setToUserId(toUserId);
-			notification.setNotificationId(manager.insertNotification(
-					toUserId,"groupInvitation",nickName,groupId));
-			notification.setNickname(nickName);
-			notification.setGroupId(groupId);
-			
-	    	response.getWriter().write(new Gson().toJson(notification));
+	    	response.getWriter().write(manager.insertNotification(
+					toUserId,"groupInvitation",nickName,groupId,groupName));
 	    	
 	    }
 		
-		
-//		if(state.equals("update"))
-//		{
-//			NoteManager dbnote = new NoteManager();
-//			int textNoteId = Integer.parseInt(request.getParameter("textNoteId"));
-//			String textNotestr = request.getParameter("textNote");
-//			int share = Integer.parseInt(request.getParameter("share"));
-//			String shareTime = request.getParameter("shareTime");
-//			int likes = Integer.parseInt(request.getParameter("likes"));
-//			
-//			TextNote textNote = new TextNote();
-//			textNote.setTextNoteId(textNoteId);
-//			textNote.setUnitId(unitId);
-//			textNote.setUserId(userId);
-//			textNote.setTextNote(textNotestr);
-//			textNote.setShare(share);
-//			textNote.setShareTime(shareTime);
-//			textNote.setLikes(likes);
-//
-//			dbnote.updateTextNoteTable(textNote);
-//			dbnote.conClose();
-//		}
 		manager.conClose();
 	}
 

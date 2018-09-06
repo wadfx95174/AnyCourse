@@ -112,7 +112,8 @@ $(function(){
 					                toUserId: response.toUserId,
 					                notificationId: response.notificationId,
 					                nickname: response.nickname,
-					                groupId: response.groupId
+					                groupId: response.groupId,
+					                groupName: response.groupName
 					            }));
 
 								
@@ -132,25 +133,6 @@ $(function(){
 				}
 			});
 			
-		}
-	});
-
-	//設置dialog
-	$("#unAddDialog,#inviteSuccessDialog,#inviteFailedDialog").dialog({
-		dialogClass: "dlg-no-close",//取消右上角的X
-		autoOpen: false,
-		show: {
-			effect: "blind",
-			duration: 500
-		},
-		hide: {
-			effect: "fade",
-			duration: 500
-		},
-		buttons: {
-			"確定": function() {
-				$(this).dialog("close");
-			},
 		}
 	});
 }) 

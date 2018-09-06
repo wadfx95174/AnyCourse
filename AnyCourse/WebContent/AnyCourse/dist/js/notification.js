@@ -38,16 +38,19 @@ $(document).ready(function() {
 		//群組邀請
 		else if(data.type.match("groupInvitation") != null){
 
+			$('#groupInviteText').text("確定要加入" + data.groupName + "嗎?");
+
+			var groupName = data.groupName;
 			var groupId = data.groupId;
 			$('#notificationList').append(
 				'<li onclick="setNotificationIsBrowse('+data.notificationId+')" style="background-color: Silver;">'
-                +'<a data-toggle="modal" href="#groupInvitePrompt">'
+                +'<a data-toggle="modal" href="#groupInviteModal">'
                 +'<i class="fa fa-comment text-red"></i>您收到來自' + data.nickname + '的群組邀請'
                 +'</a>'
                 +'</li>'
 			);
 
-			$('#groupInvitePromptButton').click(function(){
+			$('#groupInviteButton').click(function(){
 
 				$.ajax({
 					url:ajaxURL + 'AnyCourse/GroupMemberServlet.do',
@@ -59,6 +62,7 @@ $(document).ready(function() {
 					},
 					success:function(response){
 						if(response == "true"){
+							$('#groupHasJoinedText').text('您以加入'+groupName);
 							$('#groupHasJoinedModal').modal('show');
 						}
 						else{
@@ -71,6 +75,7 @@ $(document).ready(function() {
 									'groupId': groupId
 								},
 								success:function(resp){
+									$('#groupJoinSuccessText').text("您成功加入"+groupName);
 									$('#groupJoinSuccessModal').modal('show');
 								},
 								error:function(xhr, ajaxOptions, thrownError){
@@ -148,15 +153,19 @@ $(document).ready(function() {
 	    			
 				}
 				else if(result[i].type.match("groupInvitation") != null){
+
+					$('#groupInviteText').text("確定要加入" + result[i].groupName + "嗎?");
+
+					var groupName = result[i].groupName;
 					var groupId = result[i].groupId;
 					$('#notificationList').append(
     					'<li onclick="setNotificationIsBrowse('+result[i].notificationId+')"'+ backgroundColor+'>'
-                        +'<a data-toggle="modal" href="#groupInvitePrompt">'
+                        +'<a data-toggle="modal" href="#groupInviteModal">'
                         +'<i class="fa fa-comment text-red"></i>您收到來自' + result[i].nickname + '的群組邀請'
                         +'</a>'
                         +'</li>'
 		    		);
-		    		$('#groupInvitePromptButton').click(function(){
+		    		$('#groupInviteButton').click(function(){
 
 						$.ajax({
 							url:ajaxURL + 'AnyCourse/GroupMemberServlet.do',
@@ -168,6 +177,7 @@ $(document).ready(function() {
 							},
 							success:function(response){
 								if(response == "true"){
+									$('#groupHasJoinedText').text('您以加入'+groupName);
 									$('#groupHasJoinedModal').modal('show');
 								}
 								else{
@@ -180,6 +190,7 @@ $(document).ready(function() {
 											'groupId': groupId
 										},
 										success:function(resp){
+											$('#groupJoinSuccessText').text("您成功加入"+groupName);
 											$('#groupJoinSuccessModal').modal('show');
 										},
 										error:function(xhr, ajaxOptions, thrownError){
@@ -211,8 +222,8 @@ $(document).ready(function() {
 
 
 	//---------------------------------群組邀請提示----------------------------------------//
-	$("body").append('<div class="modal fade" id="groupInvitePrompt" tabindex="-1" role="dialog"'
-		+'aria-labelledby="groupInvitePromptLabel" aria-hidden="true">'
+	$("body").append('<div class="modal fade" id="groupInviteModal" tabindex="-1" role="dialog"'
+		+'aria-labelledby="groupInviteLabel" aria-hidden="true">'
 		
 		+'<div class="modal-dialog" role="document">'
 			+'<div class="modal-content">'
@@ -220,10 +231,10 @@ $(document).ready(function() {
 			    	+'<b class="modal-title" style="font-size:24px;">提示</b>'
 			    +'</div>'
 				+'<div class="modal-body">'
-					+'<h4>確定要加入該群組嗎?</h4>'
+					+'<h4 id="groupInviteText"></h4>'
 				+'</div>'
 				+'<div class="modal-footer">'
-					+'<button id="groupInvitePromptButton" type="button"'
+					+'<button id="groupInviteButton" type="button"'
 						+'class="btn btn-primary" data-dismiss="modal">確定</button>'
 					+'<button type="button" class="btn btn-secondary"'
 						+'data-dismiss="modal">取消</button>'
@@ -243,7 +254,7 @@ $(document).ready(function() {
 			    	+'<b class="modal-title" style="font-size:24px;">加入失敗</b>'
 			    +'</div>'
 				+'<div class="modal-body">'
-					+'<h4>您已加入該群組</h4>'
+					+'<h4 id="groupHasJoinedText"></h4>'
 				+'</div>'
 				+'<div class="modal-footer">'
 					+'<button type="button" class="btn btn-secondary"'
@@ -265,7 +276,7 @@ $(document).ready(function() {
 			    	+'<b class="modal-title" style="font-size:24px;">加入成功</b>'
 			    +'</div>'
 				+'<div class="modal-body">'
-					+'<h4>您成功加入該群組</h4>'
+					+'<h4 id="groupJoinSuccessText"></h4>'
 				+'</div>'
 				+'<div class="modal-footer">'
 					+'<button onclick=reloadPage() type="button" class="btn btn-secondary"'
