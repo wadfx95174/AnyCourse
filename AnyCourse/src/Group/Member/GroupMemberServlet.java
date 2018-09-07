@@ -38,6 +38,7 @@ public class GroupMemberServlet extends HttpServlet {
 	    	
 	    }
 	    if(action.equals("agreeGroupInvitation")) {
+	    	String nickName = (String)session.getAttribute("nickName");
 	    	manager.agreeGroupInvitation(userId, groupId);
 	    }
 	    else if(action.equals("checkJoinGroup")) {

@@ -102,18 +102,18 @@ $(function(){
 								'groupId':get('groupId'),
 								'toUserId':response.toUserId
 							},
-							success: function(response){
-								console.log(response);
+							success: function(resp){
+								console.log(resp);
 								$("#inviteSuccess").text("邀請"+$("#named").val()+"成功");
 								$('#inviteSuccessModal').modal( 'show' );
 								
 								ws.send(JSON.stringify({
 					                type: "groupInvitation",
-					                toUserId: response.toUserId,
-					                notificationId: response.notificationId,
-					                nickname: response.nickname,
-					                groupId: response.groupId,
-					                groupName: response.groupName
+					                toUserId: resp.toUserId,
+					                notificationId: resp.notificationId,
+					                nickname: resp.nickname,
+					                groupId: resp.groupId,
+					                groupName: resp.groupName
 					            }));
 
 								

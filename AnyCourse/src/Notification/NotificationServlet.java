@@ -56,6 +56,11 @@ public class NotificationServlet extends HttpServlet {
 		String userId = (String)session.getAttribute("userId");
 		String action = request.getParameter("action");
 		String nickName = (String)session.getAttribute("nickName");
+		String toUserId = null;
+		ArrayList<String> toUserIdList = new ArrayList<String>();
+		int groupId;
+		String groupName = null;
+		String url = null;
 		
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Cache-Control","max-age=0");
@@ -64,23 +69,38 @@ public class NotificationServlet extends HttpServlet {
 		if(action.equals("insertNotification")){
 			
 			int commentId = Integer.parseInt(request.getParameter("commentId"));
-			String toUserId = manager.findCommentUser(commentId);
-			String url = request.getParameter("url");
+			toUserId = manager.findCommentUser(commentId);
+			url = (String)request.getParameter("url");
 			
 			response.getWriter().write(manager.insertNotification(
 					toUserId,"playerInterfaceReply",nickName,url));
 		}
 		
-		if (action.equals("sendGroupInviteNotification")) {
+		else if(action.equals("sendGroupInviteNotification")) {
 			
-			String toUserId = (String)request.getParameter("toUserId");
-			int groupId = Integer.parseInt(request.getParameter("groupId"));
-			String groupName = manager.getGroupName(groupId);
+			toUserId = (String)request.getParameter("toUserId");
+			groupId = Integer.parseInt(request.getParameter("groupId"));
+			groupName = manager.getGroupName(groupId);
 			
 	    	response.getWriter().write(manager.insertNotification(
 					toUserId,"groupInvitation",nickName,groupId,groupName));
 	    	
 	    }
+		
+		else if(action.equals("agreeGroupInvitation")) {
+			System.out.println("test");
+			
+			url = (String)request.getParameter("url");
+			groupId = Integer.parseInt(request.getParameter("groupId"));
+			groupName = (String)request.getParameter("groupName");
+			toUserIdList = manager.getInviterGroup(groupId);
+			
+			response.getWriter().write(manager.agreeGroupInvitation
+					(toUserIdList, "groupMemberJoin", nickName, groupId, groupName, url, userId));
+			
+			
+		}
+		
 		
 		manager.conClose();
 	}

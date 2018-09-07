@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import Forum.Comment;
 import KeyLabel.KeyLabel;
@@ -27,6 +28,7 @@ public class NotificationManager {
 			"select * from notification where userId = ? order by releaseTime desc";	
 	public String findCommentUserSQL = "select * from comment where commentId = ?";
 	
+	public ArrayList<Notification> notifications;
 	public Notification notification;
 	public Comment comment;
 	public Connection con = null;
@@ -70,7 +72,7 @@ public class NotificationManager {
 			pst.setInt(5,0);
 			pst.executeUpdate();
 			
-			pst = con.prepareStatement("select notificationId from notification where userId = ? and nickname = ? order by releaseTime ASC");
+			pst = con.prepareStatement("select notificationId from notification where userId = ? and nickName = ? order by releaseTime ASC");
 			pst.setString(1, toUserId);
 			pst.setString(2,nickname);
 			result = pst.executeQuery();
@@ -114,7 +116,7 @@ public class NotificationManager {
 			pst.setInt(6, 0);
 			pst.executeUpdate();
 			
-			pst = con.prepareStatement("select notificationId from notification where userId = ? and nickname = ? order by releaseTime ASC");
+			pst = con.prepareStatement("select notificationId from notification where userId = ? and nickName = ? order by releaseTime ASC");
 			pst.setString(1, toUserId);
 			pst.setString(2, nickname);
 			result = pst.executeQuery();
@@ -234,6 +236,93 @@ public class NotificationManager {
 		}
 	}
 	
+	//取得邀請方群組的成員
+	public ArrayList<String> getInviterGroup(int groupId) {
+		ArrayList<String> toUserIdList = new ArrayList<String>();
+		try {
+			pst = con.prepareStatement("select userId from groupMember where groupId = ?");
+			pst.setInt(1, groupId);
+			result = pst.executeQuery();
+			while(result.next()) {
+				toUserIdList.add(result.getString("userId"));
+			}
+		}
+		catch (final SQLException x)
+		{
+			System.out.println("NotificationManager-getInviterGroup");
+			System.out.println("Exception insert" + x.toString());
+		} 
+		finally {
+			Close();
+		}
+		return toUserIdList;
+	}
+	
+	
+	//insert通知回該群組的所有人，並且將被邀請人加入該群組
+	public String agreeGroupInvitation(ArrayList<String> toUserIdList,String type,String nickname,int groupId,String groupName,String url,String userId) {
+		notifications = new ArrayList<Notification>();
+		try
+		{
+			//通知該群組所有人
+			pst = con.prepareStatement("insert into notification value(null,?,?,?,?,?,null,?,?)");
+			System.out.println();
+			for(int i = 0;i < toUserIdList.size();i++) {
+				
+				pst.setString(1, toUserIdList.get(i));
+				pst.setString(2, type);
+				pst.setString(3, nickname);
+				pst.setInt(4, groupId);
+				pst.setString(5, groupName);
+				pst.setString(6, url);
+				pst.setInt(7, 0);
+				//先放到batch，等迴圈跑完再一次新增
+				pst.addBatch();
+			}
+			pst.executeBatch();
+			
+			for(int i = 0 ; i < toUserIdList.size();i++) {
+				pst = con.prepareStatement("select notificationId from notification where userId = ? and nickName = ? order by releaseTime ASC");
+				pst.setString(1, toUserIdList.get(i));
+				pst.setString(2, nickname);
+				result = pst.executeQuery();
+				while(result.next()) {
+					System.out.println(i);
+					notification = new Notification();
+					notification.setNotificationId(result.getInt("notificationId"));
+					notification.setToUserId(toUserIdList.get(i));
+					notification.setType(type);
+					notification.setNickname(nickname);
+					notification.setGroupId(groupId);
+					notification.setGroupName(groupName);
+					notification.setUrl(url);
+					notifications.add(notification);
+				}
+			}
+			
+			//加入群組
+			pst = con.prepareStatement("insert into groupMember value (?,?,?)");
+			pst.setInt(1,groupId);
+			pst.setString(2,userId);
+			pst.setInt(3, 0);
+			pst.executeUpdate();
+			
+			
+		} 
+		catch (final SQLException x)
+		{
+			System.out.println("NotificationManager-agreeGroupInvitation");
+			System.out.println("Exception insert" + x.toString());
+		} 
+		finally
+		{
+			Close();
+		}
+//		GsonBuilder builder = new GsonBuilder();
+//		Gson gson = builder.setPrettyPrinting().create();
+//		System.out.println(gson.toJson(notifications));
+		return new Gson().toJson(notifications);
+	}
 	
 	public void Close() {
 		try {

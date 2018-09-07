@@ -95,8 +95,8 @@ public class WebSocketServer {
         else if(type.equals("groupResourceLibrary")) {
         	
         }
-        //群組有其他成員加入
-        else if(type.equals("groupMember")) {
+        //群組有成員加入
+        else if(type.equals("groupMemberJoin")) {
         	
         }
 //        session.getBasicRemote().sendText("From Server :"+message);

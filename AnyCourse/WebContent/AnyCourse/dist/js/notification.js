@@ -25,75 +25,23 @@ $(document).ready(function() {
 
 		//播放介面-討論區"回覆"通知
 		if(data.type.match("playerInterfaceReply") != null){
-			
-			$('#notificationList').append(
-				'<li onclick="setNotificationIsBrowse('+data.notificationId+')" style="background-color: Silver;">'
-		        +'<a href="'+ data.url +'">'
-		        +'<i class="fa fa-comment text-red"></i>'+ data.nickName +'回應了你的留言'
-		        +'</a>'
-		        +'</li>'
-		    );
 
+			appendPlayerInterfaceForum(data.notificationId,data.url,data.nickName,'style="background-color: Silver;"');
+			
 		}
 		//群組邀請
 		else if(data.type.match("groupInvitation") != null){
 
-			$('#groupInviteText').text("確定要加入" + data.groupName + "嗎?");
-
 			var groupName = data.groupName;
 			var groupId = data.groupId;
-			$('#notificationList').append(
-				'<li onclick="setNotificationIsBrowse('+data.notificationId+')" style="background-color: Silver;">'
-                +'<a data-toggle="modal" href="#groupInviteModal">'
-                +'<i class="fa fa-comment text-red"></i>您收到來自' + data.nickname + '的群組邀請'
-                +'</a>'
-                +'</li>'
-			);
+
+			appendGroupInvitation(groupName,data.notificationId,'style="background-color: Silver;"');
 
 			$('#groupInviteButton').click(function(){
 
-				$.ajax({
-					url:ajaxURL + 'AnyCourse/GroupMemberServlet.do',
-					method:'POST',
-					cache:false,
-					data:{
-						'action': "checkJoinGroup",
-						'groupId': groupId
-					},
-					success:function(response){
-						if(response == "true"){
-							$('#groupHasJoinedText').text('您以加入'+groupName);
-							$('#groupHasJoinedModal').modal('show');
-						}
-						else{
-							$.ajax({
-								url:ajaxURL + 'AnyCourse/GroupMemberServlet.do',
-								method:'POST',
-								cache:false,
-								data:{
-									'action': "agreeGroupInvitation",
-									'groupId': groupId
-								},
-								success:function(resp){
-									$('#groupJoinSuccessText').text("您成功加入"+groupName);
-									$('#groupJoinSuccessModal').modal('show');
-								},
-								error:function(xhr, ajaxOptions, thrownError){
-									console.log(xhr);
-									console.log(thrownError);
-									console.log("notification.js agree group invitation error");
-								}
-							});
-						}
-					},
-					error:function(xhr, ajaxOptions, thrownError){
-						console.log(xhr);
-						console.log(thrownError);
-						console.log("notification.js check join group error");
-					}
-				});
+				GroupInvitation(groupId,groupName);
+
 			});
-			$('#')
 		}
     };
 
@@ -141,72 +89,25 @@ $(document).ready(function() {
 				if(result[i].isBrowse == 0)backgroundColor = 'style="background-color: Silver;"';
 	    		else if(result[i].isBrowse == 1)backgroundColor = 'style="background-color: #f4f4f4;"';
 
+	    		//播放介面的討論區回覆
 				if(result[i].type.match("playerInterfaceReply") != null){
 
-	    			$('#notificationList').append(
-    					'<li onclick="setNotificationIsBrowse('+result[i].notificationId+')"'+ backgroundColor+'>'
-                        +'<a href="'+ result[i].url +'">'
-                        +'<i class="fa fa-comment text-red"></i>'+ result[i].nickname +'回應了你的留言'
-                        +'</a>'
-                        +'</li>'
-		    		);
+					appendPlayerInterfaceForum(result[i].notificationId,result[i].url,result[i].nickName,backgroundColor);
 	    			
 				}
+				//群組邀請
 				else if(result[i].type.match("groupInvitation") != null){
 
-					$('#groupInviteText').text("確定要加入" + result[i].groupName + "嗎?");
 
 					var groupName = result[i].groupName;
 					var groupId = result[i].groupId;
-					$('#notificationList').append(
-    					'<li onclick="setNotificationIsBrowse('+result[i].notificationId+')"'+ backgroundColor+'>'
-                        +'<a data-toggle="modal" href="#groupInviteModal">'
-                        +'<i class="fa fa-comment text-red"></i>您收到來自' + result[i].nickname + '的群組邀請'
-                        +'</a>'
-                        +'</li>'
-		    		);
+					
+					appendGroupInvitation(groupName,result[i].notificationId,backgroundColor);
+
 		    		$('#groupInviteButton').click(function(){
 
-						$.ajax({
-							url:ajaxURL + 'AnyCourse/GroupMemberServlet.do',
-							method:'POST',
-							cache:false,
-							data:{
-								'action': "checkJoinGroup",
-								'groupId': groupId
-							},
-							success:function(response){
-								if(response == "true"){
-									$('#groupHasJoinedText').text('您以加入'+groupName);
-									$('#groupHasJoinedModal').modal('show');
-								}
-								else{
-									$.ajax({
-										url:ajaxURL + 'AnyCourse/GroupMemberServlet.do',
-										method:'POST',
-										cache:false,
-										data:{
-											'action': "agreeGroupInvitation",
-											'groupId': groupId
-										},
-										success:function(resp){
-											$('#groupJoinSuccessText').text("您成功加入"+groupName);
-											$('#groupJoinSuccessModal').modal('show');
-										},
-										error:function(xhr, ajaxOptions, thrownError){
-											console.log(xhr);
-											console.log(thrownError);
-											console.log("notification.js agree group invitation error");
-										}
-									});
-								}
-							},
-							error:function(xhr, ajaxOptions, thrownError){
-								console.log(xhr);
-								console.log(thrownError);
-								console.log("notification.js check join group error");
-							}
-						});
+		    			GroupInvitation(groupId,groupName);
+
 					});
 				}
 			}
@@ -228,7 +129,7 @@ $(document).ready(function() {
 		+'<div class="modal-dialog" role="document">'
 			+'<div class="modal-content">'
 				+'<div class="modal-header">'
-			    	+'<b class="modal-title" style="font-size:24px;">提示</b>'
+			    	+'<b class="modal-title" style="font-size:24px;">群組邀請</b>'
 			    +'</div>'
 				+'<div class="modal-body">'
 					+'<h4 id="groupInviteText"></h4>'
@@ -305,26 +206,7 @@ function setNotificationIsBrowse(notificationId){
 			action: "setNotificationIsBrowse",
 			notificationId: notificationId
 		},
-		success:function(response){
-			// var number = $('#notificationNumber').text();//暫存原本有幾個通知的變數
-			// console.log($('#notificationNumber').text())
-			// if(number > 2){
-			// 	var num = parseInt(number)-1;
-			// 	$('#notificationNumber').text(num);
-			// 	$('#notificationHeader').text("You have " + num + " notifications");
-			// }
-			// else if(number == 2){
-			// 	$('#notificationNumber').text(1);
-			// 	$('#notificationHeader').text("You have 1 notification");
-			// }
-			// else if(number == 1){
-			// 	$('#notificationNumber').text();
-			// 	$('#notificationHeader').text("You have 0 notification");
-			// }
-
-
-			// $('#notificationId_'+notificationId).css("background-color", "#f4f4f4");
-		},
+		success:function(response){},
 		error:function(xhr, ajaxOptions, thrownError){
 			console.log(xhr);
 			console.log(thrownError);
@@ -334,6 +216,95 @@ function setNotificationIsBrowse(notificationId){
 }
 //--------------------------------------------------------------------------------------//
 
+//------------------------------------重新整理頁面---------------------------------------//
 function reloadPage(){
 	location.reload();
 }
+//--------------------------------------------------------------------------------------//
+
+//--------------------------append通知(播放介面討論區回復)--------------------------------//
+function appendPlayerInterfaceForum(notificationId,url,nickName,backgroundColor){
+	$('#notificationList').append(
+		'<li onclick="setNotificationIsBrowse('+notificationId+')"'+ backgroundColor+'>'
+	    +'<a href="'+ url +'">'
+	    +'<i class="fa fa-comment text-red"></i>'+ nickName +'回應了你的留言'
+	    +'</a>'
+	    +'</li>'
+	);
+}
+//--------------------------------------------------------------------------------------//
+
+//--------------------------------append通知(群組邀請)-----------------------------------//
+function appendGroupInvitation(groupName,notificationId,backgroundColor){
+	$('#groupInviteText').text("確定要加入「" + groupName + "」嗎?");
+			
+	$('#notificationList').append(
+		'<li onclick="setNotificationIsBrowse('+notificationId+')"'+ backgroundColor+'>'
+        +'<a data-toggle="modal" href="#groupInviteModal">'
+        +'<i class="fa fa-comment text-red"></i>您收到來自「' + groupName + '」的群組邀請'
+        +'</a>'
+        +'</li>'
+	);
+}
+//--------------------------------------------------------------------------------------//
+
+//----------------檢查是否已經加入該群組，若無則加入，加入後送出WebSocket-------------------//
+function GroupInvitation(groupId,groupName){
+	console.log(groupId+"    "+groupName);
+	$.ajax({
+		url:ajaxURL + 'AnyCourse/GroupMemberServlet.do',
+		method:'POST',
+		cache:false,
+		data:{
+			'action': "checkJoinGroup",
+			'groupId': groupId
+		},
+		success:function(response){
+			//已經加入他群組
+			if(response == "true"){
+				$('#groupHasJoinedText').text('您以加入'+groupName);
+				$('#groupHasJoinedModal').modal('show');
+			}
+			//尚未加入群組，可以加入
+			else{
+				$.ajax({
+					url:ajaxURL + 'AnyCourse/NotificationServlet.do',
+					method:'POST',
+					cache:false,
+					data:{
+						'action': "agreeGroupInvitation",
+						'groupId': groupId,
+						'groupName': groupName,
+						'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Management.html?groupId=" + groupId
+					},
+					success:function(resp){
+						console.log(resp);
+						$('#groupJoinSuccessText').text("您成功加入"+groupName);
+						$('#groupJoinSuccessModal').modal('show');
+
+						// ws.send(JSON.stringify({
+			   //              type: "groupMemberJoin",
+			   //              toUserId: resp.toUserId,
+			   //              notificationId: resp.notificationId,
+			   //              nickname: resp.nickname,
+			   //              groupId: groupId,
+			   //              groupName: groupName
+			   //              url: resp.url
+			   //          }));
+					},
+					error:function(xhr, ajaxOptions, thrownError){
+						console.log(xhr);
+						console.log(thrownError);
+						console.log("notification.js agree group invitation error");
+					}
+				});
+			}
+		},
+		error:function(xhr, ajaxOptions, thrownError){
+			console.log(xhr);
+			console.log(thrownError);
+			console.log("notification.js check join group error");
+		}
+	});
+}
+//--------------------------------------------------------------------------------------//

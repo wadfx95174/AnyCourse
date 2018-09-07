@@ -117,7 +117,7 @@ public class GroupMemberManager {
 		return check;
 	}
 	
-	//被邀請加入群組的使用者答應加入群組
+	//被邀請加入群組的使用者答應加入群組，並且insert通知回該群組的所有人
 	public void agreeGroupInvitation(String userId, int groupId) {
 		try
 		{
@@ -127,6 +127,7 @@ public class GroupMemberManager {
 			pst.setString(2,userId);
 			pst.setInt(3, 0);
 			pst.executeUpdate();
+			
 			
 		} 
 		catch (final SQLException x)
