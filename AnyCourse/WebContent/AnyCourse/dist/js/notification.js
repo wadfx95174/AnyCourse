@@ -26,7 +26,7 @@ $(document).ready(function() {
 		//播放介面-討論區"回覆"通知
 		if(data.type.match("playerInterfaceReply") != null){
 
-			appendPlayerInterfaceForum(data.notificationId,data.url,data.nickName,'style="background-color: Silver;"');
+			appendPlayerInterfaceForum(data.notificationId,data.url,data.nickname,'style="background-color: Silver;"');
 			
 		}
 		//群組邀請
@@ -42,6 +42,14 @@ $(document).ready(function() {
 				GroupInvitation(groupId,groupName);
 
 			});
+		}
+		//群組有新成員加入
+		else if(data.type.match("groupMemberJoin") != null){
+
+			var groupName = data.groupName;
+
+			appendGroupMemberJoin(data.notificationId, data.url, data.nickname, groupName, 'style="background-color: Silver;"');
+
 		}
     };
 
@@ -92,7 +100,7 @@ $(document).ready(function() {
 	    		//播放介面的討論區回覆
 				if(result[i].type.match("playerInterfaceReply") != null){
 
-					appendPlayerInterfaceForum(result[i].notificationId,result[i].url,result[i].nickName,backgroundColor);
+					appendPlayerInterfaceForum(result[i].notificationId,result[i].url,result[i].nickname,backgroundColor);
 	    			
 				}
 				//群組邀請
@@ -109,6 +117,15 @@ $(document).ready(function() {
 		    			GroupInvitation(groupId,groupName);
 
 					});
+				}
+
+				//群組有新成員加入
+				else if(result[i].type.match("groupMemberJoin") != null){
+
+					var groupName = result[i].groupName;
+
+					appendGroupMemberJoin(result[i].notificationId, result[i].url, result[i].nickname, groupName, backgroundColor);
+				
 				}
 			}
 
@@ -222,32 +239,6 @@ function reloadPage(){
 }
 //--------------------------------------------------------------------------------------//
 
-//--------------------------append通知(播放介面討論區回復)--------------------------------//
-function appendPlayerInterfaceForum(notificationId,url,nickName,backgroundColor){
-	$('#notificationList').append(
-		'<li onclick="setNotificationIsBrowse('+notificationId+')"'+ backgroundColor+'>'
-	    +'<a href="'+ url +'">'
-	    +'<i class="fa fa-comment text-red"></i>'+ nickName +'回應了你的留言'
-	    +'</a>'
-	    +'</li>'
-	);
-}
-//--------------------------------------------------------------------------------------//
-
-//--------------------------------append通知(群組邀請)-----------------------------------//
-function appendGroupInvitation(groupName,notificationId,backgroundColor){
-	$('#groupInviteText').text("確定要加入「" + groupName + "」嗎?");
-			
-	$('#notificationList').append(
-		'<li onclick="setNotificationIsBrowse('+notificationId+')"'+ backgroundColor+'>'
-        +'<a data-toggle="modal" href="#groupInviteModal">'
-        +'<i class="fa fa-comment text-red"></i>您收到來自「' + groupName + '」的群組邀請'
-        +'</a>'
-        +'</li>'
-	);
-}
-//--------------------------------------------------------------------------------------//
-
 //----------------檢查是否已經加入該群組，若無則加入，加入後送出WebSocket-------------------//
 function GroupInvitation(groupId,groupName){
 	console.log(groupId+"    "+groupName);
@@ -279,18 +270,21 @@ function GroupInvitation(groupId,groupName){
 					},
 					success:function(resp){
 						console.log(resp);
+
 						$('#groupJoinSuccessText').text("您成功加入"+groupName);
 						$('#groupJoinSuccessModal').modal('show');
 
-						// ws.send(JSON.stringify({
-			   //              type: "groupMemberJoin",
-			   //              toUserId: resp.toUserId,
-			   //              notificationId: resp.notificationId,
-			   //              nickname: resp.nickname,
-			   //              groupId: groupId,
-			   //              groupName: groupName
-			   //              url: resp.url
-			   //          }));
+						for(var i = 0;i < resp.length;i ++){
+							ws.send(JSON.stringify({
+				                type: "groupMemberJoin",
+				                toUserId: resp[i].toUserId,
+				                notificationId: resp[i].notificationId,
+				                nickname: resp[i].nickname,
+				                groupId: groupId,
+				                groupName: groupName,
+				                url: resp[i].url
+				            }));
+						}
 					},
 					error:function(xhr, ajaxOptions, thrownError){
 						console.log(xhr);
@@ -306,5 +300,45 @@ function GroupInvitation(groupId,groupName){
 			console.log("notification.js check join group error");
 		}
 	});
+}
+//--------------------------------------------------------------------------------------//
+
+//--------------------------append通知(播放介面討論區回復)--------------------------------//
+function appendPlayerInterfaceForum(notificationId, url, nickname, backgroundColor){
+	$('#notificationList').append(
+		'<li onclick="setNotificationIsBrowse('+notificationId+')"'+ backgroundColor+'>'
+	    +'<a href="'+ url +'">'
+	    +'<i class="fa fa-comment text-red"></i>'+ nickname +'回應了你的留言'
+	    +'</a>'
+	    +'</li>'
+	);
+}
+//--------------------------------------------------------------------------------------//
+
+//--------------------------------append通知(群組邀請)-----------------------------------//
+function appendGroupInvitation(groupName, notificationId, backgroundColor){
+	$('#groupInviteText').text("確定要加入「" + groupName + "」嗎?");
+			
+	$('#notificationList').append(
+		'<li onclick="setNotificationIsBrowse('+notificationId+')"'+ backgroundColor+'>'
+        +'<a data-toggle="modal" href="#groupInviteModal">'
+        +'<i class="fa fa-comment text-red"></i>您收到來自「' + groupName + '」的群組邀請'
+        +'</a>'
+        +'</li>'
+	);
+}
+//--------------------------------------------------------------------------------------//
+
+//--------------------------------append通知(新成員加入)-----------------------------------//
+function appendGroupMemberJoin(notificationId, url, nickname, groupName, backgroundColor){
+	// $('#groupInviteText').text("確定要加入「" + groupName + "」嗎?");
+			
+	$('#notificationList').append(
+		'<li onclick="setNotificationIsBrowse('+notificationId+')"'+ backgroundColor+'>'
+	    +'<a href="'+ url +'">'
+	    +'<i class="fa fa-comment text-red"></i>'+ nickname + '加入了「' + groupName + '」'
+	    +'</a>'
+	    +'</li>'
+	);
 }
 //--------------------------------------------------------------------------------------//

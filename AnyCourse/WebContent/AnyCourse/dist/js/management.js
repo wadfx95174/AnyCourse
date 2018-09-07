@@ -104,9 +104,7 @@ $(function(){
 							},
 							success: function(resp){
 								console.log(resp);
-								$("#inviteSuccess").text("邀請"+$("#named").val()+"成功");
-								$('#inviteSuccessModal').modal( 'show' );
-								
+
 								ws.send(JSON.stringify({
 					                type: "groupInvitation",
 					                toUserId: resp.toUserId,
@@ -116,12 +114,13 @@ $(function(){
 					                groupName: resp.groupName
 					            }));
 
-								
+								$("#inviteSuccess").text("邀請"+$("#named").val()+"成功");
+								$('#inviteSuccessModal').modal( 'show' );
 							},
 							error: function(xhr, ajaxOptions, thrownError){
 								// console.log(xhr);
 								// console.log(thrownError);
-								// console.log(managment.js invite error);
+								console.log("managment.js sendGroupInviteNotification error");
 							}
 						});
 					}

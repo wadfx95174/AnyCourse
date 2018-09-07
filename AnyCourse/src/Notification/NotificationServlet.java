@@ -88,7 +88,6 @@ public class NotificationServlet extends HttpServlet {
 	    }
 		
 		else if(action.equals("agreeGroupInvitation")) {
-			System.out.println("test");
 			
 			url = (String)request.getParameter("url");
 			groupId = Integer.parseInt(request.getParameter("groupId"));

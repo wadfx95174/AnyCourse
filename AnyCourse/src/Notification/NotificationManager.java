@@ -157,7 +157,6 @@ public class NotificationManager {
 				 notification.setNickname(result.getString("nickName"));
 				 notification.setGroupId(result.getInt("groupId"));
 				 notification.setGroupName(result.getString("groupName"));
-//				 notification.setReleaseTime(result.getString("releaseTime"));
 				 notification.setUrl(result.getString("url"));
 				 notification.setIsBrowse(result.getInt("isBrowse"));
 				 notifications.add(notification);
@@ -170,8 +169,7 @@ public class NotificationManager {
 		finally {
 			Close();
 		}
-		String json = new Gson().toJson(notifications);
-		return json;
+		return new Gson().toJson(notifications);
 	}
 	
 	
@@ -266,7 +264,6 @@ public class NotificationManager {
 		{
 			//通知該群組所有人
 			pst = con.prepareStatement("insert into notification value(null,?,?,?,?,?,null,?,?)");
-			System.out.println();
 			for(int i = 0;i < toUserIdList.size();i++) {
 				
 				pst.setString(1, toUserIdList.get(i));
@@ -287,7 +284,6 @@ public class NotificationManager {
 				pst.setString(2, nickname);
 				result = pst.executeQuery();
 				while(result.next()) {
-					System.out.println(i);
 					notification = new Notification();
 					notification.setNotificationId(result.getInt("notificationId"));
 					notification.setToUserId(toUserIdList.get(i));
