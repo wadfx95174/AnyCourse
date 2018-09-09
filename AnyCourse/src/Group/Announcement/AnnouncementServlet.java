@@ -25,6 +25,29 @@ public class AnnouncementServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		AnnouncementManager manager = new AnnouncementManager();
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		String method = request.getParameter("method");
+		int groupId = Integer.parseInt(request.getParameter("groupId"));
+		String userId = (String)session.getAttribute("userId");
+		String title;
+		String content;
+		switch (method)
+		{
+		case "insert":
+			title = request.getParameter("title");
+			content = request.getParameter("content");
+			manager.insertAnnouncement(groupId, userId, title, content);
+			break;
+		case "update":
+			title = request.getParameter("title");
+			content = request.getParameter("content");
+			manager.updateAnnouncement(groupId, userId, title, content);
+			break;
+		case "delete":
+			manager.deleteAnnouncement(groupId, userId);
+			break;
+		}
 	}
 }

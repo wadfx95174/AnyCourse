@@ -12,7 +12,8 @@ import com.google.gson.Gson;
 
 public class AnnouncementManager {
 	private final String selectAnnouncementSQL = "select * from announcement natural join account where groupId = ?";
-	private final String insertAnnouncementSQL = "insert into announcement value (?,?,?,?,?)";
+	private final String insertAnnouncementSQL = "insert into announcement value (?,?,null,?,?)";
+	private final String updateAnnouncementSQL = "update announcement set title = ?, content = ? where groupId = ? and userId = ? ";
 	private final String deleteAnnouncementSQL = "delete from announcement where groupId = ? and userId = ? ";
 	private Connection con = null;
 	private Statement stat = null;
@@ -64,19 +65,35 @@ public class AnnouncementManager {
 		return json;
 	}
 	
-	public void insertAnnouncement(int groupId, String userId, String time, String title, String content)
+	public void insertAnnouncement(int groupId, String userId, String title, String content)
 	{
 		try {
 			pst = con.prepareStatement(insertAnnouncementSQL);
 			pst.setInt(1, groupId);
 			pst.setString(2, userId);
-			pst.setString(3, time);
-			pst.setString(4, title);
-			pst.setString(5, content);
+			pst.setString(3, title);
+			pst.setString(4, content);
 			pst.executeUpdate();
 		} catch(SQLException x) {
 			System.out.println("AnnouncementManager-insertAnnouncement");
-			System.out.println("Exception delete"+x.toString());
+			System.out.println("Exception insert"+x.toString());
+		} finally {
+			Close();
+		}
+	}
+	
+	public void updateAnnouncement(int groupId, String userId, String title, String content)
+	{
+		try {
+			pst = con.prepareStatement(updateAnnouncementSQL);
+			pst.setString(1, title);
+			pst.setString(2, content);
+			pst.setInt(3, groupId);
+			pst.setString(4, userId);
+			pst.executeUpdate();
+		} catch(SQLException x) {
+			System.out.println("AnnouncementManager-updateAnnouncement");
+			System.out.println("Exception update"+x.toString());
 		} finally {
 			Close();
 		}
