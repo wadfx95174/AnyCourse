@@ -234,12 +234,13 @@ public class NotificationManager {
 		}
 	}
 	
-	//取得邀請方群組的成員
-	public ArrayList<String> getInviterGroup(int groupId) {
+	//取得該群組的成員
+	public ArrayList<String> getGroupUsers(int groupId, String userId) {
 		ArrayList<String> toUserIdList = new ArrayList<String>();
 		try {
-			pst = con.prepareStatement("select userId from groupMember where groupId = ?");
+			pst = con.prepareStatement("select userId from groupMember where groupId = ? and userId != ?");
 			pst.setInt(1, groupId);
+			pst.setString(2, userId);
 			result = pst.executeQuery();
 			while(result.next()) {
 				toUserIdList.add(result.getString("userId"));
@@ -247,7 +248,7 @@ public class NotificationManager {
 		}
 		catch (final SQLException x)
 		{
-			System.out.println("NotificationManager-getInviterGroup");
+			System.out.println("NotificationManager-getGroupUsers");
 			System.out.println("Exception insert" + x.toString());
 		} 
 		finally {
@@ -278,23 +279,26 @@ public class NotificationManager {
 			}
 			pst.executeBatch();
 			
-			for(int i = 0 ; i < toUserIdList.size();i++) {
-				pst = con.prepareStatement("select notificationId from notification where userId = ? and nickName = ? order by releaseTime ASC");
-				pst.setString(1, toUserIdList.get(i));
-				pst.setString(2, nickname);
+			int index = 0;
+			
+//			for(int i = 0 ; i < toUserIdList.size();i++) {
+				pst = con.prepareStatement("select notificationId from notification where nickName = ? and type = ? order by releaseTime ASC");
+				pst.setString(1, nickname);
+				pst.setString(2, type);
 				result = pst.executeQuery();
 				while(result.next()) {
 					notification = new Notification();
 					notification.setNotificationId(result.getInt("notificationId"));
-					notification.setToUserId(toUserIdList.get(i));
+					notification.setToUserId(toUserIdList.get(index));
 					notification.setType(type);
 					notification.setNickname(nickname);
 					notification.setGroupId(groupId);
 					notification.setGroupName(groupName);
 					notification.setUrl(url);
 					notifications.add(notification);
+					index++;
 				}
-			}
+//			}
 			
 			//加入群組
 			pst = con.prepareStatement("insert into groupMember value (?,?,?)");
@@ -308,6 +312,65 @@ public class NotificationManager {
 		catch (final SQLException x)
 		{
 			System.out.println("NotificationManager-agreeGroupInvitation");
+			System.out.println("Exception insert" + x.toString());
+		} 
+		finally
+		{
+			Close();
+		}
+//		GsonBuilder builder = new GsonBuilder();
+//		Gson gson = builder.setPrettyPrinting().create();
+//		System.out.println(gson.toJson(notifications));
+		return new Gson().toJson(notifications);
+	}
+	
+	
+	//當該群組有公告時，insert通知提醒該群組其餘成員
+	public String groupAnnouncement(ArrayList<String> toUserIdList,String type,String nickname,int groupId,String groupName,String url,String userId) {
+		notifications = new ArrayList<Notification>();
+		try
+		{
+			//通知該群組所有人
+			pst = con.prepareStatement("insert into notification value(null,?,?,?,?,?,null,?,?)");
+			for(int i = 0;i < toUserIdList.size();i++) {
+				pst.setString(1, toUserIdList.get(i));
+				pst.setString(2, type);
+				pst.setString(3, nickname);
+				pst.setInt(4, groupId);
+				pst.setString(5, groupName);
+				pst.setString(6, url);
+				pst.setInt(7, 0);
+				//先放到batch，等迴圈跑完再一次新增
+				pst.addBatch();
+			}
+			pst.executeBatch();
+			
+			int userNumber = 0;//用來避免重複抓同一個使用者
+			
+			pst = con.prepareStatement("select notificationId from notification where nickName = ? and type = ? order by notificationId DESC");
+			pst.setString(1, nickname);
+			pst.setString(2, type);
+			result = pst.executeQuery();
+			while(result.next()) {
+				//因為可能會抓到已經顯示的通知
+				if(userNumber == toUserIdList.size()) break;
+				
+				notification = new Notification();
+				notification.setNotificationId(result.getInt("notificationId"));
+				notification.setToUserId(toUserIdList.get(userNumber));
+				notification.setType(type);
+				notification.setNickname(nickname);
+				notification.setGroupId(groupId);
+				notification.setGroupName(groupName);
+				notification.setUrl(url);
+				notifications.add(notification);
+				
+				userNumber++;
+			}
+		} 
+		catch (final SQLException x)
+		{
+			System.out.println("NotificationManager-groupAnnouncement");
 			System.out.println("Exception insert" + x.toString());
 		} 
 		finally
