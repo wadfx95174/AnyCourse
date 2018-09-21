@@ -9,6 +9,8 @@ var googleCalendarId = ""; // 存 Google Calendar Id
 var deleteFlag = false; // 存 刪除按鈕是否按下
 var googleFlag = false; // 存 是否登入 Google
 
+var systemEvents;
+
 /* ----------------------------------- Calendar Page Init ----------------------------------- */
 $(function () {
 	checkLogin("../", "../../../");
@@ -43,6 +45,7 @@ $(function () {
 		// 初始化行事曆
 		initCalendar(fullEvents);
 	});
+    systemEvents = $('#calendar').fullCalendar('getEventSources');
 })
 
 /* ----------------------------------- 初始化事件設定 (上) ----------------------------------- */
@@ -465,6 +468,10 @@ function initCalendar(eventSrc)
 // 用 Id 找 fullEvents 裡面物件的 index
 function findEventIndexById(id)
 {
+	console.log('id: ' + id);
+	console.log($.map(fullEvents, function(item, index) {
+			return item.id
+		}).indexOf(id));
 	return $.map(fullEvents, function(item, index) {
  				return item.id
  			}).indexOf(id)
@@ -675,14 +682,34 @@ function updateSigninStatus(isSignedIn) {
 
 function importGoogleEvent()
 {
-	// for (var i = 0; i < googleEvents.length; i++)
-	// {
 
-	// }
 	checkMatch()
-	matchEvents.forEach(function(value, key){
-		
-	});
+//	matchEvents.forEach(function(value, key){
+//		
+//	});
+	for (var i = 0; i < googleEvents.length; i++)
+	{
+		if (matchEvents.has(googleEvents[i].id))
+		{
+//			console.log(getDateTimeFormat(googleEvents[i].start) + ' ' + getDateTimeFormat(googleEvents[i].end));
+			var fullId = parseInt(googleEvents[i].id.substring(12, googleEvents[i].id.length - 14));
+			var eventIndex = findEventIndexById(fullId);
+//			console.log(getDateTimeFormat(googleEvents[i].start));
+//			console.log(getDateTimeFormat(googleEvents[i].end));
+			// 將 Google 日期及時間設置到 系統行事曆
+			fullEvents[eventIndex].start = getDateTimeFormat(googleEvents[i].start);
+			fullEvents[eventIndex].end = getDateTimeFormat(googleEvents[i].end);
+			fullEvents[eventIndex].allDay = fullEvents[eventIndex].start.length <= 10;
+			$('#calendar').fullCalendar('removeEventSource', fullEvents )
+			$('#calendar').fullCalendar('addEventSource', fullEvents )
+//			$('#calendar').fullCalendar('refetchEvents');
+		}
+	}
+}
+
+function test()
+{
+	findEventIndexById(217);
 }
 
 function exportGoogleEvent()
@@ -690,6 +717,20 @@ function exportGoogleEvent()
 	// console.log('EXPORT');
 
 	checkMatch()
+	for (var i = 0; i < googleEvents.length; i++)
+	{
+		if (matchEvents.has(googleEvents[i].id))
+		{
+			var fullId = parseInt(googleEvents[i].id.substring(12, googleEvents[i].id.length - 14));
+			var eventIndex = findEventIndexById(fullId);
+			updateEvent(fullEvents[eventIndex]);
+		}
+	}
+}
+
+function getDateTimeFormat(timeObj)
+{
+	return timeObj.dateTime != undefined ? timeObj.dateTime : timeObj.date;
 }
 
 function checkMatch()
@@ -839,12 +880,14 @@ function updateEvent(event)
 		        'allDay': true,
 		        'start': {
 			      'dateTime': null,
-		          'date': event.start.format('YYYY-MM-DD'),
+//		          'date': event.start.format('YYYY-MM-DD'),
+			      date: event.start.split(' ')[0],
 		          'timeZone': 'Asia/Taipei'
 		        },
 		        'end': {
 				  'dateTime': null,
-		          'date': event.end.format('YYYY-MM-DD'),
+//		          'date': event.end.format('YYYY-MM-DD'),
+			      date: event.end.split(' ')[0],
 		          'timeZone': 'Asia/Taipei'
 		        }
 		     }
