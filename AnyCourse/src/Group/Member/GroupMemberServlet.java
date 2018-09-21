@@ -37,11 +37,7 @@ public class GroupMemberServlet extends HttpServlet {
 	    	response.getWriter().write(manager.checkUserExist((String)request.getParameter("user"), groupId));
 	    	
 	    }
-	    if(action.equals("agreeGroupInvitation")) {
-	    	String nickName = (String)session.getAttribute("nickName");
-	    	manager.agreeGroupInvitation(userId, groupId);
-	    }
-	    else if(action.equals("checkJoinGroup")) {
+	    if(action.equals("checkJoinGroup")) {
 	    	response.getWriter().write(manager.checkJoinGroup(userId, groupId));
 	    }
 	}

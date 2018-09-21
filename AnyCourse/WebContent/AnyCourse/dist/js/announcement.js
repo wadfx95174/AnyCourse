@@ -151,6 +151,8 @@ $(function(){
                         success: function() {
                               // 設置新的公告內容
                               setAnnouncement(id, changeTitle, changeContent);
+                              //通知群組其他成員
+                              groupAnnouncementNotify();
                         },
                         error: function() {
                               console.log('update error');
@@ -171,6 +173,8 @@ $(function(){
                               // 設置新的公告內容
                               setAnnouncement(id, changeTitle, changeContent);
                               sameUserFlag = !sameUserFlag;
+                              //通知群組其他成員
+                              groupAnnouncementNotify();
                         },
                         error: function() {
                               console.log('insert error');
@@ -251,3 +255,36 @@ $(function(){
             return true;
       }
 }) 
+//通知群組其他成員
+function groupAnnouncementNotify(){
+      $.ajax({
+            url:ajaxURL + 'AnyCourse/NotificationServlet.do',
+            method:'POST',
+            cache:false,
+            data:{
+                  'action': "groupAnnouncement",
+                  'groupId': get('groupId'),
+                  'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Announcement.html?groupId=" + get('groupId')
+            },
+            success:function(response){
+                  console.log(response);
+
+                  for(var i = 0;i < response.length;i ++){
+                        ws.send(JSON.stringify({
+                            type: "groupAnnouncement",
+                            toUserId: response[i].toUserId,
+                            notificationId: response[i].notificationId,
+                            nickname: response[i].nickname,
+                            groupId: response[i].groupId,
+                            groupName: response[i].groupName,
+                            url: response[i].url
+                        }));
+                  }
+            },
+            error:function(xhr, ajaxOptions, thrownError){
+                  console.log(xhr);
+                  console.log(thrownError);
+                  console.log("announcement.js insert notification error");
+            }
+      });
+}

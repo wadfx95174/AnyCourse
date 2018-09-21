@@ -1,6 +1,9 @@
 var checkNotificationId;
 var backgroundColor;
 
+var groupArray;
+var checkId;
+
 //載入頁面
 $(document).ready(function() {
 
@@ -46,15 +49,19 @@ $(document).ready(function() {
 		//群組有新成員加入
 		else if(data.type.match("groupMemberJoin") != null){
 
-			var groupName = data.groupName;
+			appendGroupMemberJoin(data.notificationId, data.url, data.nickname, data.groupName, 'style="background-color: Silver;"');
 
-			appendGroupMemberJoin(data.notificationId, data.url, data.nickname, groupName, 'style="background-color: Silver;"');
+		}
+		//群組公告
+		else if(data.type.match("groupAnnouncement") != null){
+
+			appendGroupAnnouncement(data.notificationId, data.url, data.nickname, data.groupName, 'style="background-color: Silver;"');
 
 		}
     };
 
     var notifications = 0;//還未點擊過的通知數量
-    //append通知
+    var noId = 1;
 	$.ajax({
 		url : ajaxURL+'AnyCourse/NotificationServlet.do',
 		method : 'GET',
@@ -63,6 +70,9 @@ $(document).ready(function() {
 			'action': "getNotification"
 		},
 		success:function(result){
+			console.log(result);
+			groupIdArray = new Array();
+			groupNameArray = new Array();
 			for(var i = 0; i < result.length ;i++){
 
 				if(result[i].isBrowse == 0)notifications++;
@@ -92,6 +102,7 @@ $(document).ready(function() {
 			
 			}
 
+			groupArray = new Array(result.length);
 			for(var i = 0 ;i < result.length;i++){
 
 				if(result[i].isBrowse == 0)backgroundColor = 'style="background-color: Silver;"';
@@ -100,33 +111,45 @@ $(document).ready(function() {
 	    		//播放介面的討論區回覆
 				if(result[i].type.match("playerInterfaceReply") != null){
 
-					appendPlayerInterfaceForum(result[i].notificationId,result[i].url,result[i].nickname,backgroundColor);
+					appendPlayerInterfaceForum(noId,result[i].notificationId,result[i].url,result[i].nickname,backgroundColor);
 	    			
 				}
 				//群組邀請
 				else if(result[i].type.match("groupInvitation") != null){
 
-
 					var groupName = result[i].groupName;
 					var groupId = result[i].groupId;
 					
-					appendGroupInvitation(groupName,result[i].notificationId,backgroundColor);
+					appendGroupInvitation(noId,groupName,result[i].notificationId,backgroundColor);
 
-		    		$('#groupInviteButton').click(function(){
+					$('#notificationId_'+noId).click(function(){
+						$('#groupInviteText').text("確定要加入「" + result[checkId-1].groupName + "」嗎?");
+						$('#groupInviteButton').click(function(){
 
-		    			GroupInvitation(groupId,groupName);
+		    				GroupInvitation(result[checkId-1].groupId,result[checkId-1].groupName);
 
-					});
+						});
+					})
+
+		    		
 				}
-
 				//群組有新成員加入
 				else if(result[i].type.match("groupMemberJoin") != null){
 
-					var groupName = result[i].groupName;
-
-					appendGroupMemberJoin(result[i].notificationId, result[i].url, result[i].nickname, groupName, backgroundColor);
+					appendGroupMemberJoin(noId,result[i].notificationId, result[i].url, result[i].nickname, result[i].groupName, backgroundColor);
 				
 				}
+				//群組公告
+				else if(result[i].type.match("groupAnnouncement")){
+
+					appendGroupAnnouncement(noId,result[i].notificationId, result[i].url, result[i].nickname, result[i].groupName, backgroundColor);
+				
+				}
+				noId++;
+				groupArray[i] = new Array(2);
+				groupArray[i][0] = result[i].groupId;
+				groupArray[i][0] = result[i].groupName;
+
 			}
 
 			
@@ -211,7 +234,8 @@ $(document).ready(function() {
 
 
 //-------------------點擊任一通知後，將該通知的isBrowse改為1，代表點擊過-----------------//
-function setNotificationIsBrowse(notificationId){
+function setNotificationIsBrowse(notificationId,noId){
+	checkId = noId;
 	$.ajax({
 		url:ajaxURL + 'AnyCourse/NotificationServlet.do',
 		method:'GET',
@@ -253,7 +277,7 @@ function GroupInvitation(groupId,groupName){
 		success:function(response){
 			//已經加入他群組
 			if(response == "true"){
-				$('#groupHasJoinedText').text('您以加入'+groupName);
+				$('#groupHasJoinedText').text('您已加入'+groupName);
 				$('#groupHasJoinedModal').modal('show');
 			}
 			//尚未加入群組，可以加入
@@ -304,9 +328,9 @@ function GroupInvitation(groupId,groupName){
 //--------------------------------------------------------------------------------------//
 
 //--------------------------append通知(播放介面討論區回復)--------------------------------//
-function appendPlayerInterfaceForum(notificationId, url, nickname, backgroundColor){
+function appendPlayerInterfaceForum(noId,notificationId, url, nickname, backgroundColor){
 	$('#notificationList').append(
-		'<li onclick="setNotificationIsBrowse('+notificationId+')"'+ backgroundColor+'>'
+		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'
 	    +'<a href="'+ url +'">'
 	    +'<i class="fa fa-comment text-red"></i>'+ nickname +'回應了你的留言'
 	    +'</a>'
@@ -316,11 +340,11 @@ function appendPlayerInterfaceForum(notificationId, url, nickname, backgroundCol
 //--------------------------------------------------------------------------------------//
 
 //--------------------------------append通知(群組邀請)-----------------------------------//
-function appendGroupInvitation(groupName, notificationId, backgroundColor){
-	$('#groupInviteText').text("確定要加入「" + groupName + "」嗎?");
-			
+function appendGroupInvitation(noId,groupName, notificationId, backgroundColor){
+	// $('#groupInviteText').text("確定要加入「" + groupName + "」嗎?");
+	
 	$('#notificationList').append(
-		'<li onclick="setNotificationIsBrowse('+notificationId+')"'+ backgroundColor+'>'
+		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'
         +'<a data-toggle="modal" href="#groupInviteModal">'
         +'<i class="fa fa-comment text-red"></i>您收到來自「' + groupName + '」的群組邀請'
         +'</a>'
@@ -330,13 +354,25 @@ function appendGroupInvitation(groupName, notificationId, backgroundColor){
 //--------------------------------------------------------------------------------------//
 
 //--------------------------------append通知(新成員加入)-----------------------------------//
-function appendGroupMemberJoin(notificationId, url, nickname, groupName, backgroundColor){
-	// $('#groupInviteText').text("確定要加入「" + groupName + "」嗎?");
+function appendGroupMemberJoin(noId,notificationId, url, nickname, groupName, backgroundColor){
 			
 	$('#notificationList').append(
-		'<li onclick="setNotificationIsBrowse('+notificationId+')"'+ backgroundColor+'>'
+		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'
 	    +'<a href="'+ url +'">'
 	    +'<i class="fa fa-comment text-red"></i>'+ nickname + '加入了「' + groupName + '」'
+	    +'</a>'
+	    +'</li>'
+	);
+}
+//--------------------------------------------------------------------------------------//
+
+//--------------------------------append通知(群組公告)-----------------------------------//
+function appendGroupAnnouncement(noId,notificationId, url, nickname, groupName, backgroundColor){
+			
+	$('#notificationList').append(
+		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'
+	    +'<a href="'+ url +'">'
+	    +'<i class="fa fa-comment text-red"></i>' + nickname + '在「' + groupName + '」發出公告'
 	    +'</a>'
 	    +'</li>'
 	);
