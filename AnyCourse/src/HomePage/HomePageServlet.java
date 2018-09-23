@@ -78,7 +78,6 @@ public class HomePageServlet extends HttpServlet {
 			response.getWriter().write(gson.toJson(homePages));
 		}
 		else if(request.getParameter("action").equals("addToVideoList")) {
-			System.out.println("a");
 			homePageDatabaseManager.addToVideoList(Integer.parseInt(request.getParameter("unitId")), 
 					Integer.parseInt(request.getParameter("courselistId")));
 		}

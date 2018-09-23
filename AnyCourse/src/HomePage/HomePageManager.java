@@ -573,7 +573,7 @@ public class HomePageManager {
 		}
 	}
 	
-	//將首頁的清單中的所有單元影片加入課程計畫中
+	//取得該使用者所有清單
 	public ArrayList<HomePage> getVideoListName(String userId){
 		homePages = new ArrayList<HomePage>();
 		try {
@@ -609,7 +609,7 @@ public class HomePageManager {
 			result = pst.executeQuery();
 			if(result.next())maxOrder = result.getInt("MAX(oorder)");
 			
-			pst = con.prepareStatement("insert into customListVideo (courselistId,unitId,oorder) value(?,?,?)");
+			pst = con.prepareStatement("insert ignore into customListVideo (courselistId,unitId,oorder) value(?,?,?)");
 			pst.setInt(1, courselistId);
 			pst.setInt(2, unitId);
 			pst.setInt(3, ++maxOrder);

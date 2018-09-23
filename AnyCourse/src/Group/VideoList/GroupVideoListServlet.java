@@ -45,7 +45,22 @@ public class GroupVideoListServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Cache-Control","max-age=0");
+		HttpSession session = request.getSession();
+		String userId = (String)session.getAttribute("userId");
+		GroupVideoListManager manager = new GroupVideoListManager();
 		
+		String action = request.getParameter("action");
+		
+		if(action.equals("addToCoursePlanList")) {
+			manager.addToCoursePlanList(userId
+					,Integer.parseInt(request.getParameter("courselistId"))
+					,(String)request.getParameter("creator"));
+		}
+		else if(action.equals("addToVideoList")) {
+			manager.addToVideoList(userId, Integer.parseInt(request.getParameter("courselistId")));
+		}
 	}
 
 }

@@ -40,7 +40,7 @@ public class CoursePlanServlet extends HttpServlet {
 			response.getWriter().write(gson.toJson(coursePlans));
 		}
 		else if(request.getParameter("action").equals("getAllUnit")) {
-			coursePlans = coursePlanManager.getCoursePlanAllList(userId);
+			coursePlans = coursePlanManager.getAllUnit(userId);
 			response.getWriter().write(gson.toJson(coursePlans));
 		}
 		

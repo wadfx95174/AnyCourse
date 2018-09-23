@@ -29,7 +29,7 @@ public class CalendarServlet extends HttpServlet {
 		else if (request.getParameter("method").equals("getCoursePlan"))
 		{
 			CoursePlanManager coursePlanManager = new CoursePlanManager();
-			response.getWriter().write(new Gson().toJson(coursePlanManager.getCoursePlanAllList(userId)));
+			response.getWriter().write(new Gson().toJson(coursePlanManager.getAllUnit(userId)));
 		}
 		else if (request.getParameter("method").equals("getVideoList"))
 		{

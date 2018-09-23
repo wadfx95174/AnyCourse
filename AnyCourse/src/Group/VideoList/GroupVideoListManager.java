@@ -119,6 +119,73 @@ public class GroupVideoListManager {
 		return new Gson().toJson(groupVideoLists);
 	}
 	
+	//將指定共同清單的影片加入至個人課程計畫
+	public void addToCoursePlanList(String userId,int courselistId,String creator) {
+		groupVideoLists = new ArrayList<GroupVideoList>();
+		int maxOrder = 0;
+		try {
+			pst = con.prepareStatement("select Max(oorder) from personalPlan where status = 1 and "
+					+ "userId = ?");
+			pst.setString(1, userId);
+			result = pst.executeQuery();
+			if(result.next())maxOrder = result.getInt("MAX(oorder)");
+			
+			pst = con.prepareStatement("select unitId from customListVideo where courselistId = ?");
+			pst.setInt(1, courselistId);
+			result = pst.executeQuery();
+			
+			while(result.next()) {
+				groupVideoList = new GroupVideoList();
+				groupVideoList.setUnitId(result.getInt("unitId"));
+				groupVideoLists.add(groupVideoList);
+			}
+			
+			pst = con.prepareStatement("insert ignore into personalPlan (userId,unitId,lastTime,status,oorder,creator) value(?,?,0,1,?,?)");
+			for(int i = 0;i < groupVideoLists.size();i++) {
+				
+				pst.setString(1, userId);
+				pst.setInt(2, groupVideoLists.get(i).getUnitId());
+				pst.setInt(3, ++maxOrder);
+				pst.setString(4, creator);
+				//先放到batch，等迴圈跑完再一次新增
+				pst.addBatch();
+			}
+			pst.executeBatch();
+		}
+		catch(SQLException x){
+			System.out.println("GroupVideoListManager-addToCoursePlanList");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
+	
+	//將指定共同清單的影片加入至個人課程清單
+	public void addToVideoList(String userId,int courselistId) {
+		int maxOrder = 0;
+		try {
+			pst = con.prepareStatement("select Max(oorder) from list where userId = ?");
+			pst.setString(1, userId);
+			result = pst.executeQuery();
+			if(result.next())maxOrder = result.getInt("MAX(oorder)");
+			
+			pst = con.prepareStatement("insert ignore into list (userId,courselistId,oorder) value(?,?,?)");
+			pst.setString(1, userId);
+			pst.setInt(2, courselistId);
+			pst.setInt(3, ++maxOrder);
+			//先放到batch，等迴圈跑完再一次新增
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("GroupVideoListManager-addToVideoList");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
 	
 	public void Close() {
 		try {
@@ -133,7 +200,7 @@ public class GroupVideoListManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("VideoList Close Error");
+			System.out.println("GroupVideoListManager Close Error");
 			System.out.println("Close Exception :" + e.toString()); 
 		}		
 	} 
@@ -144,7 +211,7 @@ public class GroupVideoListManager {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("VideoList Connection Close Error");
+			System.out.println("GroupVideoListManager Connection Close Error");
 			System.out.println("Close Exception :" + e.toString()); 
 		}
 	}

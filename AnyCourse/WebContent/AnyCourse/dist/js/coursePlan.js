@@ -59,7 +59,7 @@ $(document).ready(function() {
 				$('#wantList li,#ingList li,#doneList li').each(function(){
 					$(this).remove();
 				});
-				// console.log(response);
+				console.log(response);
 				unitArray = new Array(response.length);
 				showUnitUL(response,unitArray);
 			},
@@ -255,11 +255,11 @@ function showUnitUL(result,unitArray){
 				courselistId:$('#addToVideoListModalBody').val(),
 				unitId:unitArray[checkUnitId-1][0]
 			},
-			success:function(result){
-				for(var i = 0;i < result.length;i++){
-					$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
-				}
-			},
+			// success:function(result){
+			// 	for(var i = 0;i < result.length;i++){
+			// 		$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
+			// 	}
+			// },
 			error:function(){
 				console.log("add video to courselist error");
 			}

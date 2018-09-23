@@ -251,6 +251,7 @@ public class VideoListManager {
 			pst.setString(1, userId);
 			result = pst.executeQuery();
 			if(result.next())maxOrder = result.getInt("MAX(oorder)");
+			
 			pst = con.prepareStatement("select unitId from customListVideo where courselistId = ?");
 			pst.setInt(1, courselistId);
 			result = pst.executeQuery();

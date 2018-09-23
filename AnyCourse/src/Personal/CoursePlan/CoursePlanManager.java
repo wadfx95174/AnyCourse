@@ -122,15 +122,17 @@ public class CoursePlanManager {
 	}
 	
 	//取得該使用者課程計畫所有影片
-	public ArrayList<CoursePlan> getCoursePlanAllList(String userId){
+	public ArrayList<CoursePlan> getAllUnit(String userId){
 		coursePlans = new ArrayList<CoursePlan>();
 		try {
-			stat = con.createStatement();
-			result = stat.executeQuery("select * from personalPlan,unit,customListVideo,courselist where "
+			pst = con.prepareStatement("select * from personalPlan,unit,customListVideo,courselist where "
 					+ "personalPlan.unitId = unit.unitId and "
 					+ "unit.unitId = customListVideo.unitId and "
 					+ "customListVideo.courselistId = courselist.courselistId and "
-					+ "personalPlan.userId = '"+userId +"' order by personalPlan.oorder ASC");
+					+ "personalPlan.creator = courselist.creator and "
+					+ "personalPlan.userId = ? order by personalPlan.oorder ASC");
+			pst.setString(1, userId);
+			result = pst.executeQuery();
 			while(result.next()) {
 				coursePlan = new CoursePlan();
 				coursePlan.setCourselistId(result.getInt("courselist.courselistId"));
@@ -159,7 +161,7 @@ public class CoursePlanManager {
 			} 
 		}
 		catch(SQLException x){
-			System.out.println("CoursePlan-getCoursePlanAllList");
+			System.out.println("CoursePlan-getAllUnit");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
