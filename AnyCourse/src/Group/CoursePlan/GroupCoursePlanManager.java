@@ -97,7 +97,7 @@ public class GroupCoursePlanManager {
 				groupCoursePlan.setUnitId(result.getInt("unit.unitId"));
 				groupCoursePlan.setStatus(result.getInt("groupPlan.status"));//狀態
 				groupCoursePlan.setOorder(result.getInt("oorder"));
-				
+				groupCoursePlan.setCreator(result.getString("creator"));
 				if(result.getString("unit.videoImgSrc") == "") {
 					groupCoursePlan.setVideoImgSrc("https://i.imgur.com/eKSYvRv.png");
 				}

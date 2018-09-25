@@ -157,6 +157,7 @@ function checkLogin(htmlUrl, servletUrl)
 
     			for (var keys in result.groups)
 				{
+                    console.log(result.groups);
         			$('#group').append('<li>'
         					+'<a href="'+ htmlUrl +'Group/Management.html?groupId=' + result.groups[keys] + '">'
         					+'<span>' + keys + '</span>'

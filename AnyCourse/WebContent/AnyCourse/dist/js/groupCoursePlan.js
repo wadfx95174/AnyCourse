@@ -251,8 +251,12 @@ function showUnitUL(result,unitArray){
                         +'</button>'
                         +'<ul class="dropdown-menu">'
                         +'<li><a data-toggle="modal" data-target="#addToVideoList" onclick="getUnitId('+videoId+')" style="cursor:pointer;" class=" waves-effect waves-block">'
-                        +'<i class="ion ion-clipboard"></i>新增至課程清單'
-                        +'</a></li></ul>'
+                        +'<i class="ion ion-clipboard"></i>新增至個人課程清單'
+                        +'</a></li>'
+                        +'<li><a data-toggle="modal" data-target="#addToCoursePlan" onclick="getUnitId('+videoId+')" style="cursor:pointer;" class=" waves-effect waves-block">'
+                        +'<i class="fa fa-tasks"></i>新增至個人課程計畫'
+                        +'</a></li>'
+                        +'</ul>'
                         +'</div>'
                         +'<span class="pull-right">' 
                         +'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal"'
@@ -281,8 +285,10 @@ function showUnitUL(result,unitArray){
             unitArray[j] = new Array(2);
             unitArray[j][0] = result[j].unitId;
             unitArray[j][1] = result[j].courselistId;
+            unitArray[j][2] = result[j].creator;
       }
-      //將計畫中的影片新增至指定清單
+
+      //將共同計畫中的影片新增至個人的指定清單
       $('#addToVideoListButton').click(function(){
             $.ajax({
                   url : ajaxURL+'AnyCourse/HomePageServlet.do',
@@ -293,15 +299,27 @@ function showUnitUL(result,unitArray){
                         courselistId:$('#addToVideoListModalBody').val(),
                         unitId:unitArray[checkUnitId-1][0]
                   },
-                  success:function(result){
-                        for(var i = 0;i < result.length;i++){
-                              $('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
-                        }
-                  },
                   error:function(){
                         console.log("add video to courselist error");
                   }
             });
+      });
+
+      //將共同計畫中的影片新增至個人課程計畫
+      $('#addToCoursePlanButton,#addToCoursePlanButtonClose').click(function(){
+            $.ajax({
+                  url : ajaxURL+'AnyCourse/HomePageServlet.do',
+                  method : 'POST',
+                  cache: false,
+                  data:{
+                        action:'addToCoursePlan',
+                        unitId:unitArray[checkUnitId-1][0],
+                        creator:unitArray[checkUnitId-1][2]
+                  },
+                  error:function(){
+                        console.log("groupVideoList.js addToCoursePlan Error!");
+                  }
+            })
       });
 }
 

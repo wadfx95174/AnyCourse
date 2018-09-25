@@ -325,8 +325,8 @@ public class NotificationManager {
 	}
 	
 	
-	//當該群組有公告時，insert通知提醒該群組其餘成員
-	public String groupAnnouncement(ArrayList<String> toUserIdList,String type,String nickname,int groupId,String groupName,String url,String userId) {
+	//當群組各個頁面有通知時呼叫此method
+	public String groupNotification(ArrayList<String> toUserIdList,String type,String nickname,int groupId,String groupName,String url,String userId) {
 		notifications = new ArrayList<Notification>();
 		try
 		{
@@ -370,7 +370,7 @@ public class NotificationManager {
 		} 
 		catch (final SQLException x)
 		{
-			System.out.println("NotificationManager-groupAnnouncement");
+			System.out.println("NotificationManager-groupNotification");
 			System.out.println("Exception insert" + x.toString());
 		} 
 		finally

@@ -250,7 +250,7 @@
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-body">
-					<b>確定要刪除嗎?</b>
+					<h4>確定要刪除嗎?</h4>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -268,7 +268,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-body">
-					<b>確定要刪除嗎?</b>
+					<h4>確定要刪除嗎?</h4>
 				</div>
 				<div class="modal-footer">
 					<button id="deleteListButton2" type="button"
@@ -345,7 +345,7 @@
 			    	<b class="modal-title" style="font-size:24px;">提示</b>
 			    </div>
 				<div class="modal-body">
-					<b>已新增至課程計畫</b>
+					<h4>已新增至課程計畫</h4>
 				</div>
 				<div class="modal-footer">
 					<button id="addToCoursePlanButton" type="button"
@@ -369,7 +369,7 @@
 			    	<b class="modal-title" style="font-size:24px;">提示</b>
 			    </div>
 				<div class="modal-body">
-					<b>已新增至課程計畫</b>
+					<h4>已新增至課程計畫</h4>
 				</div>
 				<div class="modal-footer">
 					<button id="addToCoursePlanButtonList" type="button"
@@ -393,11 +393,31 @@
 			    	<b class="modal-title" style="font-size:24px;">提示</b>
 			    </div>
 				<div class="modal-body">
-					<b>已分享至所有人</b>
+					<h4>已分享至所有人</h4>
 				</div>
 				<div class="modal-footer">
 					<button id="shareVideoListButton" type="button"
 						class="btn btn-primary" data-dismiss="modal">關閉</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 將清單分享至指定群組 -->
+	<div class="modal fade" id="shareVideoListToGroup" tabindex="-1" role="dialog"
+		aria-labelledby="shareVideoListToGroup" aria-hidden="true">
+		
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+			    	<b class="modal-title" style="font-size:24px;">提示</b>
+			    </div>
+				<div class="modal-body">
+					<select id="shareVideoListToGroupModalBody" name="shareVideoListToGroupBody"></select>
+				</div>
+				<div class="modal-footer">
+					<button id="shareVideoListToGroupButton" type="button"
+						class="btn btn-primary" data-dismiss="modal">確定</button>
 				</div>
 			</div>
 		</div>

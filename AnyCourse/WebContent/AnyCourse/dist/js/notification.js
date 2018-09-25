@@ -6,6 +6,7 @@ var checkId;
 
 //載入頁面
 $(document).ready(function() {
+	var noId = 1;
 
 	ws.onmessage = function(event){
 		console.log(event);
@@ -29,7 +30,7 @@ $(document).ready(function() {
 		//播放介面-討論區"回覆"通知
 		if(data.type.match("playerInterfaceReply") != null){
 
-			appendPlayerInterfaceForum(data.notificationId,data.url,data.nickname,'style="background-color: Silver;"');
+			appendPlayerInterfaceForum(noId,data.notificationId,data.url,data.nickname,'style="background-color: Silver;"');
 			
 		}
 		//群組邀請
@@ -38,7 +39,7 @@ $(document).ready(function() {
 			var groupName = data.groupName;
 			var groupId = data.groupId;
 
-			appendGroupInvitation(groupName,data.notificationId,'style="background-color: Silver;"');
+			appendGroupInvitation(noId,groupName,data.notificationId,'style="background-color: Silver;"');
 
 			$('#groupInviteButton').click(function(){
 
@@ -49,19 +50,50 @@ $(document).ready(function() {
 		//群組有新成員加入
 		else if(data.type.match("groupMemberJoin") != null){
 
-			appendGroupMemberJoin(data.notificationId, data.url, data.nickname, data.groupName, 'style="background-color: Silver;"');
+			appendGroupNotification(noId,data.notificationId, data.url
+				,'style="background-color: Silver;"'
+				,data.nickname + '加入了「' + data.groupName + '」');
 
 		}
 		//群組公告
 		else if(data.type.match("groupAnnouncement") != null){
 
-			appendGroupAnnouncement(data.notificationId, data.url, data.nickname, data.groupName, 'style="background-color: Silver;"');
+			appendGroupNotification(noId,data.notificationId, data.url
+				,'style="background-color: Silver;"'
+				,data.nickname + '在「' + data.groupName + '」發出公告');
 
 		}
+		//群組共同清單
+		else if(data.type.match("shareVideoListToGroup") != null){
+
+			appendGroupNotification(noId,data.notificationId, data.url
+				,'style="background-color: Silver;"'
+				,data.nickname + '在「' + data.groupName + '」分享課程清單');
+
+		}
+		//群組共同計劃
+		else if(data.type.match("shareCoursePlanToGroup") != null){
+
+			appendGroupNotification(noId,data.notificationId, data.url
+				,'style="background-color: Silver;"'
+				,data.nickname + '在「' + data.groupName + '」分享課程計畫');
+
+		}
+		//群組討論區_提問
+		else if(data.type.match("groupComment") != null){
+
+
+
+		}
+		//群組討論區_回覆
+		else if(data.type.match("groupReply") != null){
+			
+		}
+		noId++;
     };
 
     var notifications = 0;//還未點擊過的通知數量
-    var noId = 1;
+    
 	$.ajax({
 		url : ajaxURL+'AnyCourse/NotificationServlet.do',
 		method : 'GET',
@@ -136,15 +168,44 @@ $(document).ready(function() {
 				//群組有新成員加入
 				else if(result[i].type.match("groupMemberJoin") != null){
 
-					appendGroupMemberJoin(noId,result[i].notificationId, result[i].url, result[i].nickname, result[i].groupName, backgroundColor);
+					appendGroupNotification(noId,result[i].notificationId
+						, result[i].url, backgroundColor
+						,result[i].nickname + '加入了「' + result[i].groupName + '」');
 				
 				}
 				//群組公告
-				else if(result[i].type.match("groupAnnouncement")){
+				else if(result[i].type.match("groupAnnouncement") != null){
 
-					appendGroupAnnouncement(noId,result[i].notificationId, result[i].url, result[i].nickname, result[i].groupName, backgroundColor);
+					appendGroupNotification(noId,result[i].notificationId
+						, result[i].url, backgroundColor
+						,result[i].nickname + '在「' + result[i].groupName + '」發出公告');
 				
 				}
+				//群組共同清單
+				else if(result[i].type.match("shareVideoListToGroup") != null){
+
+					appendGroupNotification(noId,result[i].notificationId
+						, result[i].url, backgroundColor
+						,result[i].nickname + '在「' + result[i].groupName + '」分享課程清單');
+
+				}
+				//群組共同計畫
+				else if(result[i].type.match("shareCoursePlanToGroup") != null){
+
+					appendGroupNotification(noId,result[i].notificationId
+						, result[i].url, backgroundColor
+						,result[i].nickname + '在「' + result[i].groupName + '」分享課程計畫');
+
+				}
+				//群組討論區_提問
+				else if(result[i].type.match("groupComment") != null){
+
+				}
+				//群組討論區_回覆
+				else if(result[i].type.match("groupReply") != null){
+
+				}
+
 				noId++;
 				groupArray[i] = new Array(2);
 				groupArray[i][0] = result[i].groupId;
@@ -353,26 +414,13 @@ function appendGroupInvitation(noId,groupName, notificationId, backgroundColor){
 }
 //--------------------------------------------------------------------------------------//
 
-//--------------------------------append通知(新成員加入)-----------------------------------//
-function appendGroupMemberJoin(noId,notificationId, url, nickname, groupName, backgroundColor){
+//--------------------------------append群組通知(群組邀請除外)-----------------------------------//
+function appendGroupNotification(noId,notificationId, url, backgroundColor,message){
 			
 	$('#notificationList').append(
 		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'
 	    +'<a href="'+ url +'">'
-	    +'<i class="fa fa-comment text-red"></i>'+ nickname + '加入了「' + groupName + '」'
-	    +'</a>'
-	    +'</li>'
-	);
-}
-//--------------------------------------------------------------------------------------//
-
-//--------------------------------append通知(群組公告)-----------------------------------//
-function appendGroupAnnouncement(noId,notificationId, url, nickname, groupName, backgroundColor){
-			
-	$('#notificationList').append(
-		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'
-	    +'<a href="'+ url +'">'
-	    +'<i class="fa fa-comment text-red"></i>' + nickname + '在「' + groupName + '」發出公告'
+	    +'<i class="fa fa-comment text-red"></i>' + message
 	    +'</a>'
 	    +'</li>'
 	);

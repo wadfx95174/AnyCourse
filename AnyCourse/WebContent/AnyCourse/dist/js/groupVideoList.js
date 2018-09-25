@@ -337,7 +337,7 @@ $(document).ready(function() {
 	// 	}
 	// });
 	
-	//將個別影片新增至課程計畫
+	//將共同清單中的個別影片新增至課程計畫
 	$('#addToCoursePlanButton,#addToCoursePlanButtonClose').click(function(){
 		$.ajax({
 			url : ajaxURL+'AnyCourse/HomePageServlet.do',
@@ -373,7 +373,7 @@ $(document).ready(function() {
 
 
 	
-	// 將指定清單加入個人課程清單
+	// 將共同清單中的完整指定清單加入個人課程清單
 	$('#addToVideoListButton,#addToVideoListCloseButton').click(function(){
 		$.ajax({
 			url:ajaxURL+'AnyCourse/GroupVideoListServlet.do',
@@ -389,7 +389,7 @@ $(document).ready(function() {
 		});
 	});
 
-	//將共同計畫中的影片新增至指定清單
+	//將共同清單中的影片新增至指定清單
 	$('#addToAssignVideoListButton').click(function(){
 		$.ajax({
 			url : ajaxURL+'AnyCourse/HomePageServlet.do',

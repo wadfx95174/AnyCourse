@@ -270,7 +270,7 @@
 
 
 
-	<!--addToVideoList-->
+	<!-- 將共同計劃中的個別影片新增至個人的指定課程清單 -->
 	<div class="modal fade" id="addToVideoList" tabindex="-1" role="dialog"
 		aria-labelledby="addToVideoList" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
@@ -287,6 +287,29 @@
 				<div class="modal-footer">
 					<input id="addToVideoListButton" type="button"
 						class="btn btn-primary" data-dismiss="modal" value="確定">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 將共同計劃中的個別影片新增至個人課程計畫 -->
+	<div class="modal fade" id="addToCoursePlan" tabindex="-1" role="dialog"
+		aria-labelledby="addToCoursePlan" aria-hidden="true">
+		
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+			    	<button id="addToCoursePlanButtonClose" type="button" class="close" data-dismiss="modal" aria-label="Close">
+			    	<span aria-hidden="true">×</span>
+			    	</button>
+			    	<b class="modal-title" style="font-size:24px;">提示</b>
+			    </div>
+				<div class="modal-body">
+					<b>已新增至個人課程計畫</b>
+				</div>
+				<div class="modal-footer">
+					<button id="addToCoursePlanButton" type="button"
+						class="btn btn-primary" data-dismiss="modal">關閉</button>
 				</div>
 			</div>
 		</div>
