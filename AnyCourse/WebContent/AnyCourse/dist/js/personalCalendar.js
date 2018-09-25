@@ -353,11 +353,11 @@ function initCalendar(eventSrc)
         	    if (confirm('確定要刪除 "'+event.title+'"')) 
         	    {
               	    // 若是Google日曆的event，則直接刪除Google日曆上的event
-        		    if (event.googleEventId != null)
-        		    {
-	        		    deleteEvent(event);
-        			    $('#calendar').fullCalendar('removeEvents', event.id)
-        		    }
+        		    // if (event.googleEventId != null)
+        		    // {
+	        		//     deleteEvent(event);
+        			//     $('#calendar').fullCalendar('removeEvents', event.id)
+        		    // }
         		    // 刪除資料庫		  
         		    $.ajax({
 	            		url : ajaxURL+'AnyCourse/CalendarServlet.do',
@@ -394,10 +394,10 @@ function initCalendar(eventSrc)
       	    console.log(event);
 
       	    // 若是Google日曆的event，則直接更新到Google日曆
-      	    if (event.googleEventId != null)
-  		    {
-      	 	    updateEvent(event);
-  		    }
+      	    // if (event.googleEventId != null)
+  		    // {
+      	 	//     updateEvent(event);
+  		    // }
       	    // 更新資料庫
   		    $.post(ajaxURL+"AnyCourse/CalendarServlet.do", 
   		    	{
@@ -418,24 +418,24 @@ function initCalendar(eventSrc)
       	    console.log(event.allDay);
       	    
       	    // 若是Google日曆的event，則直接更新到Google日曆
-      	    if (event.googleEventId != null)
-  		    {
-      	    	// 若沒有end且不是allday，預設為開始時間 +2 小時
-      	    	if (event.end == null)
-      	    	{
-      	    		if (event.allDay != true)
-      	    		{
-          	    		event.end = moment(event.start);
-          	    		event.end.hour(event.end.hour()+2);
-      	    		}
-      	    		else
-      	    		{
-          	    		event.end = moment(event.start);
-          	    		event.end.day(event.end.day()+1);
-      	    		}
-      	    	}
-      	 	    updateEvent(event);
-  		    }
+      	    // if (event.googleEventId != null)
+  		    // {
+      	    // 	// 若沒有end且不是allday，預設為開始時間 +2 小時
+      	    // 	if (event.end == null)
+      	    // 	{
+      	    // 		if (event.allDay != true)
+      	    // 		{
+          	//     		event.end = moment(event.start);
+          	//     		event.end.hour(event.end.hour()+2);
+      	    // 		}
+      	    // 		else
+      	    // 		{
+          	//     		event.end = moment(event.start);
+          	//     		event.end.day(event.end.day()+1);
+      	    // 		}
+      	    // 	}
+      	 	//     updateEvent(event);
+  		    // }
       	    // 更新資料庫
       	    if (event.end != null)
   	            $.post(ajaxURL+"AnyCourse/CalendarServlet.do",
@@ -457,8 +457,8 @@ function initCalendar(eventSrc)
       		  		    start: event.start.toISOString(),
       		  		    allDay: event.allDay,
       		  		    method: "update"
-      			    });
-  	        $('#calendar').fullCalendar('refetchEvents');
+					  });
+			$('#calendar').fullCalendar('refetchEvents');
   	        fullEvents.splice(findEventIndexById(event.id), 1); // 刪除 1 個元素
   	        addToFullEvents(event); 
         } // end eventDrop
@@ -490,6 +490,11 @@ function addToFullEvents(event)
 		borderColor: event.borderColor,
 		allDay: event.allDay
 	};
+	if (event.googleEventId != undefined)
+	{
+		newEventObject.googleEventId = event.googleEventId;
+		console.log(event.googleEventId);
+	}
 	fullEvents.push(newEventObject);
 }
 
@@ -684,6 +689,7 @@ function importGoogleEvent()
 {
 
 	checkMatch()
+	var tempMatchEvents = matchEvents;
 //	matchEvents.forEach(function(value, key){
 //		
 //	});
@@ -702,14 +708,30 @@ function importGoogleEvent()
 			fullEvents[eventIndex].allDay = fullEvents[eventIndex].start.length <= 10;
 			$('#calendar').fullCalendar('removeEventSource', fullEvents )
 			$('#calendar').fullCalendar('addEventSource', fullEvents )
-//			$('#calendar').fullCalendar('refetchEvents');
+			$('#calendar').fullCalendar('refetchEvents');
+			tempMatchEvents.delete(googleEvents[i].id);
 		}
 	}
-}
-
-function test()
-{
-	findEventIndexById(217);
+	for (var value of tempMatchEvents.values())
+	{
+		$.ajax({
+			url : ajaxURL+'AnyCourse/CalendarServlet.do',
+			method: 'POST',
+			cache :false,
+			data: {
+				eventId: value.id,
+					 method: "delete"
+			},
+			error: function(){
+				console.log("Delete Event Fail");
+			},
+			success: function(){
+				// 從fullcalendar上移除
+				$('#calendar').fullCalendar('removeEvents', value.id)
+			}
+		});
+		fullEvents.splice(findEventIndexById(value.id), 1); // 刪除 1 個元素
+	}
 }
 
 function exportGoogleEvent()
@@ -723,8 +745,23 @@ function exportGoogleEvent()
 		{
 			var fullId = parseInt(googleEvents[i].id.substring(12, googleEvents[i].id.length - 14));
 			var eventIndex = findEventIndexById(fullId);
+			console.log(eventIndex);
+			console.log(fullEvents[eventIndex]);
+
 			updateEvent(fullEvents[eventIndex]);
 		}
+		else
+		{
+			var request = gapi.client.calendar.events.delete({
+				'calendarId': googleCalendarId,
+				'eventId': googleEvents[i].id,
+			});
+			request.execute();
+		}
+	}
+	for (var i = 0; i < unmatchEvents.length; i++)
+	{
+		addEvent(unmatchEvents[i]);
 	}
 }
 
@@ -736,7 +773,7 @@ function getDateTimeFormat(timeObj)
 function checkMatch()
 {
 	// 初始化
-	matchEvents.clear;
+	matchEvents.clear();
 	unmatchEvents = [];
 	for (var i = 0; i < fullEvents.length; i++)
 	{
@@ -745,13 +782,6 @@ function checkMatch()
 		else
 			unmatchEvents.push(fullEvents[i]);
 	}
-	console.log(matchEvents);
-	console.log(unmatchEvents);
-
-	// for (var eventObj of matchEvents.keys())
-	// {
-	// 	console.log(eventObj);
-	// }
 }
 
 /**
@@ -772,8 +802,11 @@ function handleAuthClick(event) {
 function addEvent(event)
 {
 	var date = moment().format("YYYYMMDDHHmmss");
+	console.log(event);
 	console.log(date);
 	console.log(event.url);
+	console.log(event.start);
+	console.log(event.end);
 	if (!event.allDay)	// 存 AllDay (dateTime)
 	{
 		var request = gapi.client.calendar.events.insert({
@@ -784,11 +817,11 @@ function addEvent(event)
 		        'description':event.url,
 		        'id':'fullcalendar' + event.id + date,
 		        'start': {
-		          'dateTime': event.start.toISOString(),
+		          'dateTime': moment(event.start).toISOString(),
 		          'timeZone': 'Asia/Taipei'
 		        },
 		        'end': {
-		          'dateTime': event.end.toISOString(),
+		          'dateTime': moment(event.end).toISOString(),
 		          'timeZone': 'Asia/Taipei'
 		        }
 		     }
@@ -804,11 +837,11 @@ function addEvent(event)
 		        'description':event.url,
 		        'id':'fullcalendar' + event.id + date,
 		        'start': {
-			          'date': event.start,
+			          'date': event.start.split(' ')[0],
 			          'timeZone': 'Asia/Taipei'
 		        },
 		        'end': {
-			          'date': event.end,
+			          'date': event.end.split(' ')[0],
 			          'timeZone': 'Asia/Taipei'
 		        }
 		     }
@@ -833,7 +866,6 @@ function addEvent(event)
         		},
         		success: function(){
         			console.log("success insertGC");
-	  	            $('#calendar').fullCalendar('renderEvent', event, true);
         		}
         	}); // end ajax  
     	} // end if
