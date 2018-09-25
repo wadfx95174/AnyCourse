@@ -82,7 +82,9 @@ $(document).ready(function() {
 		//群組討論區_提問
 		else if(data.type.match("groupComment") != null){
 
-
+			appendGroupNotification(noId,data.notificationId, data.url
+				,'style="background-color: Silver;"'
+				,data.nickname + '在「' + data.groupName + '」提出問題');
 
 		}
 		//群組討論區_回覆
@@ -193,12 +195,16 @@ $(document).ready(function() {
 				else if(result[i].type.match("shareCoursePlanToGroup") != null){
 
 					appendGroupNotification(noId,result[i].notificationId
-						, result[i].url, backgroundColor
+						,result[i].url, backgroundColor
 						,result[i].nickname + '在「' + result[i].groupName + '」分享課程計畫');
 
 				}
 				//群組討論區_提問
 				else if(result[i].type.match("groupComment") != null){
+
+					appendGroupNotification(noId,result[i].notificationId
+						,result[i].url, backgroundColor
+						,result[i].nickname + '在「' + result[i].groupName + '」提出問題');
 
 				}
 				//群組討論區_回覆

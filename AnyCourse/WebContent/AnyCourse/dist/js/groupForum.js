@@ -53,32 +53,37 @@ function setComment(){
 	    			);
 
 				//發出問題後通知其他群組成員
-				$.ajax({
-						url : ajaxURL+'AnyCourse/NotificationServlet.do',
-						method : 'POST',
-						cache :false,
-						data : {
-							'action' : "groupNotification",
-							'commentId' : id,
-							'groupId' : get('groupId'),
-							'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/VideoListPage.html?groupId=" + get('groupId'),
-							'type': "groupComment",
+				// $.ajax({
+				// 		url : ajaxURL+'AnyCourse/NotificationServlet.do',
+				// 		method : 'POST',
+				// 		cache :false,
+				// 		data : {
+				// 			'action' : "groupNotification",
+				// 			'commentId' : id,
+				// 			'groupId' : get('groupId'),
+				// 			'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/VideoListPage.html?groupId=" + get('groupId'),
+				// 			'type': "groupComment",
 							
-						},
-						success : function(response) {
-							console.log(response);
-							// ws.send(JSON.stringify({
-			    //                 type: "playerInterfaceReply",
-			    //                 toUserId: response.toUserId,
-			    //                 notificationId: response.notificationId,
-			    //                 nickname: response.nickname,
-			    //                 url: urlId
-			    //             }));
-						},
-						error: function (jqXHR, textStatus, errorThrown) {
-							console.log("forum.js insertNotification error");
-				        }
-					});
+				// 		},
+				// 		success : function(response) {
+				// 			console.log(response);
+							
+				// 			for(var i = 0;i < response.length;i ++){
+				// 				ws.send(JSON.stringify({
+				// 	                type: response[i].type,
+				// 	                toUserId: response[i].toUserId,
+				// 	                notificationId: response[i].notificationId,
+				// 	                nickname: response[i].nickname,
+				// 	                groupId: response[i].groupId,
+				// 	                groupName: response[i].groupName,
+				// 	                url: response[i].url
+				// 	            }));
+				// 			}
+				// 		},
+				// 		error: function (jqXHR, textStatus, errorThrown) {
+				// 			console.log("forum.js insertNotification error");
+				//         }
+				// 	});
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 	         }
