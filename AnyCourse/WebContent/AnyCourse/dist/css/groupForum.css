@@ -1,0 +1,15 @@
+@charset "BIG5";
+.A{
+	margin:20px;
+}
+.B{
+	float:left;
+}
+.C{
+	float:left;
+	left:20px;
+}
+.btnCss{
+	float:right;
+	height:30px;
+}

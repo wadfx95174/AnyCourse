@@ -2,6 +2,7 @@ package Group.Note;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,15 +33,19 @@ public class GroupTextNoteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		GroupNoteManager dbgroupNote = new GroupNoteManager();	
 		HttpSession session = request.getSession();
+		Map<String, Integer> groups = (Map<String, Integer>)session.getAttribute("groups");
 		
-		response.setContentType("application/json;charset = utf-8;");
-		response.getWriter().write(dbgroupNote.selectGroupTextNoteTable(Integer.parseInt(request.getParameter("groupId"))));	
-		dbgroupNote.conClose();
+		if (groups.containsValue(Integer.parseInt(request.getParameter("groupId"))))
+		{
+			System.out.print("AA");
+			response.setContentType("application/json;charset = utf-8;");
+			response.getWriter().write(dbgroupNote.selectGroupTextNoteTable(Integer.parseInt(request.getParameter("groupId"))));	
+			dbgroupNote.conClose();
+		}
+		
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);

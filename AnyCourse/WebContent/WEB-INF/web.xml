@@ -5,6 +5,17 @@
     <welcome-file>/AnyCourse/HomePage.html</welcome-file>
   </welcome-file-list>
   <servlet>
+    <servlet-name>GroupNoteServlet</servlet-name>
+    <servlet-class>Group.Note.GroupNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>GroupTextNoteServlet</servlet-name>
+    <servlet-class>Group.Note.GroupTextNoteServlet</servlet-class>
+  </servlet><servlet>
+    <servlet-name>GroupPictureNoteServlet</servlet-name>
+    <servlet-class>Group.Note.GroupPictureNoteServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>PersonalTextNoteServlet</servlet-name>
     <servlet-class>Personal.PersonalNote.PersonalTextNoteServlet</servlet-class>
   </servlet>
@@ -140,6 +151,18 @@
     <servlet-name>GroupMemberServlet</servlet-name>
     <servlet-class>Group.Member.GroupMemberServlet</servlet-class>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>GroupNoteServlet</servlet-name>
+    <url-pattern>/GroupNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GroupTextNoteServlet</servlet-name>
+    <url-pattern>/GroupTextNoteServlet.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GroupPictureNoteServlet</servlet-name>
+    <url-pattern>/GroupPictureNoteServlet.do</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>PersonalTextNoteServlet</servlet-name>
     <url-pattern>/PersonalTextNoteServlet.do</url-pattern>

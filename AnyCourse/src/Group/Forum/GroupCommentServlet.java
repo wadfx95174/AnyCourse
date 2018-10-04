@@ -2,6 +2,7 @@ package Group.Forum;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,13 +39,18 @@ public class GroupCommentServlet extends HttpServlet {
 		GroupForumManager dbcomment = new GroupForumManager();
 		response.setHeader("Cache-Control","max-age=0"); 
 		ArrayList<GroupComment> comments = new ArrayList<GroupComment>();
-
+		HttpSession session = request.getSession();
+		Map<String, Integer> groups = (Map<String, Integer>)session.getAttribute("groups");
 		
-		String commentJson = new Gson().toJson(comments);
-		commentJson = dbcomment.selectCommentTable(Integer.parseInt(request.getParameter("groupId")));
-		response.setContentType("application/json;charset = utf-8;");
-		response.getWriter().write(commentJson);
-		dbcomment.conClose();
+		if (groups.containsValue(Integer.parseInt(request.getParameter("groupId"))))
+		{
+			System.out.print("AA");
+			String commentJson = new Gson().toJson(comments);
+			commentJson = dbcomment.selectCommentTable(Integer.parseInt(request.getParameter("groupId")));
+			response.setContentType("application/json;charset = utf-8;");
+			response.getWriter().write(commentJson);
+			dbcomment.conClose();
+		}	
 	}
 
 	/**

@@ -1,3 +1,11 @@
+
+var userId;
+function get(name)
+{
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+}
+
 $(document).ready(function(){
 	checkLogin("../", "../../../");
 	$.ajax({
@@ -10,10 +18,16 @@ $(document).ready(function(){
 			for (var i = 0; i < response.length; i++)
 			{			
 					$('#result').append(
-							'<li>'
-							+'<ul class="list-group list-group-horizontal">'
-							+'<li class="list-group-item col-xs-4">'
-							+'<div class="personalNote "><a class="list-group-item" href="../PlayerInterface.html?type='+ (response[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].unitId+'">'					
+							'<ul class="list-group list-group-horizontal">'
+							+'<li class="list-group-item col-xs-1">'
+							+'<div class="personalNoteShare"><div class="btn-group show-on-hover dropup" >'
+							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">分享' 
+							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
+							+'<li><a data-toggle="modal" data-target="#addToGroupNote" id="personalNote_'+ response[i].unitId  +'" onclick="insertGroupNote(this.id)" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>分享至群組</a></li>'
+							+'</ul></div></div>'
+							+'</li>'
+							+'<li class="list-group-item col-xs-3">'
+							+'<div class="personalNote" style="height: 285px;"><a class="list-group-item" style="height: 285px;" href="../PlayerInterface.html?type='+ (response[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].unitId+'">'					
 							+'<h4 class="media-heading">'
 							+'<b>影片名稱:' + response[i].unitName + '</b>'
 							+'</h4>'						
@@ -21,13 +35,13 @@ $(document).ready(function(){
 							+'<p style="margin-bottom: 5px;">讚數:' + response[i].likes +'</p>'
 							+'</a></div></li>'
 							+'<li class="list-group-item col-xs-4">'
-							+'<div class="personalNote ">' + response[i].textNote + '</div>'
+							+'<div class="personalNoteDiv" style="overflow:auto;height: 285px;">' + response[i].textNote + '</div>'
 							+'</li>'
 							+'<li class="list-group-item col-xs-4">'
-							+'<div class="personalNote " id="personalPictureNote_'+ response[i].unitId  +'"></div>'
+							+'<div class="personalNoteDiv" style="overflow:auto;height: 285px;" id="personalPictureNote_'+ response[i].unitId  +'"></div>'
 							+'</li>'
 							+'</ul>'				
-							+'</li>'+
+							+
 							'<div class="ffs-gal-view view'+ response[i].unitId +'">'+
 							'<h1 id="picture"></h1>'+ 
 							'<img class="ffs-gal-prev ffs-gal-nav prev' + response[i].unitId + ' nav'+ response[i].unitId +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/prev.svg" alt="Previous picture" title="Previous picture" />'+									     
@@ -60,7 +74,53 @@ $(document).ready(function(){
 			alert("fail");
 		}		
 	});
+	
+	//取得該使用者的所有群組(用來放在下拉式選單，讓使用者選擇要分享哪個群組)
+	$.ajax({
+		url : ajaxURL+'AnyCourse/GroupNoteServlet.do',
+		method : 'Get',
+		data:{
+			"userId" : userId
+		},
+		cache :false,
+		success:function(result){
+			if(result.length == 0){
+				$('#addToGroupNoteModalBody').append('<option value="null">無</option>');
+			}
+			else{
+				for(var i = 0;i < result.length;i++){
+					$('#addToGroupNoteModalBody').append('<option value="'+result[i].groupId+'">'+result[i].groupName+'</option>');
+				}
+			}					
+		},
+		error:function(){
+			console.log("append GroupName to modal error");
+		}
+	});
 });
+
+
+function insertGroupNote(input){
+	var unitId = input.split('_')[1];
+		
+	if($('#addToGroupNoteModalBody').val() != null){
+		$.ajax({
+			url : ajaxURL+'AnyCourse/GroupNoteServlet.do',
+			method : 'POST',
+			cache: false,
+			data:{
+				state:'insert',
+				groupId:$('#addToGroupNoteModalBody').val(),
+				unitId:unitId
+			},
+			success:function(result){
+			},
+			error:function(){
+				console.log("add personalNote to group error");
+			}
+		});
+	}
+}	
 
 var id;
 $('document').ready(function() {

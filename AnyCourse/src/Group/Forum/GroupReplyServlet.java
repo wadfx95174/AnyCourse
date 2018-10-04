@@ -3,6 +3,7 @@ package Group.Forum;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,12 +39,18 @@ public class GroupReplyServlet extends HttpServlet {
 		GroupForumManager dbreply = new GroupForumManager();
 		response.setHeader("Cache-Control","max-age=0");
 		ArrayList<GroupReply> replys = new ArrayList<GroupReply>();
-
-		dbreply.selectReplyTable(replys);
-		String replyJson = new Gson().toJson(replys);
-		response.setContentType("application/json;charset = utf-8;");
-		response.getWriter().write(replyJson);
-		dbreply.conClose();
+		HttpSession session = request.getSession();
+		Map<String, Integer> groups = (Map<String, Integer>)session.getAttribute("groups");
+		
+		if (groups.containsValue(Integer.parseInt(request.getParameter("groupId"))))
+		{
+			System.out.print("BB");
+			dbreply.selectReplyTable(replys);
+			String replyJson = new Gson().toJson(replys);
+			response.setContentType("application/json;charset = utf-8;");
+			response.getWriter().write(replyJson);
+			dbreply.conClose();
+		}	
 	}
 
 	/**
