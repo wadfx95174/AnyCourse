@@ -9,6 +9,8 @@ public class VideoList {
 	private int share;
 	private int likes;
 	private int oorder;
+	private int groupId;
+	private String groupName;
 	
 	public VideoList() {}
 
@@ -74,5 +76,21 @@ public class VideoList {
 
 	public void setOorder(int oorder) {
 		this.oorder = oorder;
+	}
+
+	public int getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 }

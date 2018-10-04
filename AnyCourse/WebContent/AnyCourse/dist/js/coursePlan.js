@@ -99,12 +99,52 @@ $(document).ready(function() {
 		cache :false,
 		success:function(result){
 			for(var i = 0;i < result.length;i++){
-				$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
+				$('#addToVideoListModalBody').append(
+					'<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
 			}
 		},
 		error:function(){
 			console.log("append videoList to modal error");
 		}
+	});
+
+	//取得該使用者的所有群組(用來放在下拉式選單，讓使用者選擇要將個人計畫加入哪個群組)
+	$.ajax({
+		url : ajaxURL+'AnyCourse/VideoListServlet.do',
+		method : 'POST',
+		data:{
+			action:'getAllGroup'
+		},
+		cache :false,
+		success:function(response){
+			for(var i = 0;i < response.length;i++){
+				$('#shareCoursePlanToGroupModalBody').append(
+					'<option value="'+response[i].groupId+'">'+response[i].groupName+'</option>');
+			}
+		},
+		error:function(){
+			console.log("CoursePlan.js getAllGroup error");
+		}
+	});
+
+	//將計畫分享至指定群組
+	$('#shareCoursePlanToGroupButton').click(function(){
+		$.ajax({
+			url:ajaxURL+'AnyCourse/CoursePlanServlet.do',
+			method:'POST',
+			cache:false,
+			data:{
+				action: 'shareCoursePlanToGroup',
+				unitId: unitArray[checkUnitId-1][0],
+				groupId: $('#shareCoursePlanToGroupModalBody').val()
+			},
+			success:function(){
+				shareCoursePlanToGroup();
+			},
+			error:function(e){
+				console.log("CoursePlan.js shareCoursePlanToGroup error!")
+			}
+		});
 	});
 	
 	
@@ -214,7 +254,11 @@ function showUnitUL(result,unitArray){
 				+'<ul class="dropdown-menu">'
 				+'<li><a data-toggle="modal" data-target="#addToVideoList" onclick="getUnitId('+videoId+')" style="cursor:pointer;" class=" waves-effect waves-block">'
 				+'<i class="ion ion-clipboard"></i>新增至課程清單'
-				+'</a></li></ul>'
+				+'</a></li>'
+				+'<li><a data-toggle="modal" data-target="#shareCoursePlanToGroup" onclick="getUnitId('+videoId+')" style="cursor:pointer;" class=" waves-effect waves-block">'
+				+'<i class="fa fa-share"></i>分享至群組'
+				+'</a></li>'
+				+'</ul>'
 				+'</div>'
 				+'<span class="pull-right">' 
 				+'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal"'
@@ -255,14 +299,44 @@ function showUnitUL(result,unitArray){
 				courselistId:$('#addToVideoListModalBody').val(),
 				unitId:unitArray[checkUnitId-1][0]
 			},
-			// success:function(result){
-			// 	for(var i = 0;i < result.length;i++){
-			// 		$('#addToVideoListModalBody').append('<option value="'+result[i].courselistId+'">'+result[i].listName+'</option>');
-			// 	}
-			// },
 			error:function(){
 				console.log("add video to courselist error");
 			}
 		});
+	});
+}
+
+//分享個人課程計畫至指定群組
+function shareCoursePlanToGroup(){
+	$.ajax({
+		url:ajaxURL + 'AnyCourse/NotificationServlet.do',
+		method:'POST',
+		cache:false,
+		data:{
+			'action': "groupNotification",
+			'groupId': $('#shareCoursePlanToGroupModalBody').val(),
+			'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/CoursePlanPage.html?groupId=" + $('#shareCoursePlanToGroupModalBody').val(),
+			'type': "shareCoursePlanToGroup"
+		},
+		success:function(resp){
+			console.log(resp);
+
+			for(var i = 0;i < resp.length;i ++){
+				ws.send(JSON.stringify({
+	                type: resp[i].type,
+	                toUserId: resp[i].toUserId,
+	                notificationId: resp[i].notificationId,
+	                nickname: resp[i].nickname,
+	                groupId: resp[i].groupId,
+	                groupName: resp[i].groupName,
+	                url: resp[i].url
+	            }));
+			}
+		},
+		error:function(xhr, ajaxOptions, thrownError){
+			console.log(xhr);
+			console.log(thrownError);
+			console.log("videoList.js groupNotification error");
+		}
 	});
 }

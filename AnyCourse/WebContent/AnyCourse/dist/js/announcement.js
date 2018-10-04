@@ -262,16 +262,18 @@ function groupAnnouncementNotify(){
             method:'POST',
             cache:false,
             data:{
-                  'action': "groupAnnouncement",
+                  'action': "groupNotification",
                   'groupId': get('groupId'),
-                  'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Announcement.html?groupId=" + get('groupId')
+                  'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Announcement.html?groupId=" + get('groupId'),
+                  'type': "groupAnnouncement"
+            
             },
             success:function(response){
                   console.log(response);
 
                   for(var i = 0;i < response.length;i ++){
                         ws.send(JSON.stringify({
-                            type: "groupAnnouncement",
+                            type: response[i].type,
                             toUserId: response[i].toUserId,
                             notificationId: response[i].notificationId,
                             nickname: response[i].nickname,

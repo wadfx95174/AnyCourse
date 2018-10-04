@@ -18,6 +18,7 @@ public class GroupCoursePlan {
 	private String videoImgSrc;
 	private int videoType;
 	private int courselistId;
+	private String creator;
 	
 	public GroupCoursePlan() {}
 
@@ -139,6 +140,14 @@ public class GroupCoursePlan {
 
 	public void setCourselistId(int courselistId) {
 		this.courselistId = courselistId;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
 
 }

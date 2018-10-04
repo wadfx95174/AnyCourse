@@ -15,6 +15,8 @@ public class CoursePlan {
 	private int videoType;
 	private int courselistId;
 	private String creator;
+	private int groupId;
+	private String groupName;
 	
 	public int getCourselistId() {
 		return courselistId;
@@ -128,6 +130,22 @@ public class CoursePlan {
 
 	public void setCreator(String creator) {
 		this.creator = creator;
+	}
+
+	public int getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 
 	

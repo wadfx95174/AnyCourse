@@ -6,9 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import HomePage.HomePage;
 import Personal.VideoList.VideoList;
@@ -288,7 +290,65 @@ public class CoursePlanManager {
 			Close();
 		}
 	}
-	
+	//分享個人課程計畫至指定群組
+	public void shareCoursePlanToGroup(ArrayList<String> toUserIdList,String userId,int unitId,int groupId){
+		int[] maxOrder = new int[toUserIdList.size()+1];
+		int index = 0;
+		
+		try {
+			for(int i = 0; i < toUserIdList.size();i++) {
+				pst = con.prepareStatement("select MAX(oorder) from groupPlan where groupId = ? and userId = ? "
+						+ "and status = 1 ");
+				pst.setInt(1, groupId);
+				pst.setString(2, toUserIdList.get(i));
+				result = pst.executeQuery();
+				if(result.next())maxOrder[i] = result.getInt("MAX(oorder)");
+				index++;
+			}
+			pst = con.prepareStatement("select MAX(oorder) from groupPlan where groupId = ? and userId = ? "
+					+ "and status = 1 ");
+			pst.setInt(1, groupId);
+			pst.setString(2, userId);
+			result = pst.executeQuery();
+			if(result.next())maxOrder[index] = result.getInt("MAX(oorder)");
+			
+			java.util.Date now = new java.util.Date();//取得現在時間
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+		    sf.setTimeZone(TimeZone.getTimeZone("GMT"));  // 設定時區為格林威治 GMT 時區
+		    String sGMT = sf.format(now);
+		    java.sql.Date createDate = java.sql.Date.valueOf(sGMT); // 要轉換成 java.sql.Date 的物件才可以寫入資料庫
+
+		    
+			pst = con.prepareStatement("insert ignore into groupPlan (groupId,deadlineTime"
+					+ ",userId,unitId,lastTime,status,oorder) value(?,?,?,?,0,1,?)");
+			for(int i = 0;i < toUserIdList.size();i++) {
+				
+				pst.setInt(1, groupId);
+				pst.setDate(2, createDate);
+				pst.setString(3, toUserIdList.get(i));
+				pst.setInt(4, unitId);
+				pst.setInt(5, ++maxOrder[i]);
+				//先放到batch，等迴圈跑完再一次新增
+				pst.addBatch();
+			}
+			pst.setInt(1, groupId);
+			pst.setDate(2, createDate);
+			pst.setString(3, userId);
+			pst.setInt(4, unitId);
+			pst.setInt(5, ++maxOrder[index]);
+			pst.addBatch();
+			pst.executeBatch();
+			
+			
+		}
+		catch(SQLException x){
+			System.out.println("CoursePlan-shareCoursePlanToGroup");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
 	
 	
 	public void Close() {

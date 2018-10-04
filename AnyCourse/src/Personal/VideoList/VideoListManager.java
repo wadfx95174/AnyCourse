@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+
 import HomePage.HomePage;
 
 
@@ -274,7 +276,7 @@ public class VideoListManager {
 			pst.executeBatch();
 		}
 		catch(SQLException x){
-			System.out.println("HomePage-addToCoursePlanList");
+			System.out.println("VideoList-addToCoursePlanList");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -292,7 +294,57 @@ public class VideoListManager {
 			pst.executeUpdate();
 		}
 		catch(SQLException x){
-			System.out.println("HomePage-shareVideoList");
+			System.out.println("VideoList-shareVideoList");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	//分享完整清單的影片給所有人
+	public String getAllGroup(String userId) {
+		videoLists = new ArrayList<VideoList>();
+		try {
+			pst = con.prepareStatement("select ggroup.groupId,ggroup.groupName from groupMember,ggroup where "
+					+ "groupMember.groupId = ggroup.groupId and groupMember.userId = ?");
+			pst.setString(1, userId);
+			result = pst.executeQuery();
+			while(result.next()) {
+				videoList = new VideoList();
+				videoList.setGroupId(result.getInt("ggroup.groupId"));
+				videoList.setGroupName(result.getString("ggroup.groupName"));
+				videoLists.add(videoList);
+			}
+			
+		}
+		catch(SQLException x){
+			System.out.println("VideoList-getAllGroup");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return new Gson().toJson(videoLists);
+	}
+	
+	//分享完整清單的影片給所有人
+	public void shareVideoToGroup(String userId,int courselistId,int groupId) {
+		videoLists = new ArrayList<VideoList>();
+		int maxOrder = 0;
+		try {
+			pst = con.prepareStatement("select Max(oorder) from groupList where groupId = ?");
+			pst.setInt(1, groupId);
+			result = pst.executeQuery();
+			if(result.next())maxOrder = result.getInt("MAX(oorder)");
+			
+			pst = con.prepareStatement("insert ignore into groupList (groupId,courselistId,oorder) value(?,?,?)");
+			pst.setInt(1, groupId);
+			pst.setInt(2, courselistId);
+			pst.setInt(3, ++maxOrder);
+			pst.executeUpdate();
+		}
+		catch(SQLException x){
+			System.out.println("VideoList-shareVideoToGroup");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {

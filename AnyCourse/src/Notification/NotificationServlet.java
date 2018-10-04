@@ -99,18 +99,17 @@ public class NotificationServlet extends HttpServlet {
 					(toUserIdList, "groupMemberJoin", nickName, groupId, groupName, url, userId));
 			
 		}
-		//群組公告
-		else if(action.equals("groupAnnouncement")) {
+		//群組各個頁面通知
+		else if(action.equals("groupNotification")) {
 			url = (String)request.getParameter("url");
 			groupId = Integer.parseInt(request.getParameter("groupId"));
 			groupName = manager.getGroupName(groupId);
 			toUserIdList = manager.getGroupUsers(groupId, userId);
 			
-			response.getWriter().write(manager.groupAnnouncement
-					(toUserIdList, "groupAnnouncement", nickName, groupId, groupName, url, userId));
+			response.getWriter().write(manager.groupNotification
+					(toUserIdList, (String)request.getParameter("type"), nickName, groupId, groupName, url, userId));
 			
 		}
-		
 		
 		manager.conClose();
 	}

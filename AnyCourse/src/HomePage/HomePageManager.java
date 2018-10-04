@@ -600,7 +600,7 @@ public class HomePageManager {
 		return homePages;
 	}
 	
-	//將首頁的單元影片加入課程清單中
+	//將單一影片加入個人課程清單中
 	public void addToVideoList(int unitId,int courselistId){
 		int maxOrder = 0;
 		try {

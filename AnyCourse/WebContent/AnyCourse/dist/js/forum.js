@@ -148,7 +148,7 @@ function setReply(input){
 			success : function(result) {
 				// console.log(result);
 				urlId = url.split("#")[0]+"#rep_"+result.replyId;
-				$('#com_'+id).append( 	
+				$('#com_'+id).append(
 						'<div id="rep_' + result.replyId + '"'+'name="rep_' + result.replyId +'" class="col-xs-12 C" >'+
 						'<img src="https://ppt.cc/fi5Q0x@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
 						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result.nickName +'</h4>'+
@@ -347,14 +347,3 @@ function updateReply(input){
 		}
 	});
 };
-
-
-////////////////////////////回覆時送資料給WebSocket，藉此通知提問者/////////////////////
-
-//commentUserId:提問者的UserID
-//replyUserId:回覆者的UserID
-//
-function sendMessage(commentUserId,replyUserId){
-
-}
-/////////////////////////////////////////////////////////////////////////////////////

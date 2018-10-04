@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import Notification.NotificationManager;
+
 public class CoursePlanServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -49,18 +51,19 @@ public class CoursePlanServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		CoursePlanManager coursePlanManager = new CoursePlanManager();
+		CoursePlanManager manager = new CoursePlanManager();
 		response.setHeader("Cache-Control","max-age=0");
 		ArrayList<CoursePlan> coursePlans = null;
 		ArrayList<CoursePlan> oldCoursePlans = null;
 		CoursePlan coursePlan = new CoursePlan();
 		HttpSession session = request.getSession();
 		String userId = (String)session.getAttribute("userId");
+		String action = request.getParameter("action");
 		
 		//紀錄排序
-		if(request.getParameter("action").equals("sortable")) {
+		if(action.equals("sortable")) {
 			////////////////////////////更新移動後的清單的排序/////////////////////////////////////////////
-			coursePlans = coursePlanManager.getCoursePlanOrder(userId,request.getParameter("received"));
+			coursePlans = manager.getCoursePlanOrder(userId,request.getParameter("received"));
 			//將原本那個狀態列表的資料都抓出來存在ArrayList
 			for(int i = 0;i < coursePlans.size();i++) {
 				if(coursePlans.get(i).getOorder() >= Integer.parseInt(request.getParameter("newIndex"))) {
@@ -78,7 +81,7 @@ public class CoursePlanServlet extends HttpServlet {
 			coursePlans.add(coursePlan);
 			//更新資料
 			for(int i = 0;i < coursePlans.size();i++) {
-				coursePlanManager.updateCoursePlanList(coursePlans.get(i));
+				manager.updateCoursePlanList(coursePlans.get(i));
 			}
 			/////////////////////////////////////////////////////////////////////////////////////////
 			
@@ -86,7 +89,7 @@ public class CoursePlanServlet extends HttpServlet {
 			
 			////////////////////////////更新移動前的清單的排序/////////////////////////////////////////////
 			//將原本舊的狀態列表的資料都抓出來存在ArrayList
-			oldCoursePlans = coursePlanManager.getOldCoursePlanOrder(userId,request.getParameter("sender"));
+			oldCoursePlans = manager.getOldCoursePlanOrder(userId,request.getParameter("sender"));
 			for(int i = 0;i < oldCoursePlans.size();i++) {
 				if(oldCoursePlans.get(i).getOorder() > Integer.parseInt(request.getParameter("oldIndex"))) {
 					oldCoursePlans.get(i).setOorder(oldCoursePlans.get(i).getOorder()-1);
@@ -95,15 +98,25 @@ public class CoursePlanServlet extends HttpServlet {
 			}
 			//更新資料
 			for(int i = 0;i < oldCoursePlans.size();i++) {
-				coursePlanManager.updateOldStatusList(oldCoursePlans.get(i));
+				manager.updateOldStatusList(oldCoursePlans.get(i));
 			}
 			////////////////////////////////////////////////////////////////////////////////////////
 			
 		}
-		else if(request.getParameter("action").equals("deleteVideo")) {
-			coursePlanManager.deleteVideo(userId, Integer.parseInt(request.getParameter("unitId")));
+		else if(action.equals("deleteVideo")) {
+			manager.deleteVideo(userId, Integer.parseInt(request.getParameter("unitId")));
+		}
+		//分享個人課程計畫至指定群組
+		else if(action.equals("shareCoursePlanToGroup")) {
+			NotificationManager notificationmanager = new NotificationManager();
+			ArrayList<String> toUserIdList = new ArrayList<String>();
+			toUserIdList = notificationmanager.getGroupUsers(
+					Integer.parseInt(request.getParameter("groupId")), userId);
+			
+			manager.shareCoursePlanToGroup(toUserIdList,userId,Integer.parseInt(request.getParameter("unitId"))
+					,Integer.parseInt(request.getParameter("groupId")));
 		}
 		//關閉connection
-		coursePlanManager.conClose();
+		manager.conClose();
 	}
 }

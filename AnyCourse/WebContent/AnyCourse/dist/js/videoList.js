@@ -61,7 +61,7 @@ $(document).ready(function() {
 						+'<ul class="dropdown-menu dropdown-menu-right" role="menu">'
 						+'<li><a data-toggle="modal" data-target="#addToCoursePlanList" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
 						+'<li><a data-toggle="modal" data-target="#shareVideoList" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-share-square-o"></i>分享</a></li>'
-						+'<li><a data-toggle="modal" data-target="" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-share"></i>分享至群組</a></li>'
+						+'<li><a data-toggle="modal" data-target="#shareVideoListToGroup" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-share"></i>分享至群組</a></li>'
 						+'<li><a data-toggle="modal" data-target="#editModal" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
 						+'<li><a data-toggle="modal" data-target="#deleteModal1" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
 						+'</ul></div></div></li>');
@@ -202,7 +202,7 @@ $(document).ready(function() {
 							+'<ul class="dropdown-menu dropdown-menu-right" role="menu">'
 							+'<li><a data-toggle="modal" data-target="#addToCoursePlanList" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-tasks"></i>新增至課程計畫</a></li>'
 							+'<li><a data-toggle="modal" data-target="#shareVideoList" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-share-square-o"></i>分享</a></li>'
-							+'<li><a data-toggle="modal" data-target="" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-share"></i>分享至群組</a></li>'
+							+'<li><a data-toggle="modal" data-target="#shareVideoListToGroup" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-share"></i>分享至群組</a></li>'
 							+'<li><a data-toggle="modal" data-target="#editModal" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-edit""></i>編輯</a></li>'
 							+'<li><a data-toggle="modal" data-target="#deleteModal1" onclick="getListId('+videoListId+')" style="cursor:pointer;"> <i class="fa fa-trash-o""></i>刪除</a></li>'
 							+'</ul></div></div></li>');
@@ -218,6 +218,25 @@ $(document).ready(function() {
 			  },
 			  error:function(){console.log('Add VideoList failed');}
 			});
+		}
+	});
+
+	//取得該使用者的所有群組(用來放在下拉式選單，讓使用者選擇要將個人課程清單加入哪個群組)
+	$.ajax({
+		url : ajaxURL+'AnyCourse/VideoListServlet.do',
+		method : 'POST',
+		data:{
+			action:'getAllGroup'
+		},
+		cache :false,
+		success:function(response){
+			for(var i = 0;i < response.length;i++){
+				$('#shareVideoListToGroupModalBody').append(
+					'<option value="'+response[i].groupId+'">'+response[i].groupName+'</option>');
+			}
+		},
+		error:function(){
+			console.log("videoList.js getAllGroup error");
 		}
 	});
 
@@ -343,7 +362,7 @@ $(document).ready(function() {
 				creator:videoListArray[checkListId-1][3]
 			},
 			error:function(e){
-				console.log("addToCoursePlanList Error!");
+				console.log("videoList.js addToCoursePlanList Error!");
 			}
 		});
 	});
@@ -359,7 +378,27 @@ $(document).ready(function() {
 				courselistId:videoListArray[checkListId-1][0] 
 			},
 			error:function(e){
-				console.log("shareVideoList Error!")
+				console.log("videoList.js shareVideoList error!")
+			}
+		});
+	});
+
+	//將清單分享至指定群組
+	$('#shareVideoListToGroupButton').click(function(){
+		$.ajax({
+			url:ajaxURL+'AnyCourse/VideoListServlet.do',
+			method:'POST',
+			cache:false,
+			data:{
+				action: 'shareVideoListToGroup',
+				courselistId: videoListArray[checkListId-1][0],
+				groupId: $('#shareVideoListToGroupModalBody').val()
+			},
+			success:function(){
+				shareVideoListToGroup();
+			},
+			error:function(e){
+				console.log("videoList.js shareVideoListToGroup error!")
 			}
 		});
 	});
@@ -392,4 +431,40 @@ function getUnitId(id){
 function jumpToPlayerInterface(unitId,type,listId){
     url = "../PlayerInterface.html?unitId="+unitId+"&type="+type+"&listId="+listId;//此處拼接內容
     window.location.href = url;
+}
+
+//分享個人課程清單至指定群組清單
+function shareVideoListToGroup(){
+	$.ajax({
+		url:ajaxURL + 'AnyCourse/NotificationServlet.do',
+		method:'POST',
+		cache:false,
+		data:{
+			'action': "groupNotification",
+			'groupId': $('#shareVideoListToGroupModalBody').val(),
+			'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/VideoListPage.html?groupId=" + $('#shareVideoListToGroupModalBody').val(),
+			'type': "shareVideoListToGroup"
+		
+		},
+		success:function(resp){
+			console.log(resp);
+
+			for(var i = 0;i < resp.length;i ++){
+				ws.send(JSON.stringify({
+	                type: resp[i].type,
+	                toUserId: resp[i].toUserId,
+	                notificationId: resp[i].notificationId,
+	                nickname: resp[i].nickname,
+	                groupId: resp[i].groupId,
+	                groupName: resp[i].groupName,
+	                url: resp[i].url
+	            }));
+			}
+		},
+		error:function(xhr, ajaxOptions, thrownError){
+			console.log(xhr);
+			console.log(thrownError);
+			console.log("videoList.js groupNotification error");
+		}
+	});
 }

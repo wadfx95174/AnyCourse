@@ -41,51 +41,63 @@ public class VideoListServlet extends HttpServlet{
 	}
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setCharacterEncoding("UTF-8");
-		response.setHeader("Cache-Control","max-age=0");
+		
 		HttpSession session = request.getSession();
 		String userId = (String)session.getAttribute("userId");
-		VideoListManager videoListDatebaseManager = new VideoListManager();
+		String action = request.getParameter("action");
+		VideoListManager manager = new VideoListManager();
 		VideoList videoList = new VideoList();
 		
 		//insert
-		if(request.getParameter("action").equals("insert")) {
-			videoListDatebaseManager.insertCourseListTable(userId,request.getParameter("listName"));
+		if(action.equals("insert")) {
+			manager.insertCourseListTable(userId,request.getParameter("listName"));
 		}
 		//update
-		else if(request.getParameter("action").equals("update")) {
+		else if(action.equals("update")) {
 			videoList.setCreator(request.getParameter("creator"));
 			videoList.setCourselistId(Integer.parseInt(request.getParameter("courselistId")));
 			videoList.setListName(request.getParameter("listName"));
-			videoListDatebaseManager.updateCourseListTable(videoList);
+			manager.updateCourseListTable(videoList);
 		}
 		//delete
-		else if(request.getParameter("action").equals("remove")) {
+		else if(action.equals("remove")) {
 			videoList.setCourselistId(Integer.parseInt(request.getParameter("courselistId")));
 			videoList.setListName(request.getParameter("listName"));
 			videoList.setCreator(request.getParameter("creator"));
 			videoList.setUserId(userId);
 			videoList.setOorder(Integer.parseInt(request.getParameter("oorder")));
-			videoListDatebaseManager.deleteCourseListTable(videoList);
+			manager.deleteCourseListTable(videoList);
 		}
 		//delete unitVideo
-		else if(request.getParameter("action").equals("removeUnitVideo")) {
-			videoListDatebaseManager.deleteUnitVideo(Integer.parseInt(request.getParameter("courselistId"))
+		else if(action.equals("removeUnitVideo")) {
+			manager.deleteUnitVideo(Integer.parseInt(request.getParameter("courselistId"))
 					,Integer.parseInt(request.getParameter("unitId")));
 		}
 		//將完整清單添加至課程計畫
-		else if(request.getParameter("action").equals("addToCoursePlanList")) {
-			videoListDatebaseManager.addToCoursePlanList(userId
+		else if(action.equals("addToCoursePlanList")) {
+			manager.addToCoursePlanList(userId
 					,Integer.parseInt(request.getParameter("courselistId")),
 					(String)request.getParameter("creator"));
 		}
 		//分享完整清單內容給所有人
-		
-		else if(request.getParameter("action").equals("shareVideoList")) {
-			videoListDatebaseManager.shareVideoList(userId
+		else if(action.equals("shareVideoList")) {
+			manager.shareVideoList(userId
 					,Integer.parseInt(request.getParameter("courselistId")));
 		}
+		//取得該使用者所有群組
+		else if(action.equals("getAllGroup")) {
+			response.setCharacterEncoding("UTF-8");
+			response.setHeader("Cache-Control","max-age=0");
+			response.setContentType("application/json");
+			
+			response.getWriter().write(manager.getAllGroup(userId));
+		}
+		//將課程清單分享至指定群組
+		else if(action.equals("shareVideoToGroup")) {
+			manager.shareVideoToGroup(userId, Integer.parseInt(request.getParameter("courselistId"))
+					, Integer.parseInt(request.getParameter("groupId")));
+		}
 		//關閉connection
-		videoListDatebaseManager.conClose();
+		manager.conClose();
 	}
 }
