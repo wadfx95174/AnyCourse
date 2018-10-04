@@ -118,68 +118,7 @@ $(function(){
 })
 
 
-//$(document).ready(function(){
-//	checkLogin("../", "../../../");
-//	$.ajax({
-//		method:"GET",
-//		cache :false,
-//		url:ajaxURL+'AnyCourse/GroupTextNoteServlet.do',
-//		success: function(response){
-//			console.log(response);
-//			array = response;
-//			for (var i = 0; i < response.length; i++)
-//			{			
-//					$('#result').append(
-//							'<ul class="list-group list-group-horizontal">'
-//							+'<li class="list-group-item col-xs-4">'
-//							+'<div class="groupNote "><a class="list-group-item" href="../PlayerInterface.html?type='+ (response[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].unitId+'">'					
-//							+'<h4 class="media-heading">'
-//							+'<b>影片名稱:' + response[i].unitName + '</b>'
-//							+'</h4>'						
-//							+'<p style="margin-bottom: 5px;">開課大學:' + response[i].schoolName + '</p>'					
-//							+'<p style="margin-bottom: 5px;">讚數:' + response[i].likes +'</p>'
-//							+'</a></div></li>'
-//							+'<li class="list-group-item col-xs-4">'
-//							+'<div class="groupNote " style="overflow:auto;height: 285px;">' + response[i].textNote + '</div>'
-//							+'</li>'
-//							+'<li class="list-group-item col-xs-4">'
-//							+'<div class="groupNote " style="overflow:auto;height: 285px;" id="personalPictureNote_'+ response[i].unitId  +'"></div>'
-//							+'</li>'
-//							+'</ul>'				
-//							+
-//							'<div class="ffs-gal-view view'+ response[i].unitId +'">'+
-//							'<h1 id="picture"></h1>'+ 
-//							'<img class="ffs-gal-prev ffs-gal-nav prev' + response[i].unitId + ' nav'+ response[i].unitId +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/prev.svg" alt="Previous picture" title="Previous picture" />'+									     
-//							'<img class="ffs-gal-next ffs-gal-nav next' + response[i].unitId + ' nav'+ response[i].unitId +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/next.svg" alt="Next picture" title="Next picture" />'+
-//							'<img class="ffs-gal-close close'+ response[i].unitId +'"  src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/close.svg" alt="Close gallery" title="Close gallery" />'+
-//							'</div>'
-//					);
-//				}
-//			$.ajax({
-//				method:"GET",
-//				cache :false,
-//				url:ajaxURL+'AnyCourse/GroupPictureNoteServlet.do',
-//				success: function(response){
-//					console.log(response);
-//					array = response;
-//					for (var i = 0; i < response.length; i++)
-//					{			
-//						$('#personalPictureNote_'+response[i].unitId).append(
-//								'<img id="no_'+ response[i].unitId +'_'+ response[i].userId+'_'+ response[i].pictureNoteId +'" class="ffs-gal p'+ response[i].unitId +'" src="' + response[i].pictureNoteUrl +'" alt="pictureNote_' + response[i].pictureNoteId + '" data-url="' + response[i].pictureNoteUrl + '" />'
-//						);
-//					}
-//					
-//				},
-//				error: function(){
-//					alert("fail");
-//				}
-//			});		
-//		},
-//		error: function(){
-//			alert("fail");
-//		}		
-//	});
-//});
+
 
 var id;
 $('document').ready(function() {
