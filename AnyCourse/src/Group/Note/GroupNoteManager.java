@@ -13,11 +13,13 @@ import com.google.gson.Gson;
 import Group.Note.*;
 
 public class GroupNoteManager {
+	public String selectGroupNameSQL = "select * from ggroup, groupMember where groupMember.userId = ? and ggroup.groupId = groupMember.groupId ";
 	public String insertGroupNoteMatchSQL = "insert into groupNoteMatch (groupId,userId,unitId) value(?,?,?)";
 	public String deleteGroupNoteMatchSQL = "delete from groupNoteMatch where groupId = ? AND userId = ? AND unitId = ?";
 	public String selectGroupTextNoteSQL = "select * from groupNoteMatch,textNote , unit where groupNoteMatch.groupId = ? and groupNoteMatch.userId = textNote.userId and groupNoteMatch.unitId = textNote.unitId and textNote.unitId = unit.unitId";
 	public String selectGroupPictureNoteSQL = "select * from groupNoteMatch,pictureNote , unit where groupNoteMatch.groupId = ? and groupNoteMatch.userId = pictureNote.userId and groupNoteMatch.unitId = pictureNote.unitId and pictureNote.unitId = unit.unitId";
 	
+	public GroupName groupName;
 	public GroupTextNote groupTextNote;
 	public GroupPictureNote groupPictureNote;
 	
@@ -38,6 +40,31 @@ public class GroupNoteManager {
 		catch(SQLException x){
 			System.out.println("Exception" + x.toString());
 		}
+	}
+	
+	public String selectGroupName(String userId) {
+		ArrayList<GroupName> groupNames = new ArrayList<>();
+		try {
+			pst = con.prepareStatement(selectGroupNameSQL);
+			pst.setString(1, userId);
+			result = pst.executeQuery();
+			 while(result.next()) 
+		     { 				 
+				 groupName = new GroupName();
+				 groupName.setGroupId(result.getInt("groupId"));
+				 groupName.setGroupName(result.getString("groupName"));				 
+				 groupNames.add(groupName);
+		     }
+		}
+		catch(SQLException x){
+			System.out.println("GroupNoteManager-selectGroupName");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		String json = new Gson().toJson(groupNames);
+		return json;
 	}
 	
 	public void insertGroupNoteMatchTable(GroupNote groupNote){

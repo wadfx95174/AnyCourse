@@ -10,31 +10,51 @@ var replyTime;
 var replyContent;
 var urlId;
 
+// 取網址列的參數
 function get(name)
 {
    if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
       return decodeURIComponent(name[1]);
-	}
+}
+
+// 設置每個群組內的網址 (ex. 公告、討論區...)
+function setGroupUrl()
+{
+      var groupId = get('groupId');
+      $('.tabClass>a').each(function () {
+            $(this).attr("href", $(this).attr("href") + '?groupId=' + groupId);
+      });
+}
+
+// 檢查網址是否沒有 groupId，若沒有則跳轉至首頁
+function checkGroupId()
+{
+      if (get('groupId') == undefined)
+            window.location = ajaxURL + 'AnyCourse/AnyCourse/HomePage.html';
+}
+
+
 //新增comment
 function setComment(){	
-	if($("#commentArea").val() !== ''){
+	
+	if($("#groupcommentArea").val() !== ''){
 		var dt = new Date();
-		commentContent = document.getElementById('commentArea').value;
-		$("#commentArea").val('');
+		commentContent = document.getElementById('groupcommentArea').value;
+		$("#groupcommentArea").val('');
 		$.ajax({
 			url : ajaxURL+'AnyCourse/GroupCommentServlet.do',
 			method : 'POST',
 			cache :false,
 			data : {
 				"state" : "insert",	
-				"groupId" : groupId,
+				"groupId" : get('groupId'),
 				"userId" : userId,
 				"nickName" : nickName,
 				"commentContent" : commentContent,			
 			},
 			success : function(result) {
-				$('#comment-body').append(  	 
-						'<div id="com_' + result.commentId + '" class="B" >'+	
+				$('#groupcomment-body').append(  	 
+						'<div id="com_' + result.commentId + '" class="B col-xs-12" >'+	
 						'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
 						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result.nickName + '</h4>'+
 						'<h5 style="float:right;">' + result.commentTime + '</h5>'+														
@@ -45,7 +65,7 @@ function setComment(){
 						'<button id="comment2_' + result.commentId + '" type="button" class="btn btn-default btnCss" onclick="edit(this.id)">編輯</button>'+
 						'<button id="comment3_' + result.commentId + '" type="button" class="btn btn-default btnCss" onclick="displayReply(this.id)">回覆</button>'+																														
 						'</div>'+
-						'<div id="reply_div_' + result.commentId + '" class="B" style="display:none;">'+
+						'<div id="reply_div_' + result.commentId + '" class="B col-xs-12" style="display:none;">'+
 						'<textarea id="reply_area_' + result.commentId +'" class="col-xs-12" rows="3" cols="50" placeholder="Reply something..." style="float:left;"></textarea>'+
 						'<button id="setReply_' + result.commentId +'"type="button" class="btn btn-default btnCss" onclick="setReply(this.id)">確認</button>'+
 						'<button id="hide_' + result.commentId +'" type="button" class="btn btn-default btnCss" onclick="displayReply(this.id)">取消</button>'+
@@ -85,25 +105,35 @@ function setComment(){
 				//         }
 				// 	});
 			},
-			error: function (jqXHR, textStatus, errorThrown) {
-	         }
+			error: function(){
+                // 當 servlet 沒有回傳東西 -> 非該群組成員
+                $('.content-wrapper').first().html('<div><h2 style="text-align:center; padding-top:50px;">很抱歉，您尚未加入該群組</h2></div>');
+                console.log('get groupId error');
+			}
 		})				
 	}	
 }
 //載入頁面
 $(document).ready(function() {
+	checkLogin("../", "../../../");
+    
+    // 載入頁面時，先檢查有沒有 groupId 這個參數
+    checkGroupId();
+	
 	$.ajax({
 		url : ajaxURL+'AnyCourse/GroupCommentServlet.do',
 		method : 'GET',
 		cache :false,
 		data : {
-			"groupId" : groupId,
+			"groupId" : get('groupId'),
 		},
 		success:function(result){
+			setGroupUrl();
+			
     		for(var i = 0 ;i < result.length;i++){
     			
-    			$('#comment-body').append( 	 
-						'<div id="com_' + result[i].commentId + '" class="B">'+
+    			$('#groupcomment-body').append( 	 
+						'<div id="com_' + result[i].commentId + '" class="B col-xs-12">'+
 						'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
 						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result[i].nickName + '</h4>'+
 						'<h5 style="float:right;">' + result[i].commentTime + '</h5>'+														
@@ -114,7 +144,7 @@ $(document).ready(function() {
 						'<button id="comment2_' + result[i].commentId + '" type="button" class="btn btn-default btnCss" onclick="edit(this.id)">編輯</button>'+
 						'<button id="comment3_' + result[i].commentId + '" type="button" class="btn btn-default btnCss" onclick="displayReply(this.id)">回覆</button>'+																																				
 						'</div>'+
-						'<div id="reply_div_' + result[i].commentId + '" class="B" style="display:none;">'+
+						'<div id="reply_div_' + result[i].commentId + '" class="B col-xs-12" style="display:none;">'+
 						'<textarea id="reply_area_' + result[i].commentId +'" class="col-xs-12" rows="3" cols="50" placeholder="Reply something..." style="float:left;"></textarea>'+
 						'<button id="setReply_' + result[i].commentId +'"type="button" class="btn btn-default btnCss" onclick="setReply(this.id)">確認</button>'+
 						'<button id="hide_' + result[i].commentId +'" type="button" class="btn btn-default btnCss" onclick="displayReply(this.id)">取消</button>'+
@@ -124,6 +154,9 @@ $(document).ready(function() {
     		$.ajax({
     			url : ajaxURL+'AnyCourse/GroupReplyServlet.do',
     			method : 'GET',
+    			data: {
+    				'groupId': get('groupId')
+    			},  
     			cache :false,
     			success : function(result) {
     				for(var i = 0 ;i < result.length;i++){
@@ -141,8 +174,11 @@ $(document).ready(function() {
     					);
     				}
     			},
-    			error: function (jqXHR, textStatus, errorThrown) {
-    		     }
+    			error: function(){
+                    // 當 servlet 沒有回傳東西 -> 非該群組成員
+                    $('.content-wrapper').first().html('<div><h2 style="text-align:center; padding-top:50px;">很抱歉，您尚未加入該群組</h2></div>');
+                    console.log('get groupId error');
+    			}
     		})
     	},
 		error:function(){}
@@ -156,6 +192,7 @@ function displayReply(input){
 }
 //新增reply
 function setReply(input){
+
 	var id = input.split('_')[1];
 	var url = location.href;
 	
@@ -172,7 +209,8 @@ function setReply(input){
 				"commentId" : id,
 //				"userId" : userId,
 				"nickName" : nickName,
-				"replyContent" : replyContent,			
+				"replyContent" : replyContent,
+				"groupId" : get('groupId'),
 			},
 			success : function(result) {
 				urlId = url+"#rep_"+result.replyId;
@@ -190,25 +228,27 @@ function setReply(input){
 						'</div>'																
 	    			);	
 				$("#reply_div_" + id ).toggle();
-				$.ajax({					
-					url : ajaxURL+'AnyCourse/NotificationServlet.do',
-					method : 'POST',
-					cache :false,
-					data : {
-						"state" : "insert",	
-						"commentId" : id,
-//						"userId" : userId,
-//						"nickName" : nickName,
-//						"replyContent" : replyContent,	
-						"url" : urlId,
-					},
-					success : function(result) {
-						
-					},
-					error: function (jqXHR, textStatus, errorThrown) {
-//						alert("BBB");
-			         }
-				})
+//				$.ajax({					
+//					url : ajaxURL+'AnyCourse/NotificationServlet.do',
+//					method : 'POST',
+//					cache :false,
+//					data : {
+//						"state" : "insert",	
+//						"commentId" : id,
+////						"userId" : userId,
+////						"nickName" : nickName,
+////						"replyContent" : replyContent,	
+//						"url" : urlId,
+//					},
+//					success : function(result) {
+//						
+//					},
+//					error: function(){
+//	                    // 當 servlet 沒有回傳東西 -> 非該群組成員
+//	                    $('.content-wrapper').first().html('<div><h2 style="text-align:center; padding-top:50px;">很抱歉，您尚未加入該群組</h2></div>');
+//	                    console.log('get groupId error');
+//	  		}
+//				})
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 	         }
@@ -216,7 +256,8 @@ function setReply(input){
 	}			
 }
 //刪除reply
-function deleteReply(input){
+function deleteReply(input){	
+
 	var id = input.split('_')[1];
 	
 	$.ajax({
@@ -234,6 +275,7 @@ function deleteReply(input){
 }
 //刪除comment   
 function deleteComment(input){
+
 	var id = input.split('_')[1];
 	
 	$.ajax({
@@ -242,7 +284,7 @@ function deleteComment(input){
 		cache :false,
 		data : {
 			"state" : "delete",
-			"commentId" : id,					
+			"commentId" : id,	
 		},				
 		success : function(data) {
 			$("#com_"+id).remove();
@@ -251,7 +293,7 @@ function deleteComment(input){
 				method : 'POST',
 				data : {
 					"state" : "delete2",
-					"commentId" : id,					
+					"commentId" : id,	
 				},				
 				success : function(data) {
 				},
@@ -282,6 +324,7 @@ function edit(input){
 }
 //update comment,comment1_+id 刪除button,comment2_+id 編輯button,comment3_+id 回覆button,comment4_+id 確認button,comment5_+id 取消button
 function updateComment(input){
+
 	var id = input.split('_')[1];
 
 	commentContent = document.getElementById('comment_'+id).value;
@@ -292,7 +335,7 @@ function updateComment(input){
 		cache :false,
 		data : {
 			"state" : "update",
-			"groupId" : groupId,
+			"groupId" : get('groupId'),
 			"commentId" : id,
 			"userId" : userId,
 			"nickName" : nickName,
@@ -335,6 +378,7 @@ function edit2(input){
 }
 //update reply,reply1_+id 刪除button,reply2_+id 編輯button,reply3_+id 確認button,reply4_+id 取消button
 function updateReply(input){
+
 	var id = input.split('_')[1];
 	var id2 = input.split('_')[2];
 
@@ -350,7 +394,7 @@ function updateReply(input){
 			"commentId" : id2,
 			"userId" : userId,
 			"nickName" : nickName,
-			"replyContent" : replyContent	
+			"replyContent" : replyContent,	
 		},				
 		success : function(data) {
 			$('#reply_'+id).append( data.replyContent);
@@ -367,7 +411,3 @@ function updateReply(input){
 };
 
 
-
-
-
-	   

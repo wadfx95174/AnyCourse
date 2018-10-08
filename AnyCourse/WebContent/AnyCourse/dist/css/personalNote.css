@@ -5,10 +5,17 @@
 $('.personalNote').slimScroll({
     height: 200px;
   });
-.personalNote{
-	height: 200px;
+  
+.personalNoteDiv{
+	overflow:auto;
+	height: 285px;
 }  
 
+.personalNoteShare{
+	position: absolute;
+    top: 50%;
+	left: 8%;
+}
 
 .ffs-gal-view {
   display: none;

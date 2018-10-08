@@ -2,6 +2,7 @@ package Group.Note;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,10 +33,14 @@ public class GroupPictureNoteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		GroupNoteManager dbgroupNote = new GroupNoteManager();	
 		HttpSession session = request.getSession();
-
-		response.setContentType("application/json;charset = utf-8;");
-		response.getWriter().write(dbgroupNote.selectGroupPictureNoteTable(Integer.parseInt(request.getParameter("groupId"))));	
-		dbgroupNote.conClose();
+		Map<String, Integer> groups = (Map<String, Integer>)session.getAttribute("groups");
+	   
+	    if (groups.containsValue(Integer.parseInt(request.getParameter("groupId"))))  
+	    {
+	    	response.setContentType("application/json;charset = utf-8;");
+			response.getWriter().write(dbgroupNote.selectGroupPictureNoteTable(Integer.parseInt(request.getParameter("groupId"))));	
+			dbgroupNote.conClose();
+	    }		
 	}
 
 	/**

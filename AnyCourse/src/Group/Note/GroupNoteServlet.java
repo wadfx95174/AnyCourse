@@ -27,7 +27,12 @@ public class GroupNoteServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		GroupNoteManager dbgroupName = new GroupNoteManager();	
+		HttpSession session = request.getSession();
 		
+		response.setContentType("application/json;charset = utf-8;");
+		response.getWriter().write(dbgroupName.selectGroupName((String)session.getAttribute("userId")));	
+		dbgroupName.conClose();
 	}
 
 
