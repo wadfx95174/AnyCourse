@@ -93,7 +93,7 @@ public class VideoListServlet extends HttpServlet{
 			response.getWriter().write(manager.getAllGroup(userId));
 		}
 		//將課程清單分享至指定群組
-		else if(action.equals("shareVideoToGroup")) {
+		else if(action.equals("shareVideoListToGroup")) {
 			manager.shareVideoToGroup(userId, Integer.parseInt(request.getParameter("courselistId"))
 					, Integer.parseInt(request.getParameter("groupId")));
 		}
