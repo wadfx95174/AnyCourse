@@ -7,8 +7,8 @@ var checkId;
 //載入頁面
 $(document).ready(function() {
 	var noId = 1;
-
-	ws.onmessage = function(event){
+	if(ws){
+		ws.onmessage = function(event){
 		console.log(event);
 		var number = $('#notificationNumber').text();//暫存原本有幾個通知的變數
 		var data = JSON.parse(event.data);
@@ -93,6 +93,8 @@ $(document).ready(function() {
 		}
 		noId++;
     };
+	}
+	
 
     var notifications = 0;//還未點擊過的通知數量
     
