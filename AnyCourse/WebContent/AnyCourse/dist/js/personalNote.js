@@ -13,50 +13,54 @@ $(document).ready(function(){
 		cache :false,
 		url:ajaxURL+'AnyCourse/PersonalTextNoteServlet.do',
 		success: function(response){
-			console.log(response);
-			array = response;
+			var videoId = 1;
+			// console.log(response);
+			// array = response;
+			unitArray = new Array(response.length);
 			for (var i = 0; i < response.length; i++)
 			{			
-					$('#result').append(
-							'<ul class="list-group list-group-horizontal">'
-							+'<li class="list-group-item col-xs-1">'
-							+'<div class="personalNoteShare"><div class="btn-group show-on-hover dropup" >'
-							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">分享' 
-							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
-							+'<li><a data-toggle="modal" data-target="#addToGroupNote" id="personalNote_'+ response[i].unitId  +'" onclick="insertGroupNote(this.id)" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>分享至群組</a></li>'
-							+'</ul></div></div>'
-							+'</li>'
-							+'<li class="list-group-item col-xs-3">'
-							+'<div class="personalNote" style="height: 285px;"><a class="list-group-item" style="height: 285px;" href="../PlayerInterface.html?type='+ (response[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].unitId+'">'					
-							+'<h4 class="media-heading">'
-							+'<b>影片名稱:' + response[i].unitName + '</b>'
-							+'</h4>'						
-							+'<p style="margin-bottom: 5px;">開課大學:' + response[i].schoolName + '</p>'					
-							+'<p style="margin-bottom: 5px;">讚數:' + response[i].likes +'</p>'
-							+'</a></div></li>'
-							+'<li class="list-group-item col-xs-4">'
-							+'<div class="personalNoteDiv" style="overflow:auto;height: 285px;">' + response[i].textNote + '</div>'
-							+'</li>'
-							+'<li class="list-group-item col-xs-4">'
-							+'<div class="personalNoteDiv" style="overflow:auto;height: 285px;" id="personalPictureNote_'+ response[i].unitId  +'"></div>'
-							+'</li>'
-							+'</ul>'				
-							+
-							'<div class="ffs-gal-view view'+ response[i].unitId +'">'+
-							'<h1 id="picture"></h1>'+ 
-							'<img class="ffs-gal-prev ffs-gal-nav prev' + response[i].unitId + ' nav'+ response[i].unitId +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/prev.svg" alt="Previous picture" title="Previous picture" />'+									     
-							'<img class="ffs-gal-next ffs-gal-nav next' + response[i].unitId + ' nav'+ response[i].unitId +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/next.svg" alt="Next picture" title="Next picture" />'+
-							'<img class="ffs-gal-close close'+ response[i].unitId +'"  src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/close.svg" alt="Close gallery" title="Close gallery" />'+
-							'</div>'
-					);
-				}
+				$('#result').append(
+						'<ul class="list-group list-group-horizontal">'
+						+'<li class="list-group-item col-xs-1">'
+						+'<div class="personalNoteShare"><div class="btn-group show-on-hover dropup" >'
+						+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">分享' 
+						+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
+						+'<li><a data-toggle="modal" data-target="#addToGroupNote" id="personalNote_'+ response[i].unitId  +'" onclick="getUnitId('+videoId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>分享至群組</a></li>'
+						+'</ul></div></div>'
+						+'</li>'
+						+'<li class="list-group-item col-xs-3">'
+						+'<div class="personalNote" style="height: 285px;"><a class="list-group-item" style="height: 285px;" href="../PlayerInterface.html?type='+ (response[i].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].unitId+'">'					
+						+'<h4 class="media-heading">'
+						+'<b>影片名稱:' + response[i].unitName + '</b>'
+						+'</h4>'
+						+'<p style="margin-bottom: 5px;">開課大學:' + response[i].schoolName + '</p>'					
+						+'<p style="margin-bottom: 5px;">讚數:' + response[i].likes +'</p>'
+						+'</a></div></li>'
+						+'<li class="list-group-item col-xs-4">'
+						+'<div class="personalNoteDiv" style="overflow:auto;height: 285px;">' + response[i].textNote + '</div>'
+						+'</li>'
+						+'<li class="list-group-item col-xs-4">'
+						+'<div class="personalNoteDiv" style="overflow:auto;height: 285px;" id="personalPictureNote_'+ response[i].unitId  +'"></div>'
+						+'</li>'
+						+'</ul>'				
+						+
+						'<div class="ffs-gal-view view'+ response[i].unitId +'">'+
+						'<h1 id="picture"></h1>'+ 
+						'<img class="ffs-gal-prev ffs-gal-nav prev' + response[i].unitId + ' nav'+ response[i].unitId +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/prev.svg" alt="Previous picture" title="Previous picture" />'+									     
+						'<img class="ffs-gal-next ffs-gal-nav next' + response[i].unitId + ' nav'+ response[i].unitId +'" src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/next.svg" alt="Next picture" title="Next picture" />'+
+						'<img class="ffs-gal-close close'+ response[i].unitId +'"  src="../../plugins/Gallery-Popup-jQuery-Fs-Gal/img/close.svg" alt="Close gallery" title="Close gallery" />'+
+						'</div>'
+				);
+				videoId++;
+				unitArray[i] = response[i].unitId;
+			}
 			$.ajax({
 				method:"GET",
 				cache :false,
 				url:ajaxURL+'AnyCourse/PersonalPictureNoteServlet.do',
 				success: function(response){
-					console.log(response);
-					array = response;
+					// console.log(response);
+					// array = response;
 					for (var i = 0; i < response.length; i++)
 					{			
 						$('#personalPictureNote_'+response[i].unitId).append(
@@ -97,30 +101,28 @@ $(document).ready(function(){
 			console.log("append GroupName to modal error");
 		}
 	});
-});
 
-
-function insertGroupNote(input){
-	var unitId = input.split('_')[1];
-		
-	if($('#addToGroupNoteModalBody').val() != null){
+	//將筆記分享至指定群組
+	$('#addToGroupNoteButton').click(function(){
 		$.ajax({
-			url : ajaxURL+'AnyCourse/GroupNoteServlet.do',
-			method : 'POST',
-			cache: false,
+			url:ajaxURL+'AnyCourse/GroupNoteServlet.do',
+			method:'POST',
+			cache:false,
 			data:{
 				state:'insert',
 				groupId:$('#addToGroupNoteModalBody').val(),
-				unitId:unitId
+				unitId:unitArray[checkUnitId-1]
 			},
-			success:function(result){
+			success:function(){
+				shareNoteToGroup();
 			},
-			error:function(){
+			error:function(e){
 				console.log("add personalNote to group error");
 			}
 		});
-	}
-}	
+	});
+});
+
 
 var id;
 $('document').ready(function() {
@@ -186,3 +188,42 @@ $('document').ready(function() {
     $('.view'+id).fadeIn(); //Display gallery
   }
 });
+
+//分享個人筆記至指定群組
+function shareNoteToGroup(){
+	$.ajax({
+		url:ajaxURL + 'AnyCourse/NotificationServlet.do',
+		method:'POST',
+		cache:false,
+		data:{
+			'action': "groupNotification",
+			'groupId': $('#addToGroupNoteModalBody').val(),
+			'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Note.html?groupId=" + $('#addToGroupNoteModalBody').val(),
+			'type': "shareNoteToGroup"
+		},
+		success:function(response){
+			console.log(response);
+
+			// for(var i = 0;i < response.length;i ++){
+			// 	ws.send(JSON.stringify({
+	  //               type: response[i].type,
+	  //               toUserId: response[i].toUserId,
+	  //               notificationId: response[i].notificationId,
+	  //               nickname: response[i].nickname,
+	  //               groupId: response[i].groupId,
+	  //               groupName: response[i].groupName,
+	  //               url: response[i].url
+	  //           }));
+			// }
+		},
+		error:function(xhr, ajaxOptions, thrownError){
+			console.log(xhr);
+			console.log(thrownError);
+			console.log("personalNote.js shareNoteToGroup error");
+		}
+	});
+}
+
+function getUnitId(id){
+	checkUnitId = id;
+}

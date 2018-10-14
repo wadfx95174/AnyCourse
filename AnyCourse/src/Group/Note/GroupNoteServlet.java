@@ -46,15 +46,15 @@ public class GroupNoteServlet extends HttpServlet {
 		
 		if(state.equals("insert"))
 		{
-			GroupNoteManager dbgroupNote = new GroupNoteManager();			
+			GroupNoteManager dbgroupNote = new GroupNoteManager();
 			GroupNote groupNote = new GroupNote();
-						
+			
 			groupNote.setGroupId(groupId);
 			groupNote.setUserId(userId);
-			groupNote.setUnitId(unitId);			
-						
+			groupNote.setUnitId(unitId);
+			
 			dbgroupNote.insertGroupNoteMatchTable(groupNote);
-			response.setContentType("application/json");
+//			response.setContentType("application/json");
 			dbgroupNote.conClose();
 		}
 		if(state.equals("delete"))

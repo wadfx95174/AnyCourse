@@ -72,38 +72,37 @@ function setComment(){
 						'</div>'
 	    			);
 
-				//發出問題後通知其他群組成員
-				// $.ajax({
-				// 		url : ajaxURL+'AnyCourse/NotificationServlet.do',
-				// 		method : 'POST',
-				// 		cache :false,
-				// 		data : {
-				// 			'action' : "groupNotification",
-				// 			'commentId' : id,
-				// 			'groupId' : get('groupId'),
-				// 			'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/VideoListPage.html?groupId=" + get('groupId'),
-				// 			'type': "groupComment",
+				// 提出問題後通知其他群組成員
+				$.ajax({
+						url : ajaxURL+'AnyCourse/NotificationServlet.do',
+						method : 'POST',
+						cache :false,
+						data : {
+							'action' : "groupNotification",
+							'groupId' : get('groupId'),
+							'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Forum.html?groupId=" + get('groupId'),
+							'type': "groupComment",
 							
-				// 		},
-				// 		success : function(response) {
-				// 			console.log(response);
+						},
+						success : function(response) {
+							console.log(response);
 							
-				// 			for(var i = 0;i < response.length;i ++){
-				// 				ws.send(JSON.stringify({
-				// 	                type: response[i].type,
-				// 	                toUserId: response[i].toUserId,
-				// 	                notificationId: response[i].notificationId,
-				// 	                nickname: response[i].nickname,
-				// 	                groupId: response[i].groupId,
-				// 	                groupName: response[i].groupName,
-				// 	                url: response[i].url
-				// 	            }));
-				// 			}
-				// 		},
-				// 		error: function (jqXHR, textStatus, errorThrown) {
-				// 			console.log("forum.js insertNotification error");
-				//         }
-				// 	});
+							for(var i = 0;i < response.length;i ++){
+								ws.send(JSON.stringify({
+					                type: response[i].type,
+					                toUserId: response[i].toUserId,
+					                notificationId: response[i].notificationId,
+					                nickname: response[i].nickname,
+					                groupId: response[i].groupId,
+					                groupName: response[i].groupName,
+					                url: response[i].url
+					            }));
+							}
+						},
+						error: function (jqXHR, textStatus, errorThrown) {
+							console.log("groupForum.js setComment notify error");
+				        }
+					});
 			},
 			error: function(){
                 // 當 servlet 沒有回傳東西 -> 非該群組成員
@@ -228,27 +227,35 @@ function setReply(input){
 						'</div>'																
 	    			);	
 				$("#reply_div_" + id ).toggle();
-//				$.ajax({					
-//					url : ajaxURL+'AnyCourse/NotificationServlet.do',
-//					method : 'POST',
-//					cache :false,
-//					data : {
-//						"state" : "insert",	
-//						"commentId" : id,
-////						"userId" : userId,
-////						"nickName" : nickName,
-////						"replyContent" : replyContent,	
-//						"url" : urlId,
-//					},
-//					success : function(result) {
-//						
-//					},
-//					error: function(){
-//	                    // 當 servlet 沒有回傳東西 -> 非該群組成員
-//	                    $('.content-wrapper').first().html('<div><h2 style="text-align:center; padding-top:50px;">很抱歉，您尚未加入該群組</h2></div>');
-//	                    console.log('get groupId error');
-//	  		}
-//				})
+
+				///////////////////通知提問者有人回復他/////////////////////////////
+				//檢查提問者與回覆者是否為不同人，不同人才通知
+				// if(result.commentUserId != result.userId){
+				// 	$.ajax({
+				// 		url : ajaxURL+'AnyCourse/NotificationServlet.do',
+				// 		method : 'POST',
+				// 		cache :false,
+				// 		data : {
+				// 			'action' : "insertNotification",
+				// 			'commentId' : id,
+				// 			'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Forum.html?groupId=" + get('groupId')
+				// 		},
+				// 		success : function(response) {
+				// 			console.log(response);
+				// 			ws.send(JSON.stringify({
+			 //                    type: "playerInterfaceReply",
+			 //                    toUserId: response.toUserId,
+			 //                    notificationId: response.notificationId,
+			 //                    nickname: response.nickname,
+			 //                    url: urlId
+			 //                }));
+				// 		},
+				// 		error: function (jqXHR, textStatus, errorThrown) {
+				// 			console.log("forum.js insertNotification error");
+				//         }
+				// 	});
+				// }
+				///////////////////////////////////////////////////////////////////
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 	         }

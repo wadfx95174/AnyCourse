@@ -14,7 +14,7 @@ import Group.Note.*;
 
 public class GroupNoteManager {
 	public String selectGroupNameSQL = "select * from ggroup, groupMember where groupMember.userId = ? and ggroup.groupId = groupMember.groupId ";
-	public String insertGroupNoteMatchSQL = "insert into groupNoteMatch (groupId,userId,unitId) value(?,?,?)";
+	public String insertGroupNoteMatchSQL = "insert ignore into groupNoteMatch (groupId,userId,unitId) value(?,?,?)";
 	public String deleteGroupNoteMatchSQL = "delete from groupNoteMatch where groupId = ? AND userId = ? AND unitId = ?";
 	public String selectGroupTextNoteSQL = "select * from groupNoteMatch,textNote , unit where groupNoteMatch.groupId = ? and groupNoteMatch.userId = textNote.userId and groupNoteMatch.unitId = textNote.unitId and textNote.unitId = unit.unitId";
 	public String selectGroupPictureNoteSQL = "select * from groupNoteMatch,pictureNote , unit where groupNoteMatch.groupId = ? and groupNoteMatch.userId = pictureNote.userId and groupNoteMatch.unitId = pictureNote.unitId and pictureNote.unitId = unit.unitId";

@@ -91,6 +91,12 @@ $(document).ready(function() {
 		else if(data.type.match("groupReply") != null){
 			
 		}
+		//群組筆記
+		else if(data.type.match("shareNoteToGroup") != null){
+			appendGroupNotification(noId,data.notificationId, data.url
+				,'style="background-color: Silver;"'
+				,data.nickname + '在「' + data.groupName + '」分享筆記');
+		}
 		noId++;
     };
 	}
@@ -212,6 +218,12 @@ $(document).ready(function() {
 				//群組討論區_回覆
 				else if(result[i].type.match("groupReply") != null){
 
+				}
+				//群組筆記
+				else if(result[i].type.match("shareNoteToGroup") != null){
+					appendGroupNotification(noId,result[i].notificationId
+						,result[i].url, backgroundColor
+						,result[i].nickname + '在「' + result[i].groupName + '」分享筆記');
 				}
 
 				noId++;
