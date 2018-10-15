@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import Group.Management.ManagementManager;
+
 public class GroupMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -42,6 +44,8 @@ public class GroupMemberServlet extends HttpServlet {
 	    }
 	    else if(action.equals("joinGroup")) {
 	    	manager.joinGroup(userId, groupId);
+	    	ManagementManager managementManager = new ManagementManager();
+	    	session.setAttribute("groups", managementManager.getPersonalGroups(userId));
 	    }
 	}
 
