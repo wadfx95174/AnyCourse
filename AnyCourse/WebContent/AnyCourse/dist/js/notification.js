@@ -58,11 +58,19 @@ $(document).ready(function() {
 
 			appendGroupInvitation(noId,groupName,data.notificationId,'style="background-color: Silver;"');
 
-			$('#groupInviteButton').click(function(){
+			// $('#notificationId_'+noId).click(function(){
+						$('#groupInviteText').text("確定要加入「" + groupName + "」嗎?");
+						$('#groupInviteButton').click(function(){
 
-				GroupInvitation(groupId,groupName);
+		    				GroupInvitation(groupId,groupName);
 
-			});
+						});
+					// })
+			// $('#groupInviteButton').click(function(){
+
+			// 	GroupInvitation(groupId,groupName);
+
+			// });
 		}
 		//群組有新成員加入
 		else if(data.type.match("groupMemberJoin") != null){
@@ -418,7 +426,7 @@ function GroupInvitation(groupId,groupName){
 								'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Management.html?groupId=" + groupId
 							},
 							success:function(resp){
-								console.log(resp);
+								// console.log(resp);
 
 								$('#groupJoinSuccessText').text("您成功加入"+groupName);
 								$('#groupJoinSuccessModal').modal('show');
@@ -474,7 +482,6 @@ function appendPlayerInterfaceForum(noId,notificationId, url, nickname, backgrou
 
 //--------------------------------append通知(群組邀請)-----------------------------------//
 function appendGroupInvitation(noId,groupName, notificationId, backgroundColor){
-	// $('#groupInviteText').text("確定要加入「" + groupName + "」嗎?");
 	
 	$('#notificationList').append(
 		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'
