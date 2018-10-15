@@ -41,7 +41,7 @@ public class GroupMemberServlet extends HttpServlet {
 	    	response.getWriter().write(manager.checkJoinGroup(userId, groupId));
 	    }
 	    else if(action.equals("joinGroup")) {
-	    	
+	    	manager.joinGroup(userId, groupId);
 	    }
 	}
 

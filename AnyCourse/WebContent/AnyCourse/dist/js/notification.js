@@ -443,9 +443,9 @@ function GroupInvitation(groupId,groupName){
 						});
 					},
 					error:function(xhr, ajaxOptions, thrownError){
-						console.log(xhr);
-						console.log(thrownError);
-						console.log("notification.js agree group invitation error");
+						// console.log(xhr);
+						// console.log(thrownError);
+						console.log("notification.js join group error");
 					}
 				});
 				
