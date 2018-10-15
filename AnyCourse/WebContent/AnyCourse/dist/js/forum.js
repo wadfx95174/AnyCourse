@@ -164,7 +164,7 @@ function setReply(input){
 
 				///////////////////通知提問者有人回復他/////////////////////////////
 				//檢查提問者與回覆者是否為不同人，不同人才通知
-				// if(result.commentUserId != result.userId){
+				if(result.commentUserId != result.userId){
 					$.ajax({
 						url : ajaxURL+'AnyCourse/NotificationServlet.do',
 						method : 'POST',
@@ -177,49 +177,49 @@ function setReply(input){
 						},
 						success : function(response) {
 							console.log(response);
-							// ws.send(JSON.stringify({
-			    //                 type: "playerInterfaceComment",
-			    //                 toUserId: response.toUserId,
-			    //                 notificationId: response.notificationId,
-			    //                 nickname: response.nickname,
-			    //                 url: urlId
-			    //             }));
+							ws.send(JSON.stringify({
+			                    type: response.type,
+			                    toUserId: response.toUserId,
+			                    notificationId: response.notificationId,
+			                    nickname: response.nickname,
+			                    url: response.url
+			                }));
 						},
 						error: function (jqXHR, textStatus, errorThrown) {
 							console.log("forum.js playerInterfaceComment error");
 				        }
 					});
-				// }
+				}
 				///////////////////////////////////////////////////////////////////
 
-				///////////////////通知提問者有人回復他/////////////////////////////
-				//檢查提問者與回覆者是否為不同人，不同人才通知
-				// if(result.commentUserId != result.userId){
-					$.ajax({
-						url : ajaxURL+'AnyCourse/NotificationServlet.do',
-						method : 'POST',
-						cache :false,
-						data : {
-							'action' : "playerInterfaceReply",
-							'commentId' : id,
-							'url' : urlId,
-							'type': "playerInterfaceReply"
-						},
-						success : function(response) {
-							console.log(response);
-							// ws.send(JSON.stringify({
-			    //                 type: "playerInterfaceReply",
-			    //                 toUserId: response.toUserId,
-			    //                 notificationId: response.notificationId,
-			    //                 nickname: response.nickname,
-			    //                 url: urlId
-			    //             }));
-						},
-						error: function (jqXHR, textStatus, errorThrown) {
-							console.log("forum.js playerInterfaceReply error");
-				        }
-					});
-				// }
+				///////////////////通知回覆者也有人回復提問者/////////////////////////////
+				$.ajax({
+					url : ajaxURL+'AnyCourse/NotificationServlet.do',
+					method : 'POST',
+					cache :false,
+					data : {
+						'action' : "playerInterfaceReply",
+						'commentId' : id,
+						'url' : urlId,
+						'type': "playerInterfaceReply"
+					},
+					success : function(response) {
+						console.log(response);
+						for(var i = 0;i < response.length;i ++){
+							ws.send(JSON.stringify({
+			                    type: response[i].type,
+			                    toUserId: response[i].toUserId,
+			                    notificationId: response[i].notificationId,
+			                    nickname: response[i].nickname,
+			                    url: response[i].url,
+			                    commentNickname: response[i].commentNickname
+			                }));
+		                }
+					},
+					error: function (jqXHR, textStatus, errorThrown) {
+						console.log("forum.js playerInterfaceReply error");
+			        }
+				});
 				///////////////////////////////////////////////////////////////////
 			},
 			error: function (jqXHR, textStatus, errorThrown) {

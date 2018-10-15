@@ -27,27 +27,16 @@ $(document).ready(function() {
 			$('#notificationHeader').text("You have 1 notification");
 		}
 
-		//播放介面-討論區"回覆"通知
-		if(data.type.match("playerInterfaceReply") != null){
-			var user;
-			$.ajax({
-				url:ajaxURL + 'AnyCourse/NotificationServlet.do',
-				method:'GET',
-				cache:false,
-				async:false,
-				data:{
-					'action': "getToUser",
-					'toUserId': data.toUserId
-				},
-				success:function(response){
-					user = response;
-				},
-				error:function(){
-					console.log("notification.js getToUser error");
-				}
-			});
+		//播放介面-討論區，通知提問者
+		if(data.type.match("playerInterfaceComment") != null){
 
-			appendPlayerInterfaceForum(noId,data.notificationId,data.url,data.nickname,'style="background-color: Silver;"',user);
+			appendPlayerInterfaceForumComment(noId,data.notificationId,data.url,data.nickname,'style="background-color: Silver;"');
+			
+		}
+		//播放介面-討論區，通知其他回覆者
+		else if(data.type.match("playerInterfaceReply") != null){
+
+			appendPlayerInterfaceForumReply(noId,data.notificationId,data.url,data.nickname,'style="background-color: Silver;"',data.commentNickname);
 			
 		}
 		//群組邀請
@@ -58,19 +47,12 @@ $(document).ready(function() {
 
 			appendGroupInvitation(noId,groupName,data.notificationId,'style="background-color: Silver;"');
 
-			// $('#notificationId_'+noId).click(function(){
-						$('#groupInviteText').text("確定要加入「" + groupName + "」嗎?");
-						$('#groupInviteButton').click(function(){
+			$('#groupInviteText').text("確定要加入「" + groupName + "」嗎?");
+			$('#groupInviteButton').click(function(){
 
-		    				GroupInvitation(groupId,groupName);
+				GroupInvitation(groupId,groupName);
 
-						});
-					// })
-			// $('#groupInviteButton').click(function(){
-
-			// 	GroupInvitation(groupId,groupName);
-
-			// });
+			});
 		}
 		//群組有新成員加入
 		else if(data.type.match("groupMemberJoin") != null){
@@ -176,26 +158,16 @@ $(document).ready(function() {
 	    		else if(result[i].isBrowse == 1)backgroundColor = 'style="background-color: #f4f4f4;"';
 
 	    		//播放介面的討論區回覆
-				if(result[i].type.match("playerInterfaceReply") != null){
-					var user;
-					$.ajax({
-						url:ajaxURL + 'AnyCourse/NotificationServlet.do',
-						method:'GET',
-						cache:false,
-						async:false,
-						data:{
-							'action': "getToUser",
-							'toUserId': result[i].userId
-						},
-						success:function(response){
-							user = response;
-						},
-						error:function(){
-							console.log("notification.js getToUser error");
-						}
-					});
-					appendPlayerInterfaceForum(noId,result[i].notificationId,result[i].url,result[i].nickname,backgroundColor,user);
+				if(result[i].type.match("playerInterfaceComment") != null){
+
+					appendPlayerInterfaceForumComment(noId,result[i].notificationId,result[i].url,result[i].nickname,backgroundColor);
 	    			
+				}
+				//播放介面-討論區，通知其他回覆者
+				else if(result[i].type.match("playerInterfaceReply") != null){
+
+					appendPlayerInterfaceForumReply(noId,result[i].notificationId,result[i].url,result[i].nickname,backgroundColor,result[i].commentNickname);
+					
 				}
 				//群組邀請
 				else if(result[i].type.match("groupInvitation") != null){
@@ -468,12 +440,24 @@ function GroupInvitation(groupId,groupName){
 }
 //--------------------------------------------------------------------------------------//
 
-//--------------------------append通知(播放介面討論區回復)--------------------------------//
-function appendPlayerInterfaceForum(noId,notificationId, url, nickname, backgroundColor, user){
+//-----------------------append通知(播放介面討論區，通知提問者)---------------------------//
+function appendPlayerInterfaceForumComment(noId,notificationId, url, nickname, backgroundColor){
 	$('#notificationList').append(
 		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'
 	    +'<a href="'+ url +'">'
-	    +'<i class="fa fa-comment text-red"></i>'+ nickname +'回應了'+ user +'的留言'
+	    +'<i class="fa fa-comment text-red"></i>'+ nickname +'回應了你的的留言'
+	    +'</a>'
+	    +'</li>'
+	);
+}
+//--------------------------------------------------------------------------------------//
+
+//----------------------append通知(播放介面討論區，通知其他回覆者)-------------------------//
+function appendPlayerInterfaceForumReply(noId,notificationId, url, nickname, backgroundColor,commentNickname){
+	$('#notificationList').append(
+		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'
+	    +'<a href="'+ url +'">'
+	    +'<i class="fa fa-comment text-red"></i>'+ nickname +'也回應了'+ commentNickname +'的留言'
 	    +'</a>'
 	    +'</li>'
 	);

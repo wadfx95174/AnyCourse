@@ -12,6 +12,7 @@ public class Notification {
 	private String message;
 	private String toUserId;//提問者的ID
 	private int isBrowse;
+	private String commentNickname;//(討論區)通知其他回覆者時，要在通知裡面放入提問者的名字
 	
 	public int getNotificationId() {
 		return notificationId;
@@ -78,6 +79,12 @@ public class Notification {
 	}
 	public void setIsBrowse(int isBrowse) {
 		this.isBrowse = isBrowse;
+	}
+	public String getCommentNickname() {
+		return commentNickname;
+	}
+	public void setCommentNickname(String commentNickname) {
+		this.commentNickname = commentNickname;
 	}
 	
 	

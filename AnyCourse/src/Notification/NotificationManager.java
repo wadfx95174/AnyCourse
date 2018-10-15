@@ -46,20 +46,60 @@ public class NotificationManager {
 			System.out.println("Exception" + x.toString());
 		}
 	}
-	
-	//儲存通知(個人討論區回覆)，並且取得剛新增的通知的notificationId
+	//儲存通知(個人討論區回覆，通知提問者)，並且取得剛新增的通知的notificationId
 	//(方法為用userId、nickname取，接著因為可能會有不只一個，所以用releaseTime排序，遠到近，所以抓最後一筆資料)
-	public String playerInterfaceReply(ArrayList<String> toUserIdList,String type,String nickname,String url){
+	public String playerInterfaceComment(String toUserId,String type,String nickname,String url){
+		int notificationId = 0;
+		try {
+			pst = con.prepareStatement("insert into notification value (null,?,?,?,null,null,null,?,?,null)");
+			pst.setString(1,toUserId);
+			pst.setString(2,type);
+			pst.setString(3,nickname);
+			pst.setString(4,url);
+			pst.setInt(5,0);
+			pst.executeUpdate();
+			
+			pst = con.prepareStatement("select notificationId from notification where userId = ? and nickName = ? order by releaseTime ASC");
+			pst.setString(1, toUserId);
+			pst.setString(2, nickname);
+			result = pst.executeQuery();
+			while(result.next()) {
+				notificationId = result.getInt("notificationId");
+			}
+			notification = new Notification();
+			notification.setToUserId(toUserId);
+			notification.setNotificationId(notificationId);
+			notification.setNickname(nickname);
+			notification.setType(type);
+			notification.setUrl(url);
+		}
+		catch(SQLException x){
+			System.out.println("NotificationManager-playerInterfaceComment");
+			System.out.println("Exception insert"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		GsonBuilder builder = new GsonBuilder();
+		Gson gson = builder.setPrettyPrinting().create();
+		System.out.println(gson.toJson(notification));
+		return new Gson().toJson(notification);
+	}
+	
+	
+	//儲存通知(個人討論區回覆，通知其他回覆者)，並且取得剛新增的通知的notificationId
+	public String playerInterfaceReply(ArrayList<String> toUserIdList,String type,String nickname,String url,String commentNickname){
 		notifications = new ArrayList<Notification>();
 		try {
 			//通知該群組所有人
-			pst = con.prepareStatement("insert into notification value(null,?,?,?,null,null,null,?,?)");
+			pst = con.prepareStatement("insert into notification value(null,?,?,?,null,null,null,?,?,?)");
 			for(int i = 0;i < toUserIdList.size();i++) {
 				pst.setString(1, toUserIdList.get(i));
 				pst.setString(2, type);
 				pst.setString(3, nickname);
 				pst.setString(4, url);
 				pst.setInt(5, 0);
+				pst.setString(6, commentNickname);
 				//先放到batch，等迴圈跑完再一次新增
 				pst.addBatch();
 			}
@@ -81,6 +121,7 @@ public class NotificationManager {
 				notification.setType(type);
 				notification.setNickname(nickname);
 				notification.setUrl(url);
+				notification.setCommentNickname(commentNickname);
 				notifications.add(notification);
 				
 				userNumber++;
@@ -105,7 +146,7 @@ public class NotificationManager {
 	public String groupInvitation(String toUserId,String type,String nickname,int groupId,String groupName){
 		int notificationId = 0;
 		try {
-			pst = con.prepareStatement("insert into notification value (null,?,?,?,?,?,null,null,?)");
+			pst = con.prepareStatement("insert into notification value (null,?,?,?,?,?,null,null,?,null)");
 			pst.setString(1, toUserId);
 			pst.setString(2, type);
 			pst.setString(3, nickname);
@@ -157,6 +198,7 @@ public class NotificationManager {
 				 notification.setGroupName(result.getString("groupName"));
 				 notification.setUrl(result.getString("url"));
 				 notification.setIsBrowse(result.getInt("isBrowse"));
+				 notification.setCommentNickname(result.getString("commentNickname"));
 				 notifications.add(notification);
 		     }
 		}
@@ -170,29 +212,30 @@ public class NotificationManager {
 		return new Gson().toJson(notifications);
 	}
 	
-	//取得要被通知的人的ID，存在ArrayList，有三種情況
-	//1. A提問，B回答(通知A)
-	//2. A提問，B已經回答，C又回答(通知A、B)
-	//3. A提問，B已經回答，A又回答(通知B)
+	//討論區通知，取得要被通知的人的ID，存在ArrayList
+	//如A提問，B回答，C回答，A回答，D回答(通知B、C，因為A已經由另一個情況通知(通知提問者)，所以這裡不把A加入ArrayList中)
 	public ArrayList<String> getForumToUser(String userId, int commentId) {
 		ArrayList<String> toUserIdList = new ArrayList<String>();
+		String toUserId = null;
 		try {
 			pst = con.prepareStatement("select userId from comment where commentId = ?");
 			pst.setInt(1, commentId);
 			result = pst.executeQuery();
 			if(result.next()) {
-				if(!userId.equals(result.getString("userId")))
-					toUserIdList.add(result.getString("userId"));
+				toUserId = result.getString("userId");
+//				if(!userId.equals(result.getString("userId")))
+//					toUserIdList.add(result.getString("userId"));
 			}
 			
 			pst = con.prepareStatement("select userId from reply where commentId = ?");
 			pst.setInt(1, commentId);
 			result = pst.executeQuery();
 			while(result.next()) {
+				String tempUserId = result.getString("userId");
 				//判斷toUserIdList裡面是否已經有該userId，有的話就不加入，避免重複通知
-				if((!toUserIdList.contains(result.getString("userId"))) && (!userId.equals(result.getString("userId")))) {
-					System.out.println(result.getString("userId"));
-					toUserIdList.add(result.getString("userId"));
+				if((!toUserId.equals(tempUserId)) && (!toUserIdList.contains(tempUserId)) && (!userId.equals(tempUserId))) {
+//					System.out.println(result.getString("userId"));
+					toUserIdList.add(tempUserId);
 				}
 			}
 		}
@@ -220,6 +263,28 @@ public class NotificationManager {
 		}
 		catch(SQLException x){
 			System.out.println("NotificationManager-findCommentUser");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return toUserId;
+	}
+	
+	//找提問者的nickname
+	public String findCommentUserNickname(int commentId) {
+		String toUserId = null;
+		try {
+			pst = con.prepareStatement(findCommentUserSQL);
+			pst.setInt(1, commentId);
+			result = pst.executeQuery();
+			 while(result.next()) 
+		     { 	
+				 toUserId = result.getString("nickName");
+		     }
+		}
+		catch(SQLException x){
+			System.out.println("NotificationManager-findCommentUserNickname");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {
@@ -297,7 +362,7 @@ public class NotificationManager {
 		try
 		{
 			//通知該群組所有人
-			pst = con.prepareStatement("insert into notification value(null,?,?,?,?,?,null,?,?)");
+			pst = con.prepareStatement("insert into notification value(null,?,?,?,?,?,null,?,?,null)");
 			for(int i = 0;i < toUserIdList.size();i++) {
 				
 				pst.setString(1, toUserIdList.get(i));
@@ -364,7 +429,7 @@ public class NotificationManager {
 		try
 		{
 			//通知該群組所有人
-			pst = con.prepareStatement("insert into notification value(null,?,?,?,?,?,null,?,?)");
+			pst = con.prepareStatement("insert into notification value(null,?,?,?,?,?,null,?,?,null)");
 			for(int i = 0;i < toUserIdList.size();i++) {
 				pst.setString(1, toUserIdList.get(i));
 				pst.setString(2, type);

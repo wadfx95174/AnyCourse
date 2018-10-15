@@ -54,7 +54,6 @@ public class NotificationServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
-		Notification notification;
 		NotificationManager manager = new NotificationManager();
 		String userId = (String)session.getAttribute("userId");
 		String action = request.getParameter("action");
@@ -72,20 +71,21 @@ public class NotificationServlet extends HttpServlet {
 		//播放介面討論區回覆通知(通知提問者)
 		if(action.equals("playerInterfaceComment")){
 			int commentId = Integer.parseInt(request.getParameter("commentId"));
-			toUserIdList = manager.getForumToUser(userId,commentId);
+			toUserId = manager.findCommentUser(commentId);
 			url = (String)request.getParameter("url");
 			
-			response.getWriter().write(manager.playerInterfaceReply(
-					toUserIdList,(String)request.getParameter("type"),nickName,url));
+			response.getWriter().write(manager.playerInterfaceComment(
+					toUserId,(String)request.getParameter("type"),nickName,url));
 		}
 		//播放介面討論區回覆通知(通知提問者)
 		else if(action.equals("playerInterfaceReply")){
 			int commentId = Integer.parseInt(request.getParameter("commentId"));
 			toUserIdList = manager.getForumToUser(userId,commentId);
+			String commentNickname = manager.findCommentUserNickname(commentId);
 			url = (String)request.getParameter("url");
 			
 			response.getWriter().write(manager.playerInterfaceReply(
-					toUserIdList,(String)request.getParameter("type"),nickName,url));
+					toUserIdList,(String)request.getParameter("type"),nickName,url,commentNickname));
 		}
 		//群組邀請
 		else if(action.equals("sendGroupInviteNotification")) {
