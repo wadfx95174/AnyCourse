@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
+import Group.Management.GroupInfo;
+import Group.Management.ManagementManager;
 import Personal.CoursePlan.CoursePlanManager;
 
 
@@ -50,6 +52,19 @@ public class CalendarServlet extends HttpServlet {
 		{
 			String gcId = calendarManager.getGoogleCalendarId(userId);
 			response.getWriter().write(gcId != null ? gcId : "");
+		}
+		else if (request.getParameter("method").equals("getManager"))
+		{
+			ManagementManager managementManager = new ManagementManager();
+	    	int groupId = Integer.parseInt(request.getParameter("groupId"));
+			GroupInfo info = managementManager.getGroupInfo(groupId);
+			for (int i = 0; i < info.getManagers().size(); i++)
+			{
+				if (userId.equals(info.getManagers().get(i).getUserId()))
+				{
+					response.getWriter().write(new Gson().toJson(info.getManagers().get(i)));	
+				}
+			}
 		}
 		calendarManager.conClose();
 	}

@@ -687,51 +687,89 @@ function updateSigninStatus(isSignedIn) {
 
 function importGoogleEvent()
 {
+    // 開始時間從當下時間往前推一個月
+	var date = new Date()
+	date.setMonth(date.getMonth()-1);
+	// 取得google calendar events
+	gapi.client.calendar.events.list({
+        'calendarId': googleCalendarId,	// 取個人日曆
+        'timeMin': date.toISOString(),	// 從哪天開始
+        'showDeleted': false,
+        'singleEvents': true,
+        'maxResults': 10000,	// 最多多少個事件
+        'orderBy': 'startTime'
+    }).then(function(response) {
+		console.log(response);
+		googleEvents = response.result.items; 
+		// checkEventMatch();
 
-	checkMatch()
-	var tempMatchEvents = matchEvents;
-//	matchEvents.forEach(function(value, key){
-//		
-//	});
-	for (var i = 0; i < googleEvents.length; i++)
-	{
-		if (matchEvents.has(googleEvents[i].id))
+		checkMatch()
+		var tempMatchEvents = matchEvents;
+//		matchEvents.forEach(function(value, key){
+//			
+//		});
+		for (var i = 0; i < googleEvents.length; i++)
 		{
-//			console.log(getDateTimeFormat(googleEvents[i].start) + ' ' + getDateTimeFormat(googleEvents[i].end));
-			var fullId = parseInt(googleEvents[i].id.substring(12, googleEvents[i].id.length - 14));
-			var eventIndex = findEventIndexById(fullId);
-//			console.log(getDateTimeFormat(googleEvents[i].start));
-//			console.log(getDateTimeFormat(googleEvents[i].end));
-			// 將 Google 日期及時間設置到 系統行事曆
-			fullEvents[eventIndex].start = getDateTimeFormat(googleEvents[i].start);
-			fullEvents[eventIndex].end = getDateTimeFormat(googleEvents[i].end);
-			fullEvents[eventIndex].allDay = fullEvents[eventIndex].start.length <= 10;
-			$('#calendar').fullCalendar('removeEventSource', fullEvents )
-			$('#calendar').fullCalendar('addEventSource', fullEvents )
-			$('#calendar').fullCalendar('refetchEvents');
-			tempMatchEvents.delete(googleEvents[i].id);
-		}
-	}
-	for (var value of tempMatchEvents.values())
-	{
-		$.ajax({
-			url : ajaxURL+'AnyCourse/CalendarServlet.do',
-			method: 'POST',
-			cache :false,
-			data: {
-				eventId: value.id,
-					 method: "delete"
-			},
-			error: function(){
-				console.log("Delete Event Fail");
-			},
-			success: function(){
-				// 從fullcalendar上移除
-				$('#calendar').fullCalendar('removeEvents', value.id)
+			if (matchEvents.has(googleEvents[i].id))
+			{
+//				console.log(getDateTimeFormat(googleEvents[i].start) + ' ' + getDateTimeFormat(googleEvents[i].end));
+				var fullId = parseInt(googleEvents[i].id.substring(12, googleEvents[i].id.length - 14));
+				var eventIndex = findEventIndexById(fullId);
+//				console.log(getDateTimeFormat(googleEvents[i].start));
+//				console.log(getDateTimeFormat(googleEvents[i].end));
+				// 將 Google 日期及時間設置到 系統行事曆
+				fullEvents[eventIndex].start = getDateTimeFormat(googleEvents[i].start);
+				fullEvents[eventIndex].end = getDateTimeFormat(googleEvents[i].end);
+				fullEvents[eventIndex].allDay = fullEvents[eventIndex].start.length <= 10;
+				// 更新資料庫
+	      	    if (fullEvents[eventIndex].end != null)
+	  	            $.post(ajaxURL+"AnyCourse/CalendarServlet.do",
+	      			    {
+	      		  		    id: fullEvents[eventIndex].id,
+	      		  		    title: fullEvents[eventIndex].title,
+	      		  		    url: fullEvents[eventIndex].url,
+	      		  		    start: fullEvents[eventIndex].start,
+	      		  		    end: fullEvents[eventIndex].end,
+	      		  		    allDay: fullEvents[eventIndex].allDay,
+	      		  		    method: "update"
+	      			    });
+	  	        else 
+	  		        $.post(ajaxURL+"AnyCourse/CalendarServlet.do",
+	      			    {
+	      		  		    id: fullEvents[eventIndex].id,
+	      		  		    title: fullEvents[eventIndex].title,
+	      		  		    url: fullEvents[eventIndex].url,
+	      		  		    start: fullEvents[eventIndex].start,
+	      		  		    allDay: fullEvents[eventIndex].allDay,
+	      		  		    method: "update"
+						  });
+				tempMatchEvents.delete(googleEvents[i].id);
 			}
-		});
-		fullEvents.splice(findEventIndexById(value.id), 1); // 刪除 1 個元素
-	}
+		}
+//		$('#calendar').fullCalendar('refetchEvents');
+		$('#calendar').fullCalendar('removeEvents'  )
+		$('#calendar').fullCalendar('addEventSource', fullEvents )
+		for (var value of tempMatchEvents.values())
+		{
+			$.ajax({
+				url : ajaxURL+'AnyCourse/CalendarServlet.do',
+				method: 'POST',
+				cache :false,
+				data: {
+					eventId: value.id,
+						 method: "delete"
+				},
+				error: function(){
+					console.log("Delete Event Fail");
+				},
+				success: function(){
+					// 從fullcalendar上移除
+					$('#calendar').fullCalendar('removeEvents', value.id)
+				}
+			});
+			fullEvents.splice(findEventIndexById(value.id), 1); // 刪除 1 個元素
+		}
+    })
 }
 
 function exportGoogleEvent()
@@ -866,6 +904,7 @@ function addEvent(event)
         		},
         		success: function(){
         			console.log("success insertGC");
+        			fullEvents[findEventIndexById(event.id)].googleEventId = event.googleEventId;
         		}
         	}); // end ajax  
     	} // end if

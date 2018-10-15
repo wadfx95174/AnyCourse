@@ -9,6 +9,7 @@ var googleCalendarId = ""; // 存 Google Calendar Id
 var deleteFlag = false; // 存 刪除按鈕是否按下
 var exportFlag = false; // 存 匯出至 Google 是否按下
 var googleFlag = false; // 存 是否登入 Google
+var managerFlag = false; // 存 是否為管理員
 
 var systemEvents;
 
@@ -39,6 +40,24 @@ $(function () {
 	checkLogin("../", "../../../");
 	// 載入頁面時，先檢查有沒有 groupId 這個參數
 	checkGroupId();
+	
+	$.ajax({
+		url: ajaxURL + 'AnyCourse/GroupCalendarServlet.do',
+		method: 'GET',
+		data: {
+			groupId : get('groupId'),
+			method : 'getManager'
+		},
+		success: function(result){
+			if (result.identity == true)
+			{
+				managerFlag = true;
+			}
+		},
+		error: function(){
+			console.log('get groupManager error!')
+		}
+	});
 
     // 從資料庫取得行事曆的資料，並更新至頁面
     $.ajax({
@@ -276,13 +295,16 @@ function initCalendar(eventSrc)
         // 資料庫中的事件
         events:function(start,end,timezone,callback){
 			let groupColor = '#880000';
-			for (var i = 0; i < eventSrc.length; i++)
+			if (!managerFlag)
 			{
-				if (!eventSrc[i].sameUser)
+				for (var i = 0; i < eventSrc.length; i++)
 				{
-					eventSrc[i].backgroundColor = groupColor;
-					eventSrc[i].borderColor = groupColor;
-					eventSrc[i].editable = false;
+					if (!eventSrc[i].sameUser)
+					{
+						eventSrc[i].backgroundColor = groupColor;
+						eventSrc[i].borderColor = groupColor;
+						eventSrc[i].editable = false;
+					}
 				}
 			}
 			callback(eventSrc);
@@ -319,6 +341,7 @@ function initCalendar(eventSrc)
           		method: 'POST',
           		cache: false,
           		data: {
+          			groupId: get('groupId'),
   	                title: selectedObject.title,
 	        		url: selectedObject.url,
   	                start: selectedObject.start,
@@ -372,6 +395,7 @@ function initCalendar(eventSrc)
       		    method: 'POST',
       		    cache :false,
       		    data: {
+          			groupId: get('groupId'),
       			    title: copiedEventObject.title,
       			    url: copiedEventObject.url,
       			    start: copiedEventObject.start,//copiedEventObject.start.toISOString(),
@@ -433,10 +457,14 @@ function initCalendar(eventSrc)
 			// 如果匯出按鈕為點選狀態
 			if (exportFlag)
 			{
+				alert('abc');
 				if (confirm('確定要匯入 "'+event.title+'"')) 
         	    {
+					
 					addEvent(event);
+					alert('abc');
 					return false;
+					alert('abc');
 				}
         	    return false;
 			}

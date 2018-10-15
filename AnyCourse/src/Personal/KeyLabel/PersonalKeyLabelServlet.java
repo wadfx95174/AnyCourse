@@ -1,6 +1,8 @@
 package Personal.KeyLabel;
 
 import java.io.IOException;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,17 @@ public class PersonalKeyLabelServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		HttpSession session = request.getSession();
+		String userId = (String)session.getAttribute("userId");
+		String method = request.getParameter("method");
+		//取得該使用者所有群組
+		if(method.equals("getAllGroup")) {
+			response.setCharacterEncoding("UTF-8");
+			response.setHeader("Cache-Control","max-age=0");
+			response.setContentType("application/json");
+			
+			response.getWriter().print(((Map<String, Integer>)session.getAttribute("groups")));
+		}
 	}
 
 }
