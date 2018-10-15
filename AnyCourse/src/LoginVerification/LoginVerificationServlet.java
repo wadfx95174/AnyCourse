@@ -83,7 +83,10 @@ public class LoginVerificationServlet extends HttpServlet {
 			userProfile.setNickName(request.getParameter("Nickname"));
 			userProfile.setEmail(request.getParameter("Email"));
 			userProfile.setPictureUrl(request.getParameter("PictureUrl"));
-			manager.insertGoogleAccount(userProfile);
+			if (manager.getUserProfile(userProfile.getUserId()) == null)
+			{
+				manager.insertGoogleAccount(userProfile);
+			}
 			session.setAttribute("userId", userProfile.getUserId());
 			session.setAttribute("nickName", userProfile.getNickName());
 			session.setAttribute("pictureUrl", userProfile.getPictureUrl());

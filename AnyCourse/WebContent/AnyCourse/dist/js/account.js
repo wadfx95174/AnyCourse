@@ -12,6 +12,25 @@ $(document).on('click', '#logout', function logout()
     disconnectUser();
 })
 
+$(document).ready(function(){
+	var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;  
+    po.src = 'https://apis.google.com/js/client:plusone.js?onload=render';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);  
+})
+
+      
+// 取消連結
+function disconnectUser() {  
+    var revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token=' + gapi.auth.getToken().access_token;  
+    $.ajax({  
+        type: 'GET',  
+        url: revokeUrl,  
+        async: false,  
+        contentType: "application/json",  
+        dataType: 'jsonp',  
+    });  
+}  
+
 function checkLogin(htmlUrl, servletUrl)
 {
 	$.ajax({
