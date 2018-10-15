@@ -192,7 +192,7 @@ function setReply(input){
 				}
 				///////////////////////////////////////////////////////////////////
 
-				///////////////////通知回覆者也有人回復提問者/////////////////////////////
+				/////////////////////////通知其他回覆者/////////////////////////////
 				$.ajax({
 					url : ajaxURL+'AnyCourse/NotificationServlet.do',
 					method : 'POST',
@@ -205,16 +205,19 @@ function setReply(input){
 					},
 					success : function(response) {
 						console.log(response);
-						for(var i = 0;i < response.length;i ++){
-							ws.send(JSON.stringify({
-			                    type: response[i].type,
-			                    toUserId: response[i].toUserId,
-			                    notificationId: response[i].notificationId,
-			                    nickname: response[i].nickname,
-			                    url: response[i].url,
-			                    commentNickname: response[i].commentNickname
-			                }));
-		                }
+						if(response){
+							for(var i = 0;i < response.length; i++){
+								ws.send(JSON.stringify({
+				                    type: response[i].type,
+				                    toUserId: response[i].toUserId,
+				                    notificationId: response[i].notificationId,
+				                    nickname: response[i].nickname,
+				                    url: response[i].url,
+				                    commentNickname: response[i].commentNickname
+				                }));
+		                	}
+						}
+						
 					},
 					error: function (jqXHR, textStatus, errorThrown) {
 						console.log("forum.js playerInterfaceReply error");

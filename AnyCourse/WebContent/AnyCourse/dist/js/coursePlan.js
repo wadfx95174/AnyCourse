@@ -321,7 +321,7 @@ function shareCoursePlanToGroup(){
 		success:function(response){
 			console.log(response);
 
-			for(var i = 0;i < response.length;i ++){
+			for(var i = 0;i < response.length; i++){
 				ws.send(JSON.stringify({
 	                type: response[i].type,
 	                toUserId: response[i].toUserId,

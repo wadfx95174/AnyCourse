@@ -30,14 +30,18 @@ $(document).ready(function() {
 		//播放介面-討論區，通知提問者
 		if(data.type.match("playerInterfaceComment") != null){
 
-			appendPlayerInterfaceForumComment(noId,data.notificationId,data.url,data.nickname,'style="background-color: Silver;"');
-			
+			appendNotification(noId,data.notificationId
+						, data.url, 'style="background-color: Silver;"'
+						,data.nickname + '回應了你的留言');
+
 		}
 		//播放介面-討論區，通知其他回覆者
 		else if(data.type.match("playerInterfaceReply") != null){
 
-			appendPlayerInterfaceForumReply(noId,data.notificationId,data.url,data.nickname,'style="background-color: Silver;"',data.commentNickname);
-			
+			appendNotification(noId,data.notificationId
+						, data.url, 'style="background-color: Silver;"'
+						,data.nickname +'也回應了'+ data.commentNickname +'的留言');
+				
 		}
 		//群組邀請
 		else if(data.type.match("groupInvitation") != null){
@@ -57,7 +61,7 @@ $(document).ready(function() {
 		//群組有新成員加入
 		else if(data.type.match("groupMemberJoin") != null){
 
-			appendGroupNotification(noId,data.notificationId, data.url
+			appendNotification(noId,data.notificationId, data.url
 				,'style="background-color: Silver;"'
 				,data.nickname + '加入了「' + data.groupName + '」');
 
@@ -65,7 +69,7 @@ $(document).ready(function() {
 		//群組公告
 		else if(data.type.match("groupAnnouncement") != null){
 
-			appendGroupNotification(noId,data.notificationId, data.url
+			appendNotification(noId,data.notificationId, data.url
 				,'style="background-color: Silver;"'
 				,data.nickname + '在「' + data.groupName + '」發出公告');
 
@@ -73,7 +77,7 @@ $(document).ready(function() {
 		//群組共同清單
 		else if(data.type.match("shareVideoListToGroup") != null){
 
-			appendGroupNotification(noId,data.notificationId, data.url
+			appendNotification(noId,data.notificationId, data.url
 				,'style="background-color: Silver;"'
 				,data.nickname + '在「' + data.groupName + '」分享課程清單');
 
@@ -81,26 +85,38 @@ $(document).ready(function() {
 		//群組共同計劃
 		else if(data.type.match("shareCoursePlanToGroup") != null){
 
-			appendGroupNotification(noId,data.notificationId, data.url
+			appendNotification(noId,data.notificationId, data.url
 				,'style="background-color: Silver;"'
 				,data.nickname + '在「' + data.groupName + '」分享課程計畫');
 
 		}
 		//群組討論區_提問
-		else if(data.type.match("groupComment") != null){
+		else if(data.type.match("groupNewComment") != null){
 
-			appendGroupNotification(noId,data.notificationId, data.url
+			appendNotification(noId,data.notificationId, data.url
 				,'style="background-color: Silver;"'
-				,data.nickname + '在「' + data.groupName + '」提出問題');
+				,data.nickname + '在「' + data.groupName + '」留言');
 
 		}
-		//群組討論區_回覆
+		//群組討論區_通知提問者
+		else if(data.type.match("groupComment") != null){
+			
+			appendNotification(noId,data.notificationId
+						,data.url, 'style="background-color: Silver;"'
+						,data.nickname + '回覆你在「' + data.groupName + '」中的留言');
+
+		}
+		//群組討論區_通知其他回覆者
 		else if(data.type.match("groupReply") != null){
 			
+			appendNotification(noId,data.notificationId
+						,data.url, 'style="background-color: Silver;"'
+						,data.nickname + '也回應「' + data.groupName + '」中'+ data.commentNickname +'的留言');
+
 		}
 		//群組筆記
 		else if(data.type.match("shareNoteToGroup") != null){
-			appendGroupNotification(noId,data.notificationId, data.url
+			appendNotification(noId,data.notificationId, data.url
 				,'style="background-color: Silver;"'
 				,data.nickname + '在「' + data.groupName + '」分享筆記');
 		}
@@ -160,13 +176,17 @@ $(document).ready(function() {
 	    		//播放介面的討論區回覆
 				if(result[i].type.match("playerInterfaceComment") != null){
 
-					appendPlayerInterfaceForumComment(noId,result[i].notificationId,result[i].url,result[i].nickname,backgroundColor);
-	    			
+					appendNotification(noId,result[i].notificationId
+						, result[i].url, backgroundColor
+						,result[i].nickname + '回應了你的留言');
+
 				}
 				//播放介面-討論區，通知其他回覆者
 				else if(result[i].type.match("playerInterfaceReply") != null){
 
-					appendPlayerInterfaceForumReply(noId,result[i].notificationId,result[i].url,result[i].nickname,backgroundColor,result[i].commentNickname);
+					appendNotification(noId,result[i].notificationId
+						, result[i].url, backgroundColor
+						,result[i].nickname +'也回應了'+ result[i].commentNickname +'的留言');
 					
 				}
 				//群組邀請
@@ -191,7 +211,7 @@ $(document).ready(function() {
 				//群組有新成員加入
 				else if(result[i].type.match("groupMemberJoin") != null){
 
-					appendGroupNotification(noId,result[i].notificationId
+					appendNotification(noId,result[i].notificationId
 						, result[i].url, backgroundColor
 						,result[i].nickname + '加入了「' + result[i].groupName + '」');
 				
@@ -199,7 +219,7 @@ $(document).ready(function() {
 				//群組公告
 				else if(result[i].type.match("groupAnnouncement") != null){
 
-					appendGroupNotification(noId,result[i].notificationId
+					appendNotification(noId,result[i].notificationId
 						, result[i].url, backgroundColor
 						,result[i].nickname + '在「' + result[i].groupName + '」發出公告');
 				
@@ -207,7 +227,7 @@ $(document).ready(function() {
 				//群組共同清單
 				else if(result[i].type.match("shareVideoListToGroup") != null){
 
-					appendGroupNotification(noId,result[i].notificationId
+					appendNotification(noId,result[i].notificationId
 						, result[i].url, backgroundColor
 						,result[i].nickname + '在「' + result[i].groupName + '」分享課程清單');
 
@@ -215,26 +235,38 @@ $(document).ready(function() {
 				//群組共同計畫
 				else if(result[i].type.match("shareCoursePlanToGroup") != null){
 
-					appendGroupNotification(noId,result[i].notificationId
+					appendNotification(noId,result[i].notificationId
 						,result[i].url, backgroundColor
 						,result[i].nickname + '在「' + result[i].groupName + '」分享課程計畫');
 
 				}
 				//群組討論區_提問
-				else if(result[i].type.match("groupComment") != null){
+				else if(result[i].type.match("groupNewComment") != null){
 
-					appendGroupNotification(noId,result[i].notificationId
+					appendNotification(noId,result[i].notificationId
 						,result[i].url, backgroundColor
-						,result[i].nickname + '在「' + result[i].groupName + '」提出問題');
+						,result[i].nickname + '在「' + result[i].groupName + '」留言');
 
 				}
-				//群組討論區_回覆
+				//群組討論區_通知提問者
+				else if(result[i].type.match("groupComment") != null){
+
+					appendNotification(noId,result[i].notificationId
+						,result[i].url, backgroundColor
+						,result[i].nickname + '回覆你在「' + result[i].groupName + '」中的留言');
+				
+				}
+				//群組討論區_通知其他回覆者
 				else if(result[i].type.match("groupReply") != null){
 
+					appendNotification(noId,result[i].notificationId
+						,result[i].url, backgroundColor
+						,result[i].nickname + '也回應「' + result[i].groupName + '」中'+ result[i].commentNickname +'的留言');
+				
 				}
 				//群組筆記
 				else if(result[i].type.match("shareNoteToGroup") != null){
-					appendGroupNotification(noId,result[i].notificationId
+					appendNotification(noId,result[i].notificationId
 						,result[i].url, backgroundColor
 						,result[i].nickname + '在「' + result[i].groupName + '」分享筆記');
 				}
@@ -440,30 +472,6 @@ function GroupInvitation(groupId,groupName){
 }
 //--------------------------------------------------------------------------------------//
 
-//-----------------------append通知(播放介面討論區，通知提問者)---------------------------//
-function appendPlayerInterfaceForumComment(noId,notificationId, url, nickname, backgroundColor){
-	$('#notificationList').append(
-		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'
-	    +'<a href="'+ url +'">'
-	    +'<i class="fa fa-comment text-red"></i>'+ nickname +'回應了你的的留言'
-	    +'</a>'
-	    +'</li>'
-	);
-}
-//--------------------------------------------------------------------------------------//
-
-//----------------------append通知(播放介面討論區，通知其他回覆者)-------------------------//
-function appendPlayerInterfaceForumReply(noId,notificationId, url, nickname, backgroundColor,commentNickname){
-	$('#notificationList').append(
-		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'
-	    +'<a href="'+ url +'">'
-	    +'<i class="fa fa-comment text-red"></i>'+ nickname +'也回應了'+ commentNickname +'的留言'
-	    +'</a>'
-	    +'</li>'
-	);
-}
-//--------------------------------------------------------------------------------------//
-
 //--------------------------------append通知(群組邀請)-----------------------------------//
 function appendGroupInvitation(noId,groupName, notificationId, backgroundColor){
 	
@@ -477,8 +485,8 @@ function appendGroupInvitation(noId,groupName, notificationId, backgroundColor){
 }
 //--------------------------------------------------------------------------------------//
 
-//--------------------------------append群組通知(群組邀請除外)-----------------------------------//
-function appendGroupNotification(noId,notificationId, url, backgroundColor,message){
+//--------------------------------append通知(群組邀請除外)-----------------------------------//
+function appendNotification(noId,notificationId, url, backgroundColor,message){
 			
 	$('#notificationList').append(
 		'<li id="notificationId_'+noId+'" onclick="setNotificationIsBrowse('+notificationId+','+noId+')"'+ backgroundColor+'>'

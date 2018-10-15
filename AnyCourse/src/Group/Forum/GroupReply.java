@@ -1,12 +1,14 @@
 package Group.Forum;
 
 public class GroupReply {
-	public int replyId;
-	public int commentId;
-	public String userId;
-	public String nickName;	
-	public String replyTime;
-	public String replyContent;
+	private int replyId;
+	private int commentId;
+	private String userId;
+	private String nickName;	
+	private String replyTime;
+	private String replyContent;
+	private String commentUserId;//提問的使用者ID
+
 	public int getReplyId() {
 		return replyId;
 	}
@@ -42,6 +44,12 @@ public class GroupReply {
 	}
 	public void setReplyContent(String replyContent) {
 		this.replyContent = replyContent;
+	}
+	public String getCommentUserId() {
+		return commentUserId;
+	}
+	public void setCommentUserId(String commentUserId) {
+		this.commentUserId = commentUserId;
 	}
 	
 }

@@ -81,13 +81,13 @@ function setComment(){
 							'action' : "groupNotification",
 							'groupId' : get('groupId'),
 							'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Forum.html?groupId=" + get('groupId'),
-							'type': "groupComment",
+							'type': "groupNewComment",
 							
 						},
 						success : function(response) {
 							console.log(response);
 							
-							for(var i = 0;i < response.length;i ++){
+							for(var i = 0;i < response.length; i++){
 								ws.send(JSON.stringify({
 					                type: response[i].type,
 					                toUserId: response[i].toUserId,
@@ -230,31 +230,70 @@ function setReply(input){
 
 				///////////////////通知提問者有人回復他/////////////////////////////
 				//檢查提問者與回覆者是否為不同人，不同人才通知
-				// if(result.commentUserId != result.userId){
-				// 	$.ajax({
-				// 		url : ajaxURL+'AnyCourse/NotificationServlet.do',
-				// 		method : 'POST',
-				// 		cache :false,
-				// 		data : {
-				// 			'action' : "insertNotification",
-				// 			'commentId' : id,
-				// 			'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Forum.html?groupId=" + get('groupId')
-				// 		},
-				// 		success : function(response) {
-				// 			console.log(response);
-				// 			ws.send(JSON.stringify({
-			 //                    type: "playerInterfaceReply",
-			 //                    toUserId: response.toUserId,
-			 //                    notificationId: response.notificationId,
-			 //                    nickname: response.nickname,
-			 //                    url: urlId
-			 //                }));
-				// 		},
-				// 		error: function (jqXHR, textStatus, errorThrown) {
-				// 			console.log("forum.js insertNotification error");
-				//         }
-				// 	});
-				// }
+				if(result.commentUserId != result.userId){
+					$.ajax({
+						url : ajaxURL+'AnyCourse/NotificationServlet.do',
+						method : 'POST',
+						cache :false,
+						data : {
+							'action' : "groupComment",
+							'groupId' : get('groupId'),
+							'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Forum.html?groupId=" + get('groupId'),
+							'type': "groupComment",
+							'commentId' : id,
+						},
+						success : function(response) {
+							// console.log(response);
+							ws.send(JSON.stringify({
+			                    type: response.type,
+			                    toUserId: response.toUserId,
+			                    notificationId: response.notificationId,
+			                    nickname: response.nickname,
+			                    groupId: response.groupId,
+			                    groupName: response.groupName,
+			                    url: response.url
+			                }));
+						},
+						error: function (jqXHR, textStatus, errorThrown) {
+							console.log("forum.js playerInterfaceComment error");
+				        }
+					});
+				}
+				///////////////////////////////////////////////////////////////////
+
+				/////////////////////////通知其他回覆者/////////////////////////////
+				$.ajax({
+					url : ajaxURL+'AnyCourse/NotificationServlet.do',
+					method : 'POST',
+					cache :false,
+					data : {
+						'action' : "groupReply",
+						'groupId' : get('groupId'),
+						'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/Forum.html?groupId=" + get('groupId'),
+						'type': "groupReply",
+						'commentId' : id,
+					},
+					success : function(response) {
+						console.log(response);
+						if(response){
+							for(var i = 0;i < response.length; i++){
+								ws.send(JSON.stringify({
+				                    type: response[i].type,
+				                    toUserId: response[i].toUserId,
+				                    notificationId: response[i].notificationId,
+				                    nickname: response[i].nickname,
+				                    groupId: response[i].groupId,
+				                    groupName: response[i].groupName,
+				                    url: response[i].url,
+				                    commentNickname: response[i].commentNickname
+				                }));
+			                }
+						}
+					},
+					error: function (jqXHR, textStatus, errorThrown) {
+						console.log("forum.js playerInterfaceReply error");
+			        }
+				});
 				///////////////////////////////////////////////////////////////////
 			},
 			error: function (jqXHR, textStatus, errorThrown) {

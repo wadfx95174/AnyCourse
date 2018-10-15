@@ -162,18 +162,19 @@ public class GroupForumManager {
 			if (generatedKeys.next())
 			{
 				int id =generatedKeys.getInt(1);
-				pst = con.prepareStatement("SELECT * FROM groupReply WHERE replyId = ?");
+				pst = con.prepareStatement("SELECT * FROM groupReply,groupComment WHERE groupReply.replyId = ? and groupReply.commentId = groupComment.commentId");
 				pst.setInt(1,id);
 				result = pst.executeQuery();
 				 while(result.next()) 
 			     { 
 				 reply = new GroupReply();
-				 reply.setReplyId(result.getInt("replyId"));
-				 reply.setCommentId(result.getInt("commentId"));
-				 reply.setUserId(result.getString("userId"));
-				 reply.setNickName(result.getString("nickName"));
-				 reply.setReplyTime(result.getString("replyTime"));
-				 reply.setReplyContent(result.getString("replyContent"));
+				 reply.setReplyId(result.getInt("groupReply.replyId"));
+				 reply.setCommentId(result.getInt("groupReply.commentId"));
+				 reply.setUserId(result.getString("groupReply.userId"));
+				 reply.setNickName(result.getString("groupReply.nickName"));
+				 reply.setReplyTime(result.getString("groupReply.replyTime"));
+				 reply.setReplyContent(result.getString("groupReply.replyContent"));
+				 reply.setCommentUserId(result.getString("groupComment.userId"));
 			     }
 				 return reply;
 			}

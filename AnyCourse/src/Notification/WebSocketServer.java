@@ -38,13 +38,13 @@ public class WebSocketServer {
 //        		System.out.println("sessionsUserId:" + sessionsUserId);
 //        		System.out.println("toUserId:" + notification.getToUserId());
                 if (s.isOpen() && sessionsUserId.equals(notification.getToUserId())) {
-                	System.out.println("type: "+notification.getType());
-            		System.out.println("nickname: "+notification.getNickname());
-                	System.out.println("groupId: "+notification.getGroupId());
-                	System.out.println("groupName: "+notification.getGroupName());
-                	System.out.println("toUserId: "+notification.getToUserId());
-                	System.out.println("notification: "+notification.getNotificationId());
-                	System.out.println("url: "+notification.getUrl());
+//                	System.out.println("type: "+notification.getType());
+//            		System.out.println("nickname: "+notification.getNickname());
+//                	System.out.println("groupId: "+notification.getGroupId());
+//                	System.out.println("groupName: "+notification.getGroupName());
+//                	System.out.println("toUserId: "+notification.getToUserId());
+//                	System.out.println("notification: "+notification.getNotificationId());
+//                	System.out.println("url: "+notification.getUrl());
                     s.getBasicRemote().sendText(gson.toJson(notification));
                 }
             }
