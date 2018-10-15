@@ -20,10 +20,6 @@ public class NotificationManager {
 	//notification這個table的欄位順序
 	//1             ;2     ;3   ;4       ;5      ;6        ;7          ;8  ;9
 	//notificationId;userId;type;nickName;groupId;groupName;releaseTime;url;isBrowse
-	public String insertNotificationWithoutGroupIdSQL = 
-			"insert into notification value (null,?,?,?,null,null,null,?,?)";
-	public String insertNotificationWithGroupIdSQL = 
-			"insert into notification value (null,?,?,?,?,?,null,null,?)";
 	public String selectNotificationSQL = 
 			"select * from notification where userId = ? order by releaseTime desc";	
 	public String findCommentUserSQL = "select * from comment where commentId = ?";
@@ -53,61 +49,63 @@ public class NotificationManager {
 	
 	//儲存通知(個人討論區回覆)，並且取得剛新增的通知的notificationId
 	//(方法為用userId、nickname取，接著因為可能會有不只一個，所以用releaseTime排序，遠到近，所以抓最後一筆資料)
-	/** 新增通知(無groupId)
-	 * 
-	 * @param toUserId : (String) 要被通知的使用者
-	 * @param type : (String) 通知的類型
-	 * @param nickname : (String) 通知者的名稱
-	 * @param url : (String) 通知對應的網址
-	 * @return (String)型態的JSON 是由(Notification)轉成
-	 */
-	public String insertNotification(String toUserId,String type,String nickname,String url){
-		int notificationId = 0;
+	public String playerInterfaceReply(ArrayList<String> toUserIdList,String type,String nickname,String url){
+		notifications = new ArrayList<Notification>();
 		try {
-			pst = con.prepareStatement(insertNotificationWithoutGroupIdSQL);
-			pst.setString(1,toUserId);
-			pst.setString(2,type);
-			pst.setString(3,nickname);
-			pst.setString(4,url);
-			pst.setInt(5,0);
-			pst.executeUpdate();
+			//通知該群組所有人
+			pst = con.prepareStatement("insert into notification value(null,?,?,?,null,null,null,?,?)");
+			for(int i = 0;i < toUserIdList.size();i++) {
+				pst.setString(1, toUserIdList.get(i));
+				pst.setString(2, type);
+				pst.setString(3, nickname);
+				pst.setString(4, url);
+				pst.setInt(5, 0);
+				//先放到batch，等迴圈跑完再一次新增
+				pst.addBatch();
+			}
+			pst.executeBatch();
 			
-			pst = con.prepareStatement("select notificationId from notification where userId = ? and nickName = ? order by releaseTime ASC");
-			pst.setString(1, toUserId);
-			pst.setString(2,nickname);
+			int userNumber = 0;//用來避免重複抓同一個使用者
+			
+			pst = con.prepareStatement("select notificationId from notification where nickName = ? and type = ? order by notificationId DESC");
+			pst.setString(1, nickname);
+			pst.setString(2, type);
 			result = pst.executeQuery();
 			while(result.next()) {
-				notificationId = result.getInt("notificationId");
+				//因為可能會抓到已經顯示的通知
+				if(userNumber == toUserIdList.size()) break;
+				
+				notification = new Notification();
+				notification.setNotificationId(result.getInt("notificationId"));
+				notification.setToUserId(toUserIdList.get(userNumber));
+				notification.setType(type);
+				notification.setNickname(nickname);
+				notification.setUrl(url);
+				notifications.add(notification);
+				
+				userNumber++;
 			}
-			notification = new Notification();
-			notification.setToUserId(toUserId);
-			notification.setNotificationId(notificationId);
-			notification.setNickname(nickname);
+			
 		}
 		catch(SQLException x){
-			System.out.println("NotificationManager-insertNotificationWithoutGroup");
+			System.out.println("NotificationManager-playerInterfaceReply");
 			System.out.println("Exception insert"+x.toString());
 		}
 		finally {
 			Close();
 		}
-		return new Gson().toJson(notification);
+//		GsonBuilder builder = new GsonBuilder();
+//		Gson gson = builder.setPrettyPrinting().create();
+//		System.out.println(gson.toJson(notifications));
+		return new Gson().toJson(notifications);
 	}
 	
 	//儲存通知(群組邀請)，並且取得剛新增的通知的notificationId
 	//(方法為用userId、nickname取，接著因為可能會有不只一個，所以用releaseTime排序，遠到近，所以抓最後一筆資料)
-	/** 新增通知(有groupId)
-	 * 
-	 * @param toUserId : (String) 要被通知的使用者
-	 * @param type : (String) 通知的類型
-	 * @param nickname : (String) 通知者的名稱
-	 * @param groupId : (String) 通知對應的群組ID
-	 * @return (String)型態的JSON 是由(Notification)轉成
-	 */
-	public String insertNotification(String toUserId,String type,String nickname,int groupId,String groupName){
+	public String groupInvitation(String toUserId,String type,String nickname,int groupId,String groupName){
 		int notificationId = 0;
 		try {
-			pst = con.prepareStatement(insertNotificationWithGroupIdSQL);
+			pst = con.prepareStatement("insert into notification value (null,?,?,?,?,?,null,null,?)");
 			pst.setString(1, toUserId);
 			pst.setString(2, type);
 			pst.setString(3, nickname);
@@ -132,7 +130,7 @@ public class NotificationManager {
 			notification.setNickname(nickname);
 		}
 		catch(SQLException x){
-			System.out.println("NotificationManager-insertNotificationWithGroup");
+			System.out.println("NotificationManager-groupInvitation");
 			System.out.println("Exception insert"+x.toString());
 		}
 		finally {
@@ -172,6 +170,41 @@ public class NotificationManager {
 		return new Gson().toJson(notifications);
 	}
 	
+	//取得要被通知的人的ID，存在ArrayList，有三種情況
+	//1. A提問，B回答(通知A)
+	//2. A提問，B已經回答，C又回答(通知A、B)
+	//3. A提問，B已經回答，A又回答(通知B)
+	public ArrayList<String> getForumToUser(String userId, int commentId) {
+		ArrayList<String> toUserIdList = new ArrayList<String>();
+		try {
+			pst = con.prepareStatement("select userId from comment where commentId = ?");
+			pst.setInt(1, commentId);
+			result = pst.executeQuery();
+			if(result.next()) {
+				if(!userId.equals(result.getString("userId")))
+					toUserIdList.add(result.getString("userId"));
+			}
+			
+			pst = con.prepareStatement("select userId from reply where commentId = ?");
+			pst.setInt(1, commentId);
+			result = pst.executeQuery();
+			while(result.next()) {
+				//判斷toUserIdList裡面是否已經有該userId，有的話就不加入，避免重複通知
+				if((!toUserIdList.contains(result.getString("userId"))) && (!userId.equals(result.getString("userId")))) {
+					System.out.println(result.getString("userId"));
+					toUserIdList.add(result.getString("userId"));
+				}
+			}
+		}
+		catch(SQLException x){
+			System.out.println("NotificationManager-getForumToUser");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return toUserIdList;
+	}
 	
 	//找提問者的ID
 	public String findCommentUser(int commentId) {
@@ -381,6 +414,28 @@ public class NotificationManager {
 //		Gson gson = builder.setPrettyPrinting().create();
 //		System.out.println(gson.toJson(notifications));
 		return new Gson().toJson(notifications);
+	}
+	
+	//當群組各個頁面有通知時呼叫此method
+	public String getToUser(String toUserId) {
+		String toUser = null;
+		try
+		{
+			pst = con.prepareStatement("select nickName from account where userId = ?");
+			pst.setString(1, toUserId);
+			result = pst.executeQuery();
+			if(result.next()) toUser = result.getString("nickName");
+		} 
+		catch (final SQLException x)
+		{
+			System.out.println("NotificationManager-getToUser");
+			System.out.println("Exception insert" + x.toString());
+		} 
+		finally
+		{
+			Close();
+		}
+		return toUser;
 	}
 	
 	public void Close() {

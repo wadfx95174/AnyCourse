@@ -318,18 +318,18 @@ function shareCoursePlanToGroup(){
 			'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/CoursePlanPage.html?groupId=" + $('#shareCoursePlanToGroupModalBody').val(),
 			'type': "shareCoursePlanToGroup"
 		},
-		success:function(resp){
-			console.log(resp);
+		success:function(response){
+			console.log(response);
 
-			for(var i = 0;i < resp.length;i ++){
+			for(var i = 0;i < response.length;i ++){
 				ws.send(JSON.stringify({
-	                type: resp[i].type,
-	                toUserId: resp[i].toUserId,
-	                notificationId: resp[i].notificationId,
-	                nickname: resp[i].nickname,
-	                groupId: resp[i].groupId,
-	                groupName: resp[i].groupName,
-	                url: resp[i].url
+	                type: response[i].type,
+	                toUserId: response[i].toUserId,
+	                notificationId: response[i].notificationId,
+	                nickname: response[i].nickname,
+	                groupId: response[i].groupId,
+	                groupName: response[i].groupName,
+	                url: response[i].url
 	            }));
 			}
 		},

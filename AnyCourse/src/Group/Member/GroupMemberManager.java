@@ -116,6 +116,29 @@ public class GroupMemberManager {
 		}
 		return check;
 	}
+	
+	//檢查該使用者是否以加入該群組
+	public void joinGroup(String userId, int groupId) {
+		try
+		{
+			
+			//有該使用者，輸入的字串可能為userId或nickName
+			pst = con.prepareStatement("insert into groupMember value(?,?,0)");
+			pst.setInt(1,groupId);
+			pst.setString(2,userId);
+			pst.executeUpdate();
+			
+		} 
+		catch (final SQLException x)
+		{
+			System.out.println("GroupMemberManager-checkJoinGroup");
+			System.out.println("Exception insert" + x.toString());
+		} 
+		finally
+		{
+			Close();
+		}
+	}
 
 	public void Close() {
 		try {

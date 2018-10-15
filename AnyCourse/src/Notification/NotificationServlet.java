@@ -44,6 +44,9 @@ public class NotificationServlet extends HttpServlet {
 			response.getWriter().write(notificationJson);
 			
 		}
+		else if(action.equals("getToUser")) {
+			response.getWriter().write(manager.getToUser(request.getParameter("toUserId")));
+		}
 		
 		manager.conClose();
 	}
@@ -66,15 +69,23 @@ public class NotificationServlet extends HttpServlet {
 		response.setHeader("Cache-Control","max-age=0");
 		response.setContentType("application/json");
 		
-		//播放介面討論區回覆通知
-		if(action.equals("insertNotification")){
-			
+		//播放介面討論區回覆通知(通知提問者)
+		if(action.equals("playerInterfaceComment")){
 			int commentId = Integer.parseInt(request.getParameter("commentId"));
-			toUserId = manager.findCommentUser(commentId);
+			toUserIdList = manager.getForumToUser(userId,commentId);
 			url = (String)request.getParameter("url");
 			
-			response.getWriter().write(manager.insertNotification(
-					toUserId,"playerInterfaceReply",nickName,url));
+			response.getWriter().write(manager.playerInterfaceReply(
+					toUserIdList,(String)request.getParameter("type"),nickName,url));
+		}
+		//播放介面討論區回覆通知(通知提問者)
+		else if(action.equals("playerInterfaceReply")){
+			int commentId = Integer.parseInt(request.getParameter("commentId"));
+			toUserIdList = manager.getForumToUser(userId,commentId);
+			url = (String)request.getParameter("url");
+			
+			response.getWriter().write(manager.playerInterfaceReply(
+					toUserIdList,(String)request.getParameter("type"),nickName,url));
 		}
 		//群組邀請
 		else if(action.equals("sendGroupInviteNotification")) {
@@ -83,7 +94,7 @@ public class NotificationServlet extends HttpServlet {
 			groupId = Integer.parseInt(request.getParameter("groupId"));
 			groupName = manager.getGroupName(groupId);
 			
-	    	response.getWriter().write(manager.insertNotification(
+	    	response.getWriter().write(manager.groupInvitation(
 					toUserId,"groupInvitation",nickName,groupId,groupName));
 	    	
 	    }

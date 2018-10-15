@@ -40,6 +40,9 @@ public class GroupMemberServlet extends HttpServlet {
 	    if(action.equals("checkJoinGroup")) {
 	    	response.getWriter().write(manager.checkJoinGroup(userId, groupId));
 	    }
+	    else if(action.equals("joinGroup")) {
+	    	
+	    }
 	}
 
 }

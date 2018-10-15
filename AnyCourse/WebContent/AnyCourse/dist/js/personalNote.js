@@ -204,17 +204,17 @@ function shareNoteToGroup(){
 		success:function(response){
 			console.log(response);
 
-			// for(var i = 0;i < response.length;i ++){
-			// 	ws.send(JSON.stringify({
-	  //               type: response[i].type,
-	  //               toUserId: response[i].toUserId,
-	  //               notificationId: response[i].notificationId,
-	  //               nickname: response[i].nickname,
-	  //               groupId: response[i].groupId,
-	  //               groupName: response[i].groupName,
-	  //               url: response[i].url
-	  //           }));
-			// }
+			for(var i = 0;i < response.length;i ++){
+				ws.send(JSON.stringify({
+	                type: response[i].type,
+	                toUserId: response[i].toUserId,
+	                notificationId: response[i].notificationId,
+	                nickname: response[i].nickname,
+	                groupId: response[i].groupId,
+	                groupName: response[i].groupName,
+	                url: response[i].url
+	            }));
+			}
 		},
 		error:function(xhr, ajaxOptions, thrownError){
 			console.log(xhr);
