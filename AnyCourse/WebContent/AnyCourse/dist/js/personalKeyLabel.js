@@ -24,6 +24,7 @@ $(document).ready(function() {
 		method : 'GET', 
 		cache :false,
 		success:function(result){
+			console.log(result);
 			if(window.screen.width > 480){
 				$('#keyLabelHeader').append('<div class="col-xs-1 text-center"><i class="fa fa-tags"></i></div>'
 						+'<div class="col-xs-2 text-center"><strong>標籤</strong></div>'
@@ -44,7 +45,7 @@ $(document).ready(function() {
 							+'<div class="personalNoteShare"><div class="btn-group show-on-hover dropup" >'
 							+'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">分享' 
 							+'<span class="caret caret-up"></span></button><ul class="dropdown-menu drop-up" role="menu">'
-							+'<li><a data-toggle="modal" data-target="#addToGroupKeyLabel" id="personalKeyLabel_'+ result[i].unitId  +'" onclick="getUnitId('+videoId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>分享至群組</a></li>'
+							+'<li><a data-toggle="modal" data-target="#addToGroupKeyLabel" id="personalKeyLabel_'+ result[i].unitId  +'" onclick="getKeyLabelId('+result[i].keyLabelId+')" style="cursor:pointer;"> <i class="ion ion-clipboard"></i>分享至群組</a></li>'
 							+'</ul></div></div>'
 							+'</div>'
 							+'</div></li>');
@@ -79,11 +80,11 @@ $(document).ready(function() {
 		success:function(result){
 			console.log(result);
 			if(result.length == 0){
-				$('#addToGroupNoteModalBody').append('<option value="null">無</option>');
+				$('#addToGroupKeyLabelModalBody').append('<option value="null">無</option>');
 			}
 			else{
 				for(var i = 0;i < result.length;i++){
-					$('#addToGroupNoteModalBody').append('<option value="'+result[i].groupId+'">'+result[i].groupName+'</option>');
+					$('#addToGroupKeyLabelModalBody').append('<option value="'+result[i].groupId+'">'+result[i].groupName+'</option>');
 				}
 			}					
 		},
@@ -93,18 +94,18 @@ $(document).ready(function() {
 	});
 
 	//將筆記分享至指定群組
-	$('#addToGroupNoteButton').click(function(){
+	$('#addToGroupKeyLabelButton').click(function(){
 		$.ajax({
 			url:ajaxURL+'AnyCourse/PersonalKeyLabelServlet.do',
 			method:'POST',
 			cache:false,
 			data:{
-				state:'insert',
-				groupId:$('#addToGroupNoteModalBody').val(),
-				unitId:unitArray[checkUnitId-1]
+				method:'insertToGroup',
+				groupId:$('#addToGroupKeyLabelModalBody').val(),
+				KeyLabelId:checkKeyLabelId
 			},
 			success:function(){
-				shareNoteToGroup();
+				// ---------------通知----------------------
 			},
 			error:function(e){
 				console.log("add personalNote to group error");
@@ -112,6 +113,6 @@ $(document).ready(function() {
 		});
 	});
 });
-function getUnitId(id){
-	checkUnitId = id;
+function getKeyLabelId(id){
+	checkKeyLabelId = id;
 }
