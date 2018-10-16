@@ -108,7 +108,7 @@ $(document).ready(function() {
 		}
 		//群組討論區_通知其他回覆者
 		else if(data.type.match("groupReply") != null){
-			
+
 			appendNotification(noId,data.notificationId
 						,data.url, 'style="background-color: Silver;"'
 						,data.nickname + '也回應「' + data.groupName + '」中'+ data.commentNickname +'的留言');
@@ -119,6 +119,12 @@ $(document).ready(function() {
 			appendNotification(noId,data.notificationId, data.url
 				,'style="background-color: Silver;"'
 				,data.nickname + '在「' + data.groupName + '」分享筆記');
+		}
+		//群組重點標籤
+		else if(data.type.match("shareKeyLabelToGroup") != null){
+			appendNotification(noId,data.notificationId, data.url
+				,'style="background-color: Silver;"'
+				,data.nickname + '在「' + data.groupName + '」分享重點標籤');
 		}
 		noId++;
     };
@@ -269,6 +275,12 @@ $(document).ready(function() {
 					appendNotification(noId,result[i].notificationId
 						,result[i].url, backgroundColor
 						,result[i].nickname + '在「' + result[i].groupName + '」分享筆記');
+				}
+				//群組重點標籤
+				else if(result[i].type.match("shareKeyLabelToGroup") != null){
+					appendNotification(noId,result[i].notificationId
+						,result[i].url, backgroundColor
+						,result[i].nickname + '在「' + result[i].groupName + '」分享重點標籤');
 				}
 
 				noId++;

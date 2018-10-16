@@ -106,6 +106,7 @@ $(document).ready(function() {
 			},
 			success:function(){
 				// ---------------通知----------------------
+				shareKeyLabelToGroup();
 			},
 			error:function(e){
 				console.log("add personalNote to group error");
@@ -115,4 +116,37 @@ $(document).ready(function() {
 });
 function getKeyLabelId(id){
 	checkKeyLabelId = id;
+}
+function shareKeyLabelToGroup(){
+	$.ajax({
+		url:ajaxURL + 'AnyCourse/NotificationServlet.do',
+		method:'POST',
+		cache:false,
+		data:{
+			'action': "groupNotification",
+			'groupId': $('#addToGroupKeyLabelModalBody').val(),
+			'url': ajaxURL + "AnyCourse/AnyCourse/pages/Group/KeyLabelPage.html?groupId=" + $('#addToGroupKeyLabelModalBody').val(),
+			'type': "shareKeyLabelToGroup"
+		},
+		success:function(response){
+			console.log(response);
+
+			for(var i = 0;i < response.length; i++){
+				ws.send(JSON.stringify({
+	                type: response[i].type,
+	                toUserId: response[i].toUserId,
+	                notificationId: response[i].notificationId,
+	                nickname: response[i].nickname,
+	                groupId: response[i].groupId,
+	                groupName: response[i].groupName,
+	                url: response[i].url
+	            }));
+			}
+		},
+		error:function(xhr, ajaxOptions, thrownError){
+			console.log(xhr);
+			console.log(thrownError);
+			console.log("videoList.js groupNotification error");
+		}
+	});
 }
