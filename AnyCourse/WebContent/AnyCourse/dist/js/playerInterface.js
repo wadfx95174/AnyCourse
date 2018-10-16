@@ -47,17 +47,17 @@ function formatTime(seconds)
         .replace(/\b(\d)\b/g, "0$1");
 }
 
-function useKeylabel()
-{
-	console.log('usekeylabel');
-	selectId = 1;
-	var beginTime = keyLabelArray[selectId].beginTime;
-	var endTime = keyLabelArray[selectId].endTime;
-//	seekTo(beginTime);
-	$('.keyLabelDiv').css('margin-left', (beginTime / getDuration() * 100) + '%');
-	$('.keyLabelDiv').css('width', ((endTime - beginTime) / getDuration() * 100) + '%');
-	$('.keyLabelDiv').attr('data-original-title', keyLabelArray[selectId].keyLabelName);
-}
+// function useKeylabel()
+// {
+// 	console.log('usekeylabel');
+// 	selectId = 1;
+// 	var beginTime = keyLabelArray[selectId].beginTime;
+// 	var endTime = keyLabelArray[selectId].endTime;
+// //	seekTo(beginTime);
+// 	$('.keyLabelDiv').css('margin-left', (beginTime / getDuration() * 100) + '%');
+// 	$('.keyLabelDiv').css('width', ((endTime - beginTime) / getDuration() * 100) + '%');
+// 	$('.keyLabelDiv').attr('data-original-title', keyLabelArray[selectId].keyLabelName);
+// }
 
 $(document).ready(function(){
     checkLogin("", "../../");
@@ -172,7 +172,7 @@ $(document).ready(function(){
 		},
 		success:function(result){
 			keyLabelArray = result;
-			useKeylabel();
+			// useKeylabel();
     		for(maxIndex = 0 ;maxIndex < result.length; maxIndex++)
     		{
     			addToSelfKeyLabel(maxIndex);
@@ -259,7 +259,7 @@ $(document).ready(function(){
     
   // ----使用----
     // 點擊重點標籤後，影片(currentTime)跳至該位置beginTime
-    $(document).on('click', '.self.ukl,.temp.ukl,.exchange', function useKL(event) 
+    $(document).on('click', '.self.ukl,.temp.ukl,.exchange', function(event) 
     {
     	selectId = parseInt(this.getAttribute("id").split("-")[2]);
     	var beginTime = keyLabelArray[selectId].beginTime;
