@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 
 import Group.Management.GroupInfo;
 import Group.Management.ManagementManager;
+import Group.Management.Member;
 import Personal.CoursePlan.CoursePlanManager;
 
 
@@ -50,7 +51,8 @@ public class CalendarServlet extends HttpServlet {
 		}
 		else if (request.getParameter("method").equals("getGCId"))
 		{
-			String gcId = calendarManager.getGoogleCalendarId(userId);
+			int groupId = Integer.parseInt(request.getParameter("groupId"));
+			String gcId = calendarManager.getGoogleCalendarId(groupId);
 			response.getWriter().write(gcId != null ? gcId : "");
 		}
 		else if (request.getParameter("method").equals("getManager"))
@@ -66,7 +68,22 @@ public class CalendarServlet extends HttpServlet {
 				}
 			}
 		}
-		calendarManager.conClose();
+		else if (request.getParameter("method").equals("getCreator"))
+		{
+			ManagementManager managementManager = new ManagementManager();
+	    	int groupId = Integer.parseInt(request.getParameter("groupId"));
+	    	Member member = new Member();
+	    	member.setUserId(managementManager.getGroupCreator(groupId));
+	    	member.setIdentity(member.getUserId().equals(userId));
+			response.getWriter().print(new Gson().toJson(member));
+		}
+		else if (request.getParameter("method").equals("getGroupInfo"))
+		{
+			ManagementManager managementManager = new ManagementManager();
+	    	int groupId = Integer.parseInt(request.getParameter("groupId"));
+			GroupInfo info = managementManager.getGroupInfo(groupId);
+			response.getWriter().print(new Gson().toJson(info));
+		}
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -99,7 +116,8 @@ public class CalendarServlet extends HttpServlet {
 		}
 		else if (method.equals("setGCId"))
 		{
-			calendarManager.setGoogleCalendarId(userId, request.getParameter("gcId"));
+			int groupId = Integer.parseInt(request.getParameter("groupId"));
+			calendarManager.setGoogleCalendarId(groupId, request.getParameter("gcId"));
 		}
 		else if (method.equals("insertGCEvent"))
 		{
@@ -121,7 +139,5 @@ public class CalendarServlet extends HttpServlet {
 			event.setId(Integer.parseInt(request.getParameter("id")));
 			calendarManager.updateEvent(event);
 		}
-		calendarManager.conClose();
 	}
-
 }

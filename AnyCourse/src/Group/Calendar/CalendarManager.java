@@ -17,8 +17,8 @@ public class CalendarManager
 	private final String deleteEventSQL = "delete from event where eventId = ?";
 	private final String deleteCalendarSQL = "delete from groupCalendar where eventId = ?";
 	private final String insertCalendarSQL = "insert into groupCalendar value (?,?,?)";
-	private final String selectGoogleCalendarIdSQL = "select * from googleCalendarMatch where userId = ?";
-	private final String insertGoogleCalendarIdSQL = "insert into googleCalendarMatch value (?,?)";
+	private final String selectGoogleCalendarIdSQL = "select * from groupGoogleCalendar where groupId = ?";
+	private final String insertGoogleCalendarIdSQL = "insert into groupGoogleCalendar value (?,?)";
 	private final String insertGoogleEventIdSQL = "update event set googleEventId = ? where eventId = ?";
 	private Connection con = null;
 	private Statement stat = null;
@@ -189,13 +189,13 @@ public class CalendarManager
 		}
 	}
 	
-	public String getGoogleCalendarId(String userId)
+	public String getGoogleCalendarId(int groupId)
 	{
 		String gcId = null;
 		try
 		{
 			pst = con.prepareStatement(selectGoogleCalendarIdSQL);
-			pst.setString(1, userId);
+			pst.setInt(1, groupId);
 			result = pst.executeQuery();
 			while(result.next())
 			{
@@ -212,12 +212,12 @@ public class CalendarManager
 		return gcId;
 	}
 	
-	public void setGoogleCalendarId(String userId, String gcId)
+	public void setGoogleCalendarId(int groupId, String gcId)
 	{
 		try
 		{
 			pst = con.prepareStatement(insertGoogleCalendarIdSQL);
-			pst.setString(1, userId);
+			pst.setInt(1, groupId);
 			pst.setString(2, gcId);
 			pst.executeUpdate();
 		} catch (final SQLException x)
