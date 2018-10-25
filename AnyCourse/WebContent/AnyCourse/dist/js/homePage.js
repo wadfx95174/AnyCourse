@@ -267,7 +267,7 @@ $(document).ready(function(){
 				}
 				else if(window.screen.width <= 480){
 					var swiper = new Swiper('.swiper-container', {
-					      slidesPerView: 2,
+					      slidesPerView: 1,
 					      spaceBetween: 0,
 					      slidesPerGroup: 1,
 					      loop: false,
