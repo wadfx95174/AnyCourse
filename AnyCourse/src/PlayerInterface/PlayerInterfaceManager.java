@@ -169,16 +169,19 @@ public class PlayerInterfaceManager
 				if(currentTime+5 > duration)status = 3;
 				//改變status為正在觀看
 				else status = 2;
-				//觀看該影片後status也沒有改變
-				if(statusInit == status)maxOrder = statusInit;
-				else {
-					//找order最大值
-					pst = con.prepareStatement("select MAX(oorder) from personalPlan where status = ?");
-					pst.setInt(1, status);
-					result = pst.executeQuery();
-					if(result.next()) {
-						maxOrder = result.getInt("MAX(oorder)") + 1;
+				//找order最大值
+				pst = con.prepareStatement("select MAX(oorder) from personalPlan where status = ? "
+						+ "and userId = ?");
+				pst.setInt(1, status);
+				pst.setString(2, userId);
+				result = pst.executeQuery();
+				if(result.next()) {
+					//判斷狀態有無改變
+					if(statusInit == status) {
+						maxOrder = result.getInt("MAX(oorder)");
 					}
+					else
+						maxOrder = result.getInt("MAX(oorder)") + 1;
 				}
 				
 				//更新該影片所屬的狀態列表
@@ -196,6 +199,94 @@ public class PlayerInterfaceManager
 		}
 		catch(SQLException x){
 			System.out.println("PlayerInterfaceManager-setVideoCloseTime");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+	}
+	
+	//設定影片的結束時間，存入groupPlan
+	//如果該影片有存在在使用者的課程計畫中，則personalPlan的lastTime也要update，並且判斷要不要改status
+	//設定shareLikes	的觀看紀錄，將isBrowse+1
+	public void setGroupVideoCloseTime(int currentTime,int unitId,String userId,int duration,int groupId) {
+		try {
+
+			boolean check = false;//檢查watchRecord裡面有沒有這筆單元影片的資料，false為沒有
+			
+			pst = con.prepareStatement("select * from watchRecord where userId = ? and unitId = ?");
+			pst.setString(1, userId);
+			pst.setInt(2, unitId);
+			result = pst.executeQuery();
+			if(result.next())check = true;
+			
+			//如果沒有，就塞資料
+			if(check == false) {
+				pst = con.prepareStatement("insert ignore into watchRecord (userId,unitId,watchTime) value(?,?,null)");
+				pst.setString(1,userId);
+				pst.setInt(2,unitId);
+			}
+			//有就更新資料
+			else {
+				pst = con.prepareStatement("update watchRecord set watchTime = null where userId = ? and unitId = ? ");
+				pst.setString(1,userId);
+				pst.setInt(2,unitId);
+			}
+			pst.executeUpdate();
+			
+			check = false;//檢查groupPlan有無這個unitId
+			int maxOrder = 0,statusInit = 1,status = 1;
+			
+			//檢查此unit是否存在在groupPlan
+			pst = con.prepareStatement("select status from groupPlan where userId = ? and unitId = ? "
+					+ "and groupId = ?");
+			pst.setString(1, userId);
+			pst.setInt(2, unitId);
+			pst.setInt(3, groupId);
+			result = pst.executeQuery();
+			if(result.next()) {
+				check = true;
+				statusInit = result.getInt("status");
+			}
+			
+			//如果有，就更新影片結束時間，true是有，沒有就不做事
+			if(check == true) {
+				if(currentTime+5 > duration)status = 3;
+				//改變status為正在觀看
+				else status = 2;
+				
+				//找order最大值
+				pst = con.prepareStatement("select MAX(oorder) from groupPlan where status = ? "
+						+ "and userId = ? and groupId = ?");
+				pst.setInt(1, status);
+				pst.setString(2, userId);
+				pst.setInt(3, groupId);
+				result = pst.executeQuery();
+				if(result.next()) {
+					//判斷狀態有無改變
+					if(statusInit == status) {
+						maxOrder = result.getInt("MAX(oorder)");
+					}
+					else
+						maxOrder = result.getInt("MAX(oorder)") + 1;
+				}
+				
+				//更新該影片所屬的狀態列表
+				pst = con.prepareStatement("update groupPlan set lastTime = ?,status = ?,oorder = ? "
+						+ "where userId = ? and unitId = ? and groupId = ?");
+				pst.setInt(1,currentTime);
+				//判斷結束了沒，currentTime+5秒代表5秒內會結束的都改變status為已觀看完
+				pst.setInt(2,status);
+				pst.setInt(3,maxOrder);
+				pst.setString(4,userId);
+				pst.setInt(5, unitId);
+				pst.setInt(6, groupId);
+				
+				pst.executeUpdate();
+			}
+		}
+		catch(SQLException x){
+			System.out.println("PlayerInterfaceManager-setGroupVideoCloseTime");
 			System.out.println("Exception select"+x.toString());
 		}
 		finally {

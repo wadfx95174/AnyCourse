@@ -3,7 +3,7 @@ package Group.CoursePlan;
 public class GroupCoursePlan {
 	
 	private int groupId;
-	private int userId;
+	private String userId;
 	private int unitId;
 	private int deadlineTime;
 	private int lastTime;
@@ -30,11 +30,11 @@ public class GroupCoursePlan {
 		this.groupId = groupId;
 	}
 
-	public int getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

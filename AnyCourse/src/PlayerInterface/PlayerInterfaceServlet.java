@@ -44,11 +44,16 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			response.getWriter().write(manager.getList(Integer.parseInt(request.getParameter("courselistId"))));
 		}
 		else if(action.equals("setVideoCloseTime")&& userId != null) {
-			System.out.println("test");
 			
 			manager.setVideoCloseTime(Integer.parseInt(request.getParameter("currentTime"))
 					,Integer.parseInt(request.getParameter("unitId")),userId
 					,Integer.parseInt(request.getParameter("duration")));
+		}
+		else if(action.equals("setGroupVideoCloseTime") && userId != null) {
+			manager.setGroupVideoCloseTime(Integer.parseInt(request.getParameter("currentTime"))
+					,Integer.parseInt(request.getParameter("unitId")),userId
+					,Integer.parseInt(request.getParameter("duration")),
+					Integer.parseInt(request.getParameter("groupId")));
 		}
 		else if(action.equals("like")&& userId != null) {
 			manager.setLike(userId,Integer.parseInt(request.getParameter("unitId"))

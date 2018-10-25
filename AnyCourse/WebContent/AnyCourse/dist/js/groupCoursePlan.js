@@ -91,7 +91,6 @@ $(document).ready(function(){
                         $('#wantList li,#ingList li,#doneList li').each(function(){
                               $(this).remove();
                         });
-                        // console.log(response);
                         unitArray = new Array(response.length);
                         showUnitUL(response,unitArray);
                   },
@@ -142,48 +141,48 @@ $(document).ready(function(){
       
       
 //----------------------jQueryUI的sortable套件，並且運用start、update兩個事件去把排序資料存進資料庫中-----------------//
-      $( ".column" ).sortable({
-          connectWith: ".column",
-          handle: ".portlet-header",
-          cancel: ".portlet-toggle",
-          placeholder: "portlet-placeholder ui-corner-all",
-          //當排序開始時觸發該事件
-          start:function(event,ui){
-            //獲取被移動的影片被移動"前"在該sortable的index，並把他存在item的data中
-            ui.item.data('startPos',ui.item.index());
-            //拿item的小孩，並把他存在item的data中
-            ui.item.data('id',ui.item.context.children[3].id);
-            ui.item.data('sender',ui.item.parent().attr("id"));
-          },
-          //當使用者停止排序且DOM位置改變時觸發該事件
-          update:function(event,ui){
-            var oldIndex = ui.item.data('startPos');
-            var newIndex = ui.item.index();//獲取被移動的影片移動"後"在後來的sortable的index
-            var received = ui.item.parent().attr('id');//獲取被移動的影片被移動"後"是在哪個sortable
-            var sender = ui.item.data('sender');
-            var id = ui.item.data('id');
+      // $( ".column" ).sortable({
+      //     connectWith: ".column",
+      //     handle: ".portlet-header",
+      //     cancel: ".portlet-toggle",
+      //     placeholder: "portlet-placeholder ui-corner-all",
+      //     //當排序開始時觸發該事件
+      //     start:function(event,ui){
+      //       //獲取被移動的影片被移動"前"在該sortable的index，並把他存在item的data中
+      //       ui.item.data('startPos',ui.item.index());
+      //       //拿item的小孩，並把他存在item的data中
+      //       ui.item.data('id',ui.item.context.children[3].id);
+      //       ui.item.data('sender',ui.item.parent().attr("id"));
+      //     },
+      //     //當使用者停止排序且DOM位置改變時觸發該事件
+      //     update:function(event,ui){
+      //       var oldIndex = ui.item.data('startPos');
+      //       var newIndex = ui.item.index();//獲取被移動的影片移動"後"在後來的sortable的index
+      //       var received = ui.item.parent().attr('id');//獲取被移動的影片被移動"後"是在哪個sortable
+      //       var sender = ui.item.data('sender');
+      //       var id = ui.item.data('id');
             
-            //原本她會執行兩次(sender被更新，及received也被更新，這句共讓他只執行一次)
-            if (this === ui.item.parent()[0]) {
-                  $.ajax({
-                        url:ajaxURL+'AnyCourse/GroupCoursePlanServlet.do',
-                        method:'POST',
-                        cache :false,
-                        data:{
-                              action: 'sortable',
-                              oldIndex: oldIndex + 1,
-                              newIndex: newIndex + 1,//因為抓到的index是從0開始算，而資料庫是從1開始，所以要加1
-                              sender: sender,
-                              received: received,
-                              unitId: unitArray[id-1][0]//unitId
-                        },
-                        error:function(){
-                              console.log("CoursePlan Sort Error!");
-                        }
-                  })
-            }
-          }
-      });
+      //       //原本她會執行兩次(sender被更新，及received也被更新，這句共讓他只執行一次)
+      //       if (this === ui.item.parent()[0]) {
+      //             $.ajax({
+      //                   url:ajaxURL+'AnyCourse/GroupCoursePlanServlet.do',
+      //                   method:'POST',
+      //                   cache :false,
+      //                   data:{
+      //                         action: 'sortable',
+      //                         oldIndex: oldIndex + 1,
+      //                         newIndex: newIndex + 1,//因為抓到的index是從0開始算，而資料庫是從1開始，所以要加1
+      //                         sender: sender,
+      //                         received: received,
+      //                         unitId: unitArray[id-1][0]//unitId
+      //                   },
+      //                   error:function(){
+      //                         console.log("CoursePlan Sort Error!");
+      //                   }
+      //             })
+      //       }
+      //     }
+      // });
 //----------------------/.jQueryUI的sortable套件，並且運用start、update兩個事件去把排序資料存進資料庫中-----------------//
 
 
@@ -198,8 +197,8 @@ function getUnitId(id){
       checkUnitId = id;
 }
 //跳轉至播放介面
-function jumpToPlayerInterface(unitId,type,time){
-    url = "../PlayerInterface.html?unitId="+unitId+"&type="+type+"&time="+time;//此處拼接內容
+function jumpToPlayerInterface(unitId,type,time,groupId){
+    url = "../PlayerInterface.html?unitId="+unitId+"&type="+type+"&time="+time+"&groupId="+groupId;//此處拼接內容
     window.location.href = url;
 }
 
@@ -220,7 +219,7 @@ function getSeparateUnit(){
                   $('#wantList li,#ingList li,#doneList li').each(function(){
                         $(this).remove();
                   });
-                  // console.log(response);
+                  console.log(response);
                   unitArray = new Array(response.length);
                   showUnitUL(response,unitArray);
             },
@@ -267,7 +266,7 @@ function showUnitUL(result,unitArray){
                         +'<i class="fa fa-times" data-toggle="modal" data-target="#deleteModal"'
                         +'onclick="getUnitId('+videoId+')" style="cursor: pointer;"></i>'
                         +'</span>'
-                        +'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[j].unitId + ',' + result[j].videoType + ',' + result[j].lastTime+')">'
+                        +'<a class="portlet-content" id="'+videoId+'" onclick="jumpToPlayerInterface('+ result[j].unitId + ',' + result[j].videoType + ',' + result[j].lastTime + ',' + result[j].groupId +')">'
                         +'<div class="info-card">'
                         +'<div class="embed-responsive embed-responsive-16by9">'
                         +'<img id="img" class="style-scope yt-img-shadow" alt="" style="width:100%;" src="'+result[j].videoImgSrc+'">' 
@@ -327,19 +326,3 @@ function showUnitUL(result,unitArray){
             })
       });
 }
-
-//----------------------------------------- In Servlet -----------------------------------------
-/*
-protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      
-      // 檢查是否為該群組
-      HttpSession session = request.getSession();
-      Map<String, Integer> groups = (Map<String, Integer>)session.getAttribute("groups");
-
-      // 檢查 session 裡面有沒有傳進來的 groupId
-      if (groups.containsValue(Integer.parseInt(request.getParameter("groupId"))))  
-             有  -> 進行回傳動作
-      else 
-            沒有 -> 不回傳 (可直接省略不寫)
-}
-*/

@@ -140,6 +140,7 @@ public class GroupCoursePlanManager {
 			result = pst.executeQuery();
 			while(result.next()) {
 				groupCoursePlan = new GroupCoursePlan();
+				groupCoursePlan.setGroupId(groupId);
 				groupCoursePlan.setCourselistId(result.getInt("courselist.courselistId"));
 				groupCoursePlan.setListName(result.getString("courselist.listName"));
 				groupCoursePlan.setUnitName(result.getString("unit.unitName"));

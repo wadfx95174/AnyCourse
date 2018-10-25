@@ -256,7 +256,7 @@ $(document).ready(function(){
 					var swiper = new Swiper('.swiper-container', {
 					      slidesPerView: 4,
 					      spaceBetween: 0,
-					      slidesPerGroup: 1,
+					      slidesPerGroup: 4,
 					      loop: false,
 					      loopFillGroupWithBlank: true,
 					      navigation: {
@@ -280,9 +280,9 @@ $(document).ready(function(){
 				}
 				else {
 					var swiper = new Swiper('.swiper-container', {
-					      slidesPerView: 3,
+					      slidesPerView: 2,
 					      spaceBetween: 0,
-					      slidesPerGroup: 1,
+					      slidesPerGroup: 2,
 					      loop: false,
 					      loopFillGroupWithBlank: true,
 					      navigation: {
