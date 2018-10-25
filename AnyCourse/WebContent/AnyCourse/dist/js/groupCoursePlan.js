@@ -1,3 +1,8 @@
+
+$('.box-body').slimScroll({
+      height: '420px;'
+});
+
 // 取網址列的參數
 function get(name)
 {
