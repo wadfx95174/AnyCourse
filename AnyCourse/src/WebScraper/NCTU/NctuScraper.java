@@ -106,7 +106,7 @@ public class NctuScraper implements CourseList{
 		
 
 		int x;//跑迴圈時決定跑第幾個tag
-		for(int i = 51;i <= 107; ++i) {
+		for(int i = 0;i <= 50; ++i) {
 			System.out.println(i);
 			OutputFormat output = new OutputFormat();
 

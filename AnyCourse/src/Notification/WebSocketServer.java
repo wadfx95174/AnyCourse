@@ -49,28 +49,6 @@ public class WebSocketServer {
                 }
             }
         }
-        //播放介面-討論區"回覆"通知
-//        else if(type.equals("playerInterfaceReply")) {}
-//        //群組邀請
-//        else if(type.equals("groupInvitation")) {}
-//        //群組討論區(有人"提問"或"回覆"都會通知)
-//        else if(type.equals("groupForum")) {}
-//        //群組公告
-//        else if(type.equals("groupAnnouncement")) {}
-//        //個人行事曆到期提醒
-//        else if(type.equals("personalCalanderNotify")) {}
-//        //群組行事曆到期提醒
-//        else if(type.equals("groupCalanderNotify")) {}
-//        //群組共同清單
-//        else if(type.equals("groupVideoList")) {}
-//        //群組共同計畫
-//        else if(type.equals("groupCoursePlan")) {}
-//        //群組筆記
-//        else if(type.equals("groupNote")) {}
-//        //群組資源庫
-//        else if(type.equals("groupResourceLibrary")) {}
-//        //群組有成員加入
-//        else if(type.equals("groupMemberJoin")) {}
     }
  
     @OnOpen

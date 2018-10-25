@@ -260,8 +260,7 @@ public class PlayerInterfaceManager
 	//按讚，更新2個選取1個
 	//更新1:unit的likes
 	//更新2:shareLikes的isLike
-	public Unit setLike(String userId,int unitId,int like) {
-		Unit unit = new Unit();
+	public void setLike(String userId,int unitId,int like) {
 		try {
 			//按讚
 			if(like == 1) {
@@ -273,12 +272,6 @@ public class PlayerInterfaceManager
 				pst.setString(1,userId);
 				pst.setInt(2, unitId);
 				pst.executeUpdate();
-				
-				stat = con.createStatement();
-				result = stat.executeQuery("select * from unit where unitId = "+unitId);
-				while(result.next()) {
-					unit.setLikes(result.getInt("likes"));
-				}
 			}
 			//收回讚
 			else if(like == 0) {
@@ -289,12 +282,6 @@ public class PlayerInterfaceManager
 				pst.setString(1,userId);
 				pst.setInt(2, unitId);
 				pst.executeUpdate();
-				
-				stat = con.createStatement();
-				result = stat.executeQuery("select * from unit where unitId = "+unitId);
-				while(result.next()) {
-					unit.setLikes(result.getInt("likes"));
-				}
 			}
 			
 		}
@@ -305,7 +292,6 @@ public class PlayerInterfaceManager
 		finally {
 			Close();
 		}
-		return unit;
 	}
 	//拿accountId
 	public int getAccountId(String userId) {

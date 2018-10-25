@@ -92,11 +92,12 @@ function onYouTubeIframeAPIReady() {
 			    player.personalPlayer = {'currentTimeSliding': false,  //初始化參數，滑動bar會用到
 			                                    'errors': []};
 			    
-			$('h3')[0].append(response.unitName);
+			$('#unitName')[0].append(response.unitName);
+      $('#schoolName')[0].append(response.schoolName);
 //			if(response.personalLike == 0){$('#likesIcon').addClass('fa-heart-o');}
 //    	    else if(reponse.personalLike == 1){$('#likesIcon').addClass('fa-heart');}
-    	    $('#likesNum').text(response.likes);
-    	    $('#introduction').append(response.courseInfo);
+	    $('#likesNum').text(response.likes);
+	    $('#introduction').append(response.courseInfo);
 		}
 	});
     

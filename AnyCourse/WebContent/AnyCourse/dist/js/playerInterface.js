@@ -528,10 +528,13 @@ $(document).ready(function(){
 //----------------------------------------------按讚----------------------------------------------// 
     
     $('#likesButton').click(function(){
-    	//按讚
+        //取目前的按讚數
+        var tempLikeNum = parseInt($('#likesNum').text());
+
     	if($('#likesIcon').hasClass('fa-heart-o')){
     		$('#likesIcon').removeClass('fa-heart-o');
         	$('#likesIcon').addClass('fa-heart');
+            $('#likesNum').text(tempLikeNum+1);
         	$.ajax({
         		url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
             	method: 'POST',
@@ -540,10 +543,6 @@ $(document).ready(function(){
             		action:'like',
             		unitId:get('unitId'),
             		like:1,//1代表喜歡
-            	},
-            	success:function(result){
-            		console.log(result.likes);
-            		$('#likesNum').text(result.likes);
             	},
             	error:function(){
             		console.log("Like Fail!");
@@ -554,6 +553,8 @@ $(document).ready(function(){
     	else{
     		$('#likesIcon').removeClass('fa-heart');
         	$('#likesIcon').addClass('fa-heart-o');
+            console.log(tempLikeNum);
+            $('#likesNum').text(tempLikeNum-1);
         	$.ajax({
         		url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
             	method: 'POST',
@@ -562,10 +563,6 @@ $(document).ready(function(){
             		action:'like',
             		unitId:get('unitId'),
             		like:0//0代表收回讚
-            	},
-            	success:function(result){
-            		console.log(result.likes);
-            		$('#likesNum').text(result.likes);
             	},
             	error:function(){
             		console.log("UnLike Fail!");

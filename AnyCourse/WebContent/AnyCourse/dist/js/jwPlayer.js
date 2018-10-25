@@ -41,7 +41,8 @@ $(document).ready(function(){
     	success: function(response){
     		$('#vid').append('<video controls="" autoplay="autoplay" name="media" id = "myvideo" ><source src="'+response.videoUrl+'" type="video/mp4"></video>');
     		
-    		$('h3')[0].append(response.unitName);
+    		$('#unitName')[0].append(response.unitName);
+            $('#schoolName')[0].append(response.schoolName);
     	    player=$("#myvideo")[0];
     	    $('#likesNum').text(response.likes);
     	    $('#introduction').append(response.courseInfo);

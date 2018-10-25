@@ -255,7 +255,7 @@ function setReply(input){
 			                }));
 						},
 						error: function (jqXHR, textStatus, errorThrown) {
-							console.log("forum.js playerInterfaceComment error");
+							console.log("groupForum.js groupComment error");
 				        }
 					});
 				}
@@ -291,7 +291,7 @@ function setReply(input){
 						}
 					},
 					error: function (jqXHR, textStatus, errorThrown) {
-						console.log("forum.js playerInterfaceReply error");
+						console.log("groupForum.js groupReply error");
 			        }
 				});
 				///////////////////////////////////////////////////////////////////

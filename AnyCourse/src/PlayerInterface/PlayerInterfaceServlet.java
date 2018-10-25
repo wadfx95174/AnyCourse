@@ -51,13 +51,8 @@ public class PlayerInterfaceServlet extends HttpServlet {
 					,Integer.parseInt(request.getParameter("duration")));
 		}
 		else if(action.equals("like")&& userId != null) {
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			Unit unit = new Unit();
-			unit = manager.setLike(userId,Integer.parseInt(request.getParameter("unitId"))
+			manager.setLike(userId,Integer.parseInt(request.getParameter("unitId"))
 					,Integer.parseInt(request.getParameter("like")));
-			Gson gson = new Gson();
-			response.getWriter().write(gson.toJson(unit));
 		}
 		else if(action.equals("setIsBrowse")) {
 			response.setContentType("application/json");

@@ -134,7 +134,6 @@ public class NotificationServlet extends HttpServlet {
 		}
 		//群組討論區(通知其他回覆者)
 		else if(action.equals("groupReply")) {
-			System.out.println("groupReply");
 			int commentId = Integer.parseInt(request.getParameter("commentId"));
 			url = (String)request.getParameter("url");
 			groupId = Integer.parseInt(request.getParameter("groupId"));
