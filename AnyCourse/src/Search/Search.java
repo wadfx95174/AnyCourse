@@ -105,8 +105,9 @@ public class Search
 	@Override
 	public String toString()
 	{
-		return "Search [courselistId=" + courselistId + ", schoolName=" + schoolName + ", listName=" + listName
-				+ ", teacher=" + teacher + ", departmentName=" + departmentName + ", creator=" + creator + ", share=" + share + ", likes=" + likes + ", units=" + units + "]";
+		return "學校：" + schoolName + " 清單名稱：" + listName + " 單元：" + units;
+//				"Search [courselistId=" + courselistId + ", schoolName=" + schoolName + ", listName=" + listName
+//				+ ", teacher=" + teacher + ", departmentName=" + departmentName + ", creator=" + creator + ", share=" + share + ", likes=" + likes + ", units=" + units + "]";
 	}
 	/*", courseInfo=" + courseInfo + */
 	@Override

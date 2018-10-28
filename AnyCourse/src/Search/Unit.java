@@ -59,7 +59,8 @@ public class Unit
 	@Override
 	public String toString()
 	{
-		return "Unit [unitId=" + unitId + ", unitName=" + unitName + ", videoUrl=" + videoUrl + ", likes=" + likes
-				+ ", videoImgSrc=" + videoImgSrc + ", schoolName=" + schoolName + "]";
+		return unitName + " unitName" + unitName;
+//				"Unit [unitId=" + unitId + ", unitName=" + unitName + ", videoUrl=" + videoUrl + ", likes=" + likes
+//				+ ", videoImgSrc=" + videoImgSrc + ", schoolName=" + schoolName + "]";
 	}
 }

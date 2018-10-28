@@ -13,21 +13,32 @@ import com.google.gson.Gson;
 public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		String searchQuery = request.getParameter("searchQuery");
-		String queryMethod = request.getParameter("queryMethod");
-		if (searchQuery != "")
+		String action = request.getParameter("action");
+		String userId = (String)session.getAttribute("userId");
+		SearchManager manager = new SearchManager();
+		// 設定搜尋紀錄
+		if (action.equals("insertRecord"))
 		{
-			SearchManager manager = new SearchManager();
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.setHeader("Cache-Control","max-age=0");
-			Gson gson = new Gson();
-			HttpSession session = request.getSession();
-			if (queryMethod.equals("precise"))
-				response.getWriter().print(gson.toJson(manager.keywordSearchWithJieba(searchQuery, (String)session.getAttribute("userId"), SearchManager.SearchMethod.DEFAULT)));
-			else if (queryMethod.equals("fuzzy"))
-				response.getWriter().print(gson.toJson(manager.keywordSearchWithJieba(searchQuery, (String)session.getAttribute("userId"), SearchManager.SearchMethod.FUZZY_COURSE)));
-			manager.conClose();
+			manager.insertSearchRecord(searchQuery, userId);
+		}
+		// 搜尋
+		else if (action.equals("search"))
+		{
+			if (searchQuery != "")
+			{
+				String queryMethod = request.getParameter("queryMethod");
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.setHeader("Cache-Control","max-age=0");
+				Gson gson = new Gson();
+				if (queryMethod.equals("precise"))
+					response.getWriter().print(gson.toJson(manager.keywordSearchWithJieba(searchQuery, SearchManager.SearchMethod.DEFAULT)));
+				else if (queryMethod.equals("fuzzy"))
+					response.getWriter().print(gson.toJson(manager.keywordSearchWithJieba(searchQuery, SearchManager.SearchMethod.FUZZY_COURSE)));
+				manager.conClose();
+			}
 		}
 	}
 

@@ -133,7 +133,7 @@
 									<h3 class="box-title">
 										<strong>清單</strong>
 									</h3>
-									<ul class="todo-list ui-sortable" style="height: 480px;" id="resultList">
+									<ul class="todo-list ui-sortable" id="resultList">
 										<!-- 顯示相對應的單元影片 -->
 									</ul>
 								</div>
@@ -142,7 +142,7 @@
 									<h3 class="box-title">
 										<strong>影片</strong>
 									</h3>
-									<ul class="todo-list ui-sortable" style="height: 480px;" id="resultVideo">
+									<ul class="todo-list ui-sortable" id="resultVideo">
 										<!-- 顯示相對應的單元影片 -->
 									</ul>
 								</div>
@@ -152,7 +152,15 @@
 								<img src="../dist/img/loading.gif" style="display:block; margin:auto;">
 							</div>
 							<!-- /.box-body -->
-							<div class="box-footer clearfix no-border"></div>
+							<div class="box-footer clearfix no-border">
+								<div>
+									<ul class="pagination">
+										<li><a id="left" href="#">上一页</a></li>  
+										<li class="active"><a id="now" href="#">1</a></li>
+										<li><a id="right" href="#">下一页</a></li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</section>
 					

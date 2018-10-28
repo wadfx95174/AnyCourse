@@ -107,7 +107,7 @@ public class SearchManager
 		ArrayList<String> jiebaResult = new ArrayList<String>(jiebaWordFreq.getAllWordsFreq().keySet());
 		for (int i = 0; i < jiebaResult.size(); i++)
 		{
-			output.addAll(keywordSearch(jiebaResult.get(i), null, SearchMethod.ALL));
+			output.addAll(keywordSearch(jiebaResult.get(i), SearchMethod.ALL));
 		}
 		return output;	// 切字後的結果
 	}
@@ -119,7 +119,7 @@ public class SearchManager
 	 */
 	public ArrayList<Search> keywordSearch(String keyword)
 	{
-		return keywordSearch(keyword, null, SearchMethod.ALL);
+		return keywordSearch(keyword, SearchMethod.ALL);
 	}
 
 	/** 回傳關鍵字查詢結果 (ex. SearchManager.SearchMethod.ALL -> 回傳全部的結果)
@@ -129,50 +129,47 @@ public class SearchManager
 	 * @param method : {PRECISE_COURSE, FUZZY_COURSE, UNIT, DEFAULT, ALL} 搜尋方法
 	 * @return 型態為 (Search) 的ArrayList
 	 */
-	public ArrayList<Search> keywordSearch(String keyword, String userId, SearchMethod method)
+	public ArrayList<Search> keywordSearch(String keyword, SearchMethod method)
 	{
 		HashMap<Integer, Search> courseMap = new HashMap<>();
 		HashMap<Integer, Search> unitMap = new HashMap<>();
+		ArrayList<Search> resultList = new ArrayList<Search>();
 		switch(method)
 		{
 		// 回傳精準查詢後的 Courselist
 		case PRECISE_COURSE:
-			for (Search search: getCourseListByKeyword(keyword, QueryType.PRECISE))
-				courseMap.put(search.getCourselistId(), search);
+			resultList.addAll(getCourseListByKeyword(keyword, QueryType.PRECISE));
 			break;
 		// 回傳模糊查詢後的 Courselist
 		case FUZZY_COURSE:
-			for (Search search: getCourseListByKeyword(keyword, QueryType.FUZZY))
-				courseMap.put(search.getCourselistId(), search);
+			resultList.addAll(getCourseListByKeyword(keyword, QueryType.FUZZY));
 			break;
 		// 回傳查詢後的 Unit
 		case UNIT:
-			for (Search search: getUnitListByKeyword(keyword))
-				courseMap.put(search.getCourselistId(), search);
+			resultList.addAll(getUnitListByKeyword(keyword));
 			break;
 		// 回傳精準查詢後的Courselist & Unit (為預設的搜尋方法)
 		case DEFAULT:
-			for (Search search: getCourseListByKeyword(keyword, QueryType.PRECISE))
-				courseMap.put(search.getCourselistId(), search);
-			for (Search search: getUnitListByKeyword(keyword))
-				unitMap.put(search.getUnits().get(0).getUnitId(), search);
+			resultList.addAll(getCourseListByKeyword(keyword, QueryType.PRECISE));
+			resultList.addAll(getUnitListByKeyword(keyword));
 			break;
 		// 回傳精準、模糊查詢的Courselist & Unit查詢結果
 		case ALL:
-			for (Search search: getCourseListByKeyword(keyword, QueryType.PRECISE))
+			resultList.addAll(getCourseListByKeyword(keyword, QueryType.PRECISE));
+			// 將第一次結果加入 HashMap 以紀錄是否有查過
+			for (Search search: resultList)
+			{
 				courseMap.put(search.getCourselistId(), search);
+			}
+			// 將第二次結果不重複的加入 resultList
 			for (Search search: getCourseListByKeyword(keyword, QueryType.FUZZY))
-				courseMap.put(search.getCourselistId(), search);
-			for (Search search: getUnitListByKeyword(keyword))
-				unitMap.put(search.getUnits().get(0).getUnitId(), search);
+			{
+				if (!courseMap.containsKey(search.getCourselistId()))
+					resultList.add(search);
+			}
+			resultList.addAll(getUnitListByKeyword(keyword));
 			break;
 		}
-		if (userId != null)
-			insertSearchRecord(keyword, userId);
-
-		ArrayList<Search> resultList = new ArrayList<Search>();
-		resultList.addAll(courseMap.values());
-		resultList.addAll(unitMap.values());
 		return resultList;
 	}
 	
@@ -183,16 +180,35 @@ public class SearchManager
 	 * @param method : {PRECISE_COURSE, FUZZY_COURSE, UNIT, DEFAULT, ALL} 搜尋方法
 	 * @return 型態為 (Search) 的ArrayList
 	 */
-	public ArrayList<Search> keywordSearchWithJieba(String keyword, String userId, SearchMethod method)
+	public ArrayList<Search> keywordSearchWithJieba(String keyword, SearchMethod method)
 	{
 		JiebaWordFreq jiebaWordFreq = new JiebaWordFreq();
 		jiebaWordFreq.unitJieba(keyword);
+		HashMap<Integer, Search> map = new HashMap<Integer, Search>();
 		ArrayList<Search> output = new ArrayList<Search>();
 		ArrayList<String> jiebaResult = new ArrayList<String>(jiebaWordFreq.getAllWordsFreq().keySet());
+		output.addAll(keywordSearch(keyword, method));
+		for (Search search: keywordSearch(keyword, method))
+		{
+			System.out.println(search.getListName());
+			map.put(search.getCourselistId(), search);
+		}
 		for (int i = 0; i < jiebaResult.size(); i++)
 		{
-			output.addAll(keywordSearch(jiebaResult.get(i), userId, method));
+//			System.out.println(jiebaResult.get(i));
+			ArrayList<Search> searchRecord = keywordSearch(jiebaResult.get(i), method);
+			for (Search search: searchRecord)
+			{
+				System.out.print("@@" + search.getListName());
+				if (!map.containsKey(search.getCourselistId()))
+				{
+					output.add(search);
+				}
+			}
+//			output.addAll(keywordSearch(jiebaResult.get(i), method));
 		}
+		System.out.println("");
+		
 		return output;	// 切字後的結果
 	}
 	
@@ -250,6 +266,8 @@ public class SearchManager
 			selectCourseKeywordSQL = selectCourseKeywordSQL.replace("?", "'" + getQuery(keyword, type) + "'");
 		}
 		selectCourseKeywordSQL += selectCourseKeywordSQLEnd;
+		System.out.println(keyword);
+		System.out.println(selectCourseKeywordSQL);
 		return selectCourseKeywordSQL;
 	}
 	
@@ -350,7 +368,7 @@ public class SearchManager
 	}
 	
 	// 將搜尋紀錄加進資料庫
-	private void insertSearchRecord(String keyword, String userId)
+	public void insertSearchRecord(String keyword, String userId)
 	{
 		try
 		{
@@ -501,7 +519,9 @@ public class SearchManager
 	public static void main(String []args)
 	{
 		SearchManager kldm = new SearchManager();
-		System.out.println(kldm.keywordSearchWithJieba("機場計畫與設計"));
+//		System.out.println(kldm.keywordSearchWithJieba("中央+微積分"));
+//		kldm.keywordSearchWithJieba("中央+微積分", SearchMethod.DEFAULT);
+		System.out.println(kldm.keywordSearchWithJieba("中央+微積分", SearchMethod.DEFAULT));
 //		System.out.println(kldm.selectCourseListTable("化學"));
 //		System.out.println(kldm.selectUnitKeywordTable("微積分"));
 //		System.out.println(kldm.getCourseListByKeyword("微積分"));
