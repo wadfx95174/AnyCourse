@@ -106,11 +106,11 @@ function onYouTubeIframeAPIReady() {
 			      width: '640',
 			      videoId: uid,     //影片ID
 			      playerVars: {
-			          autoplay: 1,
 			          start: get("time")
 			        },
 			      events: {                   //哪些狀態執行哪些func
-			        'onReady': onPlayerReady,   //ready後會執行 onPlayerReady func
+              'onReady': onPlayerReady,   //ready後會執行 onPlayerReady func
+              'onStateChange': onPlayerStateChange
 			      }
 
 			    });
@@ -130,7 +130,17 @@ function onYouTubeIframeAPIReady() {
 // ready後用到的func
 function onPlayerReady(event) {   
     player.setPlaybackRate(1);   //影片速率
-    event.target.playVideo();   //  播放
+
+    /*  取消開始時播放  */
+    // event.target.playVideo();   //  播放
+}
+
+function onPlayerStateChange(event) {        
+  if(event.data === 0) {          
+    setTimeout(function(){
+      window.location.href = $('#recommendList li a').attr('href');
+    }, 3000)
+  }
 }
 
 

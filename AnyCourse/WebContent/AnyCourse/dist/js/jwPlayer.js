@@ -39,14 +39,20 @@ $(document).ready(function(){
     	error: function(){
     	},
     	success: function(response){
-    		$('#vid').append('<video controls="" autoplay="autoplay" name="media" id = "myvideo" ><source src="'+response.videoUrl+'" type="video/mp4"></video>');
+    		$('#vid').append('<video controls="" name="media" id = "myvideo" ><source src="'+response.videoUrl+'" type="video/mp4"></video>');
     		
     		$('#unitName')[0].append(response.unitName);
             $('#schoolName')[0].append(response.schoolName);
     	    player=$("#myvideo")[0];
     	    $('#likesNum').text(response.likes);
     	    $('#introduction').append(response.courseInfo);
-    	    seekTo(get("time") == null ? 0 : parseInt(get("time")));
+			seekTo(get("time") == null ? 0 : parseInt(get("time")));
+			
+			player.onended = function(){
+				setTimeout(function(){
+					window.location.href = $('#recommendList li a').attr('href');
+				}, 3000)
+			}
     	}
     });
     
