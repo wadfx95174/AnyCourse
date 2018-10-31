@@ -4100,17 +4100,26 @@ Gradient Background colors
 /****************************************************************************************/
 @media only screen and (max-width: 480px) {
   h4,.h4 {
- 	font-size: 14px;
+ 	  font-size: 14px;
+  }
+  .titleFontSize{
+    font-size: 16px;
   }
 }
 @media only screen and (min-width: 481px) and (max-width:1023) {
   h4,.h4 {
- 	font-size: 16px;
+    font-size: 16px;
+  }
+  .titleFontSize{
+    font-size: 18px;
   }
 }
 @media only screen and (min-width:1024){
   h4,.h4 {
- 	font-size: 18px;
+ 	  font-size: 18px;
+  }
+  .titleFontSize{
+    font-size: 20px;
   }
 }
 
