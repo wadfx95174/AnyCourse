@@ -118,8 +118,6 @@ $(document).ready(function(){
             });
       });
       
-      
-      
       //取得該使用者的所有清單(用來放在下拉式選單，讓使用者選擇要加入哪個清單)
       $.ajax({
             url : ajaxURL+'AnyCourse/HomePageServlet.do',
@@ -138,8 +136,7 @@ $(document).ready(function(){
             }
       });
       
-      
-      
+
 //----------------------jQueryUI的sortable套件，並且運用start、update兩個事件去把排序資料存進資料庫中-----------------//
       // $( ".column" ).sortable({
       //     connectWith: ".column",
