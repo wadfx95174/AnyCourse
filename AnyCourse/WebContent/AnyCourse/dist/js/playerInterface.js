@@ -524,7 +524,8 @@ $(document).ready(function(){
     
     // 預設為沒open
     $progress.one('mouseenter', animateDown);
-
+    
+  
 //----------------------------------------------按讚----------------------------------------------// 
     
     $('#likesButton').click(function(){

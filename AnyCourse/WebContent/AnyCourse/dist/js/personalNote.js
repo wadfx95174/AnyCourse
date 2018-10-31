@@ -104,6 +104,7 @@ $(document).ready(function(){
 
 	//將筆記分享至指定群組
 	$('#addToGroupNoteButton').click(function(){
+		
 		$.ajax({
 			url:ajaxURL+'AnyCourse/GroupNoteServlet.do',
 			method:'POST',
@@ -115,6 +116,7 @@ $(document).ready(function(){
 			},
 			success:function(){
 				shareNoteToGroup();
+				$("#shareNoteModal").modal('show');
 			},
 			error:function(e){
 				console.log("add personalNote to group error");

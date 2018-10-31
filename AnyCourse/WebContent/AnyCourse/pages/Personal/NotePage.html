@@ -114,27 +114,8 @@
 			<!-- Content Header (Page header) -->
 			<section class="content">
 				<div class="row">
-					<section class="content col-md-3">
-						<div class="box box-primary">
-							<!-- box-header -->
-							<div class="box-header with-border">
-								<h3 class="box-title">
-									<strong>筆記分類</strong>
-								</h3>
-							</div>
-							<!-- /.box-header -->
-							<!-- box-body -->
-							<div class="box-body">
-								<ul class="todo-list ui-sortable" style="height: 480px;">
-									<!-- 顯示相對應的單元影片 -->
-									
-								</ul>
-							</div>
-							<!-- /.box-body -->
-							<div class="box-footer clearfix no-border"></div>
-						</div>
-					</section>
-					<section class="content col-md-9">
+					
+					<section class="content col-md-12">
 						<div class="box box-primary">
 							<!-- box-header -->
 							<div class="box-header with-border">
@@ -238,6 +219,25 @@
 				<div class="modal-footer">
 					<input id="addToGroupNoteButton" type="button"
 						class="btn btn-primary" data-dismiss="modal" value="確定">
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--shareNoteModal-->
+	<div class="modal fade" id="shareNoteModal" tabindex="-1" role="dialog"
+		aria-labelledby="shareNoteModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title" id="shareNoteModalLabel"
+						style="text-align: center;">
+						<b>筆記已分享至群組!</b>
+					</h2>
+				</div>				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">關閉</button>					
 				</div>
 			</div>
 		</div>

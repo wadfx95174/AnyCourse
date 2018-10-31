@@ -324,6 +324,7 @@
 		}
 		
 		function shareNote(){
+			
 			$.ajax({  
 				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'POST',
@@ -333,6 +334,7 @@
 					"unitId" : get("unitId"),				
 				},				
 				success : function(data) {
+					$("#shareModal").modal('show');
 				},
 				error : function() {
 				}
@@ -340,6 +342,7 @@
 
 		}
 		function notShareNote(){
+			
 			$.ajax({  
 				url : ajaxURL+'AnyCourse/TextNoteServlet.do',
 				method : 'POST',
@@ -349,6 +352,7 @@
 					"unitId" : get("unitId"),				
 				},				
 				success : function(data) {
+					$("#notShareModal").modal('show');
 				},
 				error : function() {
 				}

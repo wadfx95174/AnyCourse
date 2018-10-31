@@ -22,6 +22,10 @@ $(document).ready(function() {
 						'<div id="exT_' + result[i].userId + '" class=" col-xs-12">'+
 						'<img src="https://ppt.cc/fxYEnx@.png" class="img-circle" style="float:left;height:42px;width:42px;">'+
 						'<h4 style="float:left;">&nbsp;&nbsp;&nbsp;' + result[i].nickName + '</h4>'+
+						'<a class="btn pull-right noteLikesClass" style="color: black;" id="noteLikesButton_'+ result[i].userId +'" onclick="noteLikes(this.id)">'+
+						'<i id="noteLikesIcon_'+ result[i].userId +'" class="fa fa-heart-o" role="button"></i>'+
+						'<span id="noteLikesNum_'+ result[i].userId +'" style="padding-bottom: 10px;">0</span>'+
+						'</a>'+
 						'<h5 style="float:right;">' + result[i].shareTime + '</h5>'+														
 						'<textarea class="col-xs-12" rows="4" cols="50" id="exText_' + result[i].textNoteId + '" disabled="disabled" style="float:left;">' + result[i].textNote + '</textarea>'+
 						'<div id="exP_' + result[i].userId +'"  style="clear:both;">'+	
@@ -70,6 +74,56 @@ $(document).ready(function() {
 	});
 	
 });
+
+//----------------------------------------------筆記按讚----------------------------------------------// 
+
+function noteLikes(input){
+	
+	var iconId = input.split('_')[1];
+//	alert(iconId);
+    //取目前的按讚數
+    var tempNoteLikeNum = parseInt($('#noteLikesNum_'+ iconId).text());
+
+	if($('#noteLikesIcon_'+ iconId).hasClass('fa-heart-o')){
+		$('#noteLikesIcon_'+ iconId).removeClass('fa-heart-o');
+    	$('#noteLikesIcon_'+ iconId).addClass('fa-heart');
+        $('#noteLikesNum_'+ iconId).text(tempNoteLikeNum+1);
+        $.ajax({
+    		url: ajaxURL+'AnyCourse/Servlet.do',
+        	method: 'POST',
+        	cache :false,
+        	data:{
+        		action:'like',
+        		unitId:get('unitId'),
+        		like:1,//1代表喜歡
+        	},
+        	error:function(){
+        		console.log("Like Fail!");
+        	}
+    	})
+	}
+	//收回讚
+	else{
+		$('#noteLikesIcon_'+ iconId).removeClass('fa-heart');
+    	$('#noteLikesIcon_'+ iconId).addClass('fa-heart-o');
+        console.log(tempNoteLikeNum);
+        $('#noteLikesNum_'+ iconId).text(tempNoteLikeNum-1);
+    	$.ajax({
+    		url: ajaxURL+'AnyCourse/Servlet.do',
+        	method: 'POST',
+        	cache :false,
+        	data:{
+        		action:'like',
+        		unitId:get('unitId'),
+        		like:0//0代表收回讚
+        	},
+        	error:function(){
+        		console.log("UnLike Fail!");
+        	}
+    	})
+	}
+}
+
 
 
 //$.ajax({
