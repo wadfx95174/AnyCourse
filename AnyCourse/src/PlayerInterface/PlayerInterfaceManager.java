@@ -452,7 +452,6 @@ public class PlayerInterfaceManager
 		
 	}
 	
-	
 	public void setBrowse(int accountId,int unitId) {
 		
 		try {
