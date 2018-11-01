@@ -1,5 +1,5 @@
-//var ajaxURL="http://anycourse.cs.ntou.edu.tw:7603/";
-var ajaxURL="http://localhost:8080/";
+var ajaxURL="http://anycourse.cs.ntou.edu.tw:7603/";
+// var ajaxURL="http://localhost:8080/";
 
 var ws;
 
