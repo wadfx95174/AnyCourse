@@ -574,28 +574,28 @@ $(document).ready(function(){
 //----------------------------------------------按讚----------------------------------------------// 
 //----------------------------------------------播放介面之推薦影片-------------------------------// 
     $.ajax({
-    	url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
-    	method: 'POST',
-    	cache :false,
-    	data:{
-    		action:'getRecommendation',
-    		unitId:get('unitId'),
-    	},
-    	success:function(response){
-    		//亂數決定順序
-			var temp;
-			for(var j = 0 ;j < response.length;j++){
-				temp = Math.floor(Math.random()*response.length);
-				var video = response[temp];
-				response[temp] = response[j];
-				response[j] = video;
-			}
+        url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
+        method: 'POST',
+        cache :false,
+        data:{
+            action:'getRecommendation',
+            unitId:get('unitId'),
+        },
+        success:function(response){
+            //亂數決定順序
+            var temp;
+            for(var j = 0 ;j < response.length;j++){
+                temp = Math.floor(Math.random()*response.length);
+                var video = response[temp];
+                response[temp] = response[j];
+                response[j] = video;
+            }
             if(response[0].hasOwnProperty("courselistId")){
-                console.log(response);
+                // console.log(response);
                 for(var i = 0;i < response.length; i++){
                     var random = Math.floor(Math.random()*response[i].units.length);
-                    console.log(i);
-                    console.log(random);
+                    // console.log(i);
+                    // console.log(random);
                     $('#recommendList').append(
                             '<li>'
                             +'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[random].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].units[random].unitId+'">'
@@ -645,15 +645,38 @@ $(document).ready(function(){
                     );
                 }
             }
-    		
-    	},
-    	error:function(){
-    		console.log("Like Fail!");
-    	}
+            
+        },
+        error:function(){
+            console.log("Like Fail!");
+        }
     })
     
 //----------------------------------------------播放介面之推薦影片------------------------------------// 
+
+//--------------------------------講義-------------------------------// 
+    $.ajax({
+        url: ajaxURL+'AnyCourse/PlayerInterfaceServlet.do',
+        method: 'POST',
+        cache :false,
+        data:{
+            action:'getLecture',
+            unitId:get('unitId'),
+        },
+        success:function(response){
+            console.log(response);
+            if(response.lectureUrl){
+                $('#lecture').append(
+                    '<a href="'+ response.lectureUrl +'" target="_blank">'+ response.lectureName +'</a>');
+            
+            }
+        },
+        error:function(){
+            console.log("Get lecture failed");
+        }
+    })
     
+//------------------------------------講義------------------------------// 
 });
 
 

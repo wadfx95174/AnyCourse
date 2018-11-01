@@ -503,12 +503,35 @@ public class PlayerInterfaceManager
 				pst.executeUpdate();
 			}
 		}
-		catch(SQLException e) {
-			
+		catch(SQLException x) {
+			System.out.println("PlayerInterfaceManager-setRecommendedResult");
+			System.out.println("Exception select"+x.toString());
 		}
 		finally {
-			
+			Close();
 		}
+	}
+	
+	//取得講義
+	public Unit getLecture(int unitId) {
+		Unit unit = new Unit();
+		try {
+			pst = con.prepareStatement("select lectureName,lectureUrl from unitLecture where unitId = ?");
+			pst.setInt(1,unitId);
+			result = pst.executeQuery();
+			if(result.next()) {
+				unit.setLectureName(result.getString("lectureName"));
+				unit.setLectureUrl(result.getString("lectureUrl"));
+			}
+		}
+		catch(SQLException x) {
+			System.out.println("PlayerInterfaceManager-getLecture");
+			System.out.println("Exception select"+x.toString());
+		}
+		finally {
+			Close();
+		}
+		return unit;
 	}
 	
 	public void Close() {

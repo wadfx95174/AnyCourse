@@ -10,6 +10,8 @@ public class Unit {
 	private int likes;
 	private String videoImgSrc;
 	private String courseInfo;
+	private String lectureName;
+	private String lectureUrl;
 	public int getType() {
 		return type;
 	}
@@ -108,6 +110,22 @@ public class Unit {
 
 	public void setPersonalLike(int personalLike) {
 		this.personalLike = personalLike;
+	}
+
+	public String getLectureName() {
+		return lectureName;
+	}
+
+	public void setLectureName(String lectureName) {
+		this.lectureName = lectureName;
+	}
+
+	public String getLectureUrl() {
+		return lectureUrl;
+	}
+
+	public void setLectureUrl(String lectureUrl) {
+		this.lectureUrl = lectureUrl;
 	}
 
 }

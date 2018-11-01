@@ -107,6 +107,12 @@ public class PlayerInterfaceServlet extends HttpServlet {
 			}
 			
 		}
+		else if(action.equals("getLecture")) {
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			Gson gson = new Gson();
+			response.getWriter().write(gson.toJson(manager.getLecture(Integer.parseInt(request.getParameter("unitId")))));
+		}
 		manager.conClose();
 	}
 }
