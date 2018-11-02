@@ -132,7 +132,7 @@ public class SearchManager
 	public ArrayList<Search> keywordSearch(String keyword, SearchMethod method)
 	{
 		HashMap<Integer, Search> courseMap = new HashMap<>();
-		HashMap<Integer, Search> unitMap = new HashMap<>();
+//		HashMap<Integer, Search> unitMap = new HashMap<>();
 		ArrayList<Search> resultList = new ArrayList<Search>();
 		switch(method)
 		{
@@ -182,32 +182,50 @@ public class SearchManager
 	 */
 	public ArrayList<Search> keywordSearchWithJieba(String keyword, SearchMethod method)
 	{
+		// 用以過濾重複的 map
+		HashMap<Integer, Search> listMap = new HashMap<Integer, Search>();
+		HashMap<Integer, Search> unitMap = new HashMap<Integer, Search>();
+		// 輸出的 ArrayList
+		ArrayList<Search> output = new ArrayList<Search>();
+		// 先將完整的關鍵字先搜尋一次，加入至 output
+		output.addAll(keywordSearch(keyword, method));
+		// 放到 map 以做之後過濾用
+		for (Search search: output)
+		{
+//			System.out.println(search.getListName());
+			// 課程 (courselistId 是不為 0 的正整數)
+			if (search.getCourselistId() != 0)
+				listMap.put(search.getCourselistId(), search);
+			// 單元 (courselistId 是 0)
+			else if (search.getFirstUnitId() != 0)
+				unitMap.put(search.getFirstUnitId(), search);
+		}
+		
+		// 得到切字後的字串
 		JiebaWordFreq jiebaWordFreq = new JiebaWordFreq();
 		jiebaWordFreq.unitJieba(keyword);
-		HashMap<Integer, Search> map = new HashMap<Integer, Search>();
-		ArrayList<Search> output = new ArrayList<Search>();
 		ArrayList<String> jiebaResult = new ArrayList<String>(jiebaWordFreq.getAllWordsFreq().keySet());
-		output.addAll(keywordSearch(keyword, method));
-		for (Search search: keywordSearch(keyword, method))
+		
+		for (String jiebaString: jiebaResult)
 		{
-			System.out.println(search.getListName());
-			map.put(search.getCourselistId(), search);
-		}
-		for (int i = 0; i < jiebaResult.size(); i++)
-		{
-//			System.out.println(jiebaResult.get(i));
-			ArrayList<Search> searchRecord = keywordSearch(jiebaResult.get(i), method);
-			for (Search search: searchRecord)
+//			System.out.println(jiebaString);
+			// 將結果沒重複過的加入到 output
+			for (Search search: keywordSearch(jiebaString, method))
 			{
-				System.out.print("@@" + search.getListName());
-				if (!map.containsKey(search.getCourselistId()))
+//				System.out.print("@@" + search.getListName());
+				if (search.getCourselistId() != 0 && !listMap.containsKey(search.getCourselistId()))
 				{
 					output.add(search);
+					listMap.put(search.getCourselistId(), search);
+				}
+				else if (search.getFirstUnitId() != 0 && !unitMap.containsKey(search.getFirstUnitId()))
+				{
+					output.add(search);
+					unitMap.put(search.getFirstUnitId(), search);
 				}
 			}
-//			output.addAll(keywordSearch(jiebaResult.get(i), method));
 		}
-		System.out.println("");
+//		System.out.println("");
 		
 		return output;	// 切字後的結果
 	}

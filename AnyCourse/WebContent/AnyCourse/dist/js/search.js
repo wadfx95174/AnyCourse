@@ -6,9 +6,11 @@ var unitArray = [];
 var listButton = true;	// true 為 顯示清單， false 為 顯示單元
 
 var eachPage = 10;		// 每頁幾個
-var index = eachPage;
+var unitIndex = eachPage;
+var listIndex = eachPage;
 var totalPage = 0;		// 共幾頁 (預設0)
-var currentPage = 0;	// 目前頁 (預設0)
+var currentUnitPage = 0;	// 目前單元頁 (預設0)
+var currentListPage = 0;	// 目前清單頁 (預設0)
 var totalList = 0;	// 記錄總共幾筆 清單結果
 var totalUnit = 0;	// 記錄總共幾筆 單元結果
 
@@ -56,15 +58,15 @@ $(document).ready(function(){
 			{
 				// resultArray.set(response[i].courselistId != null ? response[i].courselistId : response[i].units[i].unitId , response[i]);
 				// 課程
-				if (response[i].courselistId != null && response[i].units[i] != null)
+				if (response[i].courselistId != 0 && response[i].units[0] != null)
 				{
 					resultArray.set(response[i].courselistId, response[i]);
 					listArray.push(response[i]);
 				}
 				// 單元
-				else if (response[i].units[i] != null)
+				else if (response[i].units[0] != null)
 				{
-					resultArray.set(response[i].units[i].unitId, response[i]);
+					resultArray.set(response[i].units[0].unitId, response[i]);
 					unitArray.push(response[i]);
 				}
 			}
@@ -104,12 +106,12 @@ $(document).ready(function(){
 				// if (!resultArray.has(response[i].courselistId != null ? response[i].courselistId : response[i].units[i].unitId))
 				// 	fuzzyResult.push(response[i]);
 				// 課程
-				if (response[i].courselistId != null && response[i].units[i] != null && !resultArray.has(response[i].courselistId))
+				if (response[i].courselistId != 0 && response[i].units[0] != null && !resultArray.has(response[i].courselistId))
 				{
 					listArray.push(response[i]);
 				}
 				// 單元
-				else if (response[i].units[i] != null && !resultArray.has(response[i].units[i].unitId))	// 有可能錯!!!!!!!!!!!!!!!!!!!!!!!!!!
+				else if (response[i].units[0] != null && !resultArray.has(response[i].units[i].unitId))	// 有可能錯!!!!!!!!!!!!!!!!!!!!!!!!!!
 				{
 					unitArray.push(response[i]);
 				}
@@ -129,55 +131,118 @@ $(document).ready(function(){
 				notFoundFlag = true;
 		}
 	});
-	$("#right").click(function(){
-		currentPage++; /*每次点击下一页，页数+1*/
-		$("#page").text(currentPage);/*改变分页按钮上显示的页数*/
-		if(currentPage+1>totalPage){
-			$("#right").removeAttr("disabled");
+
+	$("#listResult").click(function(){
+		listButton = true;
+		setData();
+	});
+	$("#unitResult").click(function(){
+		listButton = false;
+		setData();
+	})
+
+	$("#lRight").click(function(event){
+		console.log(event);
+		currentListPage++;
+		$("#lNow").text(currentListPage);
+		if(currentListPage+1>totalPage){
+			$("#lRight").removeAttr("disabled");
 			/*如果是最后一页，就禁用a标签*/
 		}
 		else{
-			$("#right").attr('disabled',"true");
+			$("#lRight").attr('disabled',"true");
 			 /*如果不是最后一页，就重新启用a标签*/
 		}
 
-		if(currentPage-1<1){ 
-			$("#left").removeAttr("disabled");
+		if(currentListPage-1<1){ 
+			$("#lLeft").removeAttr("disabled");
 			/*如果是第一页，就禁用a标签*/
 		}
 		else{
-			$("#left").attr('disabled',"true");
+			$("#lLeft").attr('disabled',"true");
 			/*如果不是第一页，就重新启用a标签*/
 		}
 		$("#resultList").empty();/*清空上一页显示的数据*/
-		listDisplay(index,index=index+eachPage);
+		listDisplay(listIndex,listIndex=listIndex+eachPage);
 		/*显示新一页的数据，*/
 	});
 
-	$("#left").click(function(){
-		currentPage--;/*每次点击上一页，页数-1*/
-		$("#page").text(currentPage);  //改变分页按钮上显示的页数
-		if(currentPage-1<1){
-			$("#left").removeAttr("disabled");
+	$("#lLeft").click(function(){
+		currentListPage--;/*每次点击上一页，页数-1*/
+		$("#lNow").text(currentListPage);  //改变分页按钮上显示的页数
+		if(currentListPage-1<1){
+			$("#lLeft").removeAttr("disabled");
 			/*如果是第一页，就禁用a标签*/
 		}
 		else{
-			$("#left").attr('disabled',"true");
+			$("#lLeft").attr('disabled',"true");
 			/*如果不是第一页，就重新启用a标签*/
 		}
 
-		if(currentPage+1>totalPage){
-			$("#right").removeAttr("disabled");
+		if(currentListPage+1>totalPage){
+			$("#lRight").removeAttr("disabled");
 			/*如果是最后一页，就禁用a标签*/
 		} 
 		else{
-			$("#right").attr('disabled',"true");
+			$("#lRight").attr('disabled',"true");
 			/*如果不是最后一页，就重新启用a标签*/
 		}
 		$("#resultList").empty();/*清空上一页显示的数据*/
-		listDisplay(index=index-2*eachPage,index=index+eachPage);
+		listDisplay(listIndex=listIndex-2*eachPage,listIndex=listIndex+eachPage);
 		/*显示新一页的数据，*/                   
 	});
+
+	$("#uRight").click(function(event){
+		console.log(event);
+		currentUnitPage++;
+		$("#uNow").text(currentUnitPage);
+		if(currentUnitPage+1>totalPage){
+			$("#uRight").removeAttr("disabled");
+			/*如果是最后一页，就禁用a标签*/
+		}
+		else{
+			$("#uRight").attr('disabled',"true");
+			 /*如果不是最后一页，就重新启用a标签*/
+		}
+
+		if(currentUnitPage-1<1){ 
+			$("#uLeft").removeAttr("disabled");
+			/*如果是第一页，就禁用a标签*/
+		}
+		else{
+			$("#uLeft").attr('disabled',"true");
+			/*如果不是第一页，就重新启用a标签*/
+		}
+		$("#resultUnit").empty();/*清空上一页显示的数据*/
+		unitDisplay(unitIndex,unitIndex=unitIndex+eachPage);
+		/*显示新一页的数据，*/
+	});
+
+	$("#uLeft").click(function(){
+		currentUnitPage--;/*每次点击上一页，页数-1*/
+		$("#uNow").text(currentUnitPage);  //改变分页按钮上显示的页数
+		if(currentUnitPage-1<1){
+			$("#uLeft").removeAttr("disabled");
+			/*如果是第一页，就禁用a标签*/
+		}
+		else{
+			$("#uLeft").attr('disabled',"true");
+			/*如果不是第一页，就重新启用a标签*/
+		}
+
+		if(currentUnitPage+1>totalPage){
+			$("#uRight").removeAttr("disabled");
+			/*如果是最后一页，就禁用a标签*/
+		} 
+		else{
+			$("#uRight").attr('disabled',"true");
+			/*如果不是最后一页，就重新启用a标签*/
+		}
+		$("#resultUnit").empty();/*清空上一页显示的数据*/
+		unitDisplay(unitIndex=unitIndex-2*eachPage,unitIndex=unitIndex+eachPage);
+		/*显示新一页的数据，*/                   
+	});
+
 	//影片新增至課程計畫
 	$('#addToCoursePlanButton').click(function(){
 		
@@ -216,13 +281,14 @@ $(document).ready(function(){
 function checkResult(){
 	// array = response;
 	// 找不到結果
+	setData();
 	if (resultArray.length == 0)
 	{
 		// 第一次先跳過，第二次顯示查無結果
 		if (notFoundFlag)
 		{
 			console.log('0');
-			$('#result').append('<br>很抱歉，查無 "<strong>'+get('searchQuery')+'</strong>" 結果');
+			// $('#result').append('<br>很抱歉，查無 "<strong>'+get('searchQuery')+'</strong>" 結果');
 		}
 		else
 			notFoundFlag = true;
@@ -237,11 +303,12 @@ function checkResult(){
 function printResult()
 {
 	// 顯示清單
-	if (listButton)
-	{
+	// if (listButton)
+	// {
 		// 清單結果有內容
 		if (listArray.length != 0)
 		{
+			currentListPage = 1;
 			// $('#result').empty();
 			$('#listArea').show();
 			// 第一次顯示
@@ -268,15 +335,45 @@ function printResult()
 		// 清單結果沒有內容
 		else
 		{
-			$('#result').append('<br>很抱歉，查無 "<strong>'+get('searchQuery')+'</strong>" 結果');
+			// $('#result').append('<br>很抱歉，查無 "<strong>'+get('searchQuery')+'</strong>" 結果');
 		}
-	}
+	// }
 	// 顯示單元
-	else
-	{
-		
-		// (unitArray.length != 0)
-	}
+	// else
+	// {
+		// 單元結果有內容
+		if (unitArray.length != 0)
+		{
+			currentUnitPage = 1;
+			// $('#result').empty();
+			$('#unitArea').show();
+			// 第一次顯示
+			if (totalUnit == 0)
+			{
+				totalUnit = unitArray.length;
+				unitDisplay(0, totalUnit > 10 ? 10 : totalUnit);
+				totalPage = 1;
+			}
+			// 第二次顯示，結果少於 10 筆 (只有1頁)
+			else if (totalUnit < 10)
+			{
+				unitDisplay(totalUnit, unitArray.length > 10 ? 10 : unitArray.length);	// *取巧寫法*
+				totalUnit = unitArray.length;
+				totalPage = 1;
+			}
+			// 第二次顯示，結果多餘 10 筆 (1頁以上)
+			else
+			{
+				totalPage = ((unitArray.length - 1) / eachPage) + 1;
+			}
+			
+		}
+		// 清單結果沒有內容
+		else
+		{
+			// $('#result').append('<br>很抱歉，查無 "<strong>'+get('searchQuery')+'</strong>" 結果');
+		}
+	// }
 }
 
 // 調整參數
@@ -288,9 +385,9 @@ function setData()
 		totalPage = ((listArray.length - 1) / eachPage) + 1;
 	}
 	// 單元
-	else
+	else if (!listButton && unitArray.length > 0)
 	{
-
+		totalPage = ((unitArray.length - 1) / eachPage) + 1;
 	}
 }
 
@@ -339,7 +436,7 @@ function unitDisplay(begin, end)
 {
 	var str; 
     for(var i = begin; i < end && i < unitArray.length; i++){
-		$('#resultList').append(
+		$('#resultUnit').append(
 					'<li>'
 					+'<div class="btn-group" style="top: -5px;">'
 					+'<button type="button" class="btn btn-noColor dropdown-toggle"'

@@ -128,23 +128,55 @@
 							<!-- /.box-header -->
 							<!-- box-body -->
 							<div class="box-body" id="result" style="display:none" id="result">
-								<div class="box-header ui-sortable-handle" style="display:none" id="listArea">
-									<i class="ion ion-clipboard"></i>
-									<h3 class="box-title">
-										<strong>清單</strong>
-									</h3>
-									<ul class="todo-list ui-sortable" id="resultList">
-										<!-- 顯示相對應的單元影片 -->
+								<div class="nav-tabs-custom">
+									<ul class="nav nav-tabs">
+										<li class="active tabClass"><a href="#listResult"
+											data-toggle="tab" aria-expanded="true">清單</a></li>
+										<li class="tabClass"><a href="#unitResult" data-toggle="tab"
+											aria-expanded="false">影片</a></li>
 									</ul>
-								</div>
-								<div class="box-header ui-sortable-handle" style="display:none" id="videoArea">
-									<i class="ion  ion-ios-film-outline"></i>
-									<h3 class="box-title">
-										<strong>影片</strong>
-									</h3>
-									<ul class="todo-list ui-sortable" id="resultVideo">
-										<!-- 顯示相對應的單元影片 -->
-									</ul>
+									<div class="tab-content">
+										<!--listResult & unitResult-->
+										<div class="tab-pane active" id="listResult">
+											<div class="box-header ui-sortable-handle" style="display:none" id="listArea">
+												<i class="ion ion-clipboard"></i>
+												<h3 class="box-title">
+													<strong>清單</strong>
+												</h3>
+												<ul class="todo-list ui-sortable" id="resultList">
+													<!-- 顯示相對應的單元影片 -->
+												</ul>
+												<div>
+													<ul class="pagination">
+														<li><a id="lLeft" href="#">上一頁</a></li>  
+														<li class="active"><a id="lNow" href="#">1</a></li>
+														<li><a id="lRight" href="#">下一頁</a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<!-- /.tab-pane -->
+										<div class="tab-pane" id="unitResult">
+											<div class="box-header ui-sortable-handle" style="display:none" id="unitArea">
+												<i class="ion  ion-ios-film-outline"></i>
+												<h3 class="box-title">
+													<strong>影片</strong>
+												</h3>
+												<ul class="todo-list ui-sortable" id="resultUnit">
+													<!-- 顯示相對應的單元影片 -->
+												</ul>
+												<div>
+													<ul class="pagination">
+														<li><a id="uLeft" href="#">上一页</a></li>  
+														<li class="active"><a id="uNow" href="#">1</a></li>
+														<li><a id="uRight" href="#">下一页</a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<!-- /.tab-pane -->
+									</div>
+									<!-- /.tab-content -->
 								</div>
 							</div>
 							<div id="loading">
@@ -153,13 +185,6 @@
 							</div>
 							<!-- /.box-body -->
 							<div class="box-footer clearfix no-border">
-								<div>
-									<ul class="pagination">
-										<li><a id="left" href="#">上一页</a></li>  
-										<li class="active"><a id="now" href="#">1</a></li>
-										<li><a id="right" href="#">下一页</a></li>
-									</ul>
-								</div>
 							</div>
 						</div>
 					</section>

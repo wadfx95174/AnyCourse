@@ -11,3 +11,7 @@
 	white-space: nowrap;
 	text-overflow:ellipsis;
 }
+
+.pagination {
+	text-align: center;
+}

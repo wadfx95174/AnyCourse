@@ -102,6 +102,11 @@ public class Search
 	{
 		this.units.add(unit);
 	}
+	// 回傳第一個單元 Id
+	public int getFirstUnitId()
+	{
+		return this.units.get(0).getUnitId();
+	}
 	@Override
 	public String toString()
 	{

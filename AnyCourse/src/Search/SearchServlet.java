@@ -19,7 +19,7 @@ public class SearchServlet extends HttpServlet {
 		String userId = (String)session.getAttribute("userId");
 		SearchManager manager = new SearchManager();
 		// 設定搜尋紀錄
-		if (action.equals("insertRecord"))
+		if (action.equals("insertRecord") && userId != null)
 		{
 			manager.insertSearchRecord(searchQuery, userId);
 		}
