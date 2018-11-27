@@ -24,8 +24,8 @@ public class SearchManager
 	private final String selectDepartmentSQL = "select distinct departmentName from courselist where departmentName is not null";
 	private final String selectPlanMaxSQL = "select MAX(oorder) from personalPlan where status = 1 and userId = ?";
 	private final String insertSearchRecordSQL = "insert into searchRecord (userId, searchWord, searchTime) value(?,?,null)";
-	public enum SearchMethod {PRECISE_COURSE, FUZZY_COURSE, UNIT, DEFAULT, ALL}; // 搜尋方法
-	private enum QueryType {PRECISE, FUZZY}; // 精準/模糊 搜尋
+	public enum SearchMethod {PRECISE_COURSE, FUZZY_COURSE, UNIT, DEFAULT, ALL}; // ���瘜�
+	private enum QueryType {PRECISE, FUZZY}; // 蝎暹��/璅∠�� ����
 	private Connection con = null;
 	private Statement stat = null;
 	private ResultSet result = null;
@@ -33,9 +33,9 @@ public class SearchManager
 	
 	public SearchManager() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");//註冊Driver
+			Class.forName("com.mysql.jdbc.Driver");//閮餃�river
 			con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
-					, "root", "peter");//取得connection
+					, "root", "peter");//���onnection
 			
 		}
 		catch(ClassNotFoundException e){
@@ -94,10 +94,10 @@ public class SearchManager
 		 return outputList;
 	}
 	
-	/** 回傳關鍵字切字後查詢結果 (推薦用)
+	/** ����摮���閰Ｙ��� (���)
 	 * 
-	 * @param keyword : (String) 要切字的關鍵字
-	 * @return 型態為 (Search) 的 ArrayList
+	 * @param keyword : (String) 閬����摮�
+	 * @return ��� (Search) ��� ArrayList
 	 */
 	public ArrayList<Search> keywordSearchWithJieba(String keyword)
 	{
@@ -109,25 +109,25 @@ public class SearchManager
 		{
 			output.addAll(keywordSearch(jiebaResult.get(i), SearchMethod.ALL));
 		}
-		return output;	// 切字後的結果
+		return output;	// ��������
 	}
 	
-	/** 回傳關鍵字查詢結果 (推薦用)
+	/** ����摮閰Ｙ��� (���)
 	 * 
-	 * @param keyword : (String) 關鍵字
-	 * @return 型態為 (Search) 的ArrayList
+	 * @param keyword : (String) ��摮�
+	 * @return ��� (Search) ��rrayList
 	 */
 	public ArrayList<Search> keywordSearch(String keyword)
 	{
 		return keywordSearch(keyword, SearchMethod.ALL);
 	}
 
-	/** 回傳關鍵字查詢結果 (ex. SearchManager.SearchMethod.ALL -> 回傳全部的結果)
+	/** ����摮閰Ｙ��� (ex. SearchManager.SearchMethod.ALL -> ���������)
 	 * 
-	 * @param keyword : (String) 關鍵字
-	 * @param userId : (String) 帳號
-	 * @param method : {PRECISE_COURSE, FUZZY_COURSE, UNIT, DEFAULT, ALL} 搜尋方法
-	 * @return 型態為 (Search) 的ArrayList
+	 * @param keyword : (String) ��摮�
+	 * @param userId : (String) 撣唾��
+	 * @param method : {PRECISE_COURSE, FUZZY_COURSE, UNIT, DEFAULT, ALL} ���瘜�
+	 * @return ��� (Search) ��rrayList
 	 */
 	public ArrayList<Search> keywordSearch(String keyword, SearchMethod method)
 	{
@@ -136,32 +136,32 @@ public class SearchManager
 		ArrayList<Search> resultList = new ArrayList<Search>();
 		switch(method)
 		{
-		// 回傳精準查詢後的 Courselist
+		// ��蝎暹�閰Ｗ��� Courselist
 		case PRECISE_COURSE:
 			resultList.addAll(getCourseListByKeyword(keyword, QueryType.PRECISE));
 			break;
-		// 回傳模糊查詢後的 Courselist
+		// ��璅∠�閰Ｗ��� Courselist
 		case FUZZY_COURSE:
 			resultList.addAll(getCourseListByKeyword(keyword, QueryType.FUZZY));
 			break;
-		// 回傳查詢後的 Unit
+		// ���閰Ｗ��� Unit
 		case UNIT:
 			resultList.addAll(getUnitListByKeyword(keyword));
 			break;
-		// 回傳精準查詢後的Courselist & Unit (為預設的搜尋方法)
+		// ��蝎暹�閰Ｗ��ourselist & Unit (���身����瘜�)
 		case DEFAULT:
 			resultList.addAll(getCourseListByKeyword(keyword, QueryType.PRECISE));
 			resultList.addAll(getUnitListByKeyword(keyword));
 			break;
-		// 回傳精準、模糊查詢的Courselist & Unit查詢結果
+		// ��蝎暹��芋蝟閰Ｙ�ourselist & Unit�閰Ｙ���
 		case ALL:
 			resultList.addAll(getCourseListByKeyword(keyword, QueryType.PRECISE));
-			// 將第一次結果加入 HashMap 以紀錄是否有查過
+			// 撠洵銝�甈∠��� HashMap 隞亦���������
 			for (Search search: resultList)
 			{
 				courseMap.put(search.getCourselistId(), search);
 			}
-			// 將第二次結果不重複的加入 resultList
+			// 撠洵鈭活蝯������ resultList
 			for (Search search: getCourseListByKeyword(keyword, QueryType.FUZZY))
 			{
 				if (!courseMap.containsKey(search.getCourselistId()))
@@ -173,35 +173,35 @@ public class SearchManager
 		return resultList;
 	}
 	
-	/** 回傳關鍵字切字後查詢結果
+	/** ����摮���閰Ｙ���
 	 * 
-	 * @param keyword : (String) 關鍵字
-	 * @param userId : (String) 帳號
-	 * @param method : {PRECISE_COURSE, FUZZY_COURSE, UNIT, DEFAULT, ALL} 搜尋方法
-	 * @return 型態為 (Search) 的ArrayList
+	 * @param keyword : (String) ��摮�
+	 * @param userId : (String) 撣唾��
+	 * @param method : {PRECISE_COURSE, FUZZY_COURSE, UNIT, DEFAULT, ALL} ���瘜�
+	 * @return ��� (Search) ��rrayList
 	 */
 	public ArrayList<Search> keywordSearchWithJieba(String keyword, SearchMethod method)
 	{
-		// 用以過濾重複的 map
+		// �隞仿�蕪����� map
 		HashMap<Integer, Search> listMap = new HashMap<Integer, Search>();
 		HashMap<Integer, Search> unitMap = new HashMap<Integer, Search>();
-		// 輸出的 ArrayList
+		// 頛詨��� ArrayList
 		ArrayList<Search> output = new ArrayList<Search>();
-		// 先將完整的關鍵字先搜尋一次，加入至 output
+		// �������摮����甈∴��� output
 		output.addAll(keywordSearch(keyword, method));
-		// 放到 map 以做之後過濾用
+		// �� map 隞亙����蕪�
 		for (Search search: output)
 		{
 //			System.out.println(search.getListName());
-			// 課程 (courselistId 是不為 0 的正整數)
+			// 隤脩�� (courselistId �銝 0 ��迤��)
 			if (search.getCourselistId() != 0)
 				listMap.put(search.getCourselistId(), search);
-			// 單元 (courselistId 是 0)
+			// ���� (courselistId � 0)
 			else if (search.getFirstUnitId() != 0)
 				unitMap.put(search.getFirstUnitId(), search);
 		}
 		
-		// 得到切字後的字串
+		// 敺������葡
 		JiebaWordFreq jiebaWordFreq = new JiebaWordFreq();
 		jiebaWordFreq.unitJieba(keyword);
 		ArrayList<String> jiebaResult = new ArrayList<String>(jiebaWordFreq.getAllWordsFreq().keySet());
@@ -209,7 +209,7 @@ public class SearchManager
 		for (String jiebaString: jiebaResult)
 		{
 //			System.out.println(jiebaString);
-			// 將結果沒重複過的加入到 output
+			// 撠��������� output
 			for (Search search: keywordSearch(jiebaString, method))
 			{
 //				System.out.print("@@" + search.getListName());
@@ -227,14 +227,14 @@ public class SearchManager
 		}
 //		System.out.println("");
 		
-		return output;	// 切字後的結果
+		return output;	// ��������
 	}
 	
-	/** 輸入字串回傳含有%的字串
+	/** 頛詨摮葡������%���葡
 	 * 
-	 * @param keyword : (String) 關鍵字
-	 * @param type : {PRECISE, FUZZY} 精準/模糊搜尋
-	 * @return (String) e.g.微積分 -> PRECISE: %微積分% , FUZZY: %微%積%分%
+	 * @param keyword : (String) ��摮�
+	 * @param type : {PRECISE, FUZZY} 蝎暹��/璅∠����
+	 * @return (String) e.g.敺桃��� -> PRECISE: %敺桃���% , FUZZY: %敺�%蝛�%���%
 	 */
 	private String getQuery(String keyword, QueryType type)
 	{
@@ -242,11 +242,11 @@ public class SearchManager
 		switch (type)
 		{
 		case PRECISE:
-			// (ex. 微積分 -> %微積分%)
+			// (ex. 敺桃��� -> %敺桃���%)
 			query += (keyword + "%");
 			break;
 		case FUZZY:
-			// (ex. 微積分 -> %微%積%分%)
+			// (ex. 敺桃��� -> %敺�%蝛�%���%)
 			if (keyword.length() > 1)
 			{
 				for (String word:keyword.split(""))
@@ -263,14 +263,14 @@ public class SearchManager
 		return query;
 	}
 	
-	// 輸出 SelectCourseKeyword SQL 語法
+	// 頛詨 SelectCourseKeyword SQL 隤��
 	private String getSelectCourseKeywordSQL(String keyword, QueryType type)
 	{
 		String selectCourseKeywordSQL = selectCourseKeywordSQLStart + selectCourseKeywordSQLMiddle;
-		// 如果有多個query (用+分隔)，則搜尋資料庫用and連接
+		// 憒����uery (�+����)嚗�����澈�and���
 		if (keyword.contains("+"))
 		{
-			String []wordList = keyword.split("[+]");	//RE的+有特別意思，所以要用括號括起來
+			String []wordList = keyword.split("[+]");	//RE���+��������隞亥����韏瑚��
 			selectCourseKeywordSQL = selectCourseKeywordSQL.replace("?", "'" + getQuery(wordList[0], type) + "'");
 			for (int i = 1; i < wordList.length; i++)
 			{
@@ -278,7 +278,7 @@ public class SearchManager
 				selectCourseKeywordSQL = selectCourseKeywordSQL.replace("?", "'" + getQuery(wordList[i], type) + "'");
 			}
 		}
-		// 單個query
+		// ��uery
 		else
 		{
 			selectCourseKeywordSQL = selectCourseKeywordSQL.replace("?", "'" + getQuery(keyword, type) + "'");
@@ -289,7 +289,7 @@ public class SearchManager
 		return selectCourseKeywordSQL;
 	}
 	
-	// 進行課程的搜尋
+	// �脰�玨蝔����
 	private ArrayList<Search> getCourseListByKeyword(String keyword, QueryType type) {
 		ArrayList<Search> courseList = new ArrayList<Search>();
 		try {
@@ -321,7 +321,7 @@ public class SearchManager
 		return courseList;
 	}
 
-	// 將  Unit 放到  Course 裡面
+	// 撠�  Unit ��  Course 鋆⊿
 	private ArrayList<Search> getFullCourseInfo(ArrayList<Search> prevList)
 	{
 		try
@@ -352,7 +352,7 @@ public class SearchManager
 		return prevList;
 	}
 
-	// 進行單元的搜尋
+	// �脰�������
 	private ArrayList<Search> getUnitListByKeyword(String keyword)
 	{
 		ArrayList<Search> unitList = new ArrayList<Search>();
@@ -385,7 +385,7 @@ public class SearchManager
 		return unitList;
 	}
 	
-	// 將搜尋紀錄加進資料庫
+	// 撠�������脰��澈
 	public void insertSearchRecord(String keyword, String userId)
 	{
 		try
@@ -447,7 +447,7 @@ public class SearchManager
 		}
 		return outputList;
 	}
-	//將搜尋的單元影片加入課程計畫中
+	//撠�����蔣���隤脩��銝�
 	public void addToCoursePlan(String userId,int unitId){
 		int maxOrder = 0;
 		try {
@@ -471,7 +471,7 @@ public class SearchManager
 			Close();
 		}
 	}
-	//將搜尋的清單中的所有單元影片加入課程計畫中
+	//撠����銝剔������蔣���隤脩��銝�
 	public void addToCoursePlanList(String userId,int courselistId){
 		ArrayList<Integer> plans = new ArrayList<Integer>();
 		int maxOrder = 0;
@@ -537,13 +537,13 @@ public class SearchManager
 	public static void main(String []args)
 	{
 		SearchManager kldm = new SearchManager();
-//		System.out.println(kldm.keywordSearchWithJieba("中央+微積分"));
-//		kldm.keywordSearchWithJieba("中央+微積分", SearchMethod.DEFAULT);
-		System.out.println(kldm.keywordSearchWithJieba("中央+微積分", SearchMethod.DEFAULT));
-//		System.out.println(kldm.selectCourseListTable("化學"));
-//		System.out.println(kldm.selectUnitKeywordTable("微積分"));
-//		System.out.println(kldm.getCourseListByKeyword("微積分"));
-//		System.out.println(kldm.getAllKeyword("微積分"));
+//		System.out.println(kldm.keywordSearchWithJieba("銝剖亢+敺桃���"));
+//		kldm.keywordSearchWithJieba("銝剖亢+敺桃���", SearchMethod.DEFAULT);
+		System.out.println(kldm.keywordSearchWithJieba("微積分", SearchMethod.DEFAULT));
+//		System.out.println(kldm.selectCourseListTable("��飛"));
+//		System.out.println(kldm.selectUnitKeywordTable("敺桃���"));
+//		System.out.println(kldm.getCourseListByKeyword("敺桃���"));
+//		System.out.println(kldm.getAllKeyword("敺桃���"));
 //		System.out.println(kldm.getTeacher());
 //		System.out.println(kldm.getDepartment());
 		
