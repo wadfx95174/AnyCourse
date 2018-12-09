@@ -859,7 +859,7 @@ function addEvent(event)
 		          'timeZone': 'Asia/Taipei'
 		        },
 		        'end': {
-		          'dateTime': moment(event.end).toISOString(),
+		          'dateTime': event.end != undefined ? moment(event.end).toISOString() : moment(event.start).toISOString(),
 		          'timeZone': 'Asia/Taipei'
 		        }
 		     }
@@ -879,7 +879,7 @@ function addEvent(event)
 			          'timeZone': 'Asia/Taipei'
 		        },
 		        'end': {
-			          'date': event.end.split(' ')[0],
+			          'date': event.end != undefined ? event.end.split(' ')[0] : event.start.split(' ')[0],
 			          'timeZone': 'Asia/Taipei'
 		        }
 		     }
