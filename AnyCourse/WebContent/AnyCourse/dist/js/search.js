@@ -111,7 +111,7 @@ $(document).ready(function(){
 					listArray.push(response[i]);
 				}
 				// 單元
-				else if (response[i].units[0] != null && !resultArray.has(response[i].units[i].unitId))	// 有可能錯!!!!!!!!!!!!!!!!!!!!!!!!!!
+				else if (response[i].units[0] != null && !resultArray.has(response[i].units[0].unitId))	// 有可能錯!!!!!!!!!!!!!!!!!!!!!!!!!!
 				{
 					unitArray.push(response[i]);
 				}

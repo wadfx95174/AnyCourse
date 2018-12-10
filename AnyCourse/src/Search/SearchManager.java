@@ -15,7 +15,7 @@ import anycourse.JiebaWordFreq;
 public class SearchManager
 {
 	private final String selectCourseListSQL = "select * from courselist where listName like ?";
-	private final String selectUnitKeywordSQL = "select * from unit natural join unitKeyword where unitKeyword like ? or unitName like ?";
+	private final String selectUnitKeywordSQL = "select unitId, schoolName, teacher, listName, unitName, videoUrl, likes, videoImgSrc from unit natural join unitKeyword where unitKeyword like ? or unitName like ? group by unitId";
 	private final String selectCourseKeywordSQLStart = "select max(courselistId)courselistId, max(schoolName)schoolName, max(listName)listName, max(teacher)teacher, max(departmentName)departmentName, max(courseInfo)courseInfo, max(creator)creator, max(share)share, max(likes)likes ,max(tfidf)tfidf from courselist natural join courseKeyword where ";
 	private final String selectCourseKeywordSQLMiddle = "(courseKeyword like ? or listName like ? or teacher like ? or schoolName like ? or departmentName like ?) ";
 	private final String selectCourseKeywordSQLEnd = "group by listName ORDER BY `tfidf` DESC";
@@ -194,7 +194,7 @@ public class SearchManager
 		{
 //			System.out.println(search.getListName());
 			// 課程 (courselistId 是不為 0 的正整數)
-			if (search.getCourselistId() != 0)
+			if (search.getFirstUnitId() != 0 && search.getCourselistId() != 0)
 				listMap.put(search.getCourselistId(), search);
 			// 單元 (courselistId 是 0)
 			else if (search.getFirstUnitId() != 0)
@@ -213,7 +213,7 @@ public class SearchManager
 			for (Search search: keywordSearch(jiebaString, method))
 			{
 //				System.out.print("@@" + search.getListName());
-				if (search.getCourselistId() != 0 && !listMap.containsKey(search.getCourselistId()))
+				if (search.getFirstUnitId() != 0 && search.getCourselistId() != 0 && !listMap.containsKey(search.getCourselistId()))
 				{
 					output.add(search);
 					listMap.put(search.getCourselistId(), search);
@@ -367,6 +367,7 @@ public class SearchManager
 				Search search = new Search();
 				Unit unit = new Unit();
 				unit.setUnitId(result.getInt("unitId"));
+				unit.setTeacherName(result.getString("teacher"));
 				unit.setUnitName(result.getString("unitName"));
 				unit.setVideoUrl(result.getString("videoUrl"));
 				unit.setLikes(result.getInt("likes"));
@@ -539,7 +540,7 @@ public class SearchManager
 		SearchManager kldm = new SearchManager();
 //		System.out.println(kldm.keywordSearchWithJieba("中央+微積分"));
 //		kldm.keywordSearchWithJieba("中央+微積分", SearchMethod.DEFAULT);
-		System.out.println(kldm.keywordSearchWithJieba("中央+微積分", SearchMethod.DEFAULT));
+		System.out.println(kldm.keywordSearchWithJieba("微積分", SearchMethod.ALL));
 //		System.out.println(kldm.selectCourseListTable("化學"));
 //		System.out.println(kldm.selectUnitKeywordTable("微積分"));
 //		System.out.println(kldm.getCourseListByKeyword("微積分"));
