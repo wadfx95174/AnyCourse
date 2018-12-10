@@ -144,7 +144,7 @@ $(document).ready(function(){
 	$("#lRight").click(function(event){
 		console.log(event);
 		currentListPage++;
-		$("#lNow").text(currentListPage);
+//		$("#lNow").text(currentListPage);
 		if(currentListPage+1>totalPage){
 			$("#lRight").removeAttr("disabled");
 			/*如果是最后一页，就禁用a标签*/
@@ -195,7 +195,7 @@ $(document).ready(function(){
 	$("#uRight").click(function(event){
 		console.log(event);
 		currentUnitPage++;
-		$("#uNow").text(currentUnitPage);
+//		$("#uNow").text(currentUnitPage);
 		if(currentUnitPage+1>totalPage){
 			$("#uRight").removeAttr("disabled");
 			/*如果是最后一页，就禁用a标签*/

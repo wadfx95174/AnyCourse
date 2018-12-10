@@ -105,7 +105,10 @@ public class Search
 	// 回傳第一個單元 Id
 	public int getFirstUnitId()
 	{
-		return this.units.get(0).getUnitId();
+		if (this.units.get(0) != null)
+			return this.units.get(0).getUnitId();
+		else
+			return 0;
 	}
 	@Override
 	public String toString()
