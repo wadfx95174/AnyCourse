@@ -540,7 +540,8 @@ public class SearchManager
 		SearchManager kldm = new SearchManager();
 //		System.out.println(kldm.keywordSearchWithJieba("中央+微積分"));
 //		kldm.keywordSearchWithJieba("中央+微積分", SearchMethod.DEFAULT);
-		System.out.println(kldm.keywordSearchWithJieba("微積分", SearchMethod.ALL));
+//		System.out.println(kldm.keywordSearchWithJieba("微積分", SearchMethod.ALL));
+		System.out.println(kldm.keywordSearchWithJieba("單元 7．論大學生的引誘與危險"));
 //		System.out.println(kldm.selectCourseListTable("化學"));
 //		System.out.println(kldm.selectUnitKeywordTable("微積分"));
 //		System.out.println(kldm.getCourseListByKeyword("微積分"));

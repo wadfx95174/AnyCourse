@@ -909,6 +909,7 @@ function importGoogleEvent()
 				success: function(){
 					// 從fullcalendar上移除
 					$('#calendar').fullCalendar('removeEvents', value.id)
+					alert('匯入成功');
 				}
 			});
 			fullEvents.splice(findEventIndexById(value.id), 1); // 刪除 1 個元素
@@ -945,6 +946,7 @@ function exportGoogleEvent()
 	{
 		addEvent(unmatchEvents[i]);
 	}
+	alert('匯出成功');
 }
 
 function getDateTimeFormat(timeObj)
