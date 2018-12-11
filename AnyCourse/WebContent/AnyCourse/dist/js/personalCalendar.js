@@ -765,11 +765,11 @@ function importGoogleEvent()
 				success: function(){
 					// 從fullcalendar上移除
 					$('#calendar').fullCalendar('removeEvents', value.id)
-					alert('匯入成功');
 				}
 			});
 			fullEvents.splice(findEventIndexById(value.id), 1); // 刪除 1 個元素
 		}
+		alert('匯入成功');
     })
 }
 
