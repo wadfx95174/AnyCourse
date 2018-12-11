@@ -93,10 +93,10 @@ public class PlayerInterfaceServlet extends HttpServlet {
 				
 				String unitName = playerInterfaceManager.getUnitName(Integer.parseInt(request.getParameter("unitId")));
 				searchs = searchManger.keywordSearchWithJieba(unitName);
-				GsonBuilder builder = new GsonBuilder();
-				gson = builder.setPrettyPrinting().create();
-				System.out.println(gson.toJson(searchs));
-				System.out.println();
+//				GsonBuilder builder = new GsonBuilder();
+//				gson = builder.setPrettyPrinting().create();
+//				System.out.println(gson.toJson(searchs));
+//				System.out.println();
 				response.getWriter().write(gson.toJson(searchs));
 			}
 			else {

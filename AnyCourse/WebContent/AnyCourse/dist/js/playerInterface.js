@@ -599,6 +599,7 @@ $(document).ready(function(){
 
                     //清單
                     if(response[i].listName){
+                        console.log(response[i].units[random].videoUrl);
                         $('#recommendList').append(
                             '<li>'
                             +'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[random].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].units[random].unitId+'">'
@@ -621,7 +622,7 @@ $(document).ready(function(){
                             +'</a></li>'
                         );
                     }
-                    //只有影片
+                    //影片
                     else{
                         $('#recommendList').append(
                             '<li>'
@@ -638,7 +639,7 @@ $(document).ready(function(){
                             +'<b>影片名稱:' + response[i].units[0].unitName + '</b>'
                             +'</h5>'
                             +'<p class="unitUi">開課大學:' + response[i].units[0].schoolName + '</p>'
-                            +'<p class="unitUi">授課教師:' + response[i].units[0].teacher + '老師</p>'
+                            +'<p class="unitUi">授課教師:' + response[i].units[0].teacherName + '老師</p>'
                             +'<p class="unitUi">讚數:' + response[i].units[0].likes.toLocaleString() +'</p>'
                             +'</div>'
                             +'</div>'
@@ -694,7 +695,7 @@ $(document).ready(function(){
             unitId:get('unitId'),
         },
         success:function(response){
-            console.log(response);
+            // console.log(response);
             if(response.lectureUrl){
                 $('#lecture').append(
                     '<a href="'+ response.lectureUrl +'" target="_blank">'+ response.lectureName +'</a>');
