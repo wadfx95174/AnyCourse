@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.mahout.cf.taste.common.TasteException;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import Search.SearchManager;
 import Search.Search;
@@ -36,7 +37,7 @@ public class PlayerInterfaceServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String action = request.getParameter("action");
 		String userId = (String)session.getAttribute("userId");
-		System.out.println(action);
+//		System.out.println(action);
 		
 		if(action.equals("getVideoList")) {
 			response.setContentType("application/json");
@@ -89,9 +90,13 @@ public class PlayerInterfaceServlet extends HttpServlet {
 				SearchManager searchManger = new SearchManager();
 				PlayerInterfaceManager playerInterfaceManager = new PlayerInterfaceManager();
 				ArrayList<Search> searchs = new ArrayList<Search>();
+				
 				String unitName = playerInterfaceManager.getUnitName(Integer.parseInt(request.getParameter("unitId")));
 				searchs = searchManger.keywordSearchWithJieba(unitName);
-				
+				GsonBuilder builder = new GsonBuilder();
+				gson = builder.setPrettyPrinting().create();
+				System.out.println(gson.toJson(searchs));
+				System.out.println();
 				response.getWriter().write(gson.toJson(searchs));
 			}
 			else {

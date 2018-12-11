@@ -284,8 +284,8 @@ public class SearchManager
 			selectCourseKeywordSQL = selectCourseKeywordSQL.replace("?", "'" + getQuery(keyword, type) + "'");
 		}
 		selectCourseKeywordSQL += selectCourseKeywordSQLEnd;
-		System.out.println(keyword);
-		System.out.println(selectCourseKeywordSQL);
+//		System.out.println(keyword);
+//		System.out.println(selectCourseKeywordSQL);
 		return selectCourseKeywordSQL;
 	}
 	

@@ -596,7 +596,10 @@ $(document).ready(function(){
                     var random = Math.floor(Math.random()*response[i].units.length);
                     // console.log(i);
                     // console.log(random);
-                    $('#recommendList').append(
+
+                    //清單
+                    if(response[i].listName){
+                        $('#recommendList').append(
                             '<li>'
                             +'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[random].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].units[random].unitId+'">'
                             +'<div class="media">'
@@ -612,11 +615,38 @@ $(document).ready(function(){
                             +'</h5>'
                             +'<p class="unitUi">開課大學:' + response[i].schoolName + '</p>'
                             +'<p class="unitUi">授課教師:' + response[i].teacher + '老師</p>'
-                            +'<p class="unitUi">讚數:' + response[i].likes.toLocaleString() +'</p>'
+                            +'<p class="unitUi">讚數:' + response[i].units[random].likes.toLocaleString() +'</p>'
                             +'</div>'
                             +'</div>'
                             +'</a></li>'
-                    );
+                        );
+                    }
+                    //只有影片
+                    else{
+                        $('#recommendList').append(
+                            '<li>'
+                            +'<a class="list-group-item" href="PlayerInterface.html?type='+ (response[i].units[0].videoUrl.split("/")[2]=='www.youtube.com'?1:2) + '&unitId='+response[i].units[0].unitId+'">'
+                            +'<div class="media">'
+                            +'<div class="pull-left" style="padding-left: 0px;">'
+                            +'<div class="embed-responsive embed-responsive-16by9 col-xs-12">'
+                            +'<img id="img" class="style-scope yt-img-shadow" alt="" width="250"'
+                            +'src="'+ (response[i].units[0].videoImgSrc != "" ? response[i].units[0].videoImgSrc : "https://i.imgur.com/eKSYvRv.png") +'">'
+                            +'</div>'
+                            +'</div>'
+                            +'<div class="media-body">'
+                            +'<h5 class="unitUi">'
+                            +'<b>影片名稱:' + response[i].units[0].unitName + '</b>'
+                            +'</h5>'
+                            +'<p class="unitUi">開課大學:' + response[i].units[0].schoolName + '</p>'
+                            +'<p class="unitUi">授課教師:' + response[i].units[0].teacher + '老師</p>'
+                            +'<p class="unitUi">讚數:' + response[i].units[0].likes.toLocaleString() +'</p>'
+                            +'</div>'
+                            +'</div>'
+                            +'</a></li>'
+                        );
+                    }
+                    
+                    
                 }
             }
             else{
