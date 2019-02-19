@@ -17,7 +17,9 @@
 ## 需自行設定項目 ##
 
 AnyCourse\AnyCourse\src中各資料夾之xxxManager.java的存取資料庫路徑、登入帳密
+
 更改此行code
+
 con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
 					, "root", "peter")
 
