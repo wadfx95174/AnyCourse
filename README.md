@@ -16,15 +16,21 @@
 
 ## 需自行設定項目 ##
 
-AnyCourse\AnyCourse\src中各資料夾之xxxManager.java的存取資料庫路徑、登入帳密
+- 1.AnyCourse\AnyCourse\src中各資料夾之xxxManager.java的存取資料庫路徑、登入帳密
 
 更改此行code
 
 con = DriverManager.getConnection("jdbc:mysql://140.121.197.130:45021/anycourse?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=Big5"
 					, "root", "peter")
+- 2.AnyCourse\AnyCourse\WebContent\AnyCourse\dist\js中的account.js檔中的ajaxURL
+
+更改此行code
+
+var ajaxURL="http://anycourse.cs.ntou.edu.tw:7603/";					
 
 ## 安裝說明 ##
 
 - 1.將AnyCourse\AnyCourse\database中的anycourse.sql匯入phpMyAdmin
-- 2.將AnyCourse\AnyCourse\src中各資料夾之xxxManager.java的存取資料庫路徑設定好
-- 3.將專案部屬至Server或tomcat即可使用
+- 2.將AnyCourse\AnyCourse\src中各資料夾之xxxManager.java檔中的存取資料庫路徑設定好
+- 3.將AnyCourse\AnyCourse\WebContent\AnyCourse\dist\js中的account.js檔中的ajaxURL設定好
+- 4.將專案部屬至Server或tomcat即可使用
